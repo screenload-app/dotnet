@@ -66,10 +66,10 @@ namespace GreenshotPlugin.Controls {
 		/// Make sure the form is visible
 		/// </summary>
 		/// <param name="e">EventArgs</param>
-		protected override void OnShown(EventArgs e) {
-			base.OnShown(e);
-			WindowDetails.ToForeground(Handle);
-		}
+		//protected override void OnShown(EventArgs e) {
+		//	base.OnShown(e);
+		//	WindowDetails.ToForeground(Handle);
+		//}
 
 		private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			LOG.DebugFormat("document completed with url: {0}", _browser.Url);
@@ -97,7 +97,7 @@ namespace GreenshotPlugin.Controls {
 					_callbackParameters = NetworkHelper.ParseQueryString(queryParams);
 				}
 				DialogResult = DialogResult.OK;
-			}
+            }
 		}
 
 		private void AddressTextBox_KeyPress(object sender, KeyPressEventArgs e) {
