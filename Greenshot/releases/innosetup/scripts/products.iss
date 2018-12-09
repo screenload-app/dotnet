@@ -4,54 +4,54 @@
 DependenciesDir=MyProgramDependencies
 
 en.depdownload_msg=The following applications are required before setup can continue:%n%n%1%nDownload and install now?
-de.depdownload_msg=Die folgenden Programme werden benötigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
-fr.depdownload_msg=Les applications suivantes sont nécessaires avant l'installation peut continuer:%n%n%1%nTéléchargement et installer maintenant?
-nl.depdownload_msg=De volgende toepassingen zijn nodig vóór de installatie kunt doorgaan:%n%n%1%nDownload en installeer nu?
+;de.depdownload_msg=Die folgenden Programme werden benötigt bevor das Setup fortfahren kann:%n%n%1%nJetzt downloaden und installieren?
+;fr.depdownload_msg=Les applications suivantes sont nécessaires avant l'installation peut continuer:%n%n%1%nTéléchargement et installer maintenant?
+;nl.depdownload_msg=De volgende toepassingen zijn nodig vóór de installatie kunt doorgaan:%n%n%1%nDownload en installeer nu?
 
 en.depdownload_memo_title=Download dependencies
-de.depdownload_memo_title=Abhängigkeiten downloaden
-fr.depdownload_memo_title=Télécharger les dépendances
-nl.depdownload_memo_title=Download afhankelijkheden
+;de.depdownload_memo_title=Abhängigkeiten downloaden
+;fr.depdownload_memo_title=Télécharger les dépendances
+;nl.depdownload_memo_title=Download afhankelijkheden
 
 en.depinstall_memo_title=Install dependencies
-de.depinstall_memo_title=Abhängigkeiten installieren
-fr.depinstall_memo_title=Installez les dépendances
-nl.depinstall_memo_title=Installeer afhankelijkheden
+;de.depinstall_memo_title=Abhängigkeiten installieren
+;fr.depinstall_memo_title=Installez les dépendances
+;nl.depinstall_memo_title=Installeer afhankelijkheden
 
 en.depinstall_title=Installing dependencies
-de.depinstall_title=Installiere Abhängigkeiten
-fr.depinstall_title=Installation des dépendances
-nl.depinstall_title=Installeer afhankelijkheden
+;de.depinstall_title=Installiere Abhängigkeiten
+;fr.depinstall_title=Installation des dépendances
+;nl.depinstall_title=Installeer afhankelijkheden
 
 en.depinstall_description=Please wait while Setup installs dependencies on your computer.
-de.depinstall_description=Warten Sie bitte während Abhängigkeiten auf Ihrem Computer installiert wird.
-fr.depinstall_description=S'il vous plaît patienter pendant que le programme d'installation installe les dépendances sur votre ordinateur.
-nl.depinstall_description=Een moment geduld aub Setup installeert afhankelijkheden op uw computer.
+;de.depinstall_description=Warten Sie bitte während Abhängigkeiten auf Ihrem Computer installiert wird.
+;fr.depinstall_description=S'il vous plaît patienter pendant que le programme d'installation installe les dépendances sur votre ordinateur.
+;nl.depinstall_description=Een moment geduld aub Setup installeert afhankelijkheden op uw computer.
 
 en.depinstall_status=Installing %1...
-de.depinstall_status=Installiere %1...
-fr.depinstall_status=Installation %1...
-nl.depinstall_status=Installeren %1...
+;de.depinstall_status=Installiere %1...
+;fr.depinstall_status=Installation %1...
+;nl.depinstall_status=Installeren %1...
 
 en.depinstall_missing=%1 must be installed before setup can continue. Please install %1 and run Setup again.
-de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
-fr.depinstall_missing=%1 doit être installé avant l'installation peut continuer. S'il vous plaît installer %1 et exécutez à nouveau le programme d'installation.
-nl.depinstall_missing=%1 moet worden geïnstalleerd vóór de installatie kan worden voortgezet. Installeer %1 en voer Setup opnieuw uit.
+;de.depinstall_missing=%1 muss installiert werden bevor das Setup fortfahren kann. Bitte installieren Sie %1 und starten Sie das Setup erneut.
+;fr.depinstall_missing=%1 doit être installé avant l'installation peut continuer. S'il vous plaît installer %1 et exécutez à nouveau le programme d'installation.
+;nl.depinstall_missing=%1 moet worden geïnstalleerd vóór de installatie kan worden voortgezet. Installeer %1 en voer Setup opnieuw uit.
 
 en.depinstall_error=An error occured while installing the dependencies. Please restart the computer and run the setup again or install the following dependencies manually:%n
-de.depinstall_error=Ein Fehler ist während der Installation der Abghängigkeiten aufgetreten. Bitte starten Sie den Computer neu und führen Sie das Setup erneut aus oder installieren Sie die folgenden Abhängigkeiten per Hand:%n
-fr.depinstall_error=Une erreur est survenue lors de l'installation des dépendances . S'il vous plaît redémarrer l'ordinateur et exécuter à nouveau le programme d'installation ou installer les dépendances suivantes manuellement:%n
-nl.depinstall_error=Er is een fout opgetreden tijdens het installeren van de afhankelijkheden. Gelieve de computer opnieuw op en voer de installatie opnieuw uit of de volgende afhankelijkheden handmatig installeren:%n
+;de.depinstall_error=Ein Fehler ist während der Installation der Abghängigkeiten aufgetreten. Bitte starten Sie den Computer neu und führen Sie das Setup erneut aus oder installieren Sie die folgenden Abhängigkeiten per Hand:%n
+;fr.depinstall_error=Une erreur est survenue lors de l'installation des dépendances . S'il vous plaît redémarrer l'ordinateur et exécuter à nouveau le programme d'installation ou installer les dépendances suivantes manuellement:%n
+;nl.depinstall_error=Er is een fout opgetreden tijdens het installeren van de afhankelijkheden. Gelieve de computer opnieuw op en voer de installatie opnieuw uit of de volgende afhankelijkheden handmatig installeren:%n
 
 en.isxdl_langfile=
-de.isxdl_langfile=german.ini
-fr.isxdl_langfile=french3.ini
-nl.isxdl_langfile=dutch.ini
+;de.isxdl_langfile=german.ini
+;fr.isxdl_langfile=french3.ini
+;nl.isxdl_langfile=dutch.ini
 
-[Files]
-Source: "scripts\isxdl\german.ini"; Flags: dontcopy
-Source: "scripts\isxdl\french3.ini"; Flags: dontcopy
-Source: "scripts\isxdl\dutch.ini"; Flags: dontcopy
+;[Files]
+;Source: "scripts\isxdl\german.ini"; Flags: dontcopy
+;Source: "scripts\isxdl\french3.ini"; Flags: dontcopy
+;Source: "scripts\isxdl\dutch.ini"; Flags: dontcopy
 
 [Code]
 type

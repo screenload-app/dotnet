@@ -1,6 +1,6 @@
 ﻿#define ExeName "Greenshot"
-#define Version "@VERSION@"
-#define FileVersion "@FILEVERSION@"
+#define Version "1.2.10.0"
+#define FileVersion "1.2.10.0-local"
 
 ; Include the scripts to install .NET Framework
 ; See http://www.codeproject.com/KB/install/dotnetfx_innosetup_instal.aspx

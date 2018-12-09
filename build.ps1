@@ -24,7 +24,7 @@
 
 $version=$env:APPVEYOR_BUILD_VERSION
 if ( !$version ) {
-	$version = "1.3.0.0"
+	$version = "1.2.10.0"
 }
 
 $buildType=$env:build_type
@@ -42,6 +42,9 @@ $detailversion=$version + '-' + $gitcommit + " " + $buildType
 $release=(([version]$version).build) % 2 -eq 1
 $fileversion=$version + "-" + $buildType
 
+$env:SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\signtool.exe"
+$certThumbprint = "fcb671b0b83566d01aee0e142e9ba5a999208ee4"
+
 Write-Host "Building Greenshot $detailversion"
 
 # Create a MD5 string for the supplied filename
@@ -55,8 +58,8 @@ Function MD5($filename) {
 # Sign the specify file
 Function SignWithCertificate($filename) {
 	Write-Host "Signing $filename" 
-	$signSha1Arguments = @('sign', '/debug',          '/fd', 'sha1'  , '/tr', 'http://time.certum.pl', '/td', 'sha1'  , $filename)
-	$signSha256Arguments = @('sign', '/debug', '/as', '/fd', 'sha256', '/tr', 'http://time.certum.pl', '/td', 'sha256', $filename)
+	$signSha1Arguments = @('sign', '/sha1',   $certThumbprint,        '/fd', 'sha1'  , '/tr', 'http://time.certum.pl', '/td', 'sha1'  , $filename)
+	$signSha256Arguments = @('sign', '/sha1', $certThumbprint, '/as', '/fd', 'sha256', '/tr', 'http://time.certum.pl', '/td', 'sha256', $filename)
 
 	Start-Process -wait $env:SignTool -ArgumentList $signSha1Arguments -NoNewWindow
 	Start-Process -wait $env:SignTool -ArgumentList $signSha256Arguments -NoNewWindow
@@ -332,12 +335,12 @@ MD5Checksums | Set-Content "$(get-location)\Greenshot\bin\Release\checksum.MD5" 
 echo "Generating Installer"
 PackageInstaller
 
-echo "Generating ZIP"
-PackageZip
+#echo "Generating ZIP"
+#PackageZip
 
-echo "Generating Portable"
-PackagePortable
+#echo "Generating Portable"
+#PackagePortable
 
-echo "Generating Debug Symbols ZIP"
-PackageDbgSymbolsZip
+#echo "Generating Debug Symbols ZIP"
+#PackageDbgSymbolsZip
 

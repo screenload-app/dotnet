@@ -2,7 +2,6 @@
 msi20_title=Windows Installer 2.0
 
 en.msi20_size=1.7 MB
-de.msi20_size=1,7 MB
 
 [Code]
 const
