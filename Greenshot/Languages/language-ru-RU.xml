@@ -3,7 +3,7 @@
 	<resources>
 		<resource name="about_bugs">Просьба сообщать об ошибках на</resource>
 		<resource name="about_donations">Если вам нравится Greenshot, вы можете поддержать нас:</resource>
-		<resource name="about_host">Greenshot размещается на GitHub</resource>
+		<resource name="about_host">Greenshot размещается на Download.RU</resource>
 		<resource name="about_icons">Набор иконок Yusuke Kamiyamane's Fugue (Creative Commons Attribution 3.0 license)</resource>
 		<resource name="about_license">Copyright (C) 2007-2012 Thomas Braun, Jens Klingen, Robin Krom
 Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.Это бесплатная программа и вы можете распространять её на определённых условиях.
@@ -185,7 +185,7 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="expertsettings_reuseeditorifpossible">Повторное редактирование, если возможно</resource>
 		<resource name="expertsettings_suppresssavedialogatclose">Не выводить диалог сохранения при закрытии редактора</resource>
 		<resource name="expertsettings_thumbnailpreview">Показывать окно эскизов в контекстном меню (для Vista и Windows 7)</resource>
-		<resource name="exported_to">Экспортировать в: {0}</resource>
+		<resource name="exported_to">Скриншот сохранен. Нажмите, чтобы открыть.</resource>
 		<resource name="exported_to_error">Произошла ошибка при экспорте в {0}:</resource>
 		<resource name="help_title">Greenshot справка</resource>
 		<resource name="hotkeys">Горячие клавиши</resource>

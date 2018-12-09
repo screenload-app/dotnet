@@ -207,6 +207,11 @@
     <Compile Include="Forms\MovableShowColorForm.Designer.cs">
       <DependentUpon>MovableShowColorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Sounds.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Sounds.resx</DependentUpon>
+    </Compile>
     <None Include="App.config" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Helpers\CaptureHelper.cs" />
@@ -240,6 +245,9 @@
     <Compile Include="Helpers\StartupHelper.cs" />
     <Compile Include="Helpers\ToolStripItemEndisabler.cs" />
     <Compile Include="GreenshotMain.cs" />
+    <EmbeddedResource Include="Forms\AboutForm.resx">
+      <DependentUpon>AboutForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorDialog.resx">
       <DependentUpon>ColorDialog.cs</DependentUpon>
     </EmbeddedResource>
@@ -252,7 +260,10 @@
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Sounds.resx" />
+    <EmbeddedResource Include="Sounds.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Sounds.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <None Include="greenshot.manifest" />
     <None Include="Languages\help-en-US.html">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
