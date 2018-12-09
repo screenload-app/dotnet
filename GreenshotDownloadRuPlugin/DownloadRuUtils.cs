@@ -49,7 +49,7 @@ namespace GreenshotDownloadRuPlugin {
 
 			OAuthLoginForm loginForm = new OAuthLoginForm("DownloadRu Authorize", new Size(1060, 600), authorizeUrl, RedirectUri);
 			loginForm.ShowDialog();
-			if (!loginForm.isOk) {
+			if (!loginForm.IsOk) {
 				return false;
 			}
 			var callbackParameters = loginForm.CallbackParameters;
@@ -86,7 +86,7 @@ namespace GreenshotDownloadRuPlugin {
 			using (var requestStream = webRequest.GetRequestStream()) {
 				requestStream.Write(data, 0, data.Length);
 			}
-			return NetworkHelper.GetResponse(webRequest);
+			return NetworkHelper.GetResponseAsString(webRequest);
 		}
 
 		/// <summary>
@@ -104,7 +104,7 @@ namespace GreenshotDownloadRuPlugin {
 			webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
 			NetworkHelper.WriteMultipartFormData(webRequest, parameters);
 
-			return NetworkHelper.GetResponse(webRequest);
+			return NetworkHelper.GetResponseAsString(webRequest);
 		}
 
 		/// <summary>
@@ -125,7 +125,7 @@ namespace GreenshotDownloadRuPlugin {
 			using (var requestStream = webRequest.GetRequestStream()) {
 				requestStream.Write(data, 0, data.Length);
 			}
-			return NetworkHelper.GetResponse(webRequest);
+			return NetworkHelper.GetResponseAsString(webRequest);
 		}
 
 
@@ -141,7 +141,7 @@ namespace GreenshotDownloadRuPlugin {
 			webRequest.Credentials = CredentialCache.DefaultCredentials;
 			webRequest.UserAgent = UserAgent;
 			webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-			return NetworkHelper.GetResponse(webRequest);
+			return NetworkHelper.GetResponseAsString(webRequest);
 		}
 
 		/// <summary>
