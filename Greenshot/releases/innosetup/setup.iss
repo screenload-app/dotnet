@@ -63,9 +63,9 @@ OutputDir=..\
 PrivilegesRequired=none
 SetupIconFile=..\..\icons\applicationIcon\icon.ico
 ; Create a SHA1 signature
-SignTool=SignTool sign /sha1 fcb671b0b83566d01aee0e142e9ba5a999208ee4 /fd sha1 /tr http://time.certum.pl /td sha1 $f
+SignTool=SignTool sign /sha1 fcb671b0b83566d01aee0e142e9ba5a999208ee4 /fd sha1 /t http://timestamp.comodoca.com/rfc3161 $f
 ; Append a SHA256 to the previous SHA1 signature (this is what as does)
-SignTool=SignTool sign /sha1 fcb671b0b83566d01aee0e142e9ba5a999208ee4 /as /fd sha256 /tr http://time.certum.pl /td sha256 $f
+SignTool=SignTool sign /sha1 fcb671b0b83566d01aee0e142e9ba5a999208ee4 /as /fd sha256 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 $f
 SignedUninstaller=yes
 UninstallDisplayIcon={app}\{#ExeName}.exe
 Uninstallable=true
@@ -130,6 +130,14 @@ en.optimize=Optimizing performance, this may take a while.
 en.startgreenshot=Start {#ExeName}
 en.startup=Start {#ExeName} with Windows start
 en.downloadru=Download.RU plug-in
+
+ru.default=Установка по умолчанию
+ru.externalcommand=Плагин для использования установленных программ
+ru.language=Дополнительные языки
+ru.optimize=Оптимизация производительности, это может занять некоторое время.
+ru.startgreenshot=Запустить {#ExeName}
+ru.startup=Автоматический запуск {#ExeName} при загрузке Windows
+ru.downloadru=Плагин Download.RU
 
 [Types]
 Name: "default"; Description: "{cm:default}"
