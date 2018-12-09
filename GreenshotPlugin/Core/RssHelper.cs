@@ -80,7 +80,7 @@ namespace GreenshotPlugin.Core {
 	/// </summary>
 	public class RssHelper {
 		private static readonly ILog Log = LogManager.GetLogger(typeof(RssHelper));
-		private const string Rssfeed = "http://getgreenshot.org/project-feed/";
+		private const string Rssfeed = "https://download.ru/greenshot/feed.xml";
 
 		/// <summary>
 		/// This is using the HTTP HEAD Method to check if the RSS Feed is modified after the supplied date
