@@ -37,7 +37,7 @@ namespace GreenshotDownloadRuPlugin {
 	public static class DownloadRuUtils {
         private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(DownloadRuUtils));
 		private static readonly DownloadRuConfiguration Config = IniConfig.GetIniSection<DownloadRuConfiguration>();
-		private const string RedirectUri = "https://download.ru/u/";
+		private const string RedirectUri = "https://download.ru/u/?";
 		private const string UploadFileUri = "https://download.ru/f?locale=";
         private const string AuthorizeUri = "https://download.ru/oauth/authorize";
 		private const string TokenUri = "https://download.ru/oauth/token";
