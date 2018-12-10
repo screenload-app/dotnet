@@ -90,7 +90,7 @@ namespace Greenshot {
             this.lblHost.Name = "lblHost";
             this.lblHost.Size = new System.Drawing.Size(466, 23);
             this.lblHost.TabIndex = 4;
-            this.lblHost.Text = "Greenshot is hosted by GitHub at";
+            this.lblHost.Text = "Greenshot is hosted by Download.RU at";
             // 
             // linkLblLicense
             // 
@@ -119,7 +119,7 @@ namespace Greenshot {
             this.linkLblBugs.Size = new System.Drawing.Size(465, 23);
             this.linkLblBugs.TabIndex = 8;
             this.linkLblBugs.TabStop = true;
-            this.linkLblBugs.Text = "http://getgreenshot.org/tickets/?version=";
+            this.linkLblBugs.Text = "http://getgreenshot.org/tickets/?version={0}";
             this.linkLblBugs.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
             // 
             // lblBugs
@@ -138,7 +138,7 @@ namespace Greenshot {
             this.linkLblDonations.Size = new System.Drawing.Size(465, 23);
             this.linkLblDonations.TabIndex = 10;
             this.linkLblDonations.TabStop = true;
-            this.linkLblDonations.Text = "http://getgreenshot.org/support/?version=";
+            this.linkLblDonations.Text = "http://getgreenshot.org/support/?version={0}";
             this.linkLblDonations.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
             // 
             // lblDonations

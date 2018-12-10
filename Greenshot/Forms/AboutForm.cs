@@ -31,6 +31,7 @@ using GreenshotPlugin.Core;
 using Greenshot.IniFile;
 using System.Security.Permissions;
 using log4net;
+using System.Globalization;
 
 namespace Greenshot {
 	/// <summary>
@@ -57,7 +58,9 @@ namespace Greenshot {
 
 			// Format is like this:  AssemblyVersion("Major.Minor.Build.Revision")]
 			lblTitle.Text = "Greenshot " + v.Major + "." + v.Minor + "." + v.Build + " Build " + v.Revision + (IniConfig.IsPortable ? " Portable" : "") + (" (" + OsInfo.Bits) + " bit)";
-		}
+            linkLblBugs.Text = string.Format(CultureInfo.InvariantCulture, linkLblBugs.Text, Assembly.GetEntryAssembly().GetName().Version);
+            linkLblDonations.Text = string.Format(CultureInfo.InvariantCulture, linkLblDonations.Text, Assembly.GetEntryAssembly().GetName().Version);
+        }
 
 		/// <summary>
 		/// This is called when a link is clicked

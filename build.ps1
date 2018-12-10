@@ -44,6 +44,7 @@ $fileversion=$version + "-" + $buildType
 
 $env:SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\signtool.exe"
 $certThumbprint = "fcb671b0b83566d01aee0e142e9ba5a999208ee4"
+$timestampingServer = "http://timestamp.comodoca.com/rfc3161"
 
 Write-Host "Building Greenshot $detailversion"
 
@@ -58,8 +59,8 @@ Function MD5($filename) {
 # Sign the specify file
 Function SignWithCertificate($filename) {
 	Write-Host "Signing $filename" 
-	$signSha1Arguments = @('sign', '/sha1',   $certThumbprint,        '/fd', 'sha1'  , '/t', 'http://timestamp.comodoca.com/rfc3161',                   $filename)
-	$signSha256Arguments = @('sign', '/sha1', $certThumbprint, '/as', '/fd', 'sha256', '/tr', 'http://timestamp.comodoca.com/rfc3161', '/td', 'sha256', $filename)
+	$signSha1Arguments = @('sign', '/sha1',   $certThumbprint,        '/fd', 'sha1'  , '/t',  $timestampingServer,                  $filename)
+	$signSha256Arguments = @('sign', '/sha1', $certThumbprint, '/as', '/fd', 'sha256', '/tr', $timestampingServer, '/td', 'sha256', $filename)
 
 	Start-Process -wait $env:SignTool -ArgumentList $signSha1Arguments -NoNewWindow
 	Start-Process -wait $env:SignTool -ArgumentList $signSha256Arguments -NoNewWindow
@@ -89,7 +90,7 @@ Function FillTemplates {
 			# Create an empty array, this will contain the replaced lines
 			$newtext = @()
 			foreach ($line in $template) {
-				$newtext += $line -replace "\@VERSION\@", $version -replace "\@DETAILVERSION\@", $detailversion -replace "\@FILEVERSION\@", $fileversion
+				$newtext += $line -replace "\@VERSION\@", $version -replace "\@DETAILVERSION\@", $detailversion -replace "\@FILEVERSION\@", $fileversion -replace "\@CERTTHUMBPRINT\@", $certThumbprint -replace "\@TIMESTAMPINGSERVER\@", $timestampingServer
 			}
 			# Write the new information to the file
 			$newtext | Set-Content $newfile -encoding UTF8

@@ -40,5 +40,5 @@ using System.Runtime.InteropServices;
 
 // The assembly version, replaced by build scripts
 [assembly: AssemblyVersion("1.2.0.0")]
-[assembly: AssemblyInformationalVersion("1.2.0.0")]
-[assembly: AssemblyFileVersion("1.2.0.0")]
+[assembly: AssemblyInformationalVersion("1.2.10.0")]
+[assembly: AssemblyFileVersion("1.2.10.0")]
