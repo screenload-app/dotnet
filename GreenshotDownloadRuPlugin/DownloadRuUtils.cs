@@ -31,169 +31,193 @@ using System.IO;
 
 namespace GreenshotDownloadRuPlugin {
 
-	/// <summary>
-	/// Description of DownloadRuUtils.
-	/// </summary>
-	public static class DownloadRuUtils {
+    /// <summary>
+    /// Description of DownloadRuUtils.
+    /// </summary>
+    public static class DownloadRuUtils
+    {
         private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(DownloadRuUtils));
-		private static readonly DownloadRuConfiguration Config = IniConfig.GetIniSection<DownloadRuConfiguration>();
-		private const string RedirectUri = "https://download.ru/u/?";
-		private const string UploadFileUri = "https://download.ru/f?locale=";
+        private static readonly DownloadRuConfiguration Config = IniConfig.GetIniSection<DownloadRuConfiguration>();
+        private const string RedirectUri = "https://download.ru/u/?";
+        private const string UploadFileUri = "https://download.ru/f?locale=";
         private const string AuthorizeUri = "https://download.ru/oauth/authorize";
-		private const string TokenUri = "https://download.ru/oauth/token";
-		private const string UserAgent = "Greenshot";
+        private const string TokenUri = "https://download.ru/oauth/token";
+        private const string UserAgent = "Greenshot";
         //private const string FilesUri = "https://www.box.com/api/2.0/files/{0}";
 
-		private static bool Authorize() {
-			string authorizeUrl = string.Format("{0}?client_id={1}&response_type=code&state=downloadru&redirect_uri={2}", AuthorizeUri, DownloadRuCredentials.ClientId, RedirectUri);
+        private static bool Authorize()
+        {
+            string authorizeUrl = string.Format("{0}?client_id={1}&response_type=code&state=downloadru&redirect_uri={2}", AuthorizeUri, DownloadRuCredentials.ClientId, RedirectUri);
 
-			OAuthLoginForm loginForm = new OAuthLoginForm("DownloadRu Authorize", new Size(1060, 600), authorizeUrl, RedirectUri);
-			loginForm.ShowDialog();
-			if (!loginForm.IsOk) {
-				return false;
-			}
-			var callbackParameters = loginForm.CallbackParameters;
-			if (callbackParameters == null || !callbackParameters.ContainsKey("code")) {
-				return false;
-			}
+            OAuthLoginForm loginForm = new OAuthLoginForm("DownloadRu Authorize", new Size(1060, 600), authorizeUrl, RedirectUri);
+            loginForm.ShowDialog();
+            if (!loginForm.IsOk)
+            {
+                return false;
+            }
+            var callbackParameters = loginForm.CallbackParameters;
+            if (callbackParameters == null || !callbackParameters.ContainsKey("code"))
+            {
+                return false;
+            }
 
             string authorizationResponse = PostAndReturn(new Uri(TokenUri), string.Format("grant_type=authorization_code&code={0}&client_id={1}&client_secret={2}&redirect_uri={3}", callbackParameters["code"], DownloadRuCredentials.ClientId, DownloadRuCredentials.ClientSecret, RedirectUri));
-			var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
+            var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
 
-			Config.DownloadRuToken = authorization.AccessToken;
-			IniConfig.Save();
-			return true;
-		}
+            Config.DownloadRuToken = authorization.AccessToken;
+            IniConfig.Save();
+            return true;
+        }
 
         private static void AuthorizeAnonym()
         {
 
         }
 
-		/// <summary>
-		/// Download a url response as string
-		/// </summary>
-		/// <param name=url">An Uri to specify the download location</param>
-		/// <returns>string with the file content</returns>
-		public static string PostAndReturn(Uri url, string postMessage) {
-			HttpWebRequest webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-			webRequest.Method = "POST";
-			webRequest.KeepAlive = true;
-			webRequest.Credentials = System.Net.CredentialCache.DefaultCredentials;
-			webRequest.ContentType = "application/x-www-form-urlencoded";
-			webRequest.UserAgent = UserAgent;
-			byte[] data = Encoding.UTF8.GetBytes(postMessage.ToString());
-			using (var requestStream = webRequest.GetRequestStream()) {
-				requestStream.Write(data, 0, data.Length);
-			}
-			return NetworkHelper.GetResponseAsString(webRequest);
-		}
-
-		/// <summary>
-		/// Upload parameters by post
-		/// </summary>
-		/// <param name="url"></param>
-		/// <param name="parameters"></param>
-		/// <returns>response</returns>
-		public static string HttpPost(string url, IDictionary<string, object> parameters) {
-			var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-			webRequest.Method = "POST";
-			webRequest.KeepAlive = true;
-			webRequest.Credentials = CredentialCache.DefaultCredentials;
-			webRequest.UserAgent = UserAgent;
-			webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-			NetworkHelper.WriteMultipartFormData(webRequest, parameters);
-
-			return NetworkHelper.GetResponseAsString(webRequest);
-		}
-
-		/// <summary>
-		/// Upload file by PUT
-		/// </summary>
-		/// <param name="url"></param>
-		/// <param name="content"></param>
-		/// <returns>response</returns>
-		public static string HttpPut(string url, string content) {
-			var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-			webRequest.Method = "PUT";
-			webRequest.KeepAlive = true;
-			webRequest.Credentials = CredentialCache.DefaultCredentials;
-			webRequest.Accept = "application/json";
+        /// <summary>
+        /// Download a url response as string
+        /// </summary>
+        /// <param name=url">An Uri to specify the download location</param>
+        /// <returns>string with the file content</returns>
+        public static string PostAndReturn(Uri url, string postMessage)
+        {
+            HttpWebRequest webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            webRequest.Method = "POST";
+            webRequest.KeepAlive = true;
+            webRequest.Credentials = System.Net.CredentialCache.DefaultCredentials;
+            webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.UserAgent = UserAgent;
-			webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-			byte[] data = Encoding.UTF8.GetBytes(content);
-			using (var requestStream = webRequest.GetRequestStream()) {
-				requestStream.Write(data, 0, data.Length);
-			}
-			return NetworkHelper.GetResponseAsString(webRequest);
-		}
+            byte[] data = Encoding.UTF8.GetBytes(postMessage.ToString());
+            using (var requestStream = webRequest.GetRequestStream())
+            {
+                requestStream.Write(data, 0, data.Length);
+            }
+            return NetworkHelper.GetResponseAsString(webRequest);
+        }
+
+        /// <summary>
+        /// Upload parameters by post
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="parameters"></param>
+        /// <returns>response</returns>
+        public static string HttpPost(string url, IDictionary<string, object> parameters)
+        {
+            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            webRequest.Method = "POST";
+            webRequest.KeepAlive = true;
+            webRequest.Credentials = CredentialCache.DefaultCredentials;
+            webRequest.UserAgent = UserAgent;
+            webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
+            NetworkHelper.WriteMultipartFormData(webRequest, parameters);
+
+            return NetworkHelper.GetResponseAsString(webRequest);
+        }
+
+        /// <summary>
+        /// Upload file by PUT
+        /// </summary>
+        /// <param name="url"></param>
+        /// <param name="content"></param>
+        /// <returns>response</returns>
+        public static string HttpPut(string url, string content)
+        {
+            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            webRequest.Method = "PUT";
+            webRequest.KeepAlive = true;
+            webRequest.Credentials = CredentialCache.DefaultCredentials;
+            webRequest.Accept = "application/json";
+            webRequest.UserAgent = UserAgent;
+            webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
+            byte[] data = Encoding.UTF8.GetBytes(content);
+            using (var requestStream = webRequest.GetRequestStream())
+            {
+                requestStream.Write(data, 0, data.Length);
+            }
+            return NetworkHelper.GetResponseAsString(webRequest);
+        }
 
 
-		/// <summary>
-		/// Get REST request
-		/// </summary>
-		/// <param name="url"></param>
-		/// <returns>response</returns>
-		public static string HttpGet(string url) {
-			var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-			webRequest.Method = "GET";
-			webRequest.KeepAlive = true;
-			webRequest.Credentials = CredentialCache.DefaultCredentials;
-			webRequest.UserAgent = UserAgent;
-			webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-			return NetworkHelper.GetResponseAsString(webRequest);
-		}
+        /// <summary>
+        /// Get REST request
+        /// </summary>
+        /// <param name="url"></param>
+        /// <returns>response</returns>
+        public static string HttpGet(string url)
+        {
+            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            webRequest.Method = "GET";
+            webRequest.KeepAlive = true;
+            webRequest.Credentials = CredentialCache.DefaultCredentials;
+            webRequest.UserAgent = UserAgent;
+            webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
+            return NetworkHelper.GetResponseAsString(webRequest);
+        }
 
-		/// <summary>
-		/// Do the actual upload to DownloadRu
-		/// </summary>
-		/// <param name="image">Image for downloadru upload</param>
-		/// <param name="title">Title of downloadru upload</param>
-		/// <param name="filename">Filename of downloadru upload</param>
-		/// <returns>url to uploaded image</returns>
-		public static string UploadToDownloadRu(SurfaceContainer image, string title, string filename) {
-			while (true) {
-				const string folderId = "0";
-				if (!Config.AnonymousAccess && string.IsNullOrEmpty(Config.DownloadRuToken)) {
-					if (!Authorize()) {
-						return null;
-					}
-				}
+        /// <summary>
+        /// Do the actual upload to DownloadRu
+        /// </summary>
+        /// <param name="image">Image for downloadru upload</param>
+        /// <param name="title">Title of downloadru upload</param>
+        /// <param name="filename">Filename of downloadru upload</param>
+        /// <returns>url to uploaded image</returns>
+        public static string UploadToDownloadRu(SurfaceContainer image, string title, string filename)
+        {
+            while (true)
+            {
+                const string folderId = "0";
+                if (!Config.AnonymousAccess && string.IsNullOrEmpty(Config.DownloadRuToken))
+                {
+                    if (!Authorize())
+                    {
+                        return null;
+                    }
+                }
 
-				IDictionary<string, object> parameters = new Dictionary<string, object>();
-				parameters.Add("filename", image);
+                IDictionary<string, object> parameters = new Dictionary<string, object>();
+                parameters.Add("filename", image);
                 //parameters.Add("parent_id", folderId);
 
-				var response = "";
+                var response = "";
                 string sharedLink = (Config.SharedLink) ? "&shared=true" : "";
                 try
                 {
-					string locale = (Language.CurrentLanguage.Length > 1) ? Language.CurrentLanguage.Substring(0, 2) : "en";
+                    string locale = (Language.CurrentLanguage.Length > 1) ? Language.CurrentLanguage.Substring(0, 2) : "en";
                     string addAnonymKey = (Config.AnonymousAccess) ? string.Format("&anonym_key={0}", DownloadRuCredentials.AnonimKey) : "";
                     if (Config.AnonymousAccess && !Config.SharedLink) sharedLink = "&shared=true";
-					response = HttpPost(UploadFileUri + locale + sharedLink + addAnonymKey, parameters);
-				} catch (WebException ex) {
-					if (ex.Status == WebExceptionStatus.ProtocolError) {
-						Config.DownloadRuToken = null;
-						continue;
-					}
-				}
+                    response = HttpPost(UploadFileUri + locale + sharedLink + addAnonymKey, parameters);
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    Config.DownloadRuToken = null;
+                    continue;
+                }
+                catch (WebException ex)
+                {
+                    if (ex.Status == WebExceptionStatus.ProtocolError)
+                    {
+                        Config.DownloadRuToken = null;
+                        continue;
+                    }
+                }
 
-				LOG.DebugFormat("DownloadRu response: {0}", response);
+                LOG.DebugFormat("DownloadRu response: {0}", response);
 
-				// Check if the token is wrong
-				if ("wrong auth token".Equals(response)) {
-					Config.DownloadRuToken = null;
-					IniConfig.Save();
-					continue;
-				}
-				var upload = JSONSerializer.Deserialize<Upload>(response);
+                // Check if the token is wrong
+                if ("wrong auth token".Equals(response))
+                {
+                    Config.DownloadRuToken = null;
+                    IniConfig.Save();
+                    continue;
+                }
+
+                var upload = JSONSerializer.Deserialize<Upload>(response);
                 if (upload == null || upload.Entries == null) return null;
 
-				return string.Format("https://download.ru/f/{0}", upload.Entries.Id);
-			}
-		}
-	}
+                return string.Format("https://download.ru/f/{0}", upload.Entries.Id);
+            }
+        }
+    }
 	/// <summary>
 	/// A simple helper class for the DataContractJsonSerializer
 	/// </summary>
