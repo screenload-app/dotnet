@@ -142,7 +142,12 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="editor_print">Печать</resource>
 		<resource name="editor_redo">Повторить {0}</resource>
 		<resource name="editor_resetsize">Сброс размера</resource>
-		<resource name="editor_resize_percent">Процент</resource>
+    <resource name="editor_resize">Изменить размер</resource>
+    <resource name="editor_resize_settings">Установить размер</resource>
+    <resource name="editor_resize_aspectratio">Сохранять пропорции</resource>
+    <resource name="editor_resize_width">Ширина</resource>
+    <resource name="editor_resize_height">Высота</resource>
+    <resource name="editor_resize_percent">Процент</resource>
 		<resource name="editor_resize_pixel">Пиксели</resource>
 		<resource name="editor_rotateccw">Повернуть против часовой стрелки (Управление + ,)</resource>
 		<resource name="editor_rotatecw">Поворот по часовой стрелке (Управление + .)</resource>
@@ -167,7 +172,7 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="EmailFormat.OUTLOOK_HTML">Outlook с HTML</resource>
 		<resource name="EmailFormat.OUTLOOK_TXT">Outlook с текстом</resource>
 		<resource name="error">Ошибка</resource>
-		<resource name="error_multipleinstances">Экземпляр Greenshot уже запущен.</resource>
+		<resource name="error_multipleinstances">Данная программа уже запущена! Просто делайте скриншоты и наслаждайтесь.</resource>
 		<resource name="error_nowriteaccess">Не удалось сохранить файл на {0}.
 Проверьте доступность записи в выбраном месте расположения.</resource>
 		<resource name="error_openfile">Файл "{0}" не может быть открыт.</resource>
@@ -185,7 +190,7 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="expertsettings_reuseeditorifpossible">Повторное редактирование, если возможно</resource>
 		<resource name="expertsettings_suppresssavedialogatclose">Не выводить диалог сохранения при закрытии редактора</resource>
 		<resource name="expertsettings_thumbnailpreview">Показывать окно эскизов в контекстном меню (для Vista и Windows 7)</resource>
-		<resource name="exported_to">Скриншот сохранен. Нажмите, чтобы открыть.</resource>
+		<resource name="exported_to">Скриншот успешно сохранен.</resource>
 		<resource name="exported_to_error">Произошла ошибка при экспорте в {0}:</resource>
 		<resource name="help_title">Greenshot справка</resource>
 		<resource name="hotkeys">Горячие клавиши</resource>

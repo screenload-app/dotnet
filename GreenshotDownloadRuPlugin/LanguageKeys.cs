@@ -8,6 +8,7 @@ namespace GreenshotDownloadRuPlugin {
 		communication_wait,
 		Configure,
 		label_AfterUpload,
-		label_AfterUploadLinkToClipBoard
-	}
+		label_AfterUploadLinkToClipBoard,
+        Authorize
+    }
 }

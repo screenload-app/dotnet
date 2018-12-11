@@ -257,6 +257,9 @@
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ResizeSettingsForm.resx">
+      <DependentUpon>ResizeSettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -372,6 +375,7 @@
     </None>
     <None Include="Languages\language-ru-RU.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Languages\language-sk-SK.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

@@ -233,8 +233,9 @@ namespace Greenshot {
 							dummyForm.Location = new Point(int.MinValue, int.MinValue);
 							dummyForm.Load += delegate { dummyForm.Size = Size.Empty; };
 							dummyForm.Show();
-							MessageBox.Show(dummyForm, Language.GetString(LangKey.error_multipleinstances) + "\r\n" + instanceInfo, Language.GetString(LangKey.error), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-						}
+                            //MessageBox.Show(dummyForm, Language.GetString(LangKey.error_multipleinstances) + "\r\n" + instanceInfo, Language.GetString(LangKey.error), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                            MessageBox.Show(dummyForm, Language.GetString(LangKey.error_multipleinstances), Language.GetString(LangKey.error), MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                        }
 					}
 					FreeMutex();
 					Application.Exit();

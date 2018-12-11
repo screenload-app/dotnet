@@ -81,7 +81,7 @@ namespace GreenshotDownloadRuPlugin {
 			resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
 
 			itemPlugInConfig = new ToolStripMenuItem();
-			itemPlugInConfig.Image = (Image)resources.GetObject("DownloadRu");
+            itemPlugInConfig.Image = (Image)resources.GetObject("DownloadRu16x16");
 			itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
 			itemPlugInConfig.Click += new System.EventHandler(ConfigMenuClick);
 

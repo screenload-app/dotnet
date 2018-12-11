@@ -1,38 +1,41 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <language description="English" ietf="en-US" version="1.0.0">
-	<resources>
-		<resource name="label_AfterUploadLinkToClipBoard">
-		 Link to clipboard
-		</resource>
+  <resources>
+    <resource name="label_AfterUploadLinkToClipBoard">
+      Link to clipboard
+    </resource>
     <resource name="anonymous_access">
       Use anonym access
     </resource>
     <resource name="label_AfterUploadSharedLink">
       Share image
     </resource>
-		<resource name="label_AfterUpload">
-		After upload
-		</resource>
-		<resource name="Configure">
+    <resource name="label_AfterUpload">
+      After upload
+    </resource>
+    <resource name="Configure">
       Configure Download.Ru
     </resource>
-		<resource name="upload_menu_item">
+    <resource name="Authorize">
+      Download.Ru Authorize
+    </resource>
+    <resource name="upload_menu_item">
       Upload to Download.Ru
     </resource>
-	<resource name="settings_title">
-		Download.Ru settings
-	</resource>
-		<resource name="upload_success">
+    <resource name="settings_title">
+      Download.Ru settings
+    </resource>
+    <resource name="upload_success">
       Successfully uploaded image to Download.Ru!
     </resource>
-		<resource name="upload_failure">
+    <resource name="upload_failure">
       An error occured while uploading to Download.Ru:
     </resource>
-		<resource name="label_upload_format">
-			Image format
-	</resource>
-		<resource name="communication_wait">
+    <resource name="label_upload_format">
+      Image format
+    </resource>
+    <resource name="communication_wait">
       Communicating with Download.Ru. Please wait...
     </resource>
-	</resources>
+  </resources>
 </language>

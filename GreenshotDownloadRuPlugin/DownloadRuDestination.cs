@@ -46,12 +46,14 @@ namespace GreenshotDownloadRuPlugin {
 			}
 		}
 
-		public override Image DisplayIcon {
-			get {
-				ComponentResourceManager resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
-				return (Image)resources.GetObject("DownloadRu");
-			}
-		}
+		public override Image DisplayIcon
+        {
+            get
+            {
+                var resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
+                return (Image)resources.GetObject("DownloadRu16x16");
+            }
+        }
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
 			ExportInformation exportInformation = new ExportInformation(this.Designation, this.Description);

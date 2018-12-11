@@ -49,7 +49,7 @@ namespace GreenshotDownloadRuPlugin {
         {
             string authorizeUrl = string.Format("{0}?client_id={1}&response_type=code&state=downloadru&redirect_uri={2}", AuthorizeUri, DownloadRuCredentials.ClientId, RedirectUri);
 
-            OAuthLoginForm loginForm = new OAuthLoginForm("DownloadRu Authorize", new Size(1060, 600), authorizeUrl, RedirectUri);
+            OAuthLoginForm loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600), authorizeUrl, RedirectUri);
             loginForm.ShowDialog();
             if (!loginForm.IsOk)
             {
