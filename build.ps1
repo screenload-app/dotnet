@@ -59,7 +59,7 @@ Function MD5($filename) {
 # Sign the specify file
 Function SignWithCertificate($filename) {
 	Write-Host "Signing $filename" 
-	$signSha1Arguments = @('sign', '/sha1',   $certThumbprint,        '/fd', 'sha1'  , '/t',  $timestampingServer,                  $filename)
+	$signSha1Arguments = @('sign',   '/sha1', $certThumbprint,        '/fd', 'sha1'  , '/t',  $timestampingServer,                  $filename)
 	$signSha256Arguments = @('sign', '/sha1', $certThumbprint, '/as', '/fd', 'sha256', '/tr', $timestampingServer, '/td', 'sha256', $filename)
 
 	Start-Process -wait $env:SignTool -ArgumentList $signSha1Arguments -NoNewWindow

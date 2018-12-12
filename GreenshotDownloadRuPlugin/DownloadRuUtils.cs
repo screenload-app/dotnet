@@ -83,9 +83,9 @@ namespace GreenshotDownloadRuPlugin {
         {
             HttpWebRequest webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
             webRequest.Method = "POST";
-            webRequest.KeepAlive = true;
-            webRequest.Credentials = System.Net.CredentialCache.DefaultCredentials;
             webRequest.ContentType = "application/x-www-form-urlencoded";
+            webRequest.KeepAlive = true;
+            webRequest.Credentials = CredentialCache.DefaultCredentials;
             webRequest.UserAgent = UserAgent;
             byte[] data = Encoding.UTF8.GetBytes(postMessage.ToString());
             using (var requestStream = webRequest.GetRequestStream())
@@ -107,6 +107,7 @@ namespace GreenshotDownloadRuPlugin {
             webRequest.Method = "POST";
             webRequest.KeepAlive = true;
             webRequest.Credentials = CredentialCache.DefaultCredentials;
+            webRequest.Accept = "application/json";
             webRequest.UserAgent = UserAgent;
             webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
             NetworkHelper.WriteMultipartFormData(webRequest, parameters);
@@ -120,22 +121,22 @@ namespace GreenshotDownloadRuPlugin {
         /// <param name="url"></param>
         /// <param name="content"></param>
         /// <returns>response</returns>
-        public static string HttpPut(string url, string content)
-        {
-            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-            webRequest.Method = "PUT";
-            webRequest.KeepAlive = true;
-            webRequest.Credentials = CredentialCache.DefaultCredentials;
-            webRequest.Accept = "application/json";
-            webRequest.UserAgent = UserAgent;
-            webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-            byte[] data = Encoding.UTF8.GetBytes(content);
-            using (var requestStream = webRequest.GetRequestStream())
-            {
-                requestStream.Write(data, 0, data.Length);
-            }
-            return NetworkHelper.GetResponseAsString(webRequest);
-        }
+        //public static string HttpPut(string url, string content)
+        //{
+        //    var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+        //    webRequest.Method = "PUT";
+        //    webRequest.KeepAlive = true;
+        //    webRequest.Credentials = CredentialCache.DefaultCredentials;
+        //    webRequest.Accept = "application/json";
+        //    webRequest.UserAgent = UserAgent;
+        //    webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
+        //    byte[] data = Encoding.UTF8.GetBytes(content);
+        //    using (var requestStream = webRequest.GetRequestStream())
+        //    {
+        //        requestStream.Write(data, 0, data.Length);
+        //    }
+        //    return NetworkHelper.GetResponseAsString(webRequest);
+        //}
 
 
         /// <summary>
@@ -143,16 +144,17 @@ namespace GreenshotDownloadRuPlugin {
         /// </summary>
         /// <param name="url"></param>
         /// <returns>response</returns>
-        public static string HttpGet(string url)
-        {
-            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-            webRequest.Method = "GET";
-            webRequest.KeepAlive = true;
-            webRequest.Credentials = CredentialCache.DefaultCredentials;
-            webRequest.UserAgent = UserAgent;
-            webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-            return NetworkHelper.GetResponseAsString(webRequest);
-        }
+        //public static string HttpGet(string url)
+        //{
+        //    var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+        //    webRequest.Method = "GET";
+        //    webRequest.ContentType = ContentType;
+        //    webRequest.KeepAlive = true;
+        //    webRequest.Credentials = CredentialCache.DefaultCredentials;
+        //    webRequest.UserAgent = UserAgent;
+        //    webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
+        //    return NetworkHelper.GetResponseAsString(webRequest);
+        //}
 
         /// <summary>
         /// Do the actual upload to DownloadRu
