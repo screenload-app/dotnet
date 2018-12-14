@@ -31,7 +31,8 @@ namespace GreenshotPlugin.Controls {
 	/// </summary>
 	public sealed partial class OAuthLoginForm : Form {
 		private static readonly ILog LOG = LogManager.GetLogger(typeof(OAuthLoginForm));
-		private readonly string _callbackUrl;
+        private readonly string _authorizationLink;
+        private readonly string _callbackUrl;
 		private IDictionary<string, string> _callbackParameters;
 		
 		public IDictionary<string, string> CallbackParameters => _callbackParameters;
@@ -42,12 +43,13 @@ namespace GreenshotPlugin.Controls {
 			// Make sure Greenshot uses the correct browser version
 			IEHelper.FixBrowserVersion(false);
 
-			_callbackUrl = callbackUrl;
-			// Fix for BUG-2071
+            _authorizationLink = authorizationLink;
+            _callbackUrl = callbackUrl;
+			
+            // Fix for BUG-2071
 			if (callbackUrl.EndsWith("/"))
-			{
 				_callbackUrl = callbackUrl.Substring(0, callbackUrl.Length - 1);
-			}
+
 			InitializeComponent();
 			ClientSize = size;
 			Icon = GreenshotResources.getGreenshotIcon();
@@ -62,16 +64,17 @@ namespace GreenshotPlugin.Controls {
 			_browser.Navigate(new Uri(authorizationLink));
 		}
 
-		/// <summary>
-		/// Make sure the form is visible
-		/// </summary>
-		/// <param name="e">EventArgs</param>
-		//protected override void OnShown(EventArgs e) {
-		//	base.OnShown(e);
-		//	WindowDetails.ToForeground(Handle);
-		//}
+        /// <summary>
+        /// Make sure the form is visible
+        /// </summary>
+        /// <param name="e">EventArgs</param>
+        //protected override void OnShown(EventArgs e)
+        //{
+        //    base.OnShown(e);
+        //    WindowDetails.ToForeground(Handle);
+        //}
 
-		private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
+        private void Browser_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e) {
 			LOG.DebugFormat("document completed with url: {0}", _browser.Url);
 			CheckUrl();
 		}
@@ -86,19 +89,24 @@ namespace GreenshotPlugin.Controls {
 			CheckUrl();
 		}
 
-		private void CheckUrl() {
-			if (_browser.Url.ToString().StartsWith(_callbackUrl)) {
-				var correctedUri = new Uri(_browser.Url.AbsoluteUri.Replace("#", "&"));
+        private void CheckUrl()
+        {
+            if (_browser.Url.ToString().StartsWith(_callbackUrl))
+            {
+                var correctedUri = new Uri(_browser.Url.AbsoluteUri.Replace("#", "&"));
 
-				string queryParams = correctedUri.Query;
-				if (queryParams.Length > 0) {
-					queryParams = NetworkHelper.UrlDecode(queryParams);
-					//Store the Token and Token Secret
-					_callbackParameters = NetworkHelper.ParseQueryString(queryParams);
-				}
-				DialogResult = DialogResult.OK;
+                string queryParams = correctedUri.Query;
+                if (queryParams.Length > 0)
+                {
+                    queryParams = NetworkHelper.UrlDecode(queryParams);
+                    //Store the Token and Token Secret
+                    _callbackParameters = NetworkHelper.ParseQueryString(queryParams);
+                }
+                DialogResult = DialogResult.OK;
             }
-		}
+            else if (_browser.Url.ToString().StartsWith("https://download.ru/users/auth/", StringComparison.OrdinalIgnoreCase))
+                _browser.Navigate(new Uri(_authorizationLink));
+        }
 
 		private void AddressTextBox_KeyPress(object sender, KeyPressEventArgs e) {
 			//Cancel the key press so the user can't enter a new url
