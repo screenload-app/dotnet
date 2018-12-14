@@ -49,17 +49,17 @@ namespace GreenshotDownloadRuPlugin {
         {
             string authorizeUrl = string.Format("{0}?client_id={1}&response_type=code&state=downloadru&redirect_uri={2}", AuthorizeUri, DownloadRuCredentials.ClientId, RedirectUri);
 
-            OAuthLoginForm loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600), authorizeUrl, RedirectUri);
+            var loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600), authorizeUrl, RedirectUri);
+
             loginForm.ShowDialog();
+
             if (!loginForm.IsOk)
-            {
                 return false;
-            }
+
             var callbackParameters = loginForm.CallbackParameters;
+
             if (callbackParameters == null || !callbackParameters.ContainsKey("code"))
-            {
                 return false;
-            }
 
             string authorizationResponse = PostAndReturn(new Uri(TokenUri), string.Format("grant_type=authorization_code&code={0}&client_id={1}&client_secret={2}&redirect_uri={3}", callbackParameters["code"], DownloadRuCredentials.ClientId, DownloadRuCredentials.ClientSecret, RedirectUri));
             var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
@@ -186,7 +186,10 @@ namespace GreenshotDownloadRuPlugin {
                 {
                     string locale = (Language.CurrentLanguage.Length > 1) ? Language.CurrentLanguage.Substring(0, 2) : "en";
                     string addAnonymKey = (Config.AnonymousAccess) ? string.Format("&anonym_key={0}", DownloadRuCredentials.AnonimKey) : "";
-                    if (Config.AnonymousAccess && !Config.SharedLink) sharedLink = "&shared=true";
+
+                    if (Config.AnonymousAccess && !Config.SharedLink)
+                        sharedLink = "&shared=true";
+
                     response = HttpPost(UploadFileUri + locale + sharedLink + addAnonymKey, parameters);
                 }
                 catch (UnauthorizedAccessException)

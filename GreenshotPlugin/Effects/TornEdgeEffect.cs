@@ -60,11 +60,11 @@ namespace GreenshotPlugin.Effects
 
 		public override void Reset() {
 			base.Reset();
-			ShadowSize = 7;
-			ToothHeight = 12;
-			HorizontalToothRange = 20;
-			VerticalToothRange = 20;
-			Edges = new[] { true, true, true, true };
+            ShadowSize = 7;
+            ToothHeight = 15;
+            HorizontalToothRange = 8;
+            VerticalToothRange = 8;
+            Edges = new[] { true, true, true, true };
 			GenerateShadow = true;
 		}
 		public override Image Apply(Image sourceImage, Matrix matrix) {

@@ -73,7 +73,6 @@
     <Content Include="Languages\language_DownloadRuplugin-ru-RU.xml" />
     <Content Include="Languages\language_DownloadRuplugin-en-US.xml" />
     <None Include="Resources\DownloadRu16x16.png" />
-    <None Include="Resources\DownloadRu.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GreenshotPlugin\GreenshotPlugin.csproj">

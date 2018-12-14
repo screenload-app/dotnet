@@ -62,11 +62,6 @@ OutputBaseFilename={#ExeName}-INSTALLER-{#FileVersion}
 OutputDir=..\
 PrivilegesRequired=none
 SetupIconFile=..\..\icons\applicationIcon\icon.ico
-; Create a SHA1 signature
-SignTool=SignTool sign /sha1  /fd sha1 /t http://timestamp.comodoca.com/rfc3161 $f
-; Append a SHA256 to the previous SHA1 signature (this is what as does)
-SignTool=SignTool sign /sha1  /as /fd sha256 /tr http://timestamp.comodoca.com/rfc3161 /td sha256 $f
-SignedUninstaller=yes
 UninstallDisplayIcon={app}\{#ExeName}.exe
 Uninstallable=true
 VersionInfoCompany={#ExeName}

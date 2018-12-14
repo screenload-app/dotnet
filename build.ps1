@@ -43,7 +43,7 @@ $release=(([version]$version).build) % 2 -eq 1
 $fileversion=$version + "-" + $buildType
 
 $env:SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\signtool.exe"
-$certThumbprint = "fcb671b0b83566d01aee0e142e9ba5a999208ee4"
+#$certThumbprint = "fcb671b0b83566d01aee0e142e9ba5a999208ee4"
 $timestampingServer = "http://timestamp.comodoca.com/rfc3161"
 
 Write-Host "Building Greenshot $detailversion"
@@ -288,8 +288,14 @@ Function PackageInstaller {
 	$setupOutput = "$(get-location)\setup"
 	$innoSetup = "$(get-location)\packages\Tools.InnoSetup.5.5.9\tools\ISCC.exe"
 	$innoSetupFile = "$(get-location)\greenshot\releases\innosetup\setup.iss"
-	Write-Host "Starting $innoSetup $innoSetupFile"
 	$arguments = @("/Qp /SSignTool=""$env:SignTool `$p""", $innoSetupFile)
+	
+	if (!$certThumbprint) {
+		$innoSetupFile = "$(get-location)\greenshot\releases\innosetup\setup-omitsignature.iss"
+		$arguments = @("/Qp ", $innoSetupFile)
+	}
+	
+	Write-Host "Starting $innoSetup $innoSetupFile"
 	$setupResult = Start-Process -wait -PassThru "$innoSetup" -ArgumentList $arguments -NoNewWindow -RedirectStandardOutput "$setupOutput.log" -RedirectStandardError "$setupOutput.error"
 	Write-Host "Log output:"
 	Get-Content "$setupOutput.log"| Write-Host
@@ -326,8 +332,10 @@ Function TagCode {
 
 FillTemplates
 
-echo "Signing executables"
-SignBinaryFilesBeforeBuildingInstaller
+if ($certThumbprint) {
+	echo "Signing executables"
+	SignBinaryFilesBeforeBuildingInstaller
+}
 
 # This must be after the signing, otherwise they would be different.
 echo "Generating MD5"

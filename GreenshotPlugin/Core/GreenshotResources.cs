@@ -39,7 +39,13 @@ namespace GreenshotPlugin.Core {
 			return getIcon("Greenshot.Icon");
 		}
 
-		public static Image getGreenshotImage() {
+        public static Icon GetModifyIcon()
+        {
+            // http://www.small-icons.com/packs/16x16-free-application-icons.htm
+            return getIcon("Modify.Icon");
+        }
+
+        public static Image getGreenshotImage() {
 			return getImage("Greenshot.Image");
 		}
 	}

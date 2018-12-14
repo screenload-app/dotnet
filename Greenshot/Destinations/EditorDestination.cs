@@ -36,7 +36,8 @@ namespace Greenshot.Destinations {
 		private static readonly EditorConfiguration editorConfiguration = IniConfig.GetIniSection<EditorConfiguration>();
 		public const string DESIGNATION = "Editor";
 		private readonly IImageEditor editor;
-		private static readonly Image greenshotIcon = GreenshotResources.getGreenshotIcon().ToBitmap();
+        
+		private static readonly Image modifyImage = GreenshotResources.GetModifyIcon().ToBitmap();
 
 		public EditorDestination() {
 		}
@@ -73,8 +74,9 @@ namespace Greenshot.Destinations {
 		}
 
 		public override Image DisplayIcon {
-			get {
-				return greenshotIcon;
+			get
+            {
+                return modifyImage;
 			}
 		}
 
