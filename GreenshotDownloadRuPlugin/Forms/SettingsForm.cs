@@ -19,17 +19,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
-using GreenshotDownloadRuPlugin.Forms;
-using GreenshotPlugin.Core;
-
-namespace GreenshotDownloadRuPlugin {
+namespace GreenshotDownloadRuPlugin.Forms
+{
 	/// <summary>
 	/// Description of PasswordRequestForm.
 	/// </summary>
 	public partial class SettingsForm : DownloadRuForm {
+
 		string boxTicket = string.Empty;
 
 		public SettingsForm(DownloadRuConfiguration config) {
@@ -37,16 +35,16 @@ namespace GreenshotDownloadRuPlugin {
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			this.Icon = GreenshotPlugin.Core.GreenshotResources.getGreenshotIcon();
+			Icon = GreenshotPlugin.Core.GreenshotResources.getGreenshotIcon();
 
 		}
 
 		void ButtonOKClick(object sender, EventArgs e) {
-			this.DialogResult = DialogResult.OK;
+			DialogResult = DialogResult.OK;
 		}
 		
 		void ButtonCancelClick(object sender, System.EventArgs e) {
-			this.DialogResult = DialogResult.Cancel;
+			DialogResult = DialogResult.Cancel;
 		}
 	}
 }

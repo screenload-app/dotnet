@@ -20,6 +20,7 @@
  */
 using System.Windows.Forms;
 using Greenshot.IniFile;
+using GreenshotDownloadRuPlugin.Forms;
 using GreenshotPlugin.Core;
 
 namespace GreenshotDownloadRuPlugin {

@@ -232,6 +232,9 @@
     <Compile Include="UnmanagedHelpers\User32.cs" />
     <Compile Include="UnmanagedHelpers\Win32Errors.cs" />
     <Compile Include="UnmanagedHelpers\WinMM.cs" />
+    <EmbeddedResource Include="Controls\BackgroundForm.resx">
+      <DependentUpon>BackgroundForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="log4net-embedded.xml" />
     <EmbeddedResource Include="Core\GreenshotResources.resx">
       <DependentUpon>GreenshotResources.cs</DependentUpon>

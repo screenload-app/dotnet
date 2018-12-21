@@ -28,125 +28,144 @@ using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
+using log4net;
 
-namespace GreenshotDownloadRuPlugin {
-	/// <summary>
-	/// This is the Box base code
-	/// </summary>
-	public class DownloadRuPlugin : IGreenshotPlugin {
-        private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(DownloadRuPlugin));
-		private static DownloadRuConfiguration config;
-		public static PluginAttribute Attributes;
-		private IGreenshotHost host;
-		private ComponentResourceManager resources;
-		private ToolStripMenuItem itemPlugInConfig;
+namespace GreenshotDownloadRuPlugin
+{
+    /// <summary>
+    /// This is the Box base code
+    /// </summary>
+    public class DownloadRuPlugin : IGreenshotPlugin
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DownloadRuPlugin));
 
-		public void Dispose() {
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
+        private static DownloadRuConfiguration _config;
+        public static PluginAttribute Attributes;
 
-		protected virtual void Dispose(bool disposing) {
-			if (disposing) {
-				if (itemPlugInConfig != null) {
-					itemPlugInConfig.Dispose();
-					itemPlugInConfig = null;
-				}
-			}
-		}
+        private IGreenshotHost _host;
+        private ComponentResourceManager _resources;
+        private ToolStripMenuItem _itemPlugInConfig;
 
-		public DownloadRuPlugin() {
-		}
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		public IEnumerable<IDestination> Destinations() {
-			yield return new DownloadRuDestination(this);
-		}
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (_itemPlugInConfig != null)
+                {
+                    _itemPlugInConfig.Dispose();
+                    _itemPlugInConfig = null;
+                }
+            }
+        }
+
+        public IEnumerable<IDestination> Destinations()
+        {
+            yield return new DownloadRuDestination(this);
+        }
 
 
-		public IEnumerable<IProcessor> Processors() {
-			yield break;
-		}
+        public IEnumerable<IProcessor> Processors()
+        {
+            yield break;
+        }
 
-		/// <summary>
-		/// Implementation of the IGreenshotPlugin.Initialize
-		/// </summary>
-		/// <param name="host">Use the IGreenshotPluginHost interface to register events</param>
-		/// <param name="pluginAttribute">My own attributes</param>
-		public virtual bool Initialize(IGreenshotHost pluginHost, PluginAttribute myAttributes) {
-			this.host = (IGreenshotHost)pluginHost;
-			Attributes = myAttributes;
+        public virtual bool Initialize(IGreenshotHost pluginHost, PluginAttribute myAttributes)
+        {
+            _host = pluginHost;
+            Attributes = myAttributes;
 
-			// Register configuration (don't need the configuration itself)
-			config = IniConfig.GetIniSection<DownloadRuConfiguration>();
-			resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
+            // Register configuration (don't need the configuration itself)
+            _config = IniConfig.GetIniSection<DownloadRuConfiguration>();
+            _resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
 
-			itemPlugInConfig = new ToolStripMenuItem();
-            itemPlugInConfig.Image = (Image)resources.GetObject("DownloadRu16x16");
-			itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
-			itemPlugInConfig.Click += new EventHandler(ConfigMenuClick);
+            _itemPlugInConfig = new ToolStripMenuItem
+            {
+                Image = (Image) _resources.GetObject("DownloadRu16x16"),
+                Text = Language.GetString("downloadru", LangKey.Configure)
+            };
 
-			PluginUtils.AddToContextMenu(host, itemPlugInConfig);
-			Language.LanguageChanged += new LanguageChangedHandler(OnLanguageChanged);
-			return true;
-		}
+            _itemPlugInConfig.Click += ConfigMenuClick;
 
-		public void OnLanguageChanged(object sender, EventArgs e) {
-			if (itemPlugInConfig != null) {
-				itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
-			}
-		}
+            PluginUtils.AddToContextMenu(_host, _itemPlugInConfig);
+            Language.LanguageChanged += OnLanguageChanged;
+            return true;
+        }
 
-		public virtual void Shutdown() {
-            LOG.Debug("DownloadRu Plugin shutdown.");
-		}
+        public void OnLanguageChanged(object sender, EventArgs e)
+        {
+            if (_itemPlugInConfig != null)
+            {
+                _itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
+            }
+        }
 
-		/// <summary>
-		/// Implementation of the IPlugin.Configure
-		/// </summary>
-		public virtual void Configure() {
-			config.ShowConfigDialog();
-		}
+        public virtual void Shutdown()
+        {
+            Log.Debug("DownloadRu Plugin shutdown.");
+        }
 
-		/// <summary>
-		/// This will be called when Greenshot is shutting down
-		/// </summary>
-		/// <param name="sender"></param>
-		/// <param name="e"></param>
-		public void Closing(object sender, FormClosingEventArgs e) {
-            LOG.Debug("Application closing, de-registering DownloadRu Plugin!");
-			Shutdown();
-		}
+        /// <summary>
+        /// Implementation of the IPlugin.Configure
+        /// </summary>
+        public virtual void Configure()
+        {
+            _config.ShowConfigDialog();
+        }
 
-		public void ConfigMenuClick(object sender, EventArgs eventArgs) {
-			config.ShowConfigDialog();
-		}
+        /// <summary>
+        /// This will be called when Greenshot is shutting down
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void Closing(object sender, FormClosingEventArgs e)
+        {
+            Log.Debug("Application closing, de-registering DownloadRu Plugin!");
+            Shutdown();
+        }
 
-		/// <summary>
-		/// This will be called when the menu item in the Editor is clicked
-		/// </summary>
-		public string Upload(ICaptureDetails captureDetails, ISurface surfaceToUpload) {
-			SurfaceOutputSettings outputSettings = new SurfaceOutputSettings(config.UploadFormat, config.UploadJpegQuality, false);
-			try {
-				string url = null;
-				string filename = Path.GetFileName(FilenameHelper.GetFilename(config.UploadFormat, captureDetails));
-				SurfaceContainer imageToUpload = new SurfaceContainer(surfaceToUpload, outputSettings, filename);
-				
-				new PleaseWaitForm().ShowAndWait(DownloadRuPlugin.Attributes.Name, Language.GetString("downloadru", LangKey.communication_wait), 
-					delegate() {
-						url = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
-					}
-				);
+        public void ConfigMenuClick(object sender, EventArgs eventArgs)
+        {
+            _config.ShowConfigDialog();
+        }
 
-				if (url != null && config.AfterUploadLinkToClipBoard) {
-					ClipboardHelper.SetClipboardData(url);
-				}
+        /// <summary>
+        /// This will be called when the menu item in the Editor is clicked
+        /// </summary>
+        public string Upload(ICaptureDetails captureDetails, ISurface surfaceToUpload)
+        {
+            SurfaceOutputSettings outputSettings =
+                new SurfaceOutputSettings(_config.UploadFormat, _config.UploadJpegQuality, false);
+            try
+            {
+                string url = null;
+                string filename = Path.GetFileName(FilenameHelper.GetFilename(_config.UploadFormat, captureDetails));
+                var imageToUpload = new SurfaceContainer(surfaceToUpload, outputSettings, filename);
 
-				return url;
-			} catch (Exception ex) {
-                LOG.Error("Error uploading.", ex);
-				MessageBox.Show(Language.GetString("downloadru", LangKey.upload_failure) + " " + ex.Message);
-				return null;
-			}
-		}
-	}
+                new PleaseWaitForm().ShowAndWait(Attributes.Name,
+                    Language.GetString("downloadru", LangKey.communication_wait),
+                    delegate
+                    {
+                        url = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
+                    }
+                );
+
+                if (url != null && _config.AfterUploadLinkToClipBoard)
+                    ClipboardHelper.SetClipboardData(url);
+
+                return url;
+            }
+            catch (Exception ex)
+            {
+                Log.Error("Error uploading.", ex);
+                MessageBox.Show(Language.GetString("downloadru", LangKey.upload_failure) + @" " + ex.Message);
+                return null;
+            }
+        }
+    }
 }

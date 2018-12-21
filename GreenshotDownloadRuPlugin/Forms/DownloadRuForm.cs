@@ -20,7 +20,9 @@
  */
 using GreenshotPlugin.Controls;
 
-namespace GreenshotDownloadRuPlugin.Forms {
-	public class DownloadRuForm : GreenshotForm {
-	}
+namespace GreenshotDownloadRuPlugin.Forms
+{
+    public class DownloadRuForm : GreenshotForm
+    {
+    }
 }

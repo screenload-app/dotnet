@@ -51,6 +51,12 @@
     </Compile>
     <Compile Include="Controls\ContextMenuToolStripProfessionalRenderer.cs" />
     <Compile Include="Controls\CustomToolStripProfessionalRenderer.cs" />
+    <Compile Include="Controls\HotkeyResolvingControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\HotkeyResolvingControl.designer.cs">
+      <DependentUpon>HotkeyResolvingControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\NonJumpingPanel.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -147,6 +153,12 @@
     <Compile Include="Forms\DropShadowSettingsForm.Designer.cs">
       <DependentUpon>DropShadowSettingsForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\HotkeysResolvingForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\HotkeysResolvingForm.Designer.cs">
+      <DependentUpon>HotkeysResolvingForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ImageEditorForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -207,6 +219,9 @@
     <Compile Include="Forms\MovableShowColorForm.Designer.cs">
       <DependentUpon>MovableShowColorForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\HotkeyAction.cs" />
+    <Compile Include="Helpers\HotkeyProblem.cs" />
+    <Compile Include="Helpers\HotkeySolution.cs" />
     <Compile Include="Sounds.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -245,11 +260,17 @@
     <Compile Include="Helpers\StartupHelper.cs" />
     <Compile Include="Helpers\ToolStripItemEndisabler.cs" />
     <Compile Include="GreenshotMain.cs" />
+    <EmbeddedResource Include="Controls\HotkeyResolvingControl.resx">
+      <DependentUpon>HotkeyResolvingControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\AboutForm.resx">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ColorDialog.resx">
       <DependentUpon>ColorDialog.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\HotkeysResolvingForm.resx">
+      <DependentUpon>HotkeysResolvingForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImageEditorForm.resx">
       <DependentUpon>ImageEditorForm.cs</DependentUpon>
@@ -262,6 +283,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\TornEdgeSettingsForm.resx">
+      <DependentUpon>TornEdgeSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Sounds.resx">
       <Generator>ResXFileCodeGenerator</Generator>

@@ -20,50 +20,48 @@
  */
 using System.ComponentModel;
 using System.Drawing;
-using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotPlugin.Core;
 
-namespace GreenshotDownloadRuPlugin {
-	public class DownloadRuDestination : AbstractDestination {
-        private static log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(DownloadRuDestination));
-		private static DownloadRuConfiguration config = IniConfig.GetIniSection<DownloadRuConfiguration>();
+namespace GreenshotDownloadRuPlugin
+{
+    public class DownloadRuDestination : AbstractDestination
+    {
+        private readonly DownloadRuPlugin _plugin;
 
-		private DownloadRuPlugin plugin = null;
-		public DownloadRuDestination(DownloadRuPlugin plugin) {
-			this.plugin = plugin;
-		}
-		
-		public override string Designation {
-			get {
-				return "DownloadRu";
-			}
-		}
+        public DownloadRuDestination(DownloadRuPlugin plugin)
+        {
+            _plugin = plugin;
+        }
 
-		public override string Description {
-			get {
-				return Language.GetString("downloadru", LangKey.upload_menu_item);
-			}
-		}
+        public override string Designation => "DownloadRu";
 
-		public override Image DisplayIcon
+        public override string Description => Language.GetString("downloadru", LangKey.upload_menu_item);
+
+        public override Image DisplayIcon
         {
             get
             {
                 var resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
-                return (Image)resources.GetObject("DownloadRu16x16");
+                return (Image) resources.GetObject("DownloadRu16x16");
             }
         }
 
-		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(this.Designation, this.Description);
-			string uploadUrl = plugin.Upload(captureDetails, surface);
-			if (uploadUrl != null) {
-				exportInformation.ExportMade = true;
-				exportInformation.Uri = uploadUrl;
-			}
-			ProcessExport(exportInformation, surface);
-			return exportInformation;
-		}
-	}
+        public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
+            ICaptureDetails captureDetails)
+        {
+            var exportInformation = new ExportInformation(Designation, Description);
+
+            string uploadUrl = _plugin.Upload(captureDetails, surface);
+
+            if (uploadUrl != null)
+            {
+                exportInformation.ExportMade = true;
+                exportInformation.Uri = uploadUrl;
+            }
+
+            ProcessExport(exportInformation, surface);
+            return exportInformation;
+        }
+    }
 }

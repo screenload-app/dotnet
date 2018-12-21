@@ -28,28 +28,33 @@ using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using log4net;
 
-namespace GreenshotDownloadRuPlugin {
+namespace GreenshotDownloadRuPlugin
+{
 
     /// <summary>
     /// Description of DownloadRuUtils.
     /// </summary>
     public static class DownloadRuUtils
     {
-        private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(DownloadRuUtils));
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DownloadRuUtils));
         private static readonly DownloadRuConfiguration Config = IniConfig.GetIniSection<DownloadRuConfiguration>();
+
         private const string RedirectUri = "https://download.ru/u/?";
         private const string UploadFileUri = "https://download.ru/f?locale=";
         private const string AuthorizeUri = "https://download.ru/oauth/authorize";
         private const string TokenUri = "https://download.ru/oauth/token";
+
         private const string UserAgent = "Greenshot";
-        //private const string FilesUri = "https://www.box.com/api/2.0/files/{0}";
 
         private static bool Authorize()
         {
-            string authorizeUrl = string.Format("{0}?client_id={1}&response_type=code&state=downloadru&redirect_uri={2}", AuthorizeUri, DownloadRuCredentials.ClientId, RedirectUri);
+            string authorizeUrl =
+                $"{AuthorizeUri}?client_id={DownloadRuCredentials.ClientId}&response_type=code&state=downloadru&redirect_uri={RedirectUri}";
 
-            var loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600), authorizeUrl, RedirectUri);
+            var loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600),
+                authorizeUrl, RedirectUri);
 
             loginForm.ShowDialog();
 
@@ -61,7 +66,10 @@ namespace GreenshotDownloadRuPlugin {
             if (callbackParameters == null || !callbackParameters.ContainsKey("code"))
                 return false;
 
-            string authorizationResponse = PostAndReturn(new Uri(TokenUri), string.Format("grant_type=authorization_code&code={0}&client_id={1}&client_secret={2}&redirect_uri={3}", callbackParameters["code"], DownloadRuCredentials.ClientId, DownloadRuCredentials.ClientSecret, RedirectUri));
+            string authorizationResponse = PostAndReturn(new Uri(TokenUri),
+                string.Format("grant_type=authorization_code&code={0}&client_id={1}&client_secret={2}&redirect_uri={3}",
+                    callbackParameters["code"], DownloadRuCredentials.ClientId, DownloadRuCredentials.ClientSecret,
+                    RedirectUri));
             var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
 
             Config.DownloadRuToken = authorization.AccessToken;
@@ -69,29 +77,20 @@ namespace GreenshotDownloadRuPlugin {
             return true;
         }
 
-        private static void AuthorizeAnonym()
-        {
-
-        }
-
-        /// <summary>
-        /// Download a url response as string
-        /// </summary>
-        /// <param name=url">An Uri to specify the download location</param>
-        /// <returns>string with the file content</returns>
         public static string PostAndReturn(Uri url, string postMessage)
         {
-            HttpWebRequest webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            HttpWebRequest webRequest = NetworkHelper.CreateWebRequest(url);
             webRequest.Method = "POST";
             webRequest.ContentType = "application/x-www-form-urlencoded";
             webRequest.KeepAlive = true;
             webRequest.Credentials = CredentialCache.DefaultCredentials;
             webRequest.UserAgent = UserAgent;
-            byte[] data = Encoding.UTF8.GetBytes(postMessage.ToString());
+            byte[] data = Encoding.UTF8.GetBytes(postMessage);
             using (var requestStream = webRequest.GetRequestStream())
             {
                 requestStream.Write(data, 0, data.Length);
             }
+
             return NetworkHelper.GetResponseAsString(webRequest);
         }
 
@@ -103,7 +102,7 @@ namespace GreenshotDownloadRuPlugin {
         /// <returns>response</returns>
         public static string HttpPost(string url, IDictionary<string, object> parameters)
         {
-            var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
+            var webRequest = NetworkHelper.CreateWebRequest(url);
             webRequest.Method = "POST";
             webRequest.KeepAlive = true;
             webRequest.Credentials = CredentialCache.DefaultCredentials;
@@ -116,47 +115,6 @@ namespace GreenshotDownloadRuPlugin {
         }
 
         /// <summary>
-        /// Upload file by PUT
-        /// </summary>
-        /// <param name="url"></param>
-        /// <param name="content"></param>
-        /// <returns>response</returns>
-        //public static string HttpPut(string url, string content)
-        //{
-        //    var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-        //    webRequest.Method = "PUT";
-        //    webRequest.KeepAlive = true;
-        //    webRequest.Credentials = CredentialCache.DefaultCredentials;
-        //    webRequest.Accept = "application/json";
-        //    webRequest.UserAgent = UserAgent;
-        //    webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-        //    byte[] data = Encoding.UTF8.GetBytes(content);
-        //    using (var requestStream = webRequest.GetRequestStream())
-        //    {
-        //        requestStream.Write(data, 0, data.Length);
-        //    }
-        //    return NetworkHelper.GetResponseAsString(webRequest);
-        //}
-
-
-        /// <summary>
-        /// Get REST request
-        /// </summary>
-        /// <param name="url"></param>
-        /// <returns>response</returns>
-        //public static string HttpGet(string url)
-        //{
-        //    var webRequest = (HttpWebRequest)NetworkHelper.CreateWebRequest(url);
-        //    webRequest.Method = "GET";
-        //    webRequest.ContentType = ContentType;
-        //    webRequest.KeepAlive = true;
-        //    webRequest.Credentials = CredentialCache.DefaultCredentials;
-        //    webRequest.UserAgent = UserAgent;
-        //    webRequest.Headers.Add("Authorization", "Bearer " + Config.DownloadRuToken);
-        //    return NetworkHelper.GetResponseAsString(webRequest);
-        //}
-
-        /// <summary>
         /// Do the actual upload to DownloadRu
         /// </summary>
         /// <param name="image">Image for downloadru upload</param>
@@ -167,7 +125,6 @@ namespace GreenshotDownloadRuPlugin {
         {
             while (true)
             {
-                const string folderId = "0";
                 if (!Config.AnonymousAccess && string.IsNullOrEmpty(Config.DownloadRuToken))
                 {
                     if (!Authorize())
@@ -178,14 +135,17 @@ namespace GreenshotDownloadRuPlugin {
 
                 IDictionary<string, object> parameters = new Dictionary<string, object>();
                 parameters.Add("filename", image);
-                //parameters.Add("parent_id", folderId);
 
                 var response = "";
                 string sharedLink = (Config.SharedLink) ? "&shared=true" : "";
                 try
                 {
-                    string locale = (Language.CurrentLanguage.Length > 1) ? Language.CurrentLanguage.Substring(0, 2) : "en";
-                    string addAnonymKey = (Config.AnonymousAccess) ? string.Format("&anonym_key={0}", DownloadRuCredentials.AnonimKey) : "";
+                    string locale = (Language.CurrentLanguage.Length > 1)
+                        ? Language.CurrentLanguage.Substring(0, 2)
+                        : "en";
+                    string addAnonymKey = (Config.AnonymousAccess)
+                        ? $"&anonym_key={DownloadRuCredentials.AnonimKey}"
+                        : "";
 
                     if (Config.AnonymousAccess && !Config.SharedLink)
                         sharedLink = "&shared=true";
@@ -206,7 +166,7 @@ namespace GreenshotDownloadRuPlugin {
                     }
                 }
 
-                LOG.DebugFormat("DownloadRu response: {0}", response);
+                Log.DebugFormat("DownloadRu response: {0}", response);
 
                 // Check if the token is wrong
                 if ("wrong auth token".Equals(response))
@@ -219,41 +179,49 @@ namespace GreenshotDownloadRuPlugin {
                 var upload = JSONSerializer.Deserialize<Upload>(response);
                 if (upload == null || upload.Entries == null) return null;
 
-                return string.Format("https://download.ru/f/{0}", upload.Entries.Id);
+                return $"https://download.ru/f/{upload.Entries.Id}";
             }
         }
     }
-	/// <summary>
-	/// A simple helper class for the DataContractJsonSerializer
-	/// </summary>
-	public static class JSONSerializer {
-		/// <summary>
-		/// Helper method to serialize object to JSON
-		/// </summary>
-		/// <param name="jsonObject">JSON object</param>
-		/// <returns>string</returns>
-		public static string Serialize(object jsonObject) {
-			var serializer = new DataContractJsonSerializer(jsonObject.GetType());
-			using (MemoryStream stream = new MemoryStream()) {
-				serializer.WriteObject(stream, jsonObject);
-				return Encoding.UTF8.GetString(stream.ToArray());
-			}
-		}
 
-		/// <summary>
-		/// Helper method to parse JSON to object
-		/// </summary>
-		/// <typeparam name="T"></typeparam>
-		/// <param name="jsonString"></param>
-		/// <returns></returns>
-		public static T Deserialize<T>(string jsonString) {
-			var deserializer = new DataContractJsonSerializer(typeof(T));
-			using (MemoryStream stream = new MemoryStream()) {
-				byte[] content = Encoding.UTF8.GetBytes(jsonString);
-				stream.Write(content, 0, content.Length);
-				stream.Seek(0, SeekOrigin.Begin);
-				return (T)deserializer.ReadObject(stream);
-			}
-		}
-	}
+    /// <summary>
+    /// A simple helper class for the DataContractJsonSerializer
+    /// </summary>
+    public static class JSONSerializer
+    {
+        /// <summary>
+        /// Helper method to serialize object to JSON
+        /// </summary>
+        /// <param name="jsonObject">JSON object</param>
+        /// <returns>string</returns>
+        public static string Serialize(object jsonObject)
+        {
+            var serializer = new DataContractJsonSerializer(jsonObject.GetType());
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                serializer.WriteObject(stream, jsonObject);
+                return Encoding.UTF8.GetString(stream.ToArray());
+            }
+        }
+
+        /// <summary>
+        /// Helper method to parse JSON to object
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="jsonString"></param>
+        /// <returns></returns>
+        public static T Deserialize<T>(string jsonString)
+        {
+            var deserializer = new DataContractJsonSerializer(typeof(T));
+
+            using (var stream = new MemoryStream())
+            {
+                byte[] content = Encoding.UTF8.GetBytes(jsonString);
+                stream.Write(content, 0, content.Length);
+                stream.Seek(0, SeekOrigin.Begin);
+                return (T) deserializer.ReadObject(stream);
+            }
+        }
+    }
 }

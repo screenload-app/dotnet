@@ -296,5 +296,23 @@ ${hostname} Имя ПК
 		<resource name="WindowCaptureMode.Auto">Автоматически</resource>
 		<resource name="WindowCaptureMode.GDI">Использ. цвет по умолчанию</resource>
 		<resource name="WindowCaptureMode.Screen">Как отображается</resource>
-	</resources>
+
+	  <resource name="hotkeys_resolving_title">Не удалось задать горячие клавиши!</resource>
+	  <resource name="hotkeys_resolving_caption">Не удалось задать горячие клавиши!</resource>
+	  <resource name="hotkeys_resolving_info">Не удалось задать одну или несколько горячих клавиш, так как они уже используются другой программой. Введите альтернативное значение горячих клавиш или закройте программу, которая их использует.</resource>
+	  <resource name="hotkeys_resolving_ok">ОК</resource>
+	  <resource name="hotkeys_resolving_cancel">Отмена</resource>
+
+	  <resource name="hotkey_resolving_message">Невозможно использовать комбинацию, так как она уже используется другой программой!</resource>
+	  <resource name="hotkey_resolving_other_combination">Задать другую комбинацию:</resource>
+	  <resource name="hotkey_resolving_retry">Повторить попытку установить {0}</resource>
+	  <resource name="hotkey_resolving_ignore">Отключить горячую клавишу</resource>
+
+	  <resource name="CaptureFullScreen">Захват полного экрана</resource>
+	  <resource name="CaptureWindow">Захват окна</resource>
+	  <resource name="CaptureRegion">Захват области</resource>
+	  <resource name="CaptureLastRegion">Захват последней области</resource>
+	  <resource name="CaptureIE">Захват Internet Explorer</resource>
+
+  </resources>
 </language>

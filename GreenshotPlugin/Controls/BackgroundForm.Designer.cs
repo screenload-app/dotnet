@@ -48,49 +48,48 @@ namespace GreenshotPlugin.Controls
 		/// </summary>
 		private void InitializeComponent()
 		{
-			this.components = new System.ComponentModel.Container();
-			this.label_pleasewait = new System.Windows.Forms.Label();
-			this.timer_checkforclose = new System.Windows.Forms.Timer(this.components);
-			this.SuspendLayout();
-			// 
-			// label_pleasewait
-			// 
-			this.label_pleasewait.AutoSize = true;
-			this.label_pleasewait.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.label_pleasewait.Location = new System.Drawing.Point(0, 0);
-			this.label_pleasewait.Name = "label_pleasewait";
-			this.label_pleasewait.Padding = new System.Windows.Forms.Padding(10);
-			this.label_pleasewait.Size = new System.Drawing.Size(90, 33);
-			this.label_pleasewait.TabIndex = 0;
-			this.label_pleasewait.Text = "Please wait...";
-			this.label_pleasewait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-			this.label_pleasewait.UseWaitCursor = true;
-			// 
-			// timer_checkforclose
-			// 
-			this.timer_checkforclose.Interval = 200;
-			this.timer_checkforclose.Tick += new System.EventHandler(this.Timer_checkforcloseTick);
-			// 
-			// BackgroundForm
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.AutoSize = true;
-			this.ClientSize = new System.Drawing.Size(169, 52);
-			this.ControlBox = true;
-			this.Controls.Add(this.label_pleasewait);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "BackgroundForm";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
-			this.Text = "Greenshot";
-			this.TopMost = true;
-			this.UseWaitCursor = true;
-			this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BackgroundFormFormClosing);
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this.label_pleasewait = new System.Windows.Forms.Label();
+            this.timer_checkforclose = new System.Windows.Forms.Timer();
+            this.SuspendLayout();
+            // 
+            // label_pleasewait
+            // 
+            this.label_pleasewait.AutoSize = true;
+            this.label_pleasewait.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.label_pleasewait.Location = new System.Drawing.Point(0, 0);
+            this.label_pleasewait.Name = "label_pleasewait";
+            this.label_pleasewait.Padding = new System.Windows.Forms.Padding(10);
+            this.label_pleasewait.Size = new System.Drawing.Size(90, 33);
+            this.label_pleasewait.TabIndex = 0;
+            this.label_pleasewait.Text = "Please wait...";
+            this.label_pleasewait.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.label_pleasewait.UseWaitCursor = true;
+            // 
+            // timer_checkforclose
+            // 
+            this.timer_checkforclose.Interval = 200;
+            this.timer_checkforclose.Tick += new System.EventHandler(this.Timer_checkforcloseTick);
+            // 
+            // BackgroundForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(169, 52);
+            this.Controls.Add(this.label_pleasewait);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "BackgroundForm";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.Text = "Greenshot";
+            this.TopMost = true;
+            this.UseWaitCursor = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.BackgroundFormFormClosing);
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
 		}
 		private System.Windows.Forms.Timer timer_checkforclose;
 		private System.Windows.Forms.Label label_pleasewait;
