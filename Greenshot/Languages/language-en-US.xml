@@ -311,11 +311,16 @@ All Greenshot features still work directly from the tray icon context menu witho
     <resource name="editor_resize_height">Height</resource>
 	  <resource name="settings_iconsize">Icon size</resource>
 
-	  <resource name="CaptureFullScreen">Capture full screen</resource>
-	  <resource name="CaptureWindow">Capture window</resource>
-	  <resource name="CaptureRegion">Capture region</resource>
-	  <resource name="CaptureLastRegion">Capture last region</resource>
-	  <resource name="CaptureIE">Capture Internet Explorer</resource>
+	  <resource name="hotkey_resolving_retry">Try again to set {0}</resource>
+
+	  <resource name="capture_fullscreen">Capture full screen</resource>
+	  <resource name="capture_window">Capture window</resource>
+	  <resource name="capture_region">Capture region</resource>
+	  <resource name="capture_last_region">Capture last region</resource>
+	  <resource name="capture_ie">Capture Internet Explorer</resource>
+    
+	  <resource name="empty_hotkey">[no key assigned]</resource>
+	  <resource name="empty_hotkey_error_message">Value cannot be blank!</resource>
     
   </resources>
 </language>

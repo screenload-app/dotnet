@@ -9,8 +9,8 @@ namespace Greenshot.Controls
 {
     internal partial class HotkeyResolvingControl : UserControl
     {
-        private const string EmptyHotkey = "[]";
-
+        private readonly string _emptyHotkey;
+        private readonly string _emptyHotkeyErrorMessage;
         private readonly string _defaultHotkey;
 
         private int _blinkCount;
@@ -37,6 +37,9 @@ namespace Greenshot.Controls
             actionLabel.Text = actionText ?? throw new ArgumentNullException(nameof(actionText));
             _defaultHotkey = defaultHotkey ?? throw new ArgumentNullException(nameof(defaultHotkey));
 
+            _emptyHotkey = Language.GetString("empty_hotkey");
+            _emptyHotkeyErrorMessage = Language.GetString("empty_hotkey_error_message");
+
             hotkeyLabel.Text = defaultHotkey;
             retryRadioButton.Text = string.Format(CultureInfo.InvariantCulture,
                 Language.GetString("hotkey_resolving_retry"), defaultHotkey);
@@ -53,7 +56,7 @@ namespace Greenshot.Controls
             {
                 if (string.IsNullOrEmpty(otherCombinationHotkeyControl.Text))
                 {
-                    mErrorProvider.SetError(otherCombinationHotkeyControl, "Value cannot be blank!");
+                    mErrorProvider.SetError(otherCombinationHotkeyControl, _emptyHotkeyErrorMessage);
                     return false;
                 }
             }
@@ -71,7 +74,7 @@ namespace Greenshot.Controls
         {
             if (otherCombinationRadioButton.Checked)
                 hotkeyLabel.Text = string.IsNullOrEmpty(otherCombinationHotkeyControl.Text)
-                    ? EmptyHotkey
+                    ? _emptyHotkey
                     : otherCombinationHotkeyControl.Text;
         }
 
@@ -86,8 +89,9 @@ namespace Greenshot.Controls
             if (otherCombinationRadioButton.Checked)
             {
                 hotkeyLabel.Text = string.IsNullOrEmpty(otherCombinationHotkeyControl.Text)
-                    ? EmptyHotkey
-                    : otherCombinationHotkeyControl.Text;
+                    ? _emptyHotkey
+                    : otherCombinationHotkeyControl.ToString();
+                messageLabel.Visible = false;
 
                 otherCombinationHotkeyControl.Focus();
             }
@@ -98,7 +102,10 @@ namespace Greenshot.Controls
         private void ignoreRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (ignoreRadioButton.Checked)
-                hotkeyLabel.Text = EmptyHotkey;
+            {
+                hotkeyLabel.Text = _emptyHotkey;
+                messageLabel.Visible = false;
+            }
         }
 
         private void mTimer_Tick(object sender, EventArgs e)
@@ -109,8 +116,8 @@ namespace Greenshot.Controls
 
             if (_blinkCount > 15)
             {
-                _blinkCount = 0;
                 mTimer.Enabled = false;
+                _blinkCount = 0;
             }
         }
     }

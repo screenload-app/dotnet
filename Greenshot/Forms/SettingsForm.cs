@@ -115,17 +115,17 @@ namespace Greenshot {
 			_daysbetweencheckPreviousValue = (int)numericUpDown_daysbetweencheck.Value;
 		}
 
-		private void EnterHotkeyControl(object sender, EventArgs e) {
-			HotkeyControl.UnregisterHotkeys();
-			_inHotkey = true;
-		}
+        private void EnterHotkeyControl(object sender, EventArgs e)
+        {
+            _inHotkey = true;
+        }
 
-		private void LeaveHotkeyControl(object sender, EventArgs e) {
-			MainForm.RegisterHotkeys(this);
-			_inHotkey = false;
-		}
+        private void LeaveHotkeyControl(object sender, EventArgs e)
+        {
+            _inHotkey = false;
+        }
 
-		protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData) {
 			switch (keyData) {
 				case Keys.Escape:
 					if (!_inHotkey) {

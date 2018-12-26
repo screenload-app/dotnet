@@ -25,7 +25,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading;
@@ -615,119 +614,98 @@ namespace Greenshot
         /// <summary>
         /// Registers all hotkeys as configured, displaying a dialog in case of hotkey conflicts with other tools.
         /// </summary>
-        /// <returns>Whether the hotkeys could be registered to the users content. This also applies if conflicts arise and the user decides to ignore these (i.e. not to register the conflicting hotkey).</returns>
-        public static bool RegisterHotkeys(IWin32Window owner)
+        public static void RegisterHotkeys(IWin32Window owner)
         {
-            return RegisterHotkeys(false, owner);
-        }
+            if (null == owner)
+                throw new ArgumentNullException(nameof(owner));
 
-        private static bool RegisterHotkeys(bool ignoreFailedRegistration, IWin32Window owner)
-        {
             if (_instance == null)
-            {
-                return false;
-            }
+                throw new InvalidOperationException("_instance == null");
 
             var hotkeyProblems = new List<HotkeyProblem>();
 
-            RegisterWrapper(hotkeyProblems, "CaptureRegion", "RegionHotkey", _instance.CaptureRegion,
-                ignoreFailedRegistration);
+            RegisterWrapper(hotkeyProblems, "CaptureRegion", "RegionHotkey", _instance.CaptureRegion);
 
-            RegisterWrapper(hotkeyProblems, "CaptureWindow", "WindowHotkey", _instance.CaptureWindow,
-                ignoreFailedRegistration);
+            RegisterWrapper(hotkeyProblems, "CaptureWindow", "WindowHotkey", _instance.CaptureWindow);
 
-            RegisterWrapper(hotkeyProblems, "CaptureFullScreen", "FullscreenHotkey", _instance.CaptureFullScreen,
-                ignoreFailedRegistration);
+            RegisterWrapper(hotkeyProblems, "CaptureFullScreen", "FullscreenHotkey", _instance.CaptureFullScreen);
 
-            RegisterWrapper(hotkeyProblems, "CaptureLastRegion", "LastregionHotkey", _instance.CaptureLastRegion,
-                ignoreFailedRegistration);
+            RegisterWrapper(hotkeyProblems, "CaptureLastRegion", "LastregionHotkey", _instance.CaptureLastRegion);
 
             if (_conf.IECapture)
-            {
-                RegisterWrapper(hotkeyProblems, "CaptureIE", "IEHotkey", _instance.CaptureIE,
-                    ignoreFailedRegistration);
-            }
+                RegisterWrapper(hotkeyProblems, "CaptureIE", "IEHotkey", _instance.CaptureIE);
 
             if (hotkeyProblems.Count > 0)
             {
                 var hotkeysResolvingForm = new HotkeysResolvingForm(hotkeyProblems);
 
                 if (DialogResult.Cancel == hotkeysResolvingForm.ShowDialog(owner))
-                    return false;
-
-                var hotkeySolutions = hotkeysResolvingForm.CollectHotkeySolutions();
-
-                foreach (var hotkeySolution in hotkeySolutions)
                 {
-                    string configurationKey;
-
-                    switch (hotkeySolution.Action)
+                    foreach (var hotkeyProblem in hotkeyProblems)
                     {
-                        case HotkeyAction.CaptureFullScreen:
-                            configurationKey = "FullscreenHotkey";
-                            break;
-                        case HotkeyAction.CaptureWindow:
-                            configurationKey = "WindowHotkey";
-                            break;
-                        case HotkeyAction.CaptureArea:
-                            configurationKey = "RegionHotkey";
-                            break;
-                        case HotkeyAction.CaptureLastRegion:
-                            configurationKey = "LastregionHotkey";
-                            break;
-                        case HotkeyAction.CaptureIE:
-                            configurationKey = "IEHotkey";
-                            break;
-                        default:
-                            throw new InvalidOperationException("hotkeySolution.Action=" + hotkeySolution.Action);
-                    }
+                        string configurationKey = GetConfigurationKey(hotkeyProblem.Action);
 
-                    var hotkeyValue = _conf.Values[configurationKey];
-                    hotkeyValue.Value = hotkeySolution.Hotkey;
+                        var hotkeyValue = _conf.Values[configurationKey];
+                        hotkeyValue.Value = Keys.None.ToString();
+                    }
+                }
+                else
+                {
+                    var hotkeySolutions = hotkeysResolvingForm.CollectHotkeySolutions();
+
+                    foreach (var hotkeySolution in hotkeySolutions)
+                    {
+                        string configurationKey = GetConfigurationKey(hotkeySolution.Action);
+
+                        var hotkeyValue = _conf.Values[configurationKey];
+                        hotkeyValue.Value = hotkeySolution.Hotkey ?? Keys.None.ToString();
+                    }
                 }
 
                 IniConfig.Save();
 
                 HotkeyControl.UnregisterHotkeys();
-                RegisterHotkeys(false, owner);
+                RegisterHotkeys(owner);
             }
-
-            //if (!success) {
-            //	if (!ignoreFailedRegistration) {
-            //		success = HandleFailedHotkeyRegistration(failedKeys.ToString());
-            //	} else {
-            //		// if failures have been ignored, the config has probably been updated
-            //		if (_conf.IsDirty) {
-            //			IniConfig.Save();
-            //		}
-            //	}
-            //}
-            //return success || ignoreFailedRegistration;
-
-            return true;
         }
 
-        private static bool RegisterWrapper(List<HotkeyProblem> hotkeyProblems, string functionName,
+        private static string GetConfigurationKey(HotkeyAction action)
+        {
+            string configurationKey;
+
+            switch (action)
+            {
+                case HotkeyAction.CaptureFullScreen:
+                    configurationKey = "FullscreenHotkey";
+                    break;
+                case HotkeyAction.CaptureWindow:
+                    configurationKey = "WindowHotkey";
+                    break;
+                case HotkeyAction.CaptureArea:
+                    configurationKey = "RegionHotkey";
+                    break;
+                case HotkeyAction.CaptureLastRegion:
+                    configurationKey = "LastregionHotkey";
+                    break;
+                case HotkeyAction.CaptureIE:
+                    configurationKey = "IEHotkey";
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(action), $@"action={action}");
+            }
+
+            return configurationKey;
+        }
+
+        private static void RegisterWrapper(List<HotkeyProblem> hotkeyProblems, string functionName,
             string configurationKey,
-            HotKeyHandler handler, bool ignoreFailedRegistration)
+            HotKeyHandler handler)
         {
             IniValue hotkeyValue = _conf.Values[configurationKey];
 
             try
             {
-                bool success = RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
-
-                if (!success && ignoreFailedRegistration)
-                {
-                    LOG.DebugFormat(
-                        "Ignoring failed hotkey registration for {0}, with value '{1}', resetting to 'None'.",
-                        functionName, hotkeyValue);
-
-                    _conf.Values[configurationKey].Value = Keys.None.ToString();
-                    _conf.IsDirty = true;
-                }
-
-                return success;
+                RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
             }
             catch (Exception ex)
             {
@@ -738,7 +716,7 @@ namespace Greenshot
 
                 hotkeyValue.UseValueOrDefault(null);
                 hotkeyValue.ContainingIniSection.IsDirty = true;
-                return RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
+                RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
             }
         }
 
@@ -749,12 +727,11 @@ namespace Greenshot
         /// <param name="functionName"></param>
         /// <param name="hotkeyString"></param>
         /// <param name="handler"></param>
-        /// <returns></returns>
-        private static bool RegisterHotkey(List<HotkeyProblem> hotkeyProblems, string functionName, string hotkeyString,
+        private static void RegisterHotkey(List<HotkeyProblem> hotkeyProblems, string functionName, string hotkeyString,
             HotKeyHandler handler)
         {
-            Keys modifierKeyCode = HotkeyControl.HotkeyModifiersFromString(hotkeyString);
-            Keys virtualKeyCode = HotkeyControl.HotkeyFromString(hotkeyString);
+            var modifierKeyCode = HotkeyControl.HotkeyModifiersFromString(hotkeyString);
+            var virtualKeyCode = HotkeyControl.HotkeyFromString(hotkeyString);
 
             if (!Keys.None.Equals(virtualKeyCode))
             {
@@ -763,23 +740,29 @@ namespace Greenshot
                     LOG.DebugFormat("Failed to register {0} to hotkey: {1}", functionName, hotkeyString);
 
                     HotkeyAction action;
+                    string actionTextKey;
 
                     switch (functionName)
                     {
                         case "CaptureRegion":
                             action = HotkeyAction.CaptureLastRegion;
+                            actionTextKey = "capture_region";
                             break;
                         case "CaptureWindow":
                             action = HotkeyAction.CaptureWindow;
+                            actionTextKey = "capture_window";
                             break;
                         case "CaptureFullScreen":
                             action = HotkeyAction.CaptureFullScreen;
+                            actionTextKey = "capture_fullscreen";
                             break;
                         case "CaptureLastRegion":
                             action = HotkeyAction.CaptureLastRegion;
+                            actionTextKey = "capture_last_region";
                             break;
                         case "CaptureIE":
                             action = HotkeyAction.CaptureIE;
+                            actionTextKey = "capture_ie";
                             break;
                         default:
                             throw new InvalidOperationException("functionName=" + functionName);
@@ -788,11 +771,9 @@ namespace Greenshot
                     hotkeyProblems.Add(new HotkeyProblem
                     {
                         Action = action,
-                        ActionText = Language.GetString(functionName),
+                        ActionText = Language.GetString(actionTextKey),
                         Hotkey = hotkeyString
                     });
-
-                    return false;
                 }
 
                 LOG.DebugFormat("Registered {0} to hotkey: {1}", functionName, hotkeyString);
@@ -801,8 +782,6 @@ namespace Greenshot
             {
                 LOG.InfoFormat("Skipping hotkey registration for {0}, no hotkey set!", functionName);
             }
-
-            return true;
         }
 
         #endregion

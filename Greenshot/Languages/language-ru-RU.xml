@@ -308,11 +308,14 @@ ${hostname} Имя ПК
 	  <resource name="hotkey_resolving_retry">Повторить попытку установить {0}</resource>
 	  <resource name="hotkey_resolving_ignore">Отключить горячую клавишу</resource>
 
-	  <resource name="CaptureFullScreen">Захват полного экрана</resource>
-	  <resource name="CaptureWindow">Захват окна</resource>
-	  <resource name="CaptureRegion">Захват области</resource>
-	  <resource name="CaptureLastRegion">Захват последней области</resource>
-	  <resource name="CaptureIE">Захват Internet Explorer</resource>
+	  <resource name="capture_fullscreen">Захват полного экрана</resource>
+	  <resource name="capture_window">Захват окна</resource>
+	  <resource name="capture_region">Захват области</resource>
+	  <resource name="capture_last_region">Захват последней области</resource>
+	  <resource name="capture_ie">Захват Internet Explorer</resource>
+    
+	  <resource name="empty_hotkey">[клавиша не назначена]</resource>
+	  <resource name="empty_hotkey_error_message">Значение не может быть пустым!</resource>
 
   </resources>
 </language>
