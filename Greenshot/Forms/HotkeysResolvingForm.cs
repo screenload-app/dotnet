@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Windows.Forms;
 using Greenshot.Controls;
 using Greenshot.Helpers;
@@ -8,21 +9,30 @@ namespace Greenshot.Forms
 {
     internal partial class HotkeysResolvingForm : BaseForm
     {
+        private readonly ReadOnlyCollection<HotkeyResolvingControl> _hotkeyResolvingControls;
+
         public HotkeysResolvingForm(IEnumerable<HotkeyProblem> hotkeyProblems)
             : this()
         {
             if (null == hotkeyProblems)
                 throw new ArgumentNullException(nameof(hotkeyProblems));
 
+            var hotkeyResolvingControls = new List<HotkeyResolvingControl>();
+
             mFlowLayoutPanel.SuspendLayout();
 
             foreach (var hotkeyProblem in hotkeyProblems)
             {
-                mFlowLayoutPanel.Controls.Add(new HotkeyResolvingControl(hotkeyProblem.Action, hotkeyProblem.ActionText,
-                    hotkeyProblem.Hotkey));
+                var hotkeyResolvingControl = new HotkeyResolvingControl(hotkeyProblem.Action, hotkeyProblem.ActionText,
+                    hotkeyProblem.Hotkey);
+
+                hotkeyResolvingControls.Add(hotkeyResolvingControl);
+                mFlowLayoutPanel.Controls.Add(hotkeyResolvingControl);
             }
 
             mFlowLayoutPanel.ResumeLayout();
+
+            _hotkeyResolvingControls = new ReadOnlyCollection<HotkeyResolvingControl>(hotkeyResolvingControls);
         }
 
         public HotkeysResolvingForm()
@@ -34,13 +44,8 @@ namespace Greenshot.Forms
         {
             var hotkeySolutions = new List<HotkeySolution>();
 
-            foreach (Control control in mFlowLayoutPanel.Controls)
+            foreach (var hotkeyResolvingControl in _hotkeyResolvingControls)
             {
-                var hotkeyResolvingControl = control as HotkeyResolvingControl;
-
-                if (null == hotkeyResolvingControl)
-                    continue;
-
                 hotkeySolutions.Add(new HotkeySolution
                 {
                     Action = hotkeyResolvingControl.Action,
@@ -60,13 +65,8 @@ namespace Greenshot.Forms
         {
             var isValid = true;
 
-            foreach (var control in mFlowLayoutPanel.Controls)
+            foreach (var hotkeyResolvingControl in _hotkeyResolvingControls)
             {
-                var hotkeyResolvingControl = control as HotkeyResolvingControl;
-
-                if (null == hotkeyResolvingControl)
-                    return;
-
                 if (!hotkeyResolvingControl.Inspect())
                     isValid = false;
             }
