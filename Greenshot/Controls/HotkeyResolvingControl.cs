@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Globalization;
 using System.Windows.Forms;
 using Greenshot.Helpers;
+using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 
 namespace Greenshot.Controls
@@ -12,6 +13,7 @@ namespace Greenshot.Controls
         private readonly string _emptyHotkey;
         private readonly string _emptyHotkeyErrorMessage;
         private readonly string _defaultHotkey;
+        private readonly string _defaultHotkeyText;
 
         private int _blinkCount;
 
@@ -24,8 +26,8 @@ namespace Greenshot.Controls
                 if (retryRadioButton.Checked)
                     return _defaultHotkey;
                 if (otherCombinationRadioButton.Checked)
-                    return otherCombinationHotkeyControl.Text;
-
+                    return otherCombinationHotkeyControl.ToString();
+                
                 return null;
             }
         }
@@ -37,12 +39,13 @@ namespace Greenshot.Controls
             actionLabel.Text = actionText ?? throw new ArgumentNullException(nameof(actionText));
             _defaultHotkey = defaultHotkey ?? throw new ArgumentNullException(nameof(defaultHotkey));
 
+            _defaultHotkeyText = HotkeyControl.GetLocalizedHotkeyStringFromString(defaultHotkey);
             _emptyHotkey = Language.GetString("empty_hotkey");
             _emptyHotkeyErrorMessage = Language.GetString("empty_hotkey_error_message");
 
-            hotkeyLabel.Text = defaultHotkey;
+            hotkeyLabel.Text = _defaultHotkeyText;
             retryRadioButton.Text = string.Format(CultureInfo.InvariantCulture,
-                Language.GetString("hotkey_resolving_retry"), defaultHotkey);
+                Language.GetString("hotkey_resolving_retry"), _defaultHotkeyText);
         }
 
         public HotkeyResolvingControl()
@@ -81,7 +84,7 @@ namespace Greenshot.Controls
         private void retryRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             if (retryRadioButton.Checked)
-                hotkeyLabel.Text = _defaultHotkey;
+                hotkeyLabel.Text = _defaultHotkeyText;
         }
 
         private void otherCombinationRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -90,7 +93,7 @@ namespace Greenshot.Controls
             {
                 hotkeyLabel.Text = string.IsNullOrEmpty(otherCombinationHotkeyControl.Text)
                     ? _emptyHotkey
-                    : otherCombinationHotkeyControl.ToString();
+                    : otherCombinationHotkeyControl.Text;
                 messageLabel.Visible = false;
 
                 otherCombinationHotkeyControl.Focus();

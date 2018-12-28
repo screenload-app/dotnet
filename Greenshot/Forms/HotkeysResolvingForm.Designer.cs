@@ -42,11 +42,9 @@
             this.infoLabel.LanguageKey = "hotkeys_resolving_info";
             this.infoLabel.Location = new System.Drawing.Point(14, 38);
             this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(621, 30);
+            this.infoLabel.Size = new System.Drawing.Size(609, 70);
             this.infoLabel.TabIndex = 1;
-            this.infoLabel.Text = "One or more hotkeys could not be set because they are already in use by another p" +
-    "rogram. Enter an alternative value for the hotkeys or close the program that use" +
-    "s them.";
+            this.infoLabel.Text = resources.GetString("infoLabel.Text");
             // 
             // captionLabel
             // 
@@ -65,7 +63,7 @@
             this.mFlowLayoutPanel.AutoScroll = true;
             this.mFlowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.mFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mFlowLayoutPanel.Location = new System.Drawing.Point(17, 68);
+            this.mFlowLayoutPanel.Location = new System.Drawing.Point(17, 108);
             this.mFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mFlowLayoutPanel.Name = "mFlowLayoutPanel";
             this.mFlowLayoutPanel.Size = new System.Drawing.Size(606, 432);
@@ -76,17 +74,17 @@
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.LanguageKey = "hotkeys_resolving_cancel";
-            this.cancelButton.Location = new System.Drawing.Point(548, 513);
+            this.cancelButton.Location = new System.Drawing.Point(464, 557);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(159, 23);
             this.cancelButton.TabIndex = 4;
-            this.cancelButton.Text = "Cancel";
+            this.cancelButton.Text = "Disable these hotkeys";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
             // okButton
             // 
             this.okButton.LanguageKey = "hotkeys_resolving_ok";
-            this.okButton.Location = new System.Drawing.Point(467, 513);
+            this.okButton.Location = new System.Drawing.Point(383, 557);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 3;
@@ -101,7 +99,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(638, 551);
+            this.ClientSize = new System.Drawing.Size(640, 595);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.cancelButton);
             this.Controls.Add(this.okButton);

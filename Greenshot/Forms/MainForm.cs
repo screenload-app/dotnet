@@ -745,7 +745,7 @@ namespace Greenshot
                     switch (functionName)
                     {
                         case "CaptureRegion":
-                            action = HotkeyAction.CaptureLastRegion;
+                            action = HotkeyAction.CaptureArea;
                             actionTextKey = "capture_region";
                             break;
                         case "CaptureWindow":

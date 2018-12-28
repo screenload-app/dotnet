@@ -55,35 +55,40 @@ namespace Greenshot {
 			ManualStoreFields = true;
 		}
 
-		protected override void OnLoad(EventArgs e) {
-			base.OnLoad(e);
+	    protected override void OnLoad(EventArgs e)
+	    {
+	        base.OnLoad(e);
 
-			// Fix for Vista/XP differences
-			trackBarJpegQuality.BackColor = Environment.OSVersion.Version.Major >= 6 ? SystemColors.Window : SystemColors.Control;
+	        // Fix for Vista/XP differences
+	        trackBarJpegQuality.BackColor =
+	            Environment.OSVersion.Version.Major >= 6 ? SystemColors.Window : SystemColors.Control;
 
-			// This makes it possible to still capture the settings screen
-			fullscreen_hotkeyControl.Enter += EnterHotkeyControl;
-			fullscreen_hotkeyControl.Leave += LeaveHotkeyControl;
-			window_hotkeyControl.Enter += EnterHotkeyControl;
-			window_hotkeyControl.Leave += LeaveHotkeyControl;
-			region_hotkeyControl.Enter += EnterHotkeyControl;
-			region_hotkeyControl.Leave += LeaveHotkeyControl;
-			ie_hotkeyControl.Enter += EnterHotkeyControl;
-			ie_hotkeyControl.Leave += LeaveHotkeyControl;
-			lastregion_hotkeyControl.Enter += EnterHotkeyControl;
-			lastregion_hotkeyControl.Leave += LeaveHotkeyControl;
-			// Changes for BUG-2077
-			numericUpDown_daysbetweencheck.ValueChanged += NumericUpDownDaysbetweencheckOnValueChanged;
+	        // This makes it possible to still capture the settings screen
+	        fullscreen_hotkeyControl.Enter += EnterHotkeyControl;
+	        fullscreen_hotkeyControl.Leave += LeaveHotkeyControl;
+	        window_hotkeyControl.Enter += EnterHotkeyControl;
+	        window_hotkeyControl.Leave += LeaveHotkeyControl;
+	        region_hotkeyControl.Enter += EnterHotkeyControl;
+	        region_hotkeyControl.Leave += LeaveHotkeyControl;
+	        ie_hotkeyControl.Enter += EnterHotkeyControl;
+	        ie_hotkeyControl.Leave += LeaveHotkeyControl;
+	        lastregion_hotkeyControl.Enter += EnterHotkeyControl;
+	        lastregion_hotkeyControl.Leave += LeaveHotkeyControl;
+	        // Changes for BUG-2077
+	        numericUpDown_daysbetweencheck.ValueChanged += NumericUpDownDaysbetweencheckOnValueChanged;
 
-			_daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
-			DisplayPluginTab();
-			UpdateUi();
-			ExpertSettingsEnableState(false);
-			DisplaySettings();
-			CheckSettings();
-		}
+	        _daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
 
-		/// <summary>
+	        HotkeyControl.UnregisterHotkeys();
+
+            DisplayPluginTab();
+	        UpdateUi();
+	        ExpertSettingsEnableState(false);
+	        DisplaySettings();
+	        CheckSettings();
+	    }
+
+	    /// <summary>
 		/// This makes sure the check cannot be set to 1-6
 		/// </summary>
 		/// <param name="sender">object</param>
@@ -495,22 +500,25 @@ namespace Greenshot {
 			DialogResult = DialogResult.Cancel;
 		}
 
-		private void Settings_okayClick(object sender, EventArgs e) {
-			if (CheckSettings()) {
-				HotkeyControl.UnregisterHotkeys();
-				SaveSettings();
-				StoreFields();
-				MainForm.RegisterHotkeys(this);
+	    private void Settings_okayClick(object sender, EventArgs e)
+	    {
+	        if (CheckSettings())
+	        {
+	            SaveSettings();
+	            StoreFields();
+	            MainForm.RegisterHotkeys(this);
 
-				// Make sure the current language & settings are reflected in the Main-context menu
-				MainForm.Instance.UpdateUi();
-				DialogResult = DialogResult.OK;
-			} else {
-				tabcontrol.SelectTab(tab_output);
-			}
-		}
+	            // Make sure the current language & settings are reflected in the Main-context menu
+	            MainForm.Instance.UpdateUi();
+	            DialogResult = DialogResult.OK;
+	        }
+	        else
+	        {
+	            tabcontrol.SelectTab(tab_output);
+	        }
+	    }
 
-		private void BrowseClick(object sender, EventArgs e) {
+	    private void BrowseClick(object sender, EventArgs e) {
 			// Get the storage location and replace the environment variables
 			folderBrowserDialog1.SelectedPath = FilenameHelper.FillVariables(textbox_storagelocation.Text, false);
 			if (folderBrowserDialog1.ShowDialog() == DialogResult.OK) {

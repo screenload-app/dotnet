@@ -299,9 +299,12 @@ ${hostname} Имя ПК
 
 	  <resource name="hotkeys_resolving_title">Не удалось задать горячие клавиши!</resource>
 	  <resource name="hotkeys_resolving_caption">Не удалось задать горячие клавиши!</resource>
-	  <resource name="hotkeys_resolving_info">Не удалось задать одну или несколько горячих клавиш, так как они уже используются другой программой. Введите альтернативное значение горячих клавиш или закройте программу, которая их использует.</resource>
+	  <resource name="hotkeys_resolving_info">Не удалось задать одну или несколько горячих клавиш. Эта проблема может быть связана с ещё одним инструментом, использующим те же клавиши! Нужно либо изменить настройки клавиш или деактивировать/изменить программное обеспечение, использующее горячие клавиши.
+
+Все функции Greenshot по-прежнему работают прямо из контекстного меню через значок  в трее.
+	  </resource>
 	  <resource name="hotkeys_resolving_ok">ОК</resource>
-	  <resource name="hotkeys_resolving_cancel">Отмена</resource>
+	  <resource name="hotkeys_resolving_cancel">Отключить эти клавиши</resource>
 
 	  <resource name="hotkey_resolving_message">Невозможно использовать комбинацию, так как она уже используется другой программой!</resource>
 	  <resource name="hotkey_resolving_other_combination">Задать другую комбинацию:</resource>
