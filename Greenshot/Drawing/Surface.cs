@@ -61,10 +61,12 @@ namespace Greenshot.Drawing
 		/// </summary>
 		private int _counterStart = 1;
 
-		/// <summary>
-		/// The GUID of the surface
-		/// </summary>
-		public Guid ID
+        private bool _firstStep = true;
+
+        /// <summary>
+        /// The GUID of the surface
+        /// </summary>
+        public Guid ID
 		{
 			get
 			{
@@ -248,20 +250,20 @@ namespace Greenshot.Drawing
 		/// </summary>
 		private readonly List<StepLabelContainer> _stepLabels = new List<StepLabelContainer>();
 
-		public void AddStepLabel(StepLabelContainer stepLabel)
-		{
-			if (!_stepLabels.Contains(stepLabel))
-			{
-				_stepLabels.Add(stepLabel);
-			}
-		}
+        public void AddStepLabel(StepLabelContainer stepLabel)
+        {
+            if (!_stepLabels.Contains(stepLabel))
+            {
+                _stepLabels.Add(stepLabel);
+            }
+        }
 
-		public void RemoveStepLabel(StepLabelContainer stepLabel)
-		{
-			_stepLabels.Remove(stepLabel);
-		}
+        public void RemoveStepLabel(StepLabelContainer stepLabel)
+        {
+            _stepLabels.Remove(stepLabel);
+        }
 
-		/// <summary>
+        /// <summary>
 		///     The start value of the counter objects
 		/// </summary>
 		public int CounterStart
@@ -288,9 +290,13 @@ namespace Greenshot.Drawing
 		public int CountStepLabels(IDrawableContainer stopAtContainer)
 		{
 			int number = CounterStart;
+
 			foreach (var possibleThis in _stepLabels)
 			{
-				if (possibleThis.Equals(stopAtContainer))
+                if (possibleThis.IsFirstStepLabel)
+                    number = CounterStart;
+
+                if (possibleThis.Equals(stopAtContainer))
 				{
 					break;
 				}
@@ -439,6 +445,10 @@ namespace Greenshot.Drawing
 					};
 					_drawingModeChanged.Invoke(this, eventArgs);
 				}
+
+                if (DrawingMode == DrawingModes.StepLabel)
+                    _firstStep = true;
+
 				DeselectAllElements();
 				CreateUndrawnElement();
 			}
@@ -752,8 +762,16 @@ namespace Greenshot.Drawing
 					_undrawnElement = new SpeechbubbleContainer(this);
 					break;
 				case DrawingModes.StepLabel:
-					_undrawnElement = new StepLabelContainer(this);
-					break;
+                    var stepLabelContainer = new StepLabelContainer(this);
+
+                    if (_firstStep)
+                    {
+                        stepLabelContainer.IsFirstStepLabel = true;
+                        _firstStep = false;
+                    }
+
+                    _undrawnElement = stepLabelContainer;
+                    break;
 				case DrawingModes.Line:
 					_undrawnElement = new LineContainer(this);
 					break;

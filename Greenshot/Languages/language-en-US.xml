@@ -321,6 +321,22 @@ All Greenshot features still work directly from the tray icon context menu witho
     
 	  <resource name="empty_hotkey">[no key assigned]</resource>
 	  <resource name="empty_hotkey_error_message">Value cannot be blank!</resource>
-    
+
+    <!--QuickImageEditor-->
+    <resource name="QuickImageEditor_Arrow">Arrow</resource>
+    <resource name="QuickImageEditor_Pencil">Pencil</resource>
+    <resource name="QuickImageEditor_Rectangle">Rectangle</resource>
+    <resource name="QuickImageEditor_Text">Text</resource>
+    <resource name="QuickImageEditor_Blur">Blur</resource>
+    <resource name="QuickImageEditor_Counter">Counter</resource>
+    <resource name="QuickImageEditor_Color">Color</resource>
+    <resource name="QuickImageEditor_Undo">Undo</resource>
+
+    <resource name="QuickImageEditor_Upload">Upload</resource>
+    <resource name="QuickImageEditor_Copy">Copy</resource>
+    <resource name="QuickImageEditor_Save">Save</resource>
+    <resource name="QuickImageEditor_More">More</resource>
+    <resource name="QuickImageEditor_Close">Close</resource>
+
   </resources>
 </language>

@@ -320,5 +320,23 @@ ${hostname} Имя ПК
 	  <resource name="empty_hotkey">[клавиша не назначена]</resource>
 	  <resource name="empty_hotkey_error_message">Значение не может быть пустым!</resource>
 
+    <!--QuickImageEditor-->
+    <resource name="QuickImageEditor_Arrow">Стрелка</resource>
+    <resource name="QuickImageEditor_Pencil">Карандаш</resource>
+    <resource name="QuickImageEditor_Rectangle">Прямоугольник</resource>
+    <resource name="QuickImageEditor_Text">Текст</resource>
+    <resource name="QuickImageEditor_Blur">Размытие</resource>
+    <resource name="QuickImageEditor_Counter">Счетчик</resource>
+    <resource name="QuickImageEditor_Color">Выбор цвета</resource>
+    <resource name="QuickImageEditor_Undo">Отмена действия</resource>
+
+    <resource name="QuickImageEditor_Upload">Сохранить на Download.Ru</resource>
+    <resource name="QuickImageEditor_Copy">Копировать в буфер обмена</resource>
+    <resource name="QuickImageEditor_Save">Сохранить на диск...</resource>
+    <resource name="QuickImageEditor_More">Расширенный редактор...</resource>
+    <resource name="QuickImageEditor_Close">Закрыть</resource>
+
+    <resource name="capture_area_color">Задать цвет области захвата</resource>
+
   </resources>
 </language>

@@ -43,6 +43,8 @@ namespace Greenshot.Drawing {
 
 		private float fontSize = 16;
 
+        public bool IsFirstStepLabel { get; set; }
+
 		public StepLabelContainer(Surface parent) : base(parent) {
 			parent.AddStepLabel(this);
 			InitContent();

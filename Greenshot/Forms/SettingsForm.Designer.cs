@@ -105,6 +105,8 @@ namespace Greenshot {
             this.radiobuttonInteractiveCapture = new GreenshotPlugin.Controls.GreenshotRadioButton();
             this.combobox_window_capture_mode = new System.Windows.Forms.ComboBox();
             this.groupbox_capture = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.captureAreaColorCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.captureAreaColorButton = new Greenshot.Controls.ColorButton();
             this.checkbox_notifications = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_playsound = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_capture_mousepointer = new GreenshotPlugin.Controls.GreenshotCheckBox();
@@ -194,7 +196,7 @@ namespace Greenshot {
             // settings_cancel
             // 
             this.settings_cancel.LanguageKey = "CANCEL";
-            this.settings_cancel.Location = new System.Drawing.Point(364, 396);
+            this.settings_cancel.Location = new System.Drawing.Point(364, 407);
             this.settings_cancel.Name = "settings_cancel";
             this.settings_cancel.Size = new System.Drawing.Size(75, 23);
             this.settings_cancel.TabIndex = 21;
@@ -205,7 +207,7 @@ namespace Greenshot {
             // settings_confirm
             // 
             this.settings_confirm.LanguageKey = "OK";
-            this.settings_confirm.Location = new System.Drawing.Point(283, 396);
+            this.settings_confirm.Location = new System.Drawing.Point(283, 407);
             this.settings_confirm.Name = "settings_confirm";
             this.settings_confirm.Size = new System.Drawing.Size(75, 23);
             this.settings_confirm.TabIndex = 20;
@@ -325,7 +327,7 @@ namespace Greenshot {
             this.checkbox_zoomer.Location = new System.Drawing.Point(11, 79);
             this.checkbox_zoomer.Name = "checkbox_zoomer";
             this.checkbox_zoomer.PropertyName = "ZoomerEnabled";
-            this.checkbox_zoomer.Size = new System.Drawing.Size(399, 24);
+            this.checkbox_zoomer.Size = new System.Drawing.Size(168, 24);
             this.checkbox_zoomer.TabIndex = 4;
             this.checkbox_zoomer.Text = "Show magnifier";
             this.checkbox_zoomer.UseVisualStyleBackColor = true;
@@ -489,6 +491,7 @@ namespace Greenshot {
             this.listview_destinations.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.destination});
             this.listview_destinations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listview_destinations.HideSelection = false;
             this.listview_destinations.LabelWrap = false;
             this.listview_destinations.Location = new System.Drawing.Point(6, 38);
             this.listview_destinations.Name = "listview_destinations";
@@ -516,7 +519,7 @@ namespace Greenshot {
             this.tabcontrol.Location = new System.Drawing.Point(12, 13);
             this.tabcontrol.Name = "tabcontrol";
             this.tabcontrol.SelectedIndex = 0;
-            this.tabcontrol.Size = new System.Drawing.Size(431, 377);
+            this.tabcontrol.Size = new System.Drawing.Size(431, 388);
             this.tabcontrol.TabIndex = 0;
             // 
             // tab_general
@@ -529,7 +532,7 @@ namespace Greenshot {
             this.tab_general.Location = new System.Drawing.Point(4, 22);
             this.tab_general.Name = "tab_general";
             this.tab_general.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_general.Size = new System.Drawing.Size(423, 351);
+            this.tab_general.Size = new System.Drawing.Size(423, 362);
             this.tab_general.TabIndex = 0;
             this.tab_general.Text = "General";
             this.tab_general.UseVisualStyleBackColor = true;
@@ -704,7 +707,7 @@ namespace Greenshot {
             this.tab_capture.LanguageKey = "settings_capture";
             this.tab_capture.Location = new System.Drawing.Point(4, 22);
             this.tab_capture.Name = "tab_capture";
-            this.tab_capture.Size = new System.Drawing.Size(423, 351);
+            this.tab_capture.Size = new System.Drawing.Size(423, 362);
             this.tab_capture.TabIndex = 3;
             this.tab_capture.Text = "Capture";
             this.tab_capture.UseVisualStyleBackColor = true;
@@ -713,7 +716,7 @@ namespace Greenshot {
             // 
             this.groupbox_editor.Controls.Add(this.checkbox_editor_match_capture_size);
             this.groupbox_editor.LanguageKey = "settings_editor";
-            this.groupbox_editor.Location = new System.Drawing.Point(4, 277);
+            this.groupbox_editor.Location = new System.Drawing.Point(4, 306);
             this.groupbox_editor.Name = "groupbox_editor";
             this.groupbox_editor.Size = new System.Drawing.Size(416, 50);
             this.groupbox_editor.TabIndex = 27;
@@ -736,7 +739,7 @@ namespace Greenshot {
             // 
             this.groupbox_iecapture.Controls.Add(this.checkbox_ie_capture);
             this.groupbox_iecapture.LanguageKey = "settings_iecapture";
-            this.groupbox_iecapture.Location = new System.Drawing.Point(4, 224);
+            this.groupbox_iecapture.Location = new System.Drawing.Point(4, 250);
             this.groupbox_iecapture.Name = "groupbox_iecapture";
             this.groupbox_iecapture.Size = new System.Drawing.Size(416, 50);
             this.groupbox_iecapture.TabIndex = 2;
@@ -761,7 +764,7 @@ namespace Greenshot {
             this.groupbox_windowscapture.Controls.Add(this.radiobuttonInteractiveCapture);
             this.groupbox_windowscapture.Controls.Add(this.combobox_window_capture_mode);
             this.groupbox_windowscapture.LanguageKey = "settings_windowscapture";
-            this.groupbox_windowscapture.Location = new System.Drawing.Point(4, 141);
+            this.groupbox_windowscapture.Location = new System.Drawing.Point(4, 164);
             this.groupbox_windowscapture.Name = "groupbox_windowscapture";
             this.groupbox_windowscapture.Size = new System.Drawing.Size(416, 80);
             this.groupbox_windowscapture.TabIndex = 1;
@@ -818,6 +821,8 @@ namespace Greenshot {
             // 
             // groupbox_capture
             // 
+            this.groupbox_capture.Controls.Add(this.captureAreaColorCheckBox);
+            this.groupbox_capture.Controls.Add(this.captureAreaColorButton);
             this.groupbox_capture.Controls.Add(this.checkbox_notifications);
             this.groupbox_capture.Controls.Add(this.checkbox_playsound);
             this.groupbox_capture.Controls.Add(this.checkbox_capture_mousepointer);
@@ -827,10 +832,33 @@ namespace Greenshot {
             this.groupbox_capture.LanguageKey = "settings_capture";
             this.groupbox_capture.Location = new System.Drawing.Point(4, 4);
             this.groupbox_capture.Name = "groupbox_capture";
-            this.groupbox_capture.Size = new System.Drawing.Size(416, 134);
+            this.groupbox_capture.Size = new System.Drawing.Size(416, 154);
             this.groupbox_capture.TabIndex = 0;
             this.groupbox_capture.TabStop = false;
             this.groupbox_capture.Text = "Capture";
+            // 
+            // captureAreaColorCheckBox
+            // 
+            this.captureAreaColorCheckBox.AutoSize = true;
+            this.captureAreaColorCheckBox.LanguageKey = "capture_area_color";
+            this.captureAreaColorCheckBox.Location = new System.Drawing.Point(11, 102);
+            this.captureAreaColorCheckBox.Name = "captureAreaColorCheckBox";
+            this.captureAreaColorCheckBox.Size = new System.Drawing.Size(131, 17);
+            this.captureAreaColorCheckBox.TabIndex = 5;
+            this.captureAreaColorCheckBox.Text = "Set capture area color";
+            this.captureAreaColorCheckBox.UseVisualStyleBackColor = true;
+            this.captureAreaColorCheckBox.CheckedChanged += new System.EventHandler(this.CaptureAreaColorCheckBox_CheckedChanged);
+            // 
+            // captureAreaColorButton
+            // 
+            this.captureAreaColorButton.Enabled = false;
+            this.captureAreaColorButton.Image = ((System.Drawing.Image)(resources.GetObject("captureAreaColorButton.Image")));
+            this.captureAreaColorButton.Location = new System.Drawing.Point(197, 94);
+            this.captureAreaColorButton.Name = "captureAreaColorButton";
+            this.captureAreaColorButton.SelectedColor = System.Drawing.Color.MediumSeaGreen;
+            this.captureAreaColorButton.Size = new System.Drawing.Size(29, 30);
+            this.captureAreaColorButton.TabIndex = 6;
+            this.captureAreaColorButton.UseVisualStyleBackColor = true;
             // 
             // checkbox_notifications
             // 
@@ -872,7 +900,7 @@ namespace Greenshot {
             0,
             0,
             0});
-            this.numericUpDownWaitTime.Location = new System.Drawing.Point(9, 103);
+            this.numericUpDownWaitTime.Location = new System.Drawing.Point(11, 125);
             this.numericUpDownWaitTime.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -880,16 +908,16 @@ namespace Greenshot {
             0});
             this.numericUpDownWaitTime.Name = "numericUpDownWaitTime";
             this.numericUpDownWaitTime.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDownWaitTime.TabIndex = 5;
+            this.numericUpDownWaitTime.TabIndex = 7;
             this.numericUpDownWaitTime.ThousandsSeparator = true;
             // 
             // label_waittime
             // 
             this.label_waittime.LanguageKey = "settings_waittime";
-            this.label_waittime.Location = new System.Drawing.Point(72, 106);
+            this.label_waittime.Location = new System.Drawing.Point(74, 127);
             this.label_waittime.Name = "label_waittime";
-            this.label_waittime.Size = new System.Drawing.Size(331, 16);
-            this.label_waittime.TabIndex = 5;
+            this.label_waittime.Size = new System.Drawing.Size(336, 18);
+            this.label_waittime.TabIndex = 8;
             this.label_waittime.Text = "Milliseconds to wait before capture";
             // 
             // tab_output
@@ -901,7 +929,7 @@ namespace Greenshot {
             this.tab_output.Location = new System.Drawing.Point(4, 22);
             this.tab_output.Name = "tab_output";
             this.tab_output.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_output.Size = new System.Drawing.Size(423, 351);
+            this.tab_output.Size = new System.Drawing.Size(423, 362);
             this.tab_output.TabIndex = 1;
             this.tab_output.Text = "Output";
             this.tab_output.UseVisualStyleBackColor = true;
@@ -912,7 +940,7 @@ namespace Greenshot {
             this.tab_destinations.LanguageKey = "settings_destination";
             this.tab_destinations.Location = new System.Drawing.Point(4, 22);
             this.tab_destinations.Name = "tab_destinations";
-            this.tab_destinations.Size = new System.Drawing.Size(423, 351);
+            this.tab_destinations.Size = new System.Drawing.Size(423, 362);
             this.tab_destinations.TabIndex = 4;
             this.tab_destinations.Text = "Destination";
             this.tab_destinations.UseVisualStyleBackColor = true;
@@ -926,7 +954,7 @@ namespace Greenshot {
             this.tab_printer.Location = new System.Drawing.Point(4, 22);
             this.tab_printer.Name = "tab_printer";
             this.tab_printer.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_printer.Size = new System.Drawing.Size(423, 351);
+            this.tab_printer.Size = new System.Drawing.Size(423, 362);
             this.tab_printer.TabIndex = 2;
             this.tab_printer.Text = "Printer";
             this.tab_printer.UseVisualStyleBackColor = true;
@@ -1114,7 +1142,7 @@ namespace Greenshot {
             this.tab_plugins.LanguageKey = "settings_plugins";
             this.tab_plugins.Location = new System.Drawing.Point(4, 22);
             this.tab_plugins.Name = "tab_plugins";
-            this.tab_plugins.Size = new System.Drawing.Size(423, 351);
+            this.tab_plugins.Size = new System.Drawing.Size(423, 362);
             this.tab_plugins.TabIndex = 2;
             this.tab_plugins.Text = "Plugins";
             this.tab_plugins.UseVisualStyleBackColor = true;
@@ -1139,6 +1167,7 @@ namespace Greenshot {
             // 
             this.listview_plugins.Dock = System.Windows.Forms.DockStyle.Top;
             this.listview_plugins.FullRowSelect = true;
+            this.listview_plugins.HideSelection = false;
             this.listview_plugins.Location = new System.Drawing.Point(3, 16);
             this.listview_plugins.Name = "listview_plugins";
             this.listview_plugins.Size = new System.Drawing.Size(417, 263);
@@ -1168,7 +1197,7 @@ namespace Greenshot {
             this.tab_expert.LanguageKey = "expertsettings";
             this.tab_expert.Location = new System.Drawing.Point(4, 22);
             this.tab_expert.Name = "tab_expert";
-            this.tab_expert.Size = new System.Drawing.Size(423, 351);
+            this.tab_expert.Size = new System.Drawing.Size(423, 362);
             this.tab_expert.TabIndex = 5;
             this.tab_expert.Text = "Expert";
             this.tab_expert.UseVisualStyleBackColor = true;
@@ -1342,6 +1371,7 @@ namespace Greenshot {
             this.listview_clipboardformats.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1});
             this.listview_clipboardformats.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
+            this.listview_clipboardformats.HideSelection = false;
             this.listview_clipboardformats.LabelWrap = false;
             this.listview_clipboardformats.Location = new System.Drawing.Point(170, 38);
             this.listview_clipboardformats.Name = "listview_clipboardformats";
@@ -1362,7 +1392,7 @@ namespace Greenshot {
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(451, 431);
+            this.ClientSize = new System.Drawing.Size(451, 443);
             this.Controls.Add(this.tabcontrol);
             this.Controls.Add(this.settings_confirm);
             this.Controls.Add(this.settings_cancel);
@@ -1393,6 +1423,7 @@ namespace Greenshot {
             this.groupbox_windowscapture.ResumeLayout(false);
             this.groupbox_windowscapture.PerformLayout();
             this.groupbox_capture.ResumeLayout(false);
+            this.groupbox_capture.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDownWaitTime)).EndInit();
             this.tab_output.ResumeLayout(false);
             this.tab_destinations.ResumeLayout(false);
@@ -1510,5 +1541,7 @@ namespace Greenshot {
 		private GreenshotPlugin.Controls.GreenshotCheckBox checkbox_zoomer;
 		private GreenshotPlugin.Controls.GreenshotLabel label_icon_size;
 		private System.Windows.Forms.NumericUpDown numericUpdownIconSize;
-	}
+        private Controls.ColorButton captureAreaColorButton;
+        private GreenshotPlugin.Controls.GreenshotCheckBox captureAreaColorCheckBox;
+    }
 }

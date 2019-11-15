@@ -231,7 +231,7 @@ namespace GreenshotPlugin.Core {
 		[IniProperty("LeftClickAction", Description = "Specify what action is made if the tray icon is left clicked, if a double-click action is specified this action is initiated after a delay (configurable via the windows double-click speed)", DefaultValue = "SHOW_CONTEXT_MENU")]
 		public ClickActions LeftClickAction { get; set; }
 
-		[IniProperty("DoubleClickAction", Description = "Specify what action is made if the tray icon is double clicked", DefaultValue = "OPEN_LAST_IN_EXPLORER")]
+		[IniProperty("DoubleClickAction", Description = "Specify what action is made if the tray icon is double clicked", DefaultValue = "SHOW_CONTEXT_MENU")]
 		public ClickActions DoubleClickAction { get; set; }
 
 		[IniProperty("ZoomerEnabled", Description = "Sets if the zoomer is enabled", DefaultValue = "True")]
@@ -300,10 +300,15 @@ namespace GreenshotPlugin.Core {
 		[IniProperty("WebRequestReadWriteTimeout", Description = "The read/write timeout value for webrequets, these are seconds", DefaultValue = "100")]
 		public int WebRequestReadWriteTimeout { get; set; }
 
-		/// <summary>
-		/// Specifies what THIS build is
-		/// </summary>
-		public BuildStates BuildState {
+        // Quick Image Editor
+
+        [IniProperty("CaptureAreaColor", Description = "The background color capture.")]
+        public Color CaptureAreaColor { get; set; }
+
+        /// <summary>
+        /// Specifies what THIS build is
+        /// </summary>
+        public BuildStates BuildState {
 			get {
 				string informationalVersion = Application.ProductVersion;
 				if (informationalVersion != null) {

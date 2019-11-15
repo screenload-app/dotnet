@@ -105,6 +105,7 @@
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.mFlowLayoutPanel);
             this.Controls.Add(this.captionLabel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LanguageKey = "hotkeys_resolving_title";
             this.MaximizeBox = false;

@@ -301,10 +301,11 @@ namespace Greenshot.Drawing
 
         private void HideTextBox()
         {
-            _parent.Focus();
+            // TODO $MarketKernel Временно убрал, т.к. иначе захватывает фокус и на кнопку в другой форме нужно нажимать дважды.
+            //_parent.Focus();
             _textBox?.Hide();
             _parent.KeysLocked = false;
-            _parent.Controls.Remove(_textBox);
+            //_parent.Controls.Remove(_textBox);
         }
 
         /// <summary>

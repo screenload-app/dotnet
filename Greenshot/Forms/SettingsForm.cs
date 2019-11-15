@@ -373,8 +373,17 @@ namespace Greenshot {
 			listview_destinations.Enabled = destinationsEnabled;
 		}
 
-		private void DisplaySettings() {
-			colorButton_window_background.SelectedColor = coreConfiguration.DWMBackgroundColor;
+		private void DisplaySettings()
+        {
+            var captureAreaColor = coreConfiguration.CaptureAreaColor;
+
+            if (Color.MediumSeaGreen != captureAreaColor)
+            {
+                captureAreaColorButton.SelectedColor = coreConfiguration.CaptureAreaColor;
+                captureAreaColorCheckBox.Checked = true;
+            }
+
+            colorButton_window_background.SelectedColor = coreConfiguration.DWMBackgroundColor;
 
 			// Expert mode, the clipboard formats
 			foreach (ClipboardFormat clipboardFormat in Enum.GetValues(typeof(ClipboardFormat))) {
@@ -470,7 +479,8 @@ namespace Greenshot {
 			}
 			coreConfiguration.OutputDestinations = destinations;
 			coreConfiguration.CaptureDelay = (int)numericUpDownWaitTime.Value;
-			coreConfiguration.DWMBackgroundColor = colorButton_window_background.SelectedColor;
+            coreConfiguration.CaptureAreaColor = captureAreaColorButton.SelectedColor;
+            coreConfiguration.DWMBackgroundColor = colorButton_window_background.SelectedColor;
 			coreConfiguration.UpdateCheckInterval = (int)numericUpDown_daysbetweencheck.Value;
 
 			coreConfiguration.IconSize = new Size((int)numericUpdownIconSize.Value, (int)numericUpdownIconSize.Value);
@@ -662,9 +672,17 @@ namespace Greenshot {
 		private void radiobutton_CheckedChanged(object sender, EventArgs e) {
 			combobox_window_capture_mode.Enabled = radiobuttonWindowCapture.Checked;
 		}
-	}
 
-	public class ListviewWithDestinationComparer : IComparer {
+        private void CaptureAreaColorCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            captureAreaColorButton.Enabled = captureAreaColorCheckBox.Checked;
+
+            if (!captureAreaColorCheckBox.Checked)
+                captureAreaColorButton.SelectedColor = Color.MediumSeaGreen;
+        }
+    }
+
+    public class ListviewWithDestinationComparer : IComparer {
 		public int Compare(object x, object y) {
 			if (!(x is ListViewItem)) {
 				return 0;
