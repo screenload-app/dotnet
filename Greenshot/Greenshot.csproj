@@ -256,6 +256,7 @@
     <Compile Include="Helpers\HotkeyProblem.cs" />
     <Compile Include="Helpers\HotkeySolution.cs" />
     <Compile Include="Helpers\QuickImageEditorResult.cs" />
+    <Compile Include="Helpers\RegistryMonitor.cs" />
     <Compile Include="Sounds.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

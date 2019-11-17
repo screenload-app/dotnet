@@ -135,24 +135,24 @@ namespace Greenshot.Drawing
 				_surfaceSizeChanged -= value;
 			}
 		}
-		[NonSerialized]
-		private SurfaceMessageEventHandler _surfaceMessage;
-		public event SurfaceMessageEventHandler SurfaceMessage
-		{
-			add
-			{
-				_surfaceMessage += value;
-			}
-			remove
-			{
-				_surfaceMessage -= value;
-			}
-		}
+        [NonSerialized]
+        private SurfaceMessageEventHandler _surfaceMessage;
+        public event SurfaceMessageEventHandler SurfaceMessage
+        {
+            add
+            {
+                _surfaceMessage += value;
+            }
+            remove
+            {
+                _surfaceMessage -= value;
+            }
+        }
 
-		/// <summary>
-		/// inUndoRedo makes sure we don't undo/redo while in a undo/redo action
-		/// </summary>
-		[NonSerialized]
+        /// <summary>
+        /// inUndoRedo makes sure we don't undo/redo while in a undo/redo action
+        /// </summary>
+        [NonSerialized]
 		private bool _inUndoRedo;
 
 		/// <summary>
@@ -724,7 +724,7 @@ namespace Greenshot.Drawing
 				IDrawableContainerList loadedElements = (IDrawableContainerList)binaryRead.Deserialize(streamRead);
 				loadedElements.Parent = this;
 				// Make sure the steplabels are sorted accoring to their number
-				_stepLabels.Sort((p1, p2) => p1.Number.CompareTo(p2.Number));
+				//_stepLabels.Sort((p1, p2) => p1.Number.CompareTo(p2.Number));
 				DeselectAllElements();
 				AddElements(loadedElements);
 				SelectElements(loadedElements);

@@ -249,4 +249,13 @@
   <ItemGroup>
     <None Include="Resources\Modify.ico" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-dark.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-old.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-white.ico" />
+  </ItemGroup>
 </Project>

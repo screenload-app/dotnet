@@ -323,20 +323,32 @@ ${hostname} Имя ПК
     <!--QuickImageEditor-->
     <resource name="QuickImageEditor_Arrow">Стрелка</resource>
     <resource name="QuickImageEditor_Pencil">Карандаш</resource>
+    <resource name="QuickImageEditor_Line">Линия</resource>
     <resource name="QuickImageEditor_Rectangle">Прямоугольник</resource>
+    <resource name="QuickImageEditor_Ellipse">Эллипс</resource>
     <resource name="QuickImageEditor_Text">Текст</resource>
     <resource name="QuickImageEditor_Blur">Размытие</resource>
     <resource name="QuickImageEditor_Counter">Счетчик</resource>
     <resource name="QuickImageEditor_Color">Выбор цвета</resource>
-    <resource name="QuickImageEditor_Undo">Отмена действия</resource>
+    <resource name="QuickImageEditor_Undo">Отмена действия [Ctrl+Z]</resource>
 
-    <resource name="QuickImageEditor_Upload">Сохранить на Download.Ru</resource>
-    <resource name="QuickImageEditor_Copy">Копировать в буфер обмена</resource>
-    <resource name="QuickImageEditor_Save">Сохранить на диск...</resource>
-    <resource name="QuickImageEditor_More">Расширенный редактор...</resource>
-    <resource name="QuickImageEditor_Close">Закрыть</resource>
+    <resource name="QuickImageEditor_Upload">Сохранить на Download.Ru [Ctrl+D]</resource>
+    <resource name="QuickImageEditor_Copy">Копировать в буфер обмена [Ctrl+C]</resource>
+    <resource name="QuickImageEditor_Save">Сохранить на диск...[Ctrl+S]</resource>
+    <resource name="QuickImageEditor_More">Расширенный редактор [Ctrl+E]</resource>
+    <resource name="QuickImageEditor_Close">Закрыть [Esc]</resource>
 
     <resource name="capture_area_color">Задать цвет области захвата</resource>
+
+    <resource name="QuickImageEditorForm_Leave_Confirmation_Title">Greenshot</resource>
+    <resource name="QuickImageEditorForm_Leave_Confirmation_Text">Вы уверены, что хотите выйти без сохранения изменений?</resource>
+
+    <resource name="exported_to_Clipboard">Скриншот скопирован в буфер обмена.</resource>
+    <resource name="exported_to_Editor">Скриншот отправлен в редактор.</resource>
+    <resource name="exported_to_EMail">Скриншот отправлен на email.</resource>
+    <resource name="exported_to_FileNoDialog">Скриншот сохранен.</resource>
+    <resource name="exported_to_FileDialog">Скриншот сохранен.</resource>
+    <resource name="exported_to_Printer">Скриншот отправлен на печать.</resource>
 
   </resources>
 </language>

@@ -91,29 +91,42 @@ namespace GreenshotPlugin.Core {
 
 		public abstract ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails);
 
-		/// <summary>
-		/// A small helper method to perform some default destination actions, like inform the surface of the export
-		/// </summary>
-		/// <param name="exportInformation"></param>
-		/// <param name="surface"></param>
-		public void ProcessExport(ExportInformation exportInformation, ISurface surface) {
-			if (exportInformation != null && exportInformation.ExportMade) {
-				if (!string.IsNullOrEmpty(exportInformation.Uri)) {
-					surface.UploadUrl = exportInformation.Uri;
-					surface.SendMessageEvent(this, SurfaceMessageTyp.UploadedUri, Language.GetFormattedString("exported_to", exportInformation.DestinationDescription));
-				} else if (!string.IsNullOrEmpty(exportInformation.Filepath)) {
-					surface.LastSaveFullPath = exportInformation.Filepath;
-					surface.SendMessageEvent(this, SurfaceMessageTyp.FileSaved, Language.GetFormattedString("exported_to", exportInformation.DestinationDescription));
-				} else {
-					surface.SendMessageEvent(this, SurfaceMessageTyp.Info, Language.GetFormattedString("exported_to", exportInformation.DestinationDescription));
-				}
-				surface.Modified = false;
-			} else if (!string.IsNullOrEmpty(exportInformation?.ErrorMessage)) {
-				surface.SendMessageEvent(this, SurfaceMessageTyp.Error, Language.GetFormattedString("exported_to_error", exportInformation.DestinationDescription) + " " + exportInformation.ErrorMessage);
-			}
-		}
+        /// <summary>
+        /// A small helper method to perform some default destination actions, like inform the surface of the export
+        /// </summary>
+        /// <param name="exportInformation"></param>
+        /// <param name="surface"></param>
+        public void ProcessExport(ExportInformation exportInformation, ISurface surface)
+        {
+            if (exportInformation != null && exportInformation.ExportMade)
+            {
+                var message = exportInformation.SuccessMessage ??
+                              Language.GetFormattedString("exported_to", exportInformation.DestinationDescription);
 
-		public override string ToString() {
+                if (!string.IsNullOrEmpty(exportInformation.Uri))
+                {
+                    surface.UploadUrl = exportInformation.Uri;
+                    surface.SendMessageEvent(this, SurfaceMessageTyp.UploadedUri, message);
+                }
+                else if (!string.IsNullOrEmpty(exportInformation.Filepath))
+                {
+                    surface.LastSaveFullPath = exportInformation.Filepath;
+                    surface.SendMessageEvent(this, SurfaceMessageTyp.FileSaved, message);
+                }
+                else
+                    surface.SendMessageEvent(this, SurfaceMessageTyp.Info, message);
+
+                surface.Modified = false;
+            }
+            else if (!string.IsNullOrEmpty(exportInformation?.ErrorMessage))
+            {
+                surface.SendMessageEvent(this, SurfaceMessageTyp.Error,
+                    Language.GetFormattedString("exported_to_error", exportInformation.DestinationDescription) + " " +
+                    exportInformation.ErrorMessage);
+            }
+        }
+
+        public override string ToString() {
 			return Description;
 		}
 

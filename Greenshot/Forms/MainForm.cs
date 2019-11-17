@@ -26,6 +26,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Reflection;
+using System.Security;
 using System.Text;
 using System.Threading;
 using System.Windows.Forms;
@@ -43,6 +44,8 @@ using Greenshot.IniFile;
 using Greenshot.Destinations;
 using Greenshot.Drawing;
 using log4net;
+using Microsoft.Win32;
+using RegistryUtils;
 using Timer = System.Timers.Timer;
 
 namespace Greenshot
@@ -351,6 +354,8 @@ namespace Greenshot
             }
         }
 
+        private const string PersonalizeRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
+
         private static MainForm _instance;
         public static MainForm Instance => _instance;
 
@@ -367,6 +372,8 @@ namespace Greenshot
 
         // Timer for the double click test
         private readonly Timer _doubleClickTimer = new Timer();
+
+        private RegistryMonitor _registryMonitor;
 
         public NotifyIcon NotifyIcon => notifyIcon;
 
@@ -391,7 +398,7 @@ namespace Greenshot
                 throw;
             }
 
-            notifyIcon.Icon = GreenshotResources.getGreenshotIcon();
+            SetNotifyIcon();
 
             // Disable access to the settings, for feature #3521446
             contextmenu_settings.Visible = !_conf.DisableSettings;
@@ -1785,6 +1792,15 @@ namespace Greenshot
                 notifyIcon.Dispose();
                 notifyIcon = null;
             }
+
+            try
+            {
+                _registryMonitor?.Dispose();
+            }
+            catch (Exception e)
+            {
+                LOG.Error(e.Message, e);
+            }
         }
 
 
@@ -1811,6 +1827,75 @@ namespace Greenshot
                 };
                 backgroundTask.Start();
             }
+        }
+
+        private void SetNotifyIcon()
+        {
+            RegistryKey personalizeKey = null;
+            int? systemUsesLightTheme;
+
+            try
+            {
+                personalizeKey =
+                    Registry.CurrentUser.OpenSubKey(PersonalizeRegistryKey);
+                systemUsesLightTheme = personalizeKey?.GetValue("SystemUsesLightTheme") as int?;
+            }
+            catch (SecurityException exception)
+            {
+                LOG.Error(exception.Message, exception);
+                systemUsesLightTheme = null;
+            }
+            finally
+            {
+                personalizeKey?.Close();
+            }
+
+            Icon themeIcon = null;
+
+            if (systemUsesLightTheme.HasValue)
+            {
+                switch (systemUsesLightTheme.Value)
+                {
+                    case 0:
+                        themeIcon = GreenshotResources.GetWhiteNotifyIcon();
+                        break;
+                    case 1:
+                        themeIcon = GreenshotResources.GetDarkNotifyIcon();
+                        break;
+                }
+            }
+
+            if (null == themeIcon)
+            {
+                notifyIcon.Icon = GreenshotResources.GetClassicNotifyIcon();
+                return;
+            }
+
+            notifyIcon.Icon = themeIcon;
+            StartThemeWatcher();
+        }
+
+        private void StartThemeWatcher()
+        {
+            _registryMonitor = new RegistryMonitor(RegistryHive.CurrentUser, PersonalizeRegistryKey);
+
+            _registryMonitor.RegChanged += (sender, args) =>
+            {
+                Action setNotifyIcon = SetNotifyIcon;
+
+                if (InvokeRequired)
+                    Invoke(setNotifyIcon);
+                else
+                    setNotifyIcon();
+            };
+
+            _registryMonitor.Error += (sender, args) =>
+            {
+                var exception = args.GetException();
+                LOG.Error(exception.Message, exception); 
+            };
+
+            _registryMonitor.Start();
         }
     }
 }

@@ -8,11 +8,6 @@ namespace Greenshot.Controls
         const int WM_NCHITTEST = 0x0084;
         const int HTTRANSPARENT = -1;
 
-        public TransparentLabel()
-        {
-            DoubleBuffered = true;
-        }
-
         protected override void WndProc(ref Message m)
         {
             if (m.Msg == WM_NCHITTEST)

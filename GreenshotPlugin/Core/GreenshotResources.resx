@@ -215,4 +215,13 @@
   <data name="Modify.Icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Modify.ico;System.Drawing.Icon, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="win-dark" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win-dark.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win-old" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win-old.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="win-white" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\win-white.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>

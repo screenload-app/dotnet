@@ -11,6 +11,6 @@ namespace GreenshotDownloadRuPlugin
         Configure,
         label_AfterUpload,
         label_AfterUploadLinkToClipBoard,
-        Authorize
+        Authorize,
     }
 }

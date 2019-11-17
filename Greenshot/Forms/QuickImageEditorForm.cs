@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using Greenshot.Destinations;
 using Greenshot.Drawing;
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
@@ -21,12 +20,12 @@ namespace Greenshot
             Inside
         }
 
-        private struct HorizontalAndVerticalToolboxLocation
+        private struct ToolboxesLocation
         {
             public Point HorizontalToolboxLocation { get; }
             public Point VerticalToolboxLocation { get; }
 
-            public HorizontalAndVerticalToolboxLocation(Point horizontalToolboxLocation, Point verticalToolboxLocation)
+            public ToolboxesLocation(Point horizontalToolboxLocation, Point verticalToolboxLocation)
             {
                 HorizontalToolboxLocation = horizontalToolboxLocation;
                 VerticalToolboxLocation = verticalToolboxLocation;
@@ -38,8 +37,8 @@ namespace Greenshot
         private readonly Form _surfaceForm;
         private readonly Surface _surface;
 
-        private readonly HorizontalToolboxForm _horizontalToolboxForm = new HorizontalToolboxForm();
-        private readonly VerticalToolboxForm _verticalToolboxForm = new VerticalToolboxForm();
+        private HorizontalToolboxForm _horizontalToolboxForm;
+        private VerticalToolboxForm _verticalToolboxForm;
 
         private bool _allowMove;
         private bool _allowResize;
@@ -56,6 +55,16 @@ namespace Greenshot
         private bool _isMouseInBottomEdge;
 
         private QuickImageEditorResult _result;
+
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams createParams = base.CreateParams;
+                createParams.ExStyle |= 0x02000000;
+                return createParams;
+            }
+        }
 
         public QuickImageEditorForm(Surface surface, Rectangle holeRectangle)
         {
@@ -74,30 +83,32 @@ namespace Greenshot
             var coreConfiguration = IniConfig.GetIniSection<CoreConfiguration>();
             BackColor = Color.FromArgb(255, coreConfiguration.CaptureAreaColor);
 
-            holePanel.Location = holeRectangle.Location;
-            holePanel.Size = new Size(holeRectangle.Width + ADORNER_HALF_SIZE * 2,
+            var holePanelLocation = new Point(holeRectangle.X - ADORNER_HALF_SIZE, holeRectangle.Y - ADORNER_HALF_SIZE);
+            var holePanelSize = new Size(holeRectangle.Width + ADORNER_HALF_SIZE * 2,
                 holeRectangle.Height + ADORNER_HALF_SIZE * 2);
+
+            holePanel.Location = holePanelLocation;
+            holePanel.Size = holePanelSize;
         }
 
         private void QuickImageEditorForm_Load(object sender, EventArgs e)
         {
+            DisplayHoleSize();
+            SetSizeLabelLocation();
+            sizeLabel.Visible = true;
+
+            _horizontalToolboxForm = new HorizontalToolboxForm();
             _horizontalToolboxForm.KeyDown += Form_KeyDown;
             _horizontalToolboxForm.ServiceCommand += Toolbox_ServiceCommand;
-            _horizontalToolboxForm.Visible = false;
-            _horizontalToolboxForm.Show(this);
 
+            _verticalToolboxForm = new VerticalToolboxForm();
             _verticalToolboxForm.KeyDown += Form_KeyDown;
             _verticalToolboxForm.ServiceCommand += Toolbox_ServiceCommand;
-            _verticalToolboxForm.Visible = false;
+
+            SetToolboxesLocation();
+
+            _horizontalToolboxForm.Show(this);
             _verticalToolboxForm.Show(this);
-
-            DisplayHoleSize();
-            SetAccessoriesLocation();
-
-            holePanel.Visible = true;
-            sizeLabel.Visible = true;
-            _horizontalToolboxForm.Visible = true;
-            _verticalToolboxForm.Visible = true;
         }
 
         public static QuickImageEditorResult ShowQuickImageEditor(Surface surface, Rectangle holeRectangle)
@@ -110,22 +121,42 @@ namespace Greenshot
 
             surfaceForm.Load += (sender, args) =>
             {
-                surfaceForm.Visible = true;
-
                 quickImageEditorForm = new QuickImageEditorForm(surface, holeRectangle);
                 quickImageEditorForm.Show(surfaceForm);
             };
 
             if (DialogResult.OK != surfaceForm.ShowDialog())
-                return new QuickImageEditorResult(QuickImageEditorAction.Cancel);
+                return QuickImageEditorResult.NoAction;
 
             return quickImageEditorForm._result;
         }
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Keys.Escape == e.KeyData)
-                _surfaceForm.DialogResult = DialogResult.Cancel;
+            if (Keys.Escape == e.KeyCode)
+                Cancel();
+            else if (e.Control)
+            {
+                switch (e.KeyCode)
+                {
+                    case Keys.D:
+                        UploadCapture();
+                        break;
+                    case Keys.C:
+                        CopyCapture();
+                        break;
+                    case Keys.S:
+                        SaveCapture();
+                        break;
+                    case Keys.E:
+                        SendToExtendedEditor();
+                        break;
+                    case Keys.Z:
+                        if (_surface.CanUndo)
+                            _surface.Undo();
+                        break;
+                }
+            }
         }
 
         private void HolePanel_Paint(object sender, PaintEventArgs e)
@@ -406,26 +437,46 @@ namespace Greenshot
             UpdateMouseCursor();
         }
 
+        private void DisplayHoleSize()
+        {
+            sizeLabel.Text = $@"{holePanel.Width - ADORNER_HALF_SIZE * 2}x{holePanel.Height - ADORNER_HALF_SIZE * 2}";
+        }
+
         #endregion
 
         #region Подстройка позиции метки с размерами и панелей инструментов (в зависимости от положения сквозного окна).
 
         private void SetAccessoriesLocation()
         {
+            SetSizeLabelLocation();
+            SetToolboxesLocation();
+        }
+
+        private void SetSizeLabelLocation()
+        {
             var sizeLabelLocation = CalculateSizeLabelLocation(holePanel.Location, sizeLabel.Size, Width);
 
             sizeLabel.Left = sizeLabelLocation.X;
             sizeLabel.Top = sizeLabelLocation.Y;
 
-            var horizontalAndVerticalToolboxLocation = CalculateHorizontalAndVerticalToolboxLocation(
+            sizeLabel.Invalidate();
+        }
+
+        private void SetToolboxesLocation()
+        {
+            var toolboxesLocation = CalculateToolboxesLocation(
                 new Rectangle(holePanel.Left, holePanel.Top, holePanel.Width, holePanel.Height),
                 _horizontalToolboxForm.Size, _verticalToolboxForm.Size, Size);
 
-            _horizontalToolboxForm.Left = horizontalAndVerticalToolboxLocation.HorizontalToolboxLocation.X;
-            _horizontalToolboxForm.Top = horizontalAndVerticalToolboxLocation.HorizontalToolboxLocation.Y;
+            _horizontalToolboxForm.SuspendLayout();
+            _horizontalToolboxForm.Left = toolboxesLocation.HorizontalToolboxLocation.X;
+            _horizontalToolboxForm.Top = toolboxesLocation.HorizontalToolboxLocation.Y;
+            _horizontalToolboxForm.ResumeLayout(true);
 
-            _verticalToolboxForm.Left = horizontalAndVerticalToolboxLocation.VerticalToolboxLocation.X;
-            _verticalToolboxForm.Top = horizontalAndVerticalToolboxLocation.VerticalToolboxLocation.Y;
+            _verticalToolboxForm.SuspendLayout();
+            _verticalToolboxForm.Left = toolboxesLocation.VerticalToolboxLocation.X;
+            _verticalToolboxForm.Top = toolboxesLocation.VerticalToolboxLocation.Y;
+            _verticalToolboxForm.ResumeLayout(true);
         }
 
         private static Point CalculateSizeLabelLocation(Point holeLocation, Size sizeLabelSize, int windowWidth)
@@ -445,7 +496,7 @@ namespace Greenshot
             return new Point(sizeLabelLeft, sizeLabelTop);
         }
 
-        private static HorizontalAndVerticalToolboxLocation CalculateHorizontalAndVerticalToolboxLocation(
+        private static ToolboxesLocation CalculateToolboxesLocation(
             Rectangle holeRectangle, Size horizontalToolboxSize, Size verticalToolboxSize, Size windowSize)
         {
             //Horizontal
@@ -597,11 +648,13 @@ namespace Greenshot
                     break;
             }
 
-            return new HorizontalAndVerticalToolboxLocation(new Point(horizontalToolboxLeft, horizontalToolboxTop),
+            return new ToolboxesLocation(new Point(horizontalToolboxLeft, horizontalToolboxTop),
                 new Point(verticalToolboxLeft, verticalToolboxTop));
         }
 
         #endregion
+
+        #region Команды
 
         private void Toolbox_ServiceCommand(object sender, QuickImageEditorCommandEventArgs e)
         {
@@ -617,10 +670,21 @@ namespace Greenshot
                     _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
+                case QuickImageEditorCommand.Line:
+                    _surface.DrawingMode = DrawingModes.Line;
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                        .Value);
+                    break;
                 case QuickImageEditorCommand.Rectangle:
                     _surface.DrawingMode = DrawingModes.Rect;
                     _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
                     _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                        .Value);
+                    break;
+                case QuickImageEditorCommand.Ellipse:
+                    _surface.DrawingMode = DrawingModes.Ellipse;
+                    _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Text:
@@ -628,6 +692,7 @@ namespace Greenshot
                     _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
                     _surface.FieldAggregator.GetField(FieldType.TEXT_HORIZONTAL_ALIGNMENT).Value = StringAlignment.Near;
                     _surface.FieldAggregator.GetField(FieldType.TEXT_VERTICAL_ALIGNMENT).Value = StringAlignment.Near;
+                    _surface.FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = 0;
                     _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
@@ -647,72 +712,73 @@ namespace Greenshot
                         _surface.Undo();
                     break;
                 case QuickImageEditorCommand.Upload:
-                {
-                    var surface = GetSurfaceForExport();
-                    _result = new QuickImageEditorResult(QuickImageEditorAction.DownloadRu, surface);
-                    _surfaceForm.DialogResult = DialogResult.OK;
-                }
+                    UploadCapture();
                     break;
                 case QuickImageEditorCommand.Copy:
-                {
-                    using (var surface = GetSurfaceForExport())
-                    {
-                        DestinationHelper.ExportCapture(true, ClipboardDestination.DESIGNATION, surface,
-                            _surface.CaptureDetails);
-
-                        _result = new QuickImageEditorResult(QuickImageEditorAction.None);
-                        _surfaceForm.DialogResult = DialogResult.OK;
-                    }
-                }
+                    CopyCapture();
                     break;
                 case QuickImageEditorCommand.Save:
-                {
-                    using (var surface = GetSurfaceForExport())
-                    {
-                        var exportInformation = DestinationHelper.ExportCapture(true,
-                            FileWithDialogDestination.DESIGNATION,
-                            surface,
-                            _surface.CaptureDetails);
-
-                        if (exportInformation.ExportMade)
-                        {
-                            _result = new QuickImageEditorResult(QuickImageEditorAction.None);
-                            _surfaceForm.DialogResult = DialogResult.OK;
-                        }
-                    }
-                }
+                    SaveCapture();
                     break;
                 case QuickImageEditorCommand.More:
-                {
-                    var surface = GetSurfaceForExport();
-                    _result = new QuickImageEditorResult(QuickImageEditorAction.Editor, surface);
-                    _surfaceForm.DialogResult = DialogResult.OK;
-                }
+                    SendToExtendedEditor();
                     break;
                 case QuickImageEditorCommand.Close:
-                    _surfaceForm.DialogResult = DialogResult.Cancel;
+                    Cancel();
                     break;
                 default:
                     throw new InvalidOperationException();
             }
         }
 
-        private void DisplayHoleSize()
+        private void UploadCapture()
         {
-            sizeLabel.Text = $@"{holePanel.Width - ADORNER_HALF_SIZE * 2}x{holePanel.Height - ADORNER_HALF_SIZE * 2}";
+            _result = BuildResult(QuickImageEditorAction.DownloadRu);
+            _surfaceForm.DialogResult = DialogResult.OK;
         }
 
-        private Surface GetSurfaceForExport()
+        private void CopyCapture()
         {
-            using (var image = _surface.GetImageForExport())
-            using (var capture = new Capture(image))
-            {
-                capture.CaptureDetails = new CaptureDetails {Title = _surface.CaptureDetails.Title};
-                capture.Crop(new Rectangle(holePanel.Left, holePanel.Top, holePanel.Width, holePanel.Height));
-                var surface = new Surface(capture);
-
-                return surface;
-            }
+            _result = BuildResult(QuickImageEditorAction.Copy);
+            _surfaceForm.DialogResult = DialogResult.OK;
         }
+
+        private void SaveCapture()
+        {
+            _result = BuildResult(QuickImageEditorAction.Save);
+            _surfaceForm.DialogResult = DialogResult.OK;
+        }
+
+        private void SendToExtendedEditor()
+        {
+            _result = BuildResult(QuickImageEditorAction.Editor);
+            _surfaceForm.DialogResult = DialogResult.OK;
+        }
+
+        private void Cancel()
+        {
+            if (_surface.Modified && DialogResult.Yes != MessageBox.Show(this,
+                    Language.GetString("QuickImageEditorForm_Leave_Confirmation_Text"),
+                    Language.GetString("QuickImageEditorForm_Leave_Confirmation_Title"), MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+                return;
+
+            _result = QuickImageEditorResult.NoAction;
+            _surfaceForm.DialogResult = DialogResult.Cancel;
+        }
+
+        private QuickImageEditorResult BuildResult(QuickImageEditorAction action)
+        {
+            if (QuickImageEditorAction.None == action)
+                return QuickImageEditorResult.NoAction;
+
+            var image = _surface.GetImageForExport();
+            var rectangle = new Rectangle(holePanel.Left + ADORNER_HALF_SIZE, holePanel.Top + ADORNER_HALF_SIZE, holePanel.Width - ADORNER_HALF_SIZE * 2,
+                holePanel.Height - ADORNER_HALF_SIZE * 2);
+
+            return new QuickImageEditorResult(action, image, rectangle);
+        }
+
+        #endregion
     }
 }

@@ -87,9 +87,12 @@ namespace Greenshot.Destinations {
 		}
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(Designation, Description);
-			// Make sure we collect the garbage before opening the screenshot
-			GC.Collect();
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("exported_to_Editor")
+            };
+            // Make sure we collect the garbage before opening the screenshot
+            GC.Collect();
 			GC.WaitForPendingFinalizers();
 
 			bool modified = surface.Modified;

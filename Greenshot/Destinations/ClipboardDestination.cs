@@ -63,8 +63,12 @@ namespace Greenshot.Destinations {
 		}
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(Designation, Description);
-			try {
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("exported_to_Clipboard")
+            };
+
+            try {
 				ClipboardHelper.SetClipboardData(surface);
 				exportInformation.ExportMade = true;
 			} catch (Exception) {

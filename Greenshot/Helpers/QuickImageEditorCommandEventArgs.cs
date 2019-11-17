@@ -6,7 +6,9 @@ namespace Greenshot.Helpers
     {
         Arrow,
         Pencil,
+        Line,
         Rectangle,
+        Ellipse,
         Text,
         Blur,
         Counter,

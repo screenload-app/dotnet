@@ -50,7 +50,10 @@ namespace GreenshotDownloadRuPlugin
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails)
         {
-            var exportInformation = new ExportInformation(Designation, Description);
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("downloadru", LangKey.upload_success)
+            };
 
             string uploadUrl = _plugin.Upload(captureDetails, surface);
 

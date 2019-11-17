@@ -66,9 +66,12 @@ namespace Greenshot.Destinations {
 		}
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(Designation, Description);
-			// Bug #2918756 don't overwrite path if SaveWithDialog returns null!
-			var savedTo = ImageOutput.SaveWithDialog(surface, captureDetails);
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("exported_to_FileDialog")
+            };
+            // Bug #2918756 don't overwrite path if SaveWithDialog returns null!
+            var savedTo = ImageOutput.SaveWithDialog(surface, captureDetails);
 			if (savedTo != null) {
 				exportInformation.ExportMade = true;
 				exportInformation.Filepath = savedTo;

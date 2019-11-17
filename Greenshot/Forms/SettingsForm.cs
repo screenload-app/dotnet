@@ -44,13 +44,16 @@ namespace Greenshot {
 	/// </summary>
 	public partial class SettingsForm : BaseForm {
 		private static readonly ILog Log = LogManager.GetLogger(typeof(SettingsForm));
-		private readonly ToolTip _toolTip = new ToolTip();
+
+        private static readonly Color DefaultCaptureAreaColor = Color.Black;
+
+        private readonly ToolTip _toolTip = new ToolTip();
 		private bool _inHotkey;
 		private int _daysbetweencheckPreviousValue;
 
 		public SettingsForm() {
 			InitializeComponent();
-			
+
 			// Make sure the store isn't called to early, that's why we do it manually
 			ManualStoreFields = true;
 		}
@@ -375,12 +378,17 @@ namespace Greenshot {
 
 		private void DisplaySettings()
         {
-            var captureAreaColor = coreConfiguration.CaptureAreaColor;
+            var captureAreaColor = Color.FromArgb(255, coreConfiguration.CaptureAreaColor);
 
-            if (Color.MediumSeaGreen != captureAreaColor)
+            if (DefaultCaptureAreaColor.ToArgb() != captureAreaColor.ToArgb())
             {
                 captureAreaColorButton.SelectedColor = coreConfiguration.CaptureAreaColor;
                 captureAreaColorCheckBox.Checked = true;
+            }
+            else
+            {
+                captureAreaColorButton.SelectedColor = DefaultCaptureAreaColor;
+                captureAreaColorCheckBox.Checked = false;
             }
 
             colorButton_window_background.SelectedColor = coreConfiguration.DWMBackgroundColor;
@@ -479,7 +487,9 @@ namespace Greenshot {
 			}
 			coreConfiguration.OutputDestinations = destinations;
 			coreConfiguration.CaptureDelay = (int)numericUpDownWaitTime.Value;
-            coreConfiguration.CaptureAreaColor = captureAreaColorButton.SelectedColor;
+            coreConfiguration.CaptureAreaColor = captureAreaColorCheckBox.Checked
+                ? Color.FromArgb(255, captureAreaColorButton.SelectedColor)
+                : DefaultCaptureAreaColor;
             coreConfiguration.DWMBackgroundColor = colorButton_window_background.SelectedColor;
 			coreConfiguration.UpdateCheckInterval = (int)numericUpDown_daysbetweencheck.Value;
 
@@ -676,9 +686,6 @@ namespace Greenshot {
         private void CaptureAreaColorCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             captureAreaColorButton.Enabled = captureAreaColorCheckBox.Checked;
-
-            if (!captureAreaColorCheckBox.Checked)
-                captureAreaColorButton.SelectedColor = Color.MediumSeaGreen;
         }
     }
 

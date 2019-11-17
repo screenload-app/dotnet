@@ -11,20 +11,35 @@ namespace Greenshot
         const int WM_NCHITTEST = 0x0084;
         const int HTCAPTION = 2;
 
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams createParams = base.CreateParams;
+        //        createParams.ExStyle |= 0x02000000;
+        //        return createParams;
+        //    }
+        //}
+
         public event EventHandler<QuickImageEditorCommandEventArgs> ServiceCommand;
 
         public HorizontalToolboxForm()
         {
             InitializeComponent();
 
-            DoubleBuffered = true;
+            //SuspendLayout();
+            //SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
+            //         ControlStyles.OptimizedDoubleBuffer, true);
+            //ResumeLayout(true);
         }
 
         private void HorizontalToolboxForm_Load(object sender, EventArgs e)
         {
             toolTip.SetToolTip(arrowButton, Language.GetString("QuickImageEditor_Arrow"));
             toolTip.SetToolTip(pencilButton, Language.GetString("QuickImageEditor_Pencil"));
+            toolTip.SetToolTip(lineRadioButton, Language.GetString("QuickImageEditor_Line"));
             toolTip.SetToolTip(rectangleButton, Language.GetString("QuickImageEditor_Rectangle"));
+            toolTip.SetToolTip(ellipseRadioButton, Language.GetString("QuickImageEditor_Ellipse"));
             toolTip.SetToolTip(textButton, Language.GetString("QuickImageEditor_Text"));
             toolTip.SetToolTip(blurButton, Language.GetString("QuickImageEditor_Blur"));
             toolTip.SetToolTip(counterButton, Language.GetString("QuickImageEditor_Counter"));
@@ -60,9 +75,19 @@ namespace Greenshot
             ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Pencil));
         }
 
+        private void LineRadioButton_Click(object sender, EventArgs e)
+        {
+            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Line));
+        }
+
         private void RectangleButton_Click(object sender, EventArgs e)
         {
             ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Rectangle));
+        }
+
+        private void EllipseRadioButton_Click(object sender, EventArgs e)
+        {
+            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Ellipse));
         }
 
         private void TextButton_Click(object sender, EventArgs e)

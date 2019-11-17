@@ -54,7 +54,6 @@
             this.holePanel.Name = "holePanel";
             this.holePanel.Size = new System.Drawing.Size(400, 200);
             this.holePanel.TabIndex = 1;
-            this.holePanel.Visible = false;
             this.holePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HolePanel_Paint);
             this.holePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseDown);
             this.holePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseMove);

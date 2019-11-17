@@ -34,10 +34,26 @@ namespace GreenshotPlugin.Core {
 		public static Icon getIcon(string imageName) {
 			return (Icon)greenshotResources.GetObject(imageName);
 		}
-		
-		public static Icon getGreenshotIcon() {
-			return getIcon("Greenshot.Icon");
-		}
+
+        public static Icon getGreenshotIcon()
+        {
+            return getIcon("Greenshot.Icon");
+        }
+
+        public static Icon GetDarkNotifyIcon()
+        {
+            return getIcon("win-dark");
+        }
+
+        public static Icon GetWhiteNotifyIcon()
+        {
+            return getIcon("win-white");
+        }
+
+        public static Icon GetClassicNotifyIcon()
+        {
+            return getIcon("win-old");
+        }
 
         public static Icon GetModifyIcon()
         {

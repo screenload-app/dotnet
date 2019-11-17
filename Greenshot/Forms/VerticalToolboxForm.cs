@@ -10,14 +10,26 @@ namespace Greenshot
         const int WM_NCHITTEST = 0x0084;
         const int HTCAPTION = 2;
 
+        //protected override CreateParams CreateParams
+        //{
+        //    get
+        //    {
+        //        CreateParams createParams = base.CreateParams;
+        //        createParams.ExStyle |= 0x02000000;
+        //        return createParams;
+        //    }
+        //}
+
         public event EventHandler<QuickImageEditorCommandEventArgs> ServiceCommand;
 
         public VerticalToolboxForm()
         {
             InitializeComponent();
-            
-            DoubleBuffered = true;
-            ActiveControl = null;
+
+            //SuspendLayout();
+            //SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
+            //         ControlStyles.OptimizedDoubleBuffer, true);
+            //ResumeLayout(true);
         }
 
         private void VerticalToolboxForm_Load(object sender, EventArgs e)

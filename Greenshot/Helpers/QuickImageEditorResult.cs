@@ -1,36 +1,43 @@
 ﻿using System;
-using Greenshot.Drawing;
+using System.Drawing;
 
 namespace Greenshot.Helpers
 {
     public enum QuickImageEditorAction
     {
         None,
-        Cancel,
         DownloadRu,
-        Editor
+        Copy,
+        Save,
+        Editor,
     }
 
-    public sealed class QuickImageEditorResult
+    public sealed class QuickImageEditorResult : IDisposable
     {
+        public static readonly QuickImageEditorResult NoAction = new QuickImageEditorResult();
+
         public QuickImageEditorAction Action { get; }
-        public Surface Surface { get; }
+        public Image Image { get; }
+        public Rectangle Rectangle { get; }
 
-        public QuickImageEditorResult(QuickImageEditorAction action, Surface surface = null)
+        private QuickImageEditorResult()
         {
-            switch (action)
-            {
-                case QuickImageEditorAction.DownloadRu:
-                case QuickImageEditorAction.Editor:
+            Action = QuickImageEditorAction.None;
+        }
 
-                    if (null == surface)
-                        throw new ArgumentNullException(nameof(surface));
-
-                    break;
-            }
+        public QuickImageEditorResult(QuickImageEditorAction action, Image image, Rectangle rectangle)
+        {
+            if (rectangle.IsEmpty)
+                throw new ArgumentOutOfRangeException(nameof(rectangle));
 
             Action = action;
-            Surface = surface;
+            Image = image ?? throw new ArgumentNullException(nameof(image));
+            Rectangle = rectangle;
+        }
+
+        public void Dispose()
+        {
+            Image?.Dispose();
         }
     }
 }

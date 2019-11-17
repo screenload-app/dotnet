@@ -84,8 +84,12 @@ namespace Greenshot.Destinations {
 		public override Image DisplayIcon => MailIcon;
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(Designation, Description);
-			MapiMailMessage.SendImage(surface, captureDetails);
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("exported_to_EMail")
+            };
+
+            MapiMailMessage.SendImage(surface, captureDetails);
 			exportInformation.ExportMade = true;
 			ProcessExport(exportInformation, surface);
 			return exportInformation;

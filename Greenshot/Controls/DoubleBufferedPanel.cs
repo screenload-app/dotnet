@@ -7,7 +7,6 @@ namespace Greenshot.Controls
         public DoubleBufferedPanel()
         {
             DoubleBuffered = true;
-            //ResizeRedraw = true;
         }
     }
 }

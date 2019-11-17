@@ -50,8 +50,12 @@ namespace Greenshot.Destinations {
 		public override Image DisplayIcon => GreenshotResources.getImage("Save.Image");
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
-			ExportInformation exportInformation = new ExportInformation(Designation, Description);
-			bool outputMade;
+            var exportInformation = new ExportInformation(Designation, Description)
+            {
+                SuccessMessage = Language.GetString("exported_to_FileNoDialog")
+            };
+
+            bool outputMade;
 			bool overwrite;
 			string fullPath;
 			// Get output settings from the configuration

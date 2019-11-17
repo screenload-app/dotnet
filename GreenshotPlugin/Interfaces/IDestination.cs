@@ -36,8 +36,10 @@ namespace Greenshot.Plugin {
 		public string DestinationDesignation { get; }
 
 		public string DestinationDescription { get; set; }
+        
+        public string SuccessMessage { get; set; }
 
-		/// <summary>
+        /// <summary>
 		/// Set to true to specify if the export worked.
 		/// </summary>
 		public bool ExportMade { get; set; }
