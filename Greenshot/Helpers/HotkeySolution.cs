@@ -1,8 +1,11 @@
 ﻿namespace Greenshot.Helpers
 {
-    internal class HotkeySolution
+
+    internal enum HotkeySolution
     {
-        public HotkeyAction Action { get; set; }
-        public string Hotkey { get; set; }
+        Unsolved,
+        Default,
+        Custom,
+        Disabled
     }
 }

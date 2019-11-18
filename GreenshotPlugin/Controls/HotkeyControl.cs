@@ -22,6 +22,7 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Windows.Forms;
@@ -37,14 +38,47 @@ namespace GreenshotPlugin.Controls {
 	/// But is modified to fit in Greenshot, and have localized support
 	/// </summary>
 	public sealed class HotkeyControl : GreenshotTextBox {
-		private static readonly ILog Log = LogManager.GetLogger(typeof(HotkeyControl));
+
+        private struct KeyCombination
+        {
+            public Keys ModifierKeyCode { get; }
+            public Keys VirtualKeyCode { get; }
+
+            public KeyCombination(Keys modifierKeyCode, Keys virtualKeyCode)
+            {
+                ModifierKeyCode = modifierKeyCode;
+                VirtualKeyCode = virtualKeyCode;
+            }
+
+            public override bool Equals(object obj)
+            {
+                return obj is KeyCombination other && Equals(other);
+            }
+
+            public override int GetHashCode()
+            {
+                unchecked
+                {
+                    return ((int)ModifierKeyCode * 397) ^ (int)VirtualKeyCode;
+                }
+            }
+
+            private bool Equals(KeyCombination other)
+            {
+                return ModifierKeyCode == other.ModifierKeyCode && VirtualKeyCode == other.VirtualKeyCode;
+            }
+        }
+
+        private static readonly ILog Log = LogManager.GetLogger(typeof(HotkeyControl));
 
 		private static readonly EventDelay EventDelay = new EventDelay(TimeSpan.FromMilliseconds(600).Ticks);
 		private static readonly bool IsWindows7OrOlder = Environment.OSVersion.Version.Major >= 6 && Environment.OSVersion.Version.Minor >= 1;
 
 		// Holds the list of hotkeys
 		private static readonly IDictionary<int, HotKeyHandler> KeyHandlers = new Dictionary<int, HotKeyHandler>();
-		private static int _hotKeyCounter = 1;
+        private static readonly IDictionary<KeyCombination, int> HotkeysRegister = new Dictionary<KeyCombination, int>();
+
+        private static int _hotKeyCounter = 1;
 		private const uint WM_HOTKEY = 0x312;
 		private static IntPtr _hotkeyHwnd;
 
@@ -462,7 +496,8 @@ namespace GreenshotPlugin.Controls {
 			}
 			if (RegisterHotKey(_hotkeyHwnd, _hotKeyCounter, modifiers, (uint)virtualKeyCode)) {
 				KeyHandlers.Add(_hotKeyCounter, handler);
-				return _hotKeyCounter++;
+                HotkeysRegister.Add(new KeyCombination(modifierKeyCode, virtualKeyCode), _hotKeyCounter);
+                return _hotKeyCounter++;
 			} else {
 				Log.Warn($"Couldn't register hotkey modifier {modifierKeyCode} virtualKeyCode {virtualKeyCode}");
 				return -1;
@@ -475,7 +510,9 @@ namespace GreenshotPlugin.Controls {
 			}
 			// Remove all key handlers
 			KeyHandlers.Clear();
-		}
+            HotkeysRegister.Clear();
+
+        }
 
 		public static void UnregisterHotkey(int hotkey) {
 			bool removeHotkey = false;
@@ -488,15 +525,24 @@ namespace GreenshotPlugin.Controls {
 			if (removeHotkey) {
 				// Remove key handler
 				KeyHandlers.Remove(hotkey);
-			}
-		}		
 
-		/// <summary>
-		/// Handle WndProc messages for the hotkey
-		/// </summary>
-		/// <param name="m"></param>
-		/// <returns>true if the message was handled</returns>
-		public static bool HandleMessages(ref Message m) {
+                var key = HotkeysRegister.First(keyValue => keyValue.Value == hotkey).Key;
+                HotkeysRegister.Remove(key);
+            }
+		}
+
+        public static void UnregisterHotkey(Keys modifierKeyCode, Keys virtualKeyCode)
+        {
+            HotkeysRegister.TryGetValue(new KeyCombination(modifierKeyCode, virtualKeyCode), out var hotkey);
+            UnregisterHotkey(hotkey);
+        }
+
+        /// <summary>
+        /// Handle WndProc messages for the hotkey
+        /// </summary>
+        /// <param name="m"></param>
+        /// <returns>true if the message was handled</returns>
+        public static bool HandleMessages(ref Message m) {
 			if (m.Msg != WM_HOTKEY)
 			{
 				return false;

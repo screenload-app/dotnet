@@ -234,7 +234,6 @@ namespace Greenshot.Configuration {
 		settings_usedefaultproxy,
 		tooltip_firststart,
 		warning,
-		warning_hotkeys,
 		hotkeys,
 		wait_ie_capture,
 		update_found,

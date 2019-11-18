@@ -104,6 +104,11 @@ namespace Greenshot.Helpers
             }
         }
 
+        public static void CaptureRegion()
+        {
+            CaptureRegion(true);
+        }
+
         public static void CaptureRegion(bool captureMouse)
         {
             using (CaptureHelper captureHelper = new CaptureHelper(CaptureMode.Region, captureMouse))
@@ -128,6 +133,11 @@ namespace Greenshot.Helpers
             }
         }
 
+        public static void CaptureFullScreen()
+        {
+            CaptureFullscreen(true, CoreConfig.ScreenCaptureMode);
+        }
+
         public static void CaptureFullscreen(bool captureMouse, ScreenCaptureMode screenCaptureMode)
         {
             using (CaptureHelper captureHelper = new CaptureHelper(CaptureMode.FullScreen, captureMouse))
@@ -135,6 +145,11 @@ namespace Greenshot.Helpers
                 captureHelper._screenCaptureMode = screenCaptureMode;
                 captureHelper.MakeCapture();
             }
+        }
+
+        public static void CaptureLastRegion()
+        {
+            CaptureLastRegion(true);
         }
 
         public static void CaptureLastRegion(bool captureMouse)
@@ -145,12 +160,32 @@ namespace Greenshot.Helpers
             }
         }
 
+        public static void CaptureIE()
+        {
+            if (CoreConfig.IECapture)
+            {
+                CaptureIe(true, null);
+            }
+        }
+
         public static void CaptureIe(bool captureMouse, WindowDetails windowToCapture)
         {
             using (CaptureHelper captureHelper = new CaptureHelper(CaptureMode.IE, captureMouse))
             {
                 captureHelper.SelectedCaptureWindow = windowToCapture;
                 captureHelper.MakeCapture();
+            }
+        }
+
+        public static void CaptureWindow()
+        {
+            if (CoreConfig.CaptureWindowsInteractive)
+            {
+                CaptureWindowInteractive(true);
+            }
+            else
+            {
+                CaptureWindow(true);
             }
         }
 
@@ -176,6 +211,22 @@ namespace Greenshot.Helpers
             using (CaptureHelper captureHelper = new CaptureHelper(CaptureMode.Window))
             {
                 captureHelper.MakeCapture();
+            }
+        }
+
+        public static void CaptureFile()
+        {
+            var openFileDialog = new OpenFileDialog
+            {
+                Filter =
+                    "Image files (*.greenshot, *.png, *.jpg, *.gif, *.bmp, *.ico, *.tiff, *.wmf)|*.greenshot; *.png; *.jpg; *.jpeg; *.gif; *.bmp; *.ico; *.tiff; *.tif; *.wmf"
+            };
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (File.Exists(openFileDialog.FileName))
+                {
+                    CaptureFile(openFileDialog.FileName);
+                }
             }
         }
 

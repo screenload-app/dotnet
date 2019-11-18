@@ -288,28 +288,27 @@ ${hostname} Имя ПК
 		<resource name="update_found">Доступна новая версия Greenshot! Вы хотите скачать Greenshot {0}?</resource>
 		<resource name="wait_ie_capture">Пожалуйста, подождите, пока страница в Internet Explorer захватывается...</resource>
 		<resource name="warning">Внимание</resource>
-		<resource name="warning_hotkeys">Горячие клавиши "{0}" не могут быть зарегистрированы. Эта проблема может быть связана с ещё одним инструментом, использующим те же клавиши! Нужно либо изменить настройки клавиш или деактивировать/изменить программное обеспечение, использующее горячие клавиши.
-
-Все функции Greenshot по-прежнему работают прямо из контекстного меню через значок  в трее.</resource>
 		<resource name="WindowCaptureMode.Aero">Использовать другой цвет</resource>
 		<resource name="WindowCaptureMode.AeroTransparent">Сохранить прозрачность</resource>
 		<resource name="WindowCaptureMode.Auto">Автоматически</resource>
 		<resource name="WindowCaptureMode.GDI">Использ. цвет по умолчанию</resource>
 		<resource name="WindowCaptureMode.Screen">Как отображается</resource>
 
-	  <resource name="hotkeys_resolving_title">Не удалось задать горячие клавиши!</resource>
-	  <resource name="hotkeys_resolving_caption">Не удалось задать горячие клавиши!</resource>
-	  <resource name="hotkeys_resolving_info">Не удалось задать одну или несколько горячих клавиш. Эта проблема может быть связана с ещё одним инструментом, использующим те же клавиши! Нужно либо изменить настройки клавиш или деактивировать/изменить программное обеспечение, использующее горячие клавиши.
+    <!-- hotkeys -->
 
-Все функции Greenshot по-прежнему работают прямо из контекстного меню через значок  в трее.
-	  </resource>
+    <resource name="hotkeys_resolving_caption">Задать горячие клавиши</resource>
+	  <resource name="hotkeys_resolving_info">Вы не установили одну или несколько горячих клавиш. Хотите продолжить установку?
+
+Все функции Greenshot по-прежнему работают прямо из контекстного меню через значок в трее.
+    </resource>
 	  <resource name="hotkeys_resolving_ok">ОК</resource>
-	  <resource name="hotkeys_resolving_cancel">Отключить эти клавиши</resource>
+	  <resource name="hotkeys_resolving_cancel">Отмена</resource>
 
-	  <resource name="hotkey_resolving_message">Невозможно использовать комбинацию, так как она уже используется другой программой!</resource>
-	  <resource name="hotkey_resolving_other_combination">Задать другую комбинацию:</resource>
-	  <resource name="hotkey_resolving_retry">Повторить попытку установить {0}</resource>
-	  <resource name="hotkey_resolving_ignore">Отключить горячую клавишу</resource>
+	  <resource name="hotkey_resolving_message">It is not possible to use a combination, as it is already in use by another program! Enter a different combination or disable software that uses hotkeys.</resource>
+    <resource name="hotkey_resolving_retry">По умолчанию [{0}]</resource>
+	  <resource name="hotkey_resolving_other_combination">Задать комбинацию:</resource>
+	  <resource name="hotkey_resolving_ignore">Не использовать</resource>
+
 
 	  <resource name="capture_fullscreen">Захват полного экрана</resource>
 	  <resource name="capture_window">Захват окна</resource>

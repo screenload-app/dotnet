@@ -1,4 +1,4 @@
-﻿namespace Greenshot.Forms
+﻿namespace Greenshot
 {
     partial class HotkeysResolvingForm
     {
@@ -29,62 +29,56 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HotkeysResolvingForm));
-            this.infoLabel = new GreenshotPlugin.Controls.GreenshotLabel();
             this.captionLabel = new GreenshotPlugin.Controls.GreenshotLabel();
-            this.mFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.conflictsFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.cancelButton = new GreenshotPlugin.Controls.GreenshotButton();
             this.okButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.mFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.bottomFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.mFlowLayoutPanel.SuspendLayout();
+            this.bottomFlowLayoutPanel.SuspendLayout();
             this.SuspendLayout();
-            // 
-            // infoLabel
-            // 
-            this.infoLabel.ForeColor = System.Drawing.Color.Black;
-            this.infoLabel.LanguageKey = "hotkeys_resolving_info";
-            this.infoLabel.Location = new System.Drawing.Point(14, 38);
-            this.infoLabel.Name = "infoLabel";
-            this.infoLabel.Size = new System.Drawing.Size(609, 70);
-            this.infoLabel.TabIndex = 1;
-            this.infoLabel.Text = resources.GetString("infoLabel.Text");
             // 
             // captionLabel
             // 
             this.captionLabel.AutoSize = true;
-            this.captionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.captionLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.captionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.captionLabel.LanguageKey = "hotkeys_resolving_caption";
-            this.captionLabel.Location = new System.Drawing.Point(12, 9);
+            this.captionLabel.Location = new System.Drawing.Point(3, 3);
+            this.captionLabel.Margin = new System.Windows.Forms.Padding(3);
             this.captionLabel.Name = "captionLabel";
-            this.captionLabel.Size = new System.Drawing.Size(239, 29);
+            this.captionLabel.Size = new System.Drawing.Size(53, 13);
             this.captionLabel.TabIndex = 0;
-            this.captionLabel.Text = "Failed to set hotkeys!";
+            this.captionLabel.Text = "Hotkeys";
             // 
-            // mFlowLayoutPanel
+            // conflictsFlowLayoutPanel
             // 
-            this.mFlowLayoutPanel.AutoScroll = true;
-            this.mFlowLayoutPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.mFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.mFlowLayoutPanel.Location = new System.Drawing.Point(17, 108);
-            this.mFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
-            this.mFlowLayoutPanel.Name = "mFlowLayoutPanel";
-            this.mFlowLayoutPanel.Size = new System.Drawing.Size(606, 432);
-            this.mFlowLayoutPanel.TabIndex = 2;
-            this.mFlowLayoutPanel.WrapContents = false;
+            this.conflictsFlowLayoutPanel.AutoSize = true;
+            this.conflictsFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.conflictsFlowLayoutPanel.Location = new System.Drawing.Point(3, 22);
+            this.conflictsFlowLayoutPanel.MinimumSize = new System.Drawing.Size(266, 102);
+            this.conflictsFlowLayoutPanel.Name = "conflictsFlowLayoutPanel";
+            this.conflictsFlowLayoutPanel.Size = new System.Drawing.Size(266, 102);
+            this.conflictsFlowLayoutPanel.TabIndex = 2;
+            this.conflictsFlowLayoutPanel.WrapContents = false;
             // 
             // cancelButton
             // 
             this.cancelButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.cancelButton.LanguageKey = "hotkeys_resolving_cancel";
-            this.cancelButton.Location = new System.Drawing.Point(464, 557);
+            this.cancelButton.Location = new System.Drawing.Point(188, 9);
+            this.cancelButton.Margin = new System.Windows.Forms.Padding(3, 9, 3, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(159, 23);
+            this.cancelButton.Size = new System.Drawing.Size(75, 23);
             this.cancelButton.TabIndex = 4;
-            this.cancelButton.Text = "Disable these hotkeys";
+            this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             // 
             // okButton
             // 
             this.okButton.LanguageKey = "hotkeys_resolving_ok";
-            this.okButton.Location = new System.Drawing.Point(383, 557);
+            this.okButton.Location = new System.Drawing.Point(107, 9);
+            this.okButton.Margin = new System.Windows.Forms.Padding(3, 9, 3, 3);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 3;
@@ -92,39 +86,66 @@
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
+            // mFlowLayoutPanel
+            // 
+            this.mFlowLayoutPanel.AutoSize = true;
+            this.mFlowLayoutPanel.Controls.Add(this.captionLabel);
+            this.mFlowLayoutPanel.Controls.Add(this.conflictsFlowLayoutPanel);
+            this.mFlowLayoutPanel.Controls.Add(this.bottomFlowLayoutPanel);
+            this.mFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.mFlowLayoutPanel.Location = new System.Drawing.Point(3, 3);
+            this.mFlowLayoutPanel.MinimumSize = new System.Drawing.Size(272, 0);
+            this.mFlowLayoutPanel.Name = "mFlowLayoutPanel";
+            this.mFlowLayoutPanel.Size = new System.Drawing.Size(272, 168);
+            this.mFlowLayoutPanel.TabIndex = 5;
+            this.mFlowLayoutPanel.WrapContents = false;
+            // 
+            // bottomFlowLayoutPanel
+            // 
+            this.bottomFlowLayoutPanel.AutoSize = true;
+            this.bottomFlowLayoutPanel.Controls.Add(this.cancelButton);
+            this.bottomFlowLayoutPanel.Controls.Add(this.okButton);
+            this.bottomFlowLayoutPanel.FlowDirection = System.Windows.Forms.FlowDirection.RightToLeft;
+            this.bottomFlowLayoutPanel.Location = new System.Drawing.Point(3, 130);
+            this.bottomFlowLayoutPanel.MinimumSize = new System.Drawing.Size(266, 0);
+            this.bottomFlowLayoutPanel.Name = "bottomFlowLayoutPanel";
+            this.bottomFlowLayoutPanel.Size = new System.Drawing.Size(266, 35);
+            this.bottomFlowLayoutPanel.TabIndex = 6;
+            this.bottomFlowLayoutPanel.WrapContents = false;
+            // 
             // HotkeysResolvingForm
             // 
             this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoSize = true;
             this.BackColor = System.Drawing.Color.White;
             this.CancelButton = this.cancelButton;
-            this.ClientSize = new System.Drawing.Size(640, 595);
-            this.Controls.Add(this.infoLabel);
-            this.Controls.Add(this.cancelButton);
-            this.Controls.Add(this.okButton);
+            this.ClientSize = new System.Drawing.Size(277, 168);
             this.Controls.Add(this.mFlowLayoutPanel);
-            this.Controls.Add(this.captionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.LanguageKey = "hotkeys_resolving_title";
+            this.LanguageKey = "";
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "HotkeysResolvingForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Failed to set hotkeys!";
-            this.Load += new System.EventHandler(this.HotkeyErrorsForm_Load);
+            this.Text = "Greenshot";
+            this.Load += new System.EventHandler(this.HotkeysResolvingForm_Load);
+            this.mFlowLayoutPanel.ResumeLayout(false);
+            this.mFlowLayoutPanel.PerformLayout();
+            this.bottomFlowLayoutPanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-
-        private GreenshotPlugin.Controls.GreenshotLabel infoLabel;
         private GreenshotPlugin.Controls.GreenshotLabel captionLabel;
-        private System.Windows.Forms.FlowLayoutPanel mFlowLayoutPanel;
+        private System.Windows.Forms.FlowLayoutPanel conflictsFlowLayoutPanel;
         private GreenshotPlugin.Controls.GreenshotButton cancelButton;
         private GreenshotPlugin.Controls.GreenshotButton okButton;
+        private System.Windows.Forms.FlowLayoutPanel mFlowLayoutPanel;
+        private System.Windows.Forms.FlowLayoutPanel bottomFlowLayoutPanel;
     }
 }

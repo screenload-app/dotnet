@@ -354,8 +354,6 @@ namespace Greenshot
             }
         }
 
-        private const string PersonalizeRegistryKey = @"Software\Microsoft\Windows\CurrentVersion\Themes\Personalize";
-
         private static MainForm _instance;
         public static MainForm Instance => _instance;
 
@@ -373,7 +371,7 @@ namespace Greenshot
         // Timer for the double click test
         private readonly Timer _doubleClickTimer = new Timer();
 
-        private RegistryMonitor _registryMonitor;
+        private readonly NotifyIconHelper _notifyIconHelper;
 
         public NotifyIcon NotifyIcon => notifyIcon;
 
@@ -398,14 +396,14 @@ namespace Greenshot
                 throw;
             }
 
-            SetNotifyIcon();
+            _notifyIconHelper = new NotifyIconHelper(notifyIcon);
 
             // Disable access to the settings, for feature #3521446
             contextmenu_settings.Visible = !_conf.DisableSettings;
 
             // Make sure all hotkeys pass this window!
             HotkeyControl.RegisterHotkeyHwnd(Handle);
-            RegisterHotkeys(this);
+            new HotkeyHelper(_conf).RegisterHotkeys(this);
 
             new ToolTip();
 
@@ -547,8 +545,7 @@ namespace Greenshot
                                 UpdateUi();
                                 // Update the hotkey
                                 // Make sure the current hotkeys are disabled
-                                HotkeyControl.UnregisterHotkeys();
-                                RegisterHotkeys(this);
+                                new HotkeyHelper(_conf).RegisterHotkeys(this);
                             });
                         }
                         catch (Exception ex)
@@ -598,8 +595,6 @@ namespace Greenshot
             base.WndProc(ref m);
         }
 
-        #region hotkeys
-
         /// <summary>
         /// Fix icon reference
         /// </summary>
@@ -617,181 +612,6 @@ namespace Greenshot
                 }
             }
         }
-
-        /// <summary>
-        /// Registers all hotkeys as configured, displaying a dialog in case of hotkey conflicts with other tools.
-        /// </summary>
-        public static void RegisterHotkeys(IWin32Window owner)
-        {
-            if (null == owner)
-                throw new ArgumentNullException(nameof(owner));
-
-            if (_instance == null)
-                throw new InvalidOperationException("_instance == null");
-
-            var hotkeyProblems = new List<HotkeyProblem>();
-
-            RegisterWrapper(hotkeyProblems, "CaptureRegion", "RegionHotkey", _instance.CaptureRegion);
-
-            RegisterWrapper(hotkeyProblems, "CaptureWindow", "WindowHotkey", _instance.CaptureWindow);
-
-            RegisterWrapper(hotkeyProblems, "CaptureFullScreen", "FullscreenHotkey", _instance.CaptureFullScreen);
-
-            RegisterWrapper(hotkeyProblems, "CaptureLastRegion", "LastregionHotkey", _instance.CaptureLastRegion);
-
-            if (_conf.IECapture)
-                RegisterWrapper(hotkeyProblems, "CaptureIE", "IEHotkey", _instance.CaptureIE);
-
-            if (hotkeyProblems.Count > 0)
-            {
-                var hotkeysResolvingForm = new HotkeysResolvingForm(hotkeyProblems);
-
-                if (DialogResult.Cancel == hotkeysResolvingForm.ShowDialog(owner))
-                {
-                    foreach (var hotkeyProblem in hotkeyProblems)
-                    {
-                        string configurationKey = GetConfigurationKey(hotkeyProblem.Action);
-
-                        var hotkeyValue = _conf.Values[configurationKey];
-                        hotkeyValue.Value = Keys.None.ToString();
-                    }
-                }
-                else
-                {
-                    var hotkeySolutions = hotkeysResolvingForm.CollectHotkeySolutions();
-
-                    foreach (var hotkeySolution in hotkeySolutions)
-                    {
-                        string configurationKey = GetConfigurationKey(hotkeySolution.Action);
-
-                        var hotkeyValue = _conf.Values[configurationKey];
-                        hotkeyValue.Value = hotkeySolution.Hotkey ?? Keys.None.ToString();
-                    }
-                }
-
-                IniConfig.Save();
-
-                HotkeyControl.UnregisterHotkeys();
-                RegisterHotkeys(owner);
-            }
-        }
-
-        private static string GetConfigurationKey(HotkeyAction action)
-        {
-            string configurationKey;
-
-            switch (action)
-            {
-                case HotkeyAction.CaptureFullScreen:
-                    configurationKey = "FullscreenHotkey";
-                    break;
-                case HotkeyAction.CaptureWindow:
-                    configurationKey = "WindowHotkey";
-                    break;
-                case HotkeyAction.CaptureArea:
-                    configurationKey = "RegionHotkey";
-                    break;
-                case HotkeyAction.CaptureLastRegion:
-                    configurationKey = "LastregionHotkey";
-                    break;
-                case HotkeyAction.CaptureIE:
-                    configurationKey = "IEHotkey";
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException(nameof(action), $@"action={action}");
-            }
-
-            return configurationKey;
-        }
-
-        private static void RegisterWrapper(List<HotkeyProblem> hotkeyProblems, string functionName,
-            string configurationKey,
-            HotKeyHandler handler)
-        {
-            IniValue hotkeyValue = _conf.Values[configurationKey];
-
-            try
-            {
-                RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
-            }
-            catch (Exception ex)
-            {
-                LOG.Warn(ex);
-                LOG.WarnFormat("Restoring default hotkey for {0}, stored under {1} from '{2}' to '{3}'", functionName,
-                    configurationKey, hotkeyValue.Value, hotkeyValue.Attributes.DefaultValue);
-                // when getting an exception the key wasn't found: reset the hotkey value
-
-                hotkeyValue.UseValueOrDefault(null);
-                hotkeyValue.ContainingIniSection.IsDirty = true;
-                RegisterHotkey(hotkeyProblems, functionName, hotkeyValue.Value.ToString(), handler);
-            }
-        }
-
-        /// <summary>
-        /// Helper method to cleanly register a hotkey
-        /// </summary>
-        /// <param name="hotkeyProblems"></param>
-        /// <param name="functionName"></param>
-        /// <param name="hotkeyString"></param>
-        /// <param name="handler"></param>
-        private static void RegisterHotkey(List<HotkeyProblem> hotkeyProblems, string functionName, string hotkeyString,
-            HotKeyHandler handler)
-        {
-            var modifierKeyCode = HotkeyControl.HotkeyModifiersFromString(hotkeyString);
-            var virtualKeyCode = HotkeyControl.HotkeyFromString(hotkeyString);
-
-            if (!Keys.None.Equals(virtualKeyCode))
-            {
-                if (HotkeyControl.RegisterHotKey(modifierKeyCode, virtualKeyCode, handler) < 0)
-                {
-                    LOG.DebugFormat("Failed to register {0} to hotkey: {1}", functionName, hotkeyString);
-
-                    HotkeyAction action;
-                    string actionTextKey;
-
-                    switch (functionName)
-                    {
-                        case "CaptureRegion":
-                            action = HotkeyAction.CaptureArea;
-                            actionTextKey = "capture_region";
-                            break;
-                        case "CaptureWindow":
-                            action = HotkeyAction.CaptureWindow;
-                            actionTextKey = "capture_window";
-                            break;
-                        case "CaptureFullScreen":
-                            action = HotkeyAction.CaptureFullScreen;
-                            actionTextKey = "capture_fullscreen";
-                            break;
-                        case "CaptureLastRegion":
-                            action = HotkeyAction.CaptureLastRegion;
-                            actionTextKey = "capture_last_region";
-                            break;
-                        case "CaptureIE":
-                            action = HotkeyAction.CaptureIE;
-                            actionTextKey = "capture_ie";
-                            break;
-                        default:
-                            throw new InvalidOperationException("functionName=" + functionName);
-                    }
-
-                    hotkeyProblems.Add(new HotkeyProblem
-                    {
-                        Action = action,
-                        ActionText = Language.GetString(actionTextKey),
-                        Hotkey = hotkeyString
-                    });
-                }
-
-                LOG.DebugFormat("Registered {0} to hotkey: {1}", functionName, hotkeyString);
-            }
-            else
-            {
-                LOG.InfoFormat("Skipping hotkey registration for {0}, no hotkey set!", functionName);
-            }
-        }
-
-        #endregion
 
         public void UpdateUi()
         {
@@ -828,62 +648,6 @@ namespace Greenshot
         }
 
         #endregion
-
-        #region key handlers
-
-        private void CaptureRegion()
-        {
-            CaptureHelper.CaptureRegion(true);
-        }
-
-        private void CaptureFile()
-        {
-            var openFileDialog = new OpenFileDialog
-            {
-                Filter =
-                    "Image files (*.greenshot, *.png, *.jpg, *.gif, *.bmp, *.ico, *.tiff, *.wmf)|*.greenshot; *.png; *.jpg; *.jpeg; *.gif; *.bmp; *.ico; *.tiff; *.tif; *.wmf"
-            };
-            if (openFileDialog.ShowDialog() == DialogResult.OK)
-            {
-                if (File.Exists(openFileDialog.FileName))
-                {
-                    CaptureHelper.CaptureFile(openFileDialog.FileName);
-                }
-            }
-        }
-
-        private void CaptureFullScreen()
-        {
-            CaptureHelper.CaptureFullscreen(true, _conf.ScreenCaptureMode);
-        }
-
-        private void CaptureLastRegion()
-        {
-            CaptureHelper.CaptureLastRegion(true);
-        }
-
-        private void CaptureIE()
-        {
-            if (_conf.IECapture)
-            {
-                CaptureHelper.CaptureIe(true, null);
-            }
-        }
-
-        private void CaptureWindow()
-        {
-            if (_conf.CaptureWindowsInteractive)
-            {
-                CaptureHelper.CaptureWindowInteractive(true);
-            }
-            else
-            {
-                CaptureHelper.CaptureWindow(true);
-            }
-        }
-
-        #endregion
-
 
         #region contextmenu
 
@@ -1165,7 +929,7 @@ namespace Greenshot
 
         private void OpenFileToolStripMenuItemClick(object sender, EventArgs e)
         {
-            BeginInvoke((MethodInvoker) CaptureFile);
+            BeginInvoke((MethodInvoker)CaptureHelper.CaptureFile);
         }
 
         private void CaptureFullScreenToolStripMenuItemClick(object sender, EventArgs e)
@@ -1202,7 +966,7 @@ namespace Greenshot
 
         private void Contextmenu_captureie_Click(object sender, EventArgs e)
         {
-            CaptureIE();
+            CaptureHelper.CaptureIE();
         }
 
         private void Contextmenu_captureiefromlist_Click(object sender, EventArgs e)
@@ -1785,17 +1549,9 @@ namespace Greenshot
             // Remove the application mutex
             FreeMutex();
 
-            // make the icon invisible otherwise it stays even after exit!!
-            if (notifyIcon != null)
-            {
-                notifyIcon.Visible = false;
-                notifyIcon.Dispose();
-                notifyIcon = null;
-            }
-
             try
             {
-                _registryMonitor?.Dispose();
+                _notifyIconHelper.Dispose();
             }
             catch (Exception e)
             {
@@ -1827,75 +1583,6 @@ namespace Greenshot
                 };
                 backgroundTask.Start();
             }
-        }
-
-        private void SetNotifyIcon()
-        {
-            RegistryKey personalizeKey = null;
-            int? systemUsesLightTheme;
-
-            try
-            {
-                personalizeKey =
-                    Registry.CurrentUser.OpenSubKey(PersonalizeRegistryKey);
-                systemUsesLightTheme = personalizeKey?.GetValue("SystemUsesLightTheme") as int?;
-            }
-            catch (SecurityException exception)
-            {
-                LOG.Error(exception.Message, exception);
-                systemUsesLightTheme = null;
-            }
-            finally
-            {
-                personalizeKey?.Close();
-            }
-
-            Icon themeIcon = null;
-
-            if (systemUsesLightTheme.HasValue)
-            {
-                switch (systemUsesLightTheme.Value)
-                {
-                    case 0:
-                        themeIcon = GreenshotResources.GetWhiteNotifyIcon();
-                        break;
-                    case 1:
-                        themeIcon = GreenshotResources.GetDarkNotifyIcon();
-                        break;
-                }
-            }
-
-            if (null == themeIcon)
-            {
-                notifyIcon.Icon = GreenshotResources.GetClassicNotifyIcon();
-                return;
-            }
-
-            notifyIcon.Icon = themeIcon;
-            StartThemeWatcher();
-        }
-
-        private void StartThemeWatcher()
-        {
-            _registryMonitor = new RegistryMonitor(RegistryHive.CurrentUser, PersonalizeRegistryKey);
-
-            _registryMonitor.RegChanged += (sender, args) =>
-            {
-                Action setNotifyIcon = SetNotifyIcon;
-
-                if (InvokeRequired)
-                    Invoke(setNotifyIcon);
-                else
-                    setNotifyIcon();
-            };
-
-            _registryMonitor.Error += (sender, args) =>
-            {
-                var exception = args.GetException();
-                LOG.Error(exception.Message, exception); 
-            };
-
-            _registryMonitor.Start();
         }
     }
 }

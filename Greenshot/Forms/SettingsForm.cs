@@ -51,12 +51,13 @@ namespace Greenshot {
 		private bool _inHotkey;
 		private int _daysbetweencheckPreviousValue;
 
-		public SettingsForm() {
+        public SettingsForm() {
 			InitializeComponent();
 
 			// Make sure the store isn't called to early, that's why we do it manually
 			ManualStoreFields = true;
-		}
+
+        }
 
 	    protected override void OnLoad(EventArgs e)
 	    {
@@ -526,7 +527,7 @@ namespace Greenshot {
 	        {
 	            SaveSettings();
 	            StoreFields();
-	            MainForm.RegisterHotkeys(this);
+                new HotkeyHelper(coreConfiguration).RegisterHotkeys(this);
 
 	            // Make sure the current language & settings are reflected in the Main-context menu
 	            MainForm.Instance.UpdateUi();

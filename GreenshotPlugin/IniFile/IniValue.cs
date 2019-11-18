@@ -224,119 +224,183 @@ namespace Greenshot.IniFile {
 			UseValueOrDefault(propertyValue);
 		}
 
-		/// <summary>
-		/// This method will set the ini value to the supplied value or use the default if non supplied
-		/// </summary>
-		/// <param name="propertyValue"></param>
-		public void UseValueOrDefault(string propertyValue) {
-			Type valueType = ValueType;
-			string propertyName = _attributes.Name;
-			string defaultValue = _attributes.DefaultValue;
-			bool defaultUsed = false;
-			object defaultValueFromConfig = _containingIniSection.GetDefault(propertyName);
+        public object GetDefaultValue()
+        {
+            var valueType = ValueType;
+            var defaultValue = _attributes.DefaultValue;
 
-			if (string.IsNullOrEmpty(propertyValue)) {
-				if (defaultValue != null && defaultValue.Trim().Length != 0) {
-					propertyValue = defaultValue;
-					defaultUsed = true;
-				} else if (defaultValueFromConfig != null) {
-					Log.DebugFormat("Default for Property {0} implemented!", propertyName);
-				} else {
-					if (_attributes.ExcludeIfNull) {
-						Value = null;
-						return;
-					}
-					Log.DebugFormat("Property {0} has no value or default value!", propertyName);
-				}
-			}
-			// Now set the value
-			if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Dictionary<,>)) {
-				// Logic for Dictionary<,>
-				Type type1 = valueType.GetGenericArguments()[0];
-				Type type2 = valueType.GetGenericArguments()[1];
-				//LOG.Info(String.Format("Found Dictionary<{0},{1}>", type1.Name, type2.Name));
-				object dictionary = Activator.CreateInstance(valueType);
-				MethodInfo addMethodInfo = valueType.GetMethod("Add");
-				bool addedElements = false;
-				IDictionary<string, string> properties = IniConfig.PropertiesForSection(_containingIniSection);
-				foreach (string key in properties.Keys) {
-					if (key != null && key.StartsWith(propertyName + ".")) {
-						// What "key" do we need to store it under?
-						string subPropertyName = key.Substring(propertyName.Length + 1);
-						string stringValue = properties[key];
-						object newValue1 = null;
-						object newValue2 = null;
-						try {
-							newValue1 = ConvertStringToValueType(type1, subPropertyName, _attributes.Separator);
-						} catch (Exception ex) {
-							Log.Warn(ex);
-							//LOG.Error("Problem converting " + subPropertyName + " to type " + type1.FullName, e);
-						}
-						try {
-							newValue2 = ConvertStringToValueType(type2, stringValue, _attributes.Separator);
-						} catch (Exception ex) {
-							Log.Warn(ex);
-							//LOG.Error("Problem converting " + stringValue + " to type " + type2.FullName, e);
-						}
-						addMethodInfo.Invoke(dictionary, new[] { newValue1, newValue2 });
-						addedElements = true;
-					}
-				}
-				// No need to return something that isn't filled!
-				if (addedElements) {
-					Value = dictionary;
-					return;
-				}
-				if (defaultValueFromConfig != null) {
-					Value = defaultValueFromConfig;
-					return;
-				}
-			} else if (!string.IsNullOrEmpty(propertyValue)) {
-				if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
-				{
-					// We are dealing with a generic type that is nullable
-					valueType = Nullable.GetUnderlyingType(valueType);
-				}
-				object newValue;
-				try {
-					newValue = ConvertStringToValueType(valueType, propertyValue, _attributes.Separator);
-				} catch (Exception ex1) {
-					newValue = null;
-					if (!defaultUsed) {
-						try {
-							Log.WarnFormat("Problem '{0}' while converting {1} to type {2} trying fallback...", ex1.Message, propertyValue, valueType.FullName);
-							newValue = ConvertStringToValueType(valueType, defaultValue, _attributes.Separator);
-							ContainingIniSection.IsDirty = true;
-							Log.InfoFormat("Used default value {0} for property {1}", defaultValue, propertyName);
-						} catch (Exception ex2) {
-							Log.Warn("Problem converting fallback value " + defaultValue + " to type " + valueType.FullName, ex2);
-						}
-					} else {
-						Log.Warn("Problem converting " + propertyValue + " to type " + valueType.FullName, ex1);
-					}
-				}
-				Value = newValue;
-				return;
-			}
+            if (valueType.IsGenericType)
+                throw new NotImplementedException("valueType.IsGenericType");
 
-			// If nothing is set, we can use the default value from the config (if we habe one)
-			if (defaultValueFromConfig != null) {
-				Value = defaultValueFromConfig;
-				return;
-			}
-			if (ValueType != typeof(string)) {
-				try {
-					Value = Activator.CreateInstance(ValueType);
-				} catch (Exception) {
-					Log.WarnFormat("Couldn't create instance of {0} for {1}, using default value.", ValueType.FullName, _attributes.Name);
-					Value = default(ValueType);
-				}
-			} else {
-				Value = default(ValueType);
-			}
-		}
+            if (string.IsNullOrEmpty(defaultValue))
+                throw new NotImplementedException("string.IsNullOrEmpty(defaultValue)");
 
-		/// <summary>
+            return defaultValue;
+        }
+
+        /// <summary>
+        /// This method will set the ini value to the supplied value or use the default if non supplied
+        /// </summary>
+        /// <param name="propertyValue"></param>
+        public void UseValueOrDefault(string propertyValue)
+        {
+            Type valueType = ValueType;
+            string propertyName = _attributes.Name;
+            string defaultValue = _attributes.DefaultValue;
+            bool defaultUsed = false;
+            object defaultValueFromConfig = _containingIniSection.GetDefault(propertyName);
+
+            if (string.IsNullOrEmpty(propertyValue))
+            {
+                if (defaultValue != null && defaultValue.Trim().Length != 0)
+                {
+                    propertyValue = defaultValue;
+                    defaultUsed = true;
+                }
+                else if (defaultValueFromConfig != null)
+                {
+                    Log.DebugFormat("Default for Property {0} implemented!", propertyName);
+                }
+                else
+                {
+                    if (_attributes.ExcludeIfNull)
+                    {
+                        Value = null;
+                        return;
+                    }
+
+                    Log.DebugFormat("Property {0} has no value or default value!", propertyName);
+                }
+            }
+
+            // Now set the value
+            if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Dictionary<,>))
+            {
+                // Logic for Dictionary<,>
+                Type type1 = valueType.GetGenericArguments()[0];
+                Type type2 = valueType.GetGenericArguments()[1];
+                //LOG.Info(String.Format("Found Dictionary<{0},{1}>", type1.Name, type2.Name));
+                object dictionary = Activator.CreateInstance(valueType);
+                MethodInfo addMethodInfo = valueType.GetMethod("Add");
+                bool addedElements = false;
+                IDictionary<string, string> properties = IniConfig.PropertiesForSection(_containingIniSection);
+                foreach (string key in properties.Keys)
+                {
+                    if (key != null && key.StartsWith(propertyName + "."))
+                    {
+                        // What "key" do we need to store it under?
+                        string subPropertyName = key.Substring(propertyName.Length + 1);
+                        string stringValue = properties[key];
+                        object newValue1 = null;
+                        object newValue2 = null;
+                        try
+                        {
+                            newValue1 = ConvertStringToValueType(type1, subPropertyName, _attributes.Separator);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warn(ex);
+                            //LOG.Error("Problem converting " + subPropertyName + " to type " + type1.FullName, e);
+                        }
+
+                        try
+                        {
+                            newValue2 = ConvertStringToValueType(type2, stringValue, _attributes.Separator);
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.Warn(ex);
+                            //LOG.Error("Problem converting " + stringValue + " to type " + type2.FullName, e);
+                        }
+
+                        addMethodInfo.Invoke(dictionary, new[] {newValue1, newValue2});
+                        addedElements = true;
+                    }
+                }
+
+                // No need to return something that isn't filled!
+                if (addedElements)
+                {
+                    Value = dictionary;
+                    return;
+                }
+
+                if (defaultValueFromConfig != null)
+                {
+                    Value = defaultValueFromConfig;
+                    return;
+                }
+            }
+            else if (!string.IsNullOrEmpty(propertyValue))
+            {
+                if (valueType.IsGenericType && valueType.GetGenericTypeDefinition() == typeof(Nullable<>))
+                {
+                    // We are dealing with a generic type that is nullable
+                    valueType = Nullable.GetUnderlyingType(valueType);
+                }
+
+                object newValue;
+                try
+                {
+                    newValue = ConvertStringToValueType(valueType, propertyValue, _attributes.Separator);
+                }
+                catch (Exception ex1)
+                {
+                    newValue = null;
+                    if (!defaultUsed)
+                    {
+                        try
+                        {
+                            Log.WarnFormat("Problem '{0}' while converting {1} to type {2} trying fallback...",
+                                ex1.Message, propertyValue, valueType.FullName);
+                            newValue = ConvertStringToValueType(valueType, defaultValue, _attributes.Separator);
+                            ContainingIniSection.IsDirty = true;
+                            Log.InfoFormat("Used default value {0} for property {1}", defaultValue, propertyName);
+                        }
+                        catch (Exception ex2)
+                        {
+                            Log.Warn(
+                                "Problem converting fallback value " + defaultValue + " to type " + valueType.FullName,
+                                ex2);
+                        }
+                    }
+                    else
+                    {
+                        Log.Warn("Problem converting " + propertyValue + " to type " + valueType.FullName, ex1);
+                    }
+                }
+
+                Value = newValue;
+                return;
+            }
+
+            // If nothing is set, we can use the default value from the config (if we habe one)
+            if (defaultValueFromConfig != null)
+            {
+                Value = defaultValueFromConfig;
+                return;
+            }
+
+            if (ValueType != typeof(string))
+            {
+                try
+                {
+                    Value = Activator.CreateInstance(ValueType);
+                }
+                catch (Exception)
+                {
+                    Log.WarnFormat("Couldn't create instance of {0} for {1}, using default value.", ValueType.FullName,
+                        _attributes.Name);
+                    Value = default(ValueType);
+                }
+            }
+            else
+            {
+                Value = default(ValueType);
+            }
+        }
+
+        /// <summary>
 		/// Convert a string to a value of type "valueType"
 		/// </summary>
 		/// <param name="valueType">Type to convert tp</param>
