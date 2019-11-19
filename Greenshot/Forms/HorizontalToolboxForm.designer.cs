@@ -46,10 +46,9 @@
             // 
             // undoButton
             // 
-            this.undoButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.undoButton.Enabled = false;
+            this.undoButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.undoButton.FlatAppearance.BorderSize = 0;
-            this.undoButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.undoButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.undoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
             this.undoButton.Location = new System.Drawing.Point(410, 6);
@@ -62,7 +61,7 @@
             // colorButton
             // 
             this.colorButton.BackColor = System.Drawing.Color.Red;
-            this.colorButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.colorButton.FlatAppearance.BorderColor = System.Drawing.Color.Red;
             this.colorButton.FlatAppearance.BorderSize = 0;
             this.colorButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(171)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.colorButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(222)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
@@ -90,11 +89,8 @@
             // 
             this.arrowButton.Appearance = System.Windows.Forms.Appearance.Button;
             this.arrowButton.Checked = true;
-            this.arrowButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.arrowButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.arrowButton.FlatAppearance.BorderSize = 0;
-            this.arrowButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.arrowButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.arrowButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.arrowButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.arrowButton.Image = ((System.Drawing.Image)(resources.GetObject("arrowButton.Image")));
             this.arrowButton.Location = new System.Drawing.Point(6, 6);
@@ -108,11 +104,8 @@
             // pencilButton
             // 
             this.pencilButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.pencilButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.pencilButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.pencilButton.FlatAppearance.BorderSize = 0;
-            this.pencilButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.pencilButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.pencilButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.pencilButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.pencilButton.Image = ((System.Drawing.Image)(resources.GetObject("pencilButton.Image")));
             this.pencilButton.Location = new System.Drawing.Point(50, 6);
@@ -126,11 +119,8 @@
             // rectangleButton
             // 
             this.rectangleButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rectangleButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.rectangleButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.rectangleButton.FlatAppearance.BorderSize = 0;
-            this.rectangleButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.rectangleButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.rectangleButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.rectangleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("rectangleButton.Image")));
             this.rectangleButton.Location = new System.Drawing.Point(138, 6);
@@ -144,11 +134,8 @@
             // textButton
             // 
             this.textButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.textButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.textButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.textButton.FlatAppearance.BorderSize = 0;
-            this.textButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.textButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.textButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.textButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.textButton.Image = ((System.Drawing.Image)(resources.GetObject("textButton.Image")));
             this.textButton.Location = new System.Drawing.Point(226, 6);
@@ -162,11 +149,8 @@
             // blurButton
             // 
             this.blurButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.blurButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.blurButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.blurButton.FlatAppearance.BorderSize = 0;
-            this.blurButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.blurButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.blurButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.blurButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.blurButton.Image = ((System.Drawing.Image)(resources.GetObject("blurButton.Image")));
             this.blurButton.Location = new System.Drawing.Point(270, 6);
@@ -180,11 +164,8 @@
             // counterButton
             // 
             this.counterButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.counterButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.counterButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.counterButton.FlatAppearance.BorderSize = 0;
-            this.counterButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.counterButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.counterButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.counterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.counterButton.Image = ((System.Drawing.Image)(resources.GetObject("counterButton.Image")));
             this.counterButton.Location = new System.Drawing.Point(314, 6);
@@ -198,11 +179,8 @@
             // lineRadioButton
             // 
             this.lineRadioButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.lineRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.lineRadioButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.lineRadioButton.FlatAppearance.BorderSize = 0;
-            this.lineRadioButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.lineRadioButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.lineRadioButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.lineRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lineRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("lineRadioButton.Image")));
             this.lineRadioButton.Location = new System.Drawing.Point(94, 6);
@@ -216,11 +194,8 @@
             // ellipseRadioButton
             // 
             this.ellipseRadioButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.ellipseRadioButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.ellipseRadioButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.ellipseRadioButton.FlatAppearance.BorderSize = 0;
-            this.ellipseRadioButton.FlatAppearance.CheckedBackColor = System.Drawing.Color.DarkGray;
-            this.ellipseRadioButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.ellipseRadioButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.DarkGray;
             this.ellipseRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ellipseRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("ellipseRadioButton.Image")));
             this.ellipseRadioButton.Location = new System.Drawing.Point(182, 6);
@@ -235,7 +210,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(454, 50);
             this.ControlBox = false;
             this.Controls.Add(this.ellipseRadioButton);

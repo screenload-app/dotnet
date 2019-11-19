@@ -47,9 +47,9 @@
             this.captionLabel.Location = new System.Drawing.Point(3, 3);
             this.captionLabel.Margin = new System.Windows.Forms.Padding(3);
             this.captionLabel.Name = "captionLabel";
-            this.captionLabel.Size = new System.Drawing.Size(53, 13);
+            this.captionLabel.Size = new System.Drawing.Size(74, 13);
             this.captionLabel.TabIndex = 0;
-            this.captionLabel.Text = "Hotkeys";
+            this.captionLabel.Text = "Set hotkeys";
             // 
             // conflictsFlowLayoutPanel
             // 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using Greenshot.Destinations;
 using Greenshot.Drawing;
 using Greenshot.Drawing.Fields;
 using Greenshot.Helpers;
@@ -36,6 +37,8 @@ namespace Greenshot
 
         private readonly Form _surfaceForm;
         private readonly Surface _surface;
+
+        private readonly CoreConfiguration _coreConfiguration;
 
         private HorizontalToolboxForm _horizontalToolboxForm;
         private VerticalToolboxForm _verticalToolboxForm;
@@ -80,8 +83,8 @@ namespace Greenshot
 
             InitializeComponent();
 
-            var coreConfiguration = IniConfig.GetIniSection<CoreConfiguration>();
-            BackColor = Color.FromArgb(255, coreConfiguration.CaptureAreaColor);
+            _coreConfiguration = IniConfig.GetIniSection<CoreConfiguration>();
+            BackColor = Color.FromArgb(255, _coreConfiguration.CaptureAreaColor);
 
             var holePanelLocation = new Point(holeRectangle.X - ADORNER_HALF_SIZE, holeRectangle.Y - ADORNER_HALF_SIZE);
             var holePanelSize = new Size(holeRectangle.Width + ADORNER_HALF_SIZE * 2,
@@ -109,6 +112,8 @@ namespace Greenshot
 
             _horizontalToolboxForm.Show(this);
             _verticalToolboxForm.Show(this);
+
+            _surface.CanUndoChanged += (s, args) => { _horizontalToolboxForm.SetCanUndo(_surface.CanUndo); };
         }
 
         public static QuickImageEditorResult ShowQuickImageEditor(Surface surface, Rectangle holeRectangle)
@@ -225,6 +230,9 @@ namespace Greenshot
             _x = e.X;
             _y = e.Y;
 
+            _horizontalToolboxForm.Visible = false;
+            _verticalToolboxForm.Visible = false;
+
             _allowMove = true;
         }
 
@@ -259,6 +267,9 @@ namespace Greenshot
         private void QuickImageEditorCoverForm_MouseUp(object sender, MouseEventArgs e)
         {
             _allowMove = false;
+
+            _horizontalToolboxForm.Visible = true;
+            _verticalToolboxForm.Visible = true;
         }
 
         #endregion
@@ -273,13 +284,16 @@ namespace Greenshot
             if (!_isMouseInLeftEdge && !_isMouseInRightEdge && !_isMouseInTopEdge && !_isMouseInBottomEdge)
                 return;
 
-            _allowResize = true;
-
             _holeStartSize = holePanel.Size;
             _x = e.X;
             _y = e.Y;
 
             holePanel.Capture = true;
+
+            _horizontalToolboxForm.Visible = false;
+            _verticalToolboxForm.Visible = false;
+
+            _allowResize = true;
         }
 
         private void HolePanel_MouseMove(object sender, MouseEventArgs e)
@@ -434,6 +448,10 @@ namespace Greenshot
         {
             _allowResize = false;
             holePanel.Capture = false;
+
+            _horizontalToolboxForm.Visible = true;
+            _verticalToolboxForm.Visible = true;
+
             UpdateMouseCursor();
         }
 
@@ -662,8 +680,7 @@ namespace Greenshot
             {
                 case QuickImageEditorCommand.Arrow:
                     _surface.DrawingMode = DrawingModes.Arrow;
-                    var color = (Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value;
-                    _horizontalToolboxForm.SetColor(color);
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
                     break;
                 case QuickImageEditorCommand.Pencil:
                     _surface.DrawingMode = DrawingModes.Path;
@@ -701,11 +718,23 @@ namespace Greenshot
                     break;
                 case QuickImageEditorCommand.Counter:
                     _surface.DrawingMode = DrawingModes.StepLabel;
-                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Color:
-                    _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = e.Argument;
+                    if (DrawingModes.StepLabel == _surface.DrawingMode)
+                    {
+                        var color = (Color) e.Argument;
+                        var backColor = Color.White;
+
+                        if (color.R > 127 && color.G > 127 && color.B > 127)
+                            backColor = Color.DimGray;
+
+                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = backColor;
+                        _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = color;
+                    }
+                    else
+                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = e.Argument;
                     break;
                 case QuickImageEditorCommand.Undo:
                     if (_surface.CanUndo)
@@ -745,7 +774,24 @@ namespace Greenshot
 
         private void SaveCapture()
         {
-            _result = BuildResult(QuickImageEditorAction.Save);
+            var captureForExport = new Capture(_surface.GetImageForExport());
+            captureForExport.Crop(GetRectangle());
+
+            var surfaceForExport = new Surface(captureForExport)
+            {
+                CaptureDetails = _surface.CaptureDetails
+            };
+
+            if (_coreConfiguration.ShowTrayNotification && !_coreConfiguration.HideTrayicon)
+                surfaceForExport.SurfaceMessage += CaptureHelper.SurfaceMessageReceived;
+
+            var destination = DestinationHelper.GetDestination(FileWithDialogDestination.DESIGNATION);
+            var exportInformation = destination?.ExportCapture(false, surfaceForExport, _surface.CaptureDetails);
+
+            if (null != exportInformation && !exportInformation.ExportMade)
+                return;
+
+            _result = QuickImageEditorResult.NoAction;
             _surfaceForm.DialogResult = DialogResult.OK;
         }
 
@@ -773,10 +819,16 @@ namespace Greenshot
                 return QuickImageEditorResult.NoAction;
 
             var image = _surface.GetImageForExport();
-            var rectangle = new Rectangle(holePanel.Left + ADORNER_HALF_SIZE, holePanel.Top + ADORNER_HALF_SIZE, holePanel.Width - ADORNER_HALF_SIZE * 2,
-                holePanel.Height - ADORNER_HALF_SIZE * 2);
+            var rectangle = GetRectangle();
 
             return new QuickImageEditorResult(action, image, rectangle);
+        }
+
+        private Rectangle GetRectangle()
+        {
+            return new Rectangle(holePanel.Left + ADORNER_HALF_SIZE, holePanel.Top + ADORNER_HALF_SIZE,
+                holePanel.Width - ADORNER_HALF_SIZE * 2,
+                holePanel.Height - ADORNER_HALF_SIZE * 2);
         }
 
         #endregion

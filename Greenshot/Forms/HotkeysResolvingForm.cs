@@ -11,7 +11,7 @@ namespace Greenshot
     internal partial class HotkeysResolvingForm : BaseForm
     {
         private readonly ReadOnlyCollection<HotkeyResolvingControl> _hotkeyResolvingControls;
-        private readonly ReadOnlyCollection<HotkeyInfo> _hotkeyInfoListCollection;
+        private readonly ReadOnlyCollection<HotkeyInfo> _hotkeyInfoCollection;
 
         public HotkeysResolvingForm(IEnumerable<HotkeyInfo> hotkeyInfoList)
             : this()
@@ -19,7 +19,7 @@ namespace Greenshot
             if (null == hotkeyInfoList)
                 throw new ArgumentNullException(nameof(hotkeyInfoList));
 
-            _hotkeyInfoListCollection = new ReadOnlyCollection<HotkeyInfo>(new List<HotkeyInfo>(hotkeyInfoList));
+            _hotkeyInfoCollection = new ReadOnlyCollection<HotkeyInfo>(new List<HotkeyInfo>(hotkeyInfoList));
 
             var hotkeyResolvingControls = new List<HotkeyResolvingControl>();
 
@@ -27,7 +27,7 @@ namespace Greenshot
             mFlowLayoutPanel.SuspendLayout();
             SuspendLayout();
             
-            foreach (var hotkeyInfo in _hotkeyInfoListCollection)
+            foreach (var hotkeyInfo in _hotkeyInfoCollection)
             {
                 var hotkeyResolvingControl = new HotkeyResolvingControl(hotkeyInfo);
 
@@ -67,7 +67,7 @@ namespace Greenshot
 
             var solved = true;
 
-            foreach (var hotkeyInfo in _hotkeyInfoListCollection)
+            foreach (var hotkeyInfo in _hotkeyInfoCollection)
             {
                 if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
                     solved = false;
@@ -81,7 +81,7 @@ namespace Greenshot
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1))
                     return;
 
-                foreach (var hotkeyInfo in _hotkeyInfoListCollection)
+                foreach (var hotkeyInfo in _hotkeyInfoCollection)
                 {
                     if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
                         hotkeyInfo.Solution = HotkeySolution.Disabled;

@@ -8,8 +8,11 @@ namespace Greenshot
 {
     public sealed partial class HorizontalToolboxForm : Form
     {
-        const int WM_NCHITTEST = 0x0084;
-        const int HTCAPTION = 2;
+        private const int WM_LBUTTONDBLCLK = 0x00A3;
+
+        private const int WM_NCHITTEST = 0x84;
+        private const int HTCLIENT = 0x1;
+        private const int HTCAPTION = 0x2;
 
         //protected override CreateParams CreateParams
         //{
@@ -50,16 +53,30 @@ namespace Greenshot
         public void SetColor(Color color)
         {
             colorButton.BackColor = color;
+            colorButton.FlatAppearance.BorderColor = color;
             colorButton.FlatAppearance.MouseDownBackColor = CalculateColor(color, 0.67F);
             colorButton.FlatAppearance.MouseOverBackColor = CalculateColor(color, 0.87F);
         }
 
+        public void SetCanUndo(bool canUndo)
+        {
+            undoButton.Enabled = canUndo;
+        }
+
         protected override void WndProc(ref Message m)
         {
-            if (m.Msg == WM_NCHITTEST)
-            {
-                m.Result = (IntPtr)HTCAPTION;
+            if (m.Msg == WM_LBUTTONDBLCLK)
                 return;
+
+            switch (m.Msg)
+            {
+                case WM_NCHITTEST:
+                    base.WndProc(ref m);
+
+                    if ((int)m.Result == HTCLIENT)
+                        m.Result = (IntPtr)HTCAPTION;
+
+                    return;
             }
 
             base.WndProc(ref m);

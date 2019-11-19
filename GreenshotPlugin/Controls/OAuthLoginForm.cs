@@ -64,6 +64,10 @@ namespace GreenshotPlugin.Controls {
 			_browser.Navigate(new Uri(authorizationLink));
 		}
 
+        private void OAuthLoginForm_Load(object sender, EventArgs e)
+        {
+        }
+
         /// <summary>
         /// Make sure the form is visible
         /// </summary>
@@ -96,21 +100,29 @@ namespace GreenshotPlugin.Controls {
                 var correctedUri = new Uri(_browser.Url.AbsoluteUri.Replace("#", "&"));
 
                 string queryParams = correctedUri.Query;
+
                 if (queryParams.Length > 0)
                 {
                     queryParams = NetworkHelper.UrlDecode(queryParams);
                     //Store the Token and Token Secret
                     _callbackParameters = NetworkHelper.ParseQueryString(queryParams);
                 }
+
                 DialogResult = DialogResult.OK;
             }
-            else if (_browser.Url.ToString().StartsWith("https://download.ru/users/auth/", StringComparison.OrdinalIgnoreCase))
+            else if (_browser.Url.ToString()
+                .StartsWith("https://download.ru/users/auth/", StringComparison.OrdinalIgnoreCase))
+            {
+                Opacity = 1;
+                //ShowInTaskbar = false;
+
                 _browser.Navigate(new Uri(_authorizationLink));
+            }
         }
 
-		private void AddressTextBox_KeyPress(object sender, KeyPressEventArgs e) {
+        private void AddressTextBox_KeyPress(object sender, KeyPressEventArgs e) {
 			//Cancel the key press so the user can't enter a new url
 			e.Handled = true; 
 		}
-	}
+    }
 }

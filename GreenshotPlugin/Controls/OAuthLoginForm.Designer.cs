@@ -44,42 +44,43 @@ namespace GreenshotPlugin.Controls {
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent() {
-			this._addressTextBox = new System.Windows.Forms.TextBox();
-			this._browser = new ExtendedWebBrowser();
-			this.SuspendLayout();
-			// 
-			// _addressTextBox
-			// 
-			this._addressTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
-			this._addressTextBox.Dock = System.Windows.Forms.DockStyle.Top;
-			this._addressTextBox.Enabled = false;
-			this._addressTextBox.Location = new System.Drawing.Point(0, 0);
-			this._addressTextBox.Name = "addressTextBox";
-			this._addressTextBox.Size = new System.Drawing.Size(595, 20);
-			this._addressTextBox.TabIndex = 3;
-			this._addressTextBox.TabStop = false;
-			// 
-			// _browser
-			// 
-			this._browser.Dock = System.Windows.Forms.DockStyle.Fill;
-			this._browser.Location = new System.Drawing.Point(0, 20);
-			this._browser.MinimumSize = new System.Drawing.Size(100, 100);
-			this._browser.Name = "browser";
-			this._browser.Size = new System.Drawing.Size(595, 295);
-			this._browser.TabIndex = 4;
-			// 
-			// OAuthLoginForm
-			// 
-			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(595, 315);
-			this.Controls.Add(this._browser);
-			this.Controls.Add(this._addressTextBox);
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "OAuthLoginForm";
-			this.ResumeLayout(false);
-			this.PerformLayout();
+            this._addressTextBox = new System.Windows.Forms.TextBox();
+            this._browser = new GreenshotPlugin.Controls.ExtendedWebBrowser();
+            this.SuspendLayout();
+            // 
+            // _addressTextBox
+            // 
+            this._addressTextBox.Cursor = System.Windows.Forms.Cursors.Arrow;
+            this._addressTextBox.Dock = System.Windows.Forms.DockStyle.Top;
+            this._addressTextBox.Enabled = false;
+            this._addressTextBox.Location = new System.Drawing.Point(0, 0);
+            this._addressTextBox.Name = "_addressTextBox";
+            this._addressTextBox.Size = new System.Drawing.Size(584, 20);
+            this._addressTextBox.TabIndex = 3;
+            this._addressTextBox.TabStop = false;
+            // 
+            // _browser
+            // 
+            this._browser.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._browser.Location = new System.Drawing.Point(0, 20);
+            this._browser.MinimumSize = new System.Drawing.Size(100, 100);
+            this._browser.Name = "_browser";
+            this._browser.Size = new System.Drawing.Size(584, 291);
+            this._browser.TabIndex = 4;
+            // 
+            // OAuthLoginForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(584, 311);
+            this.Controls.Add(this._browser);
+            this.Controls.Add(this._addressTextBox);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "OAuthLoginForm";
+            this.Load += new System.EventHandler(this.OAuthLoginForm_Load);
+            this.ResumeLayout(false);
+            this.PerformLayout();
 
 		}
 

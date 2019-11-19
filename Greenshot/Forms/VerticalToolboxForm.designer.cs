@@ -49,10 +49,8 @@
             // 
             // closeButton
             // 
-            this.closeButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.closeButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.closeButton.FlatAppearance.BorderSize = 0;
-            this.closeButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.closeButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.closeButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.closeButton.Image = ((System.Drawing.Image)(resources.GetObject("closeButton.Image")));
             this.closeButton.Location = new System.Drawing.Point(6, 184);
@@ -64,10 +62,8 @@
             // 
             // saveButton
             // 
-            this.saveButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.saveButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.saveButton.FlatAppearance.BorderSize = 0;
-            this.saveButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.saveButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.saveButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.saveButton.Image = ((System.Drawing.Image)(resources.GetObject("saveButton.Image")));
             this.saveButton.Location = new System.Drawing.Point(6, 94);
@@ -79,10 +75,8 @@
             // 
             // copyButton
             // 
-            this.copyButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.copyButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.copyButton.FlatAppearance.BorderSize = 0;
-            this.copyButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.copyButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.copyButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.copyButton.Image = ((System.Drawing.Image)(resources.GetObject("copyButton.Image")));
             this.copyButton.Location = new System.Drawing.Point(6, 50);
@@ -94,11 +88,8 @@
             // 
             // uploadButton
             // 
-            this.uploadButton.BackColor = System.Drawing.Color.WhiteSmoke;
-            this.uploadButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.uploadButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.uploadButton.FlatAppearance.BorderSize = 0;
-            this.uploadButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.uploadButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.uploadButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.uploadButton.Image = ((System.Drawing.Image)(resources.GetObject("uploadButton.Image")));
             this.uploadButton.Location = new System.Drawing.Point(6, 6);
@@ -114,10 +105,8 @@
             // 
             // moreButton
             // 
-            this.moreButton.FlatAppearance.BorderColor = System.Drawing.Color.WhiteSmoke;
+            this.moreButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.moreButton.FlatAppearance.BorderSize = 0;
-            this.moreButton.FlatAppearance.MouseDownBackColor = System.Drawing.Color.DarkGray;
-            this.moreButton.FlatAppearance.MouseOverBackColor = System.Drawing.Color.Gainsboro;
             this.moreButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.moreButton.Image = ((System.Drawing.Image)(resources.GetObject("moreButton.Image")));
             this.moreButton.Location = new System.Drawing.Point(6, 138);
@@ -131,7 +120,6 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(50, 229);
             this.ControlBox = false;
             this.Controls.Add(this.moreButton);

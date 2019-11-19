@@ -746,7 +746,7 @@ namespace Greenshot.Helpers
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="eventArgs"></param>
-        private static void SurfaceMessageReceived(object sender, SurfaceMessageEventArgs eventArgs)
+        public static void SurfaceMessageReceived(object sender, SurfaceMessageEventArgs eventArgs)
         {
             if (string.IsNullOrEmpty(eventArgs?.Message))
                 return;
@@ -906,6 +906,7 @@ namespace Greenshot.Helpers
 
                 surface = new Surface(capture)
                 {
+                    CaptureDetails = captureDetails,
                     Modified = false
                 };
             }

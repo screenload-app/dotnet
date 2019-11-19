@@ -26,6 +26,7 @@ using System.IO;
 using System.Windows.Forms;
 using Greenshot.IniFile;
 using Greenshot.Plugin;
+using GreenshotDownloadRuPlugin.Forms;
 using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 using log4net;
@@ -100,9 +101,7 @@ namespace GreenshotDownloadRuPlugin
         public void OnLanguageChanged(object sender, EventArgs e)
         {
             if (_itemPlugInConfig != null)
-            {
                 _itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
-            }
         }
 
         public virtual void Shutdown()
@@ -143,20 +142,35 @@ namespace GreenshotDownloadRuPlugin
                 new SurfaceOutputSettings(_config.UploadFormat, _config.UploadJpegQuality, false);
             try
             {
-                string url = null;
                 string filename = Path.GetFileName(FilenameHelper.GetFilename(_config.UploadFormat, captureDetails));
                 var imageToUpload = new SurfaceContainer(surfaceToUpload, outputSettings, filename);
 
-                new PleaseWaitForm().ShowAndWait(Attributes.Name,
-                    Language.GetString("downloadru", LangKey.communication_wait),
-                    delegate
-                    {
-                        url = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
-                    }
-                );
+                FileEntry fileEntry = null;
 
-                if (url != null && _config.AfterUploadLinkToClipBoard)
+                var progressForm = new ProgressForm(() =>
+                {
+                    fileEntry = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
+                });
+
+                if (DialogResult.OK != progressForm.ShowDialog())
+                {
+                    if (null != progressForm.Exception)
+                        throw progressForm.Exception;
+
+                    return null;
+                }
+
+                // TODO $ Перенести!
+                var url = $"https://download.ru/{fileEntry?.Preview?.UrlsEntry?.Large}";
+
+                if (string.IsNullOrEmpty(url))
+                    return null;
+
+                if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
                     ClipboardHelper.SetClipboardData(url);
+
+                var successForm = new SuccessForm(fileEntry);
+                successForm.Show();
 
                 return url;
             }

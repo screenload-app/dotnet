@@ -78,6 +78,8 @@ namespace Greenshot.Drawing
 			}
 		}
 
+        public event EventHandler CanUndoChanged;
+
 		/// <summary>
 		/// Event handlers (do not serialize!)
 		/// </summary>
@@ -161,12 +163,12 @@ namespace Greenshot.Drawing
 		[NonSerialized]
 		private bool _isSurfaceMoveMadeUndoable;
 
-		/// <summary>
-		/// Undo/Redo stacks, should not be serialized as the file would be way to big
-		/// </summary>
-		[NonSerialized]
-		private readonly Stack<IMemento> _undoStack = new Stack<IMemento>();
-		[NonSerialized]
+        /// <summary>
+        /// Undo/Redo stacks, should not be serialized as the file would be way to big
+        /// </summary>
+        [NonSerialized]
+        private readonly Stack<IMemento> _undoStack = new Stack<IMemento>();
+        [NonSerialized]
 		private readonly Stack<IMemento> _redoStack = new Stack<IMemento>();
 
 		/// <summary>
@@ -271,7 +273,7 @@ namespace Greenshot.Drawing
 			get { return _counterStart; }
 			set
 			{
-				if (_counterStart == value)
+                if (_counterStart == value)
 				{
 					return;
 				}
@@ -621,7 +623,10 @@ namespace Greenshot.Drawing
 				IMemento top = _undoStack.Pop();
 				_redoStack.Push(top.Restore());
 				_inUndoRedo = false;
-			}
+
+                if (0 == _undoStack.Count)
+                    CanUndoChanged?.Invoke(this, null);
+            }
 		}
 
 		/// <summary>
@@ -635,7 +640,10 @@ namespace Greenshot.Drawing
 				IMemento top = _redoStack.Pop();
 				_undoStack.Push(top.Restore());
 				_inUndoRedo = false;
-			}
+
+                if (1 == _undoStack.Count)
+                    CanUndoChanged?.Invoke(this, null);
+            }
 		}
 
 		/// <summary>
@@ -685,7 +693,10 @@ namespace Greenshot.Drawing
 						_redoStack.Pop().Dispose();
 					}
 					_undoStack.Push(memento);
-				}
+
+                    if (1 == _undoStack.Count)
+                        CanUndoChanged?.Invoke(this, null);
+                }
 			}
 		}
 

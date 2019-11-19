@@ -379,6 +379,18 @@ namespace Greenshot.Forms
                     _captureRect.Width += 1;
                     _captureRect.Height += 1;
                 }
+
+                // TODO $ Добавить вызов экспресс-редактора внутри CaptureForm
+                //var capture = new Capture((Image) _capture.Image.Clone());
+                ////SetDpi(capture);
+
+                //var surface = new Surface(capture)
+                //{
+                //    Modified = false
+                //};
+
+                //QuickImageEditorForm.ShowQuickImageEditor(surface, _captureRect);
+
                 // Go and process the capture
                 DialogResult = DialogResult.OK;
             }

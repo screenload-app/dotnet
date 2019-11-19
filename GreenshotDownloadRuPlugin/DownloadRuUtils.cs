@@ -121,7 +121,7 @@ namespace GreenshotDownloadRuPlugin
         /// <param name="title">Title of downloadru upload</param>
         /// <param name="filename">Filename of downloadru upload</param>
         /// <returns>url to uploaded image</returns>
-        public static string UploadToDownloadRu(SurfaceContainer image, string title, string filename)
+        public static FileEntry UploadToDownloadRu(SurfaceContainer image, string title, string filename)
         {
             while (true)
             {
@@ -177,9 +177,13 @@ namespace GreenshotDownloadRuPlugin
                 }
 
                 var upload = JSONSerializer.Deserialize<Upload>(response);
-                if (upload == null || upload.Entries == null) return null;
 
-                return $"https://download.ru/f/{upload.Entries.Id}";
+                //var largeImage = upload?.File?.Preview?.UrlsEntry?.Large;
+
+                //return $"https://download.ru/f/{upload.Entries.Id}";
+                //return $"https://download.ru/{largeImage}";
+
+                return upload.File;
             }
         }
     }

@@ -39,15 +39,28 @@ namespace GreenshotDownloadRuPlugin
     }
 
     [DataContract]
+    public class UrlsEntry
+    {
+        [DataMember(Name = "large")] public string Large { get; set; }
+    }
+
+    [DataContract]
+    public class PreviewEntry
+    {
+        [DataMember(Name = "urls")] public UrlsEntry UrlsEntry { get; set; }
+    }
+
+    [DataContract]
     public class FileEntry
     {
         [DataMember(Name = "id")] public string Id { get; set; }
         [DataMember(Name = "name")] public string Name { get; set; }
+        [DataMember(Name = "preview")] public PreviewEntry Preview { get; set; }
     }
 
     [DataContract]
     public class Upload
     {
-        [DataMember(Name = "object")] public FileEntry Entries { get; set; }
+        [DataMember(Name = "object")] public FileEntry File { get; set; }
     }
 }
