@@ -42,6 +42,7 @@ namespace Greenshot
 
         private void HorizontalToolboxForm_Load(object sender, EventArgs e)
         {
+            toolTip.SetToolTip(selectButton, Language.GetString("QuickImageEditor_Select"));
             toolTip.SetToolTip(arrowButton, Language.GetString("QuickImageEditor_Arrow"));
             toolTip.SetToolTip(pencilButton, Language.GetString("QuickImageEditor_Pencil"));
             toolTip.SetToolTip(lineRadioButton, Language.GetString("QuickImageEditor_Line"));

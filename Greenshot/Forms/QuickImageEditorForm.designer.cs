@@ -74,7 +74,7 @@
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickImageEditorForm";
-            this.Opacity = 0.3D;
+            this.Opacity = 0.4D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

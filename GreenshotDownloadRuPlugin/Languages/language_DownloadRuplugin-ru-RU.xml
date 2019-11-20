@@ -28,6 +28,12 @@
     <resource name="upload_success">
       Изображение успешно добавлено на сайт Download.Ru!
     </resource>
+    <resource name="upload_success_and_copy_imagelink">
+      Изображение успешно добавлено на сайт Download.Ru и ссылка на него скопирована в буфер обмена!
+    </resource>
+    <resource name="upload_success_and_copy_pagelink">
+      Изображение успешно добавлено на сайт Download.Ru. Ссылка на страницу скопирована в буфер обмена!
+    </resource>
     <resource name="upload_failure">
       В процессе загрузки на сайт Download.Ru произошла ошибка:
     </resource>

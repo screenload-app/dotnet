@@ -672,8 +672,17 @@ namespace Greenshot.Drawing
 		/// <param name="memento">The memento implementing the undo</param>
 		/// <param name="allowMerge">Allow changes to be merged</param>
 		public void MakeUndoable(IMemento memento, bool allowMerge)
-		{
-			if (_inUndoRedo)
+        {
+            if (memento is ChangeFieldHolderMemento changeFieldHolderMemento)
+            {
+                if (changeFieldHolderMemento.FieldToBeChanged?.FieldType?.Name?.Equals("LINE_COLOR",
+                        StringComparison.OrdinalIgnoreCase) ??
+                    changeFieldHolderMemento.FieldToBeChanged?.FieldType?.Name?.Equals("FILL_COLOR",
+                        StringComparison.OrdinalIgnoreCase) ?? false)
+                    return;
+            }
+
+            if (_inUndoRedo)
 			{
 				throw new InvalidOperationException("Invoking do within an undo/redo action.");
 			}

@@ -18,6 +18,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using Greenshot.Plugin;
@@ -50,9 +52,24 @@ namespace GreenshotDownloadRuPlugin
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails)
         {
+            string successMessage = Language.GetString("downloadru", LangKey.upload_success);
+
+            if (_plugin.Configuration.AfterUploadLinkToClipBoard)
+            {
+                switch (_plugin.Configuration.AfterUploadLinkToClipBoardMode)
+                {
+                    case LinkType.Image:
+                        successMessage = Language.GetString("downloadru", LangKey.upload_success_and_copy_imagelink);
+                        break;
+                    case LinkType.Page:
+                        successMessage = Language.GetString("downloadru", LangKey.upload_success_and_copy_pagelink);
+                        break;
+                }
+            }
+
             var exportInformation = new ExportInformation(Designation, Description)
             {
-                SuccessMessage = Language.GetString("downloadru", LangKey.upload_success)
+                SuccessMessage = successMessage
             };
 
             string uploadUrl = _plugin.Upload(captureDetails, surface);

@@ -118,10 +118,21 @@ namespace Greenshot
             _surface.CanUndoChanged += (s, args) => { _horizontalToolboxForm.SetCanUndo(_surface.CanUndo); };
         }
 
-        public static QuickImageEditorResult ShowQuickImageEditor(Surface surface, Rectangle holeRectangle)
+        public static QuickImageEditorResult ShowQuickImageEditor(Image screenImage, ICaptureDetails captureDetails, Rectangle holeRectangle)
         {
-            if (null == surface)
-                throw new ArgumentNullException(nameof(surface));
+            if (null == screenImage)
+                throw new ArgumentNullException(nameof(screenImage));
+
+            if (null == captureDetails)
+                throw new ArgumentNullException(nameof(captureDetails));
+
+            var capture = new Capture((Image)screenImage.Clone());
+
+            var surface = new Surface(capture)
+            {
+                CaptureDetails = captureDetails,
+                Modified = false
+            };
 
             var surfaceForm = new SurfaceForm(surface);
             QuickImageEditorForm quickImageEditorForm = null;

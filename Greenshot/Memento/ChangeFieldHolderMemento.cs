@@ -33,7 +33,9 @@ namespace Greenshot.Memento
 		private readonly IField _fieldToBeChanged;
 		private readonly object _oldValue;
 
-		public ChangeFieldHolderMemento(IDrawableContainer drawableContainer, IField fieldToBeChanged)
+        internal IField FieldToBeChanged => _fieldToBeChanged;
+
+        public ChangeFieldHolderMemento(IDrawableContainer drawableContainer, IField fieldToBeChanged)
 		{
 			_drawableContainer = drawableContainer;
 			_fieldToBeChanged = fieldToBeChanged;

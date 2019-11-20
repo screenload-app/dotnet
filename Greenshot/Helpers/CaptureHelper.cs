@@ -56,9 +56,7 @@ namespace Greenshot.Helpers
         private ICapture _capture;
         private CaptureMode _captureMode;
         private ScreenCaptureMode _screenCaptureMode = ScreenCaptureMode.Auto;
-
-        private Image _screen;
-
+        
         /// <summary>
         /// The public accessible Dispose
         /// Will call the GarbageCollector to SuppressFinalize, preventing being cleaned twice
@@ -87,8 +85,6 @@ namespace Greenshot.Helpers
             _windows = null;
             _selectedCaptureWindow = null;
             _capture = null;
-            _screen?.Dispose();
-            _screen = null;
             // Empty working set after capturing
             if (CoreConfig.MinimizeWorkingSetSize)
             {
@@ -418,6 +414,7 @@ namespace Greenshot.Helpers
                 case CaptureMode.FullScreen:
                     // Check how we need to capture the screen
                     bool captureTaken = false;
+
                     switch (_screenCaptureMode)
                     {
                         case ScreenCaptureMode.Auto:
@@ -451,10 +448,14 @@ namespace Greenshot.Helpers
                     if (!captureTaken)
                         _capture = WindowCapture.CaptureScreen(_capture);
 
-                    _screen = (Image)_capture.Image.Clone();
+                    var fullScreenAction = ShowQuickEditor();
 
-                    SetDpi();
-                    HandleCapture();
+                    if (QuickImageEditorAction.None != fullScreenAction)
+                    {
+                        SetDpi();
+                        HandleCapture(fullScreenAction);
+                    }
+
                     break;
                 case CaptureMode.Clipboard:
                     Image clipboardImage = ClipboardHelper.GetImage();
@@ -568,40 +569,49 @@ namespace Greenshot.Helpers
                     if (!CoreConfig.LastCapturedRegion.IsEmpty)
                     {
                         var capture = WindowCapture.CaptureScreen(_capture);
-                        _screen = (Image) capture.Image.Clone();
+                        //_screen = (Image) capture.Image.Clone();
 
-                        capture.Crop(CoreConfig.LastCapturedRegion);
+                        //capture.Crop(CoreConfig.LastCapturedRegion);
 
                         _capture = capture;
 
-                        //_capture = WindowCapture.CaptureRectangle(_capture, CoreConfig.LastCapturedRegion);
-                        // TODO: Reactive / check if the elements code is activated
-                        //if (windowDetailsThread != null) {
-                        //	windowDetailsThread.Join();
-                        //}
+                        var lastRegionAction = ShowQuickEditor(CoreConfig.LastCapturedRegion);
 
-                        // Set capture title, fixing bug #3569703
-                        foreach (WindowDetails window in WindowDetails.GetVisibleWindows())
+                        if (QuickImageEditorAction.None != lastRegionAction)
                         {
-                            Point estimatedLocation =
-                                new Point(CoreConfig.LastCapturedRegion.X + CoreConfig.LastCapturedRegion.Width / 2,
-                                    CoreConfig.LastCapturedRegion.Y + CoreConfig.LastCapturedRegion.Height / 2);
-                            if (window.Contains(estimatedLocation))
+                            //_capture = WindowCapture.CaptureRectangle(_capture, CoreConfig.LastCapturedRegion);
+                            // TODO: Reactive / check if the elements code is activated
+                            //if (windowDetailsThread != null) {
+                            //	windowDetailsThread.Join();
+                            //}
+
+                            // Set capture title, fixing bug #3569703
+                            foreach (WindowDetails window in WindowDetails.GetVisibleWindows())
                             {
-                                _selectedCaptureWindow = window;
-                                _capture.CaptureDetails.Title = _selectedCaptureWindow.Text;
-                                break;
+                                //Point estimatedLocation =
+                                //    new Point(CoreConfig.LastCapturedRegion.X + CoreConfig.LastCapturedRegion.Width / 2,
+                                //        CoreConfig.LastCapturedRegion.Y + CoreConfig.LastCapturedRegion.Height / 2);
+
+                                var estimatedLocation = new Point(_captureRect.X + _captureRect.Width / 2,
+                                    _captureRect.Y + _captureRect.Height / 2);
+
+                                if (window.Contains(estimatedLocation))
+                                {
+                                    _selectedCaptureWindow = window;
+                                    _capture.CaptureDetails.Title = _selectedCaptureWindow.Text;
+                                    break;
+                                }
                             }
+
+                            // Move cursor, fixing bug #3569703
+                            _capture.MoveMouseLocation(_capture.ScreenBounds.Location.X - _capture.Location.X,
+                                _capture.ScreenBounds.Location.Y - _capture.Location.Y);
+                            //capture.MoveElements(capture.ScreenBounds.Location.X - capture.Location.X, capture.ScreenBounds.Location.Y - capture.Location.Y);
+
+                            _capture.CaptureDetails.AddMetaData("source", "screen");
+                            SetDpi();
+                            HandleCapture(lastRegionAction);
                         }
-
-                        // Move cursor, fixing bug #3569703
-                        _capture.MoveMouseLocation(_capture.ScreenBounds.Location.X - _capture.Location.X,
-                            _capture.ScreenBounds.Location.Y - _capture.Location.Y);
-                        //capture.MoveElements(capture.ScreenBounds.Location.X - capture.Location.X, capture.ScreenBounds.Location.Y - capture.Location.Y);
-
-                        _capture.CaptureDetails.AddMetaData("source", "screen");
-                        SetDpi();
-                        HandleCapture();
                     }
 
                     break;
@@ -610,7 +620,6 @@ namespace Greenshot.Helpers
                     if (Rectangle.Empty.Equals(_captureRect))
                     {
                         _capture = WindowCapture.CaptureScreen(_capture);
-                        _screen = (Image) _capture.Image.Clone();
 
                         _capture.CaptureDetails.AddMetaData("source", "screen");
                         SetDpi();
@@ -778,7 +787,7 @@ namespace Greenshot.Helpers
         }
 
 
-        private void HandleCapture()
+        private void HandleCapture(QuickImageEditorAction? quickImageEditorAction = null)
         {
             // Flag to see if the image was "exported" so the FileEditor doesn't
             // ask to save the file as long as nothing is done.
@@ -843,21 +852,57 @@ namespace Greenshot.Helpers
 
             if (captureDetails.HasDestination(PickerDestination.DESIGNATION))
             {
-                switch (_captureMode)
+                if (null != quickImageEditorAction)
                 {
-                    case CaptureMode.Region:
-                    case CaptureMode.LastRegion:
-                    case CaptureMode.FullScreen:
+                    string destinationName;
+
+                    switch (quickImageEditorAction)
                     {
-                        ShowQuickEditor(null,
-                            new Rectangle(_capture.Location.X, _capture.Location.Y, surface.Width, surface.Height),
-                            captureDetails);
+                        case QuickImageEditorAction.DownloadRu:
+                            destinationName = "DownloadRu";
+                            break;
+                        case QuickImageEditorAction.Save:
+                            destinationName = FileWithDialogDestination.DESIGNATION;
+                            break;
+                        case QuickImageEditorAction.Copy:
+                            destinationName = ClipboardDestination.DESIGNATION;
+                            break;
+                        case QuickImageEditorAction.Editor:
+                            destinationName = EditorDestination.DESIGNATION;
+                            break;
+                        default:
+                            destinationName = null;
+                            break;
                     }
-                        break;
-                    default:
-                        DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
-                        break;
+
+                    if (null != destinationName)
+                    {
+                        var destination = DestinationHelper.GetDestination(destinationName);
+                        var exportInformation = destination?.ExportCapture(false, surface, captureDetails);
+
+                        if (null != exportInformation && !exportInformation.ExportMade)
+                            DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface,
+                                captureDetails);
+                    }
                 }
+                else
+                    DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
+
+                //switch (_captureMode)
+                //{
+                //    case CaptureMode.LastRegion:
+                //    case CaptureMode.FullScreen:
+                //    {
+                //            //ShowQuickEditor(null,
+                //            //    new Rectangle(_capture.Location.X, _capture.Location.Y, surface.Width, surface.Height),
+                //            //    captureDetails);
+                //            //Console.WriteLine(1);
+                //        }
+                //        break;
+                //    default:
+                //        DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
+                //        break;
+                //}
 
                 captureDetails.CaptureDestinations.Clear();
                 canDisposeSurface = false;
@@ -897,84 +942,37 @@ namespace Greenshot.Helpers
             }
         }
 
-        private void ShowQuickEditor(Surface surface, Rectangle rectangle, ICaptureDetails captureDetails)
+        private QuickImageEditorAction ShowQuickEditor()
         {
-            if (null == surface)
-            {
-                var capture = new Capture((Image) _screen.Clone());
-                //SetDpi(capture);
+            return ShowQuickEditor(_capture.ScreenBounds);
+        }
 
-                surface = new Surface(capture)
+        private QuickImageEditorAction ShowQuickEditor(Rectangle rectangle)
+        {
+            var quickImageEditorResult =
+                QuickImageEditorForm.ShowQuickImageEditor(_capture.Image, _capture.CaptureDetails, rectangle);
+
+            if (QuickImageEditorAction.None != quickImageEditorResult.Action)
+            {
+                _captureRect = quickImageEditorResult.Rectangle;
+
+                var capture = new Capture(quickImageEditorResult.Image)
                 {
-                    CaptureDetails = captureDetails,
-                    Modified = false
-                };
-            }
-
-            var quickImageEditorResult = QuickImageEditorForm.ShowQuickImageEditor(surface,
-                new Rectangle(rectangle.X, rectangle.Y, rectangle.Width, rectangle.Height));
-
-            string destinationName;
-
-            switch (quickImageEditorResult.Action)
-            {
-                case QuickImageEditorAction.DownloadRu:
-                    destinationName = "DownloadRu";
-                    break;
-                case QuickImageEditorAction.Save:
-                    destinationName = FileWithDialogDestination.DESIGNATION;
-                    break;
-                case QuickImageEditorAction.Copy:
-                    destinationName = ClipboardDestination.DESIGNATION;
-                    break;
-                case QuickImageEditorAction.Editor:
-                    destinationName = EditorDestination.DESIGNATION;
-                    break;
-                default:
-                    destinationName = null;
-                    break;
-            }
-
-            if (null == destinationName)
-            {
-                surface.Dispose();
-                quickImageEditorResult.Dispose();
-
-                return;
-            }
-
-            var captureForExport = new Capture((Image) quickImageEditorResult.Image.Clone());
-            captureForExport.Crop(quickImageEditorResult.Rectangle);
-
-            var surfaceForExport = new Surface(captureForExport)
-            {
-                CaptureDetails = captureDetails
-            };
-
-            if (CoreConfig.ShowTrayNotification && !CoreConfig.HideTrayicon)
-                surfaceForExport.SurfaceMessage += SurfaceMessageReceived;
-
-            var destination = DestinationHelper.GetDestination(destinationName);
-            var exportInformation = destination?.ExportCapture(false, surfaceForExport, captureDetails);
-
-            if (null != exportInformation && !exportInformation.ExportMade)
-            {
-                var capture = new Capture(quickImageEditorResult.Image);
-                //SetDpi(capture);
-                surface = new Surface(capture)
-                {
-                    Modified = false
+                    CaptureDetails = _capture.CaptureDetails
                 };
 
-                rectangle = quickImageEditorResult.Rectangle;
+                capture.Crop(_captureRect);
 
-                ShowQuickEditor(surface, rectangle, captureDetails);
+                _capture.Dispose();
+                _capture = capture;
             }
             else
             {
-                surface.Dispose();
-                quickImageEditorResult.Dispose();
+                _capture.Dispose();
+                _capture = null;
             }
+
+            return quickImageEditorResult.Action;
         }
 
         private bool CaptureActiveWindow()
@@ -1383,7 +1381,25 @@ namespace Greenshot.Helpers
                 if (result == DialogResult.OK)
                 {
                     _selectedCaptureWindow = captureForm.SelectedCaptureWindow;
-                    _captureRect = captureForm.CaptureRectangle;
+
+                    var quickImageEditorResult = captureForm.QuickImageEditorResult;
+
+                    if (null != quickImageEditorResult)
+                    {
+                        _captureRect = quickImageEditorResult.Rectangle;
+
+                        var capture = new Capture(quickImageEditorResult.Image)
+                        {
+                            CaptureDetails = _capture.CaptureDetails
+                        };
+
+                        _capture.Dispose();
+                        _capture = capture;
+                    }
+                    else
+                    {
+                        _captureRect = captureForm.CaptureRectangle;
+                    }
 
                     // Get title
                     if (_selectedCaptureWindow != null)
@@ -1401,7 +1417,7 @@ namespace Greenshot.Helpers
                         Rectangle tmpRectangle = _captureRect;
                         tmpRectangle.Offset(_capture.ScreenBounds.Location.X, _capture.ScreenBounds.Location.Y);
                         CoreConfig.LastCapturedRegion = tmpRectangle;
-                        HandleCapture();
+                        HandleCapture(quickImageEditorResult?.Action);
                     }
                 }
             }

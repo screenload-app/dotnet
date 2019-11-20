@@ -47,6 +47,8 @@ namespace GreenshotDownloadRuPlugin
         private ComponentResourceManager _resources;
         private ToolStripMenuItem _itemPlugInConfig;
 
+        internal DownloadRuConfiguration Configuration => _config;
+
         public void Dispose()
         {
             Dispose(true);

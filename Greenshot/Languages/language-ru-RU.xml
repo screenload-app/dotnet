@@ -321,6 +321,7 @@ ${hostname} Имя ПК
 	  <resource name="empty_hotkey_error_message">Значение не может быть пустым!</resource>
 
     <!--QuickImageEditor-->
+    <resource name="QuickImageEditor_Select">Выделить</resource>
     <resource name="QuickImageEditor_Arrow">Стрелка</resource>
     <resource name="QuickImageEditor_Pencil">Карандаш</resource>
     <resource name="QuickImageEditor_Line">Линия</resource>
@@ -334,7 +335,7 @@ ${hostname} Имя ПК
 
     <resource name="QuickImageEditor_Upload">Сохранить на Download.Ru [Ctrl+D]</resource>
     <resource name="QuickImageEditor_Copy">Копировать в буфер обмена [Ctrl+C]</resource>
-    <resource name="QuickImageEditor_Save">Сохранить на диск...[Ctrl+S]</resource>
+    <resource name="QuickImageEditor_Save">Сохранить на диск... [Ctrl+S]</resource>
     <resource name="QuickImageEditor_More">Расширенный редактор [Ctrl+E]</resource>
     <resource name="QuickImageEditor_Close">Закрыть [Esc]</resource>
 
@@ -346,8 +347,8 @@ ${hostname} Имя ПК
     <resource name="exported_to_Clipboard">Скриншот скопирован в буфер обмена.</resource>
     <resource name="exported_to_Editor">Скриншот отправлен в редактор.</resource>
     <resource name="exported_to_EMail">Скриншот отправлен на email.</resource>
-    <resource name="exported_to_FileNoDialog">Скриншот сохранен.</resource>
-    <resource name="exported_to_FileDialog">Скриншот сохранен.</resource>
+    <resource name="exported_to_FileNoDialog">Скриншот сохранен. Нажмите чтобы открыть.</resource>
+    <resource name="exported_to_FileDialog">Скриншот сохранен. Нажмите чтобы открыть.</resource>
     <resource name="exported_to_Printer">Скриншот отправлен на печать.</resource>
 
   </resources>

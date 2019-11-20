@@ -6,6 +6,8 @@ namespace GreenshotDownloadRuPlugin
         settings_title,
         label_upload_format,
         upload_success,
+        upload_success_and_copy_imagelink,
+        upload_success_and_copy_pagelink,
         upload_failure,
         communication_wait,
         Configure,

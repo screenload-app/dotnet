@@ -33,6 +33,14 @@ namespace Greenshot.Helpers
             Action = action;
             Image = image ?? throw new ArgumentNullException(nameof(image));
             Rectangle = rectangle;
+
+            //byte[] surfaceBytes;
+
+            //using (MemoryStream stream = new MemoryStream())
+            //{
+            //    ImageOutput.SaveToStream(surface, stream, new SurfaceOutputSettings(OutputFormat.greenshot));
+            //    surfaceBytes = stream.ToArray();
+            //}
         }
 
         public void Dispose()

@@ -43,7 +43,7 @@
             this.counterButton = new System.Windows.Forms.RadioButton();
             this.lineRadioButton = new System.Windows.Forms.RadioButton();
             this.ellipseRadioButton = new System.Windows.Forms.RadioButton();
-            this.selectRadioButton = new System.Windows.Forms.RadioButton();
+            this.selectButton = new System.Windows.Forms.RadioButton();
             this.sep1Label = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
@@ -219,19 +219,19 @@
             this.ellipseRadioButton.UseVisualStyleBackColor = true;
             this.ellipseRadioButton.Click += new System.EventHandler(this.EllipseRadioButton_Click);
             // 
-            // selectRadioButton
+            // selectButton
             // 
-            this.selectRadioButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.selectRadioButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.selectRadioButton.FlatAppearance.BorderSize = 0;
-            this.selectRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.selectRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("selectRadioButton.Image")));
-            this.selectRadioButton.Location = new System.Drawing.Point(6, 6);
-            this.selectRadioButton.Name = "selectRadioButton";
-            this.selectRadioButton.Size = new System.Drawing.Size(38, 38);
-            this.selectRadioButton.TabIndex = 0;
-            this.selectRadioButton.UseVisualStyleBackColor = true;
-            this.selectRadioButton.Click += new System.EventHandler(this.SelectButton_Click);
+            this.selectButton.Appearance = System.Windows.Forms.Appearance.Button;
+            this.selectButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.selectButton.FlatAppearance.BorderSize = 0;
+            this.selectButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.selectButton.Image = ((System.Drawing.Image)(resources.GetObject("selectButton.Image")));
+            this.selectButton.Location = new System.Drawing.Point(6, 6);
+            this.selectButton.Name = "selectButton";
+            this.selectButton.Size = new System.Drawing.Size(38, 38);
+            this.selectButton.TabIndex = 0;
+            this.selectButton.UseVisualStyleBackColor = true;
+            this.selectButton.Click += new System.EventHandler(this.SelectButton_Click);
             // 
             // sep1Label
             // 
@@ -248,7 +248,7 @@
             this.ClientSize = new System.Drawing.Size(506, 50);
             this.ControlBox = false;
             this.Controls.Add(this.sep1Label);
-            this.Controls.Add(this.selectRadioButton);
+            this.Controls.Add(this.selectButton);
             this.Controls.Add(this.ellipseRadioButton);
             this.Controls.Add(this.lineRadioButton);
             this.Controls.Add(this.counterButton);
@@ -289,7 +289,7 @@
         private System.Windows.Forms.RadioButton lineRadioButton;
         private System.Windows.Forms.RadioButton ellipseRadioButton;
         private System.Windows.Forms.ImageList expandImageList;
-        private System.Windows.Forms.RadioButton selectRadioButton;
+        private System.Windows.Forms.RadioButton selectButton;
         private System.Windows.Forms.Label sep1Label;
     }
 }

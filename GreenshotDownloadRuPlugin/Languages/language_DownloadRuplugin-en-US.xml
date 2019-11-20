@@ -28,6 +28,12 @@
     <resource name="upload_success">
       Successfully uploaded image to Download.Ru!
     </resource>
+    <resource name="upload_success_and_copy_imagelink">
+      The image was successfully uploaded to Download.Ru and the link to it was copied to the clipboard!
+    </resource>
+    <resource name="upload_success_and_copy_pagelink">
+      Image has been successfully uploaded to Download.Ru. Link to page copied to clipboard!
+    </resource>
     <resource name="upload_failure">
       An error occured while uploading to Download.Ru:
     </resource>

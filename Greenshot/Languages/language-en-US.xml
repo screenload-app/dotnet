@@ -329,14 +329,15 @@ All Greenshot functions still work directly from the context menu via the tray i
 	  <resource name="empty_hotkey_error_message">Value cannot be blank!</resource>
 
     <!--QuickImageEditor-->
-    <resource name="QuickImageEditor_Arrow">Arrow</resource>
-    <resource name="QuickImageEditor_Pencil">Pencil</resource>
-    <resource name="QuickImageEditor_Line">Line</resource>
-    <resource name="QuickImageEditor_Rectangle">Rectangle</resource>
-    <resource name="QuickImageEditor_Ellipse">Ellipse</resource>
-    <resource name="QuickImageEditor_Text">Text</resource>
+    <resource name="QuickImageEditor_Select">Selection Tool</resource>
+    <resource name="QuickImageEditor_Arrow">Draw arrow</resource>
+    <resource name="QuickImageEditor_Pencil">Draw freehand</resource>
+    <resource name="QuickImageEditor_Line">Draw line</resource>
+    <resource name="QuickImageEditor_Rectangle">Draw rectangle</resource>
+    <resource name="QuickImageEditor_Ellipse">Draw ellipse</resource>
+    <resource name="QuickImageEditor_Text">Add text</resource>
     <resource name="QuickImageEditor_Blur">Blur</resource>
-    <resource name="QuickImageEditor_Counter">Counter</resource>
+    <resource name="QuickImageEditor_Counter">Add counter</resource>
     <resource name="QuickImageEditor_Color">Color</resource>
     <resource name="QuickImageEditor_Undo">Undo [Ctrl+Z]</resource>
 
