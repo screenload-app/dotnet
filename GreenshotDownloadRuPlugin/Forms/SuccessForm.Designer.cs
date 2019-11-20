@@ -29,27 +29,28 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SuccessForm));
-            this.captionLabel = new System.Windows.Forms.Label();
+            this.captionLabel = new GreenshotPlugin.Controls.GreenshotLabel();
             this.mPictureBox = new System.Windows.Forms.PictureBox();
-            this.directLinkLabel = new System.Windows.Forms.Label();
-            this.pageLinkLabel = new System.Windows.Forms.Label();
-            this.directLinkTextBox = new System.Windows.Forms.TextBox();
-            this.directLinkButton = new System.Windows.Forms.Button();
-            this.pageLinkButton = new System.Windows.Forms.Button();
-            this.pageLinkTextBox = new System.Windows.Forms.TextBox();
-            this.okButton = new System.Windows.Forms.Button();
-            this.doNotShowCheckBox = new System.Windows.Forms.CheckBox();
+            this.directLinkLabel = new GreenshotPlugin.Controls.GreenshotLabel();
+            this.pageLinkLabel = new GreenshotPlugin.Controls.GreenshotLabel();
+            this.directLinkTextBox = new GreenshotPlugin.Controls.GreenshotTextBox();
+            this.directLinkButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.pageLinkButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.pageLinkTextBox = new GreenshotPlugin.Controls.GreenshotTextBox();
+            this.okButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.doNotShowCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.mPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // captionLabel
             // 
+            this.captionLabel.LanguageKey = "downloadru.success_info";
             this.captionLabel.Location = new System.Drawing.Point(82, 39);
             this.captionLabel.Name = "captionLabel";
             this.captionLabel.Size = new System.Drawing.Size(456, 28);
             this.captionLabel.TabIndex = 0;
-            this.captionLabel.Text = "Изображение было успешно сохранено на Download.Ru! Вы можете получить к нему дост" +
-    "уп по этим ссылкам:";
+            this.captionLabel.Text = "The image has been successfully uploaded to Download.Ru! You can access it online" +
+    " using the following link:";
             // 
             // mPictureBox
             // 
@@ -64,85 +65,94 @@
             // 
             this.directLinkLabel.AutoSize = true;
             this.directLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.directLinkLabel.Location = new System.Drawing.Point(9, 105);
+            this.directLinkLabel.LanguageKey = "downloadru.success_directlink";
+            this.directLinkLabel.Location = new System.Drawing.Point(12, 152);
             this.directLinkLabel.Name = "directLinkLabel";
-            this.directLinkLabel.Size = new System.Drawing.Size(105, 13);
+            this.directLinkLabel.Size = new System.Drawing.Size(69, 13);
             this.directLinkLabel.TabIndex = 2;
-            this.directLinkLabel.Text = "Прямая ссылка:";
+            this.directLinkLabel.Text = "Direct link:";
             // 
             // pageLinkLabel
             // 
             this.pageLinkLabel.AutoSize = true;
             this.pageLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.pageLinkLabel.Location = new System.Drawing.Point(9, 143);
+            this.pageLinkLabel.LanguageKey = "downloadru.success_pagelink";
+            this.pageLinkLabel.Location = new System.Drawing.Point(12, 102);
             this.pageLinkLabel.Name = "pageLinkLabel";
-            this.pageLinkLabel.Size = new System.Drawing.Size(132, 13);
+            this.pageLinkLabel.Size = new System.Drawing.Size(64, 13);
             this.pageLinkLabel.TabIndex = 3;
-            this.pageLinkLabel.Text = "Ссылка на страницу:";
+            this.pageLinkLabel.Text = "Page link:";
             // 
             // directLinkTextBox
             // 
             this.directLinkTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.directLinkTextBox.Location = new System.Drawing.Point(164, 102);
+            this.directLinkTextBox.Location = new System.Drawing.Point(164, 126);
+            this.directLinkTextBox.Multiline = true;
             this.directLinkTextBox.Name = "directLinkTextBox";
             this.directLinkTextBox.ReadOnly = true;
-            this.directLinkTextBox.Size = new System.Drawing.Size(293, 20);
+            this.directLinkTextBox.Size = new System.Drawing.Size(294, 65);
             this.directLinkTextBox.TabIndex = 4;
             // 
             // directLinkButton
             // 
-            this.directLinkButton.Location = new System.Drawing.Point(463, 100);
+            this.directLinkButton.LanguageKey = "downloadru.success_copy";
+            this.directLinkButton.Location = new System.Drawing.Point(464, 168);
             this.directLinkButton.Name = "directLinkButton";
             this.directLinkButton.Size = new System.Drawing.Size(75, 23);
             this.directLinkButton.TabIndex = 5;
-            this.directLinkButton.Text = "Копировать";
+            this.directLinkButton.Text = "Copy";
             this.directLinkButton.UseVisualStyleBackColor = true;
             this.directLinkButton.Click += new System.EventHandler(this.DirectLinkButton_Click);
             // 
             // pageLinkButton
             // 
-            this.pageLinkButton.Location = new System.Drawing.Point(463, 138);
+            this.pageLinkButton.LanguageKey = "downloadru.success_copy";
+            this.pageLinkButton.Location = new System.Drawing.Point(464, 98);
             this.pageLinkButton.Name = "pageLinkButton";
             this.pageLinkButton.Size = new System.Drawing.Size(75, 23);
             this.pageLinkButton.TabIndex = 7;
-            this.pageLinkButton.Text = "Копировать";
+            this.pageLinkButton.Text = "Copy";
             this.pageLinkButton.UseVisualStyleBackColor = true;
             this.pageLinkButton.Click += new System.EventHandler(this.PageLinkButton_Click);
             // 
             // pageLinkTextBox
             // 
             this.pageLinkTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.pageLinkTextBox.Location = new System.Drawing.Point(164, 140);
+            this.pageLinkTextBox.Location = new System.Drawing.Point(164, 100);
             this.pageLinkTextBox.Name = "pageLinkTextBox";
             this.pageLinkTextBox.ReadOnly = true;
-            this.pageLinkTextBox.Size = new System.Drawing.Size(293, 20);
+            this.pageLinkTextBox.Size = new System.Drawing.Size(294, 20);
             this.pageLinkTextBox.TabIndex = 6;
             // 
             // okButton
             // 
-            this.okButton.Location = new System.Drawing.Point(463, 224);
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.okButton.LanguageKey = "downloadru.success_done";
+            this.okButton.Location = new System.Drawing.Point(464, 242);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
             this.okButton.TabIndex = 8;
-            this.okButton.Text = "ОК";
+            this.okButton.Text = "Done";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // doNotShowCheckBox
             // 
             this.doNotShowCheckBox.AutoSize = true;
-            this.doNotShowCheckBox.Location = new System.Drawing.Point(12, 191);
+            this.doNotShowCheckBox.LanguageKey = "downloadru.success_donotshow";
+            this.doNotShowCheckBox.Location = new System.Drawing.Point(15, 214);
             this.doNotShowCheckBox.Name = "doNotShowCheckBox";
-            this.doNotShowCheckBox.Size = new System.Drawing.Size(153, 17);
+            this.doNotShowCheckBox.Size = new System.Drawing.Size(161, 17);
             this.doNotShowCheckBox.TabIndex = 9;
-            this.doNotShowCheckBox.Text = "Не отображать это окно.";
+            this.doNotShowCheckBox.Text = "Don\'t show this dialog again.";
             this.doNotShowCheckBox.UseVisualStyleBackColor = true;
+            this.doNotShowCheckBox.CheckedChanged += new System.EventHandler(this.doNotShowCheckBox_CheckedChanged);
             // 
             // SuccessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(551, 259);
+            this.ClientSize = new System.Drawing.Size(551, 277);
             this.Controls.Add(this.doNotShowCheckBox);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.pageLinkButton);
@@ -154,10 +164,10 @@
             this.Controls.Add(this.mPictureBox);
             this.Controls.Add(this.captionLabel);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SuccessForm";
-            this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Greenshot";
@@ -170,15 +180,15 @@
 
         #endregion
 
-        private System.Windows.Forms.Label captionLabel;
+        private GreenshotPlugin.Controls.GreenshotLabel captionLabel;
         private System.Windows.Forms.PictureBox mPictureBox;
-        private System.Windows.Forms.Label directLinkLabel;
-        private System.Windows.Forms.Label pageLinkLabel;
-        private System.Windows.Forms.TextBox directLinkTextBox;
-        private System.Windows.Forms.Button directLinkButton;
-        private System.Windows.Forms.Button pageLinkButton;
-        private System.Windows.Forms.TextBox pageLinkTextBox;
-        private System.Windows.Forms.Button okButton;
-        private System.Windows.Forms.CheckBox doNotShowCheckBox;
+        private GreenshotPlugin.Controls.GreenshotLabel directLinkLabel;
+        private GreenshotPlugin.Controls.GreenshotLabel pageLinkLabel;
+        private GreenshotPlugin.Controls.GreenshotTextBox directLinkTextBox;
+        private GreenshotPlugin.Controls.GreenshotButton directLinkButton;
+        private GreenshotPlugin.Controls.GreenshotButton pageLinkButton;
+        private GreenshotPlugin.Controls.GreenshotTextBox pageLinkTextBox;
+        private GreenshotPlugin.Controls.GreenshotButton okButton;
+        private GreenshotPlugin.Controls.GreenshotCheckBox doNotShowCheckBox;
     }
 }

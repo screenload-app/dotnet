@@ -29,7 +29,10 @@ namespace Greenshot
             
             foreach (var hotkeyInfo in _hotkeyInfoCollection)
             {
-                var hotkeyResolvingControl = new HotkeyResolvingControl(hotkeyInfo);
+                if (HotkeySolution.Unsolved != hotkeyInfo.Solution)
+                    continue;
+
+                var hotkeyResolvingControl = new HotkeyResolvingControl(_hotkeyInfoCollection, hotkeyInfo);
 
                 hotkeyResolvingControls.Add(hotkeyResolvingControl);
                 conflictsFlowLayoutPanel.Controls.Add(hotkeyResolvingControl);
@@ -75,7 +78,7 @@ namespace Greenshot
 
             if (!solved)
             {
-                var errorMessage = Language.GetString("hotkeys_resolving_info");
+                var errorMessage = Language.GetString("hotkeys_conflicts_warning");
 
                 if (DialogResult.OK == MessageBox.Show(this, errorMessage, "Greenshot",
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1))

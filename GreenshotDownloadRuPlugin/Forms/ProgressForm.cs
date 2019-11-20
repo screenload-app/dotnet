@@ -9,15 +9,10 @@ namespace GreenshotDownloadRuPlugin.Forms
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ProgressForm));
 
-        private readonly Action _action;
-
         private Thread _backgroundThread;
-        public Exception Exception { get; private set; }
 
-        public ProgressForm(Action action)
+        private ProgressForm()
         {
-            _action = action ?? throw new ArgumentNullException(nameof(action));
-
             InitializeComponent();
 
             var screen = Screen.FromControl(this);
@@ -27,51 +22,51 @@ namespace GreenshotDownloadRuPlugin.Forms
             Left = workingArea.Width - Width;
         }
 
-        private void ProgressForm_Load(object sender, EventArgs e)
-        {
-            Process();
-        }
-
         private void CancelButton_Click(object sender, EventArgs e)
         {
             cancelButton.Enabled = false;
             _backgroundThread.Abort();
         }
 
-        private void Process()
+        public static void ShowAndProcess(Action action)
         {
-            _backgroundThread = new Thread(() =>
+            if (null == action)
+                throw new ArgumentNullException(nameof(action));
+
+            var progressForm = new ProgressForm();
+
+            progressForm.Show();
+
+            Exception threadException = null;
+
+            progressForm._backgroundThread = new Thread(() =>
                 {
                     try
                     {
-                        _action();
-
-                        SetDialogResult(DialogResult.OK);
+                        action();
                     }
                     catch (Exception exception)
                     {
                         Log.Error(exception);
-                        Exception = exception;
-
-                        SetDialogResult(DialogResult.Cancel);
+                        threadException = exception;
                     }
                 })
             {
                 IsBackground = true
             };
 
-            _backgroundThread.SetApartmentState(ApartmentState.STA);
-            _backgroundThread.Start();
-        }
+            progressForm._backgroundThread.SetApartmentState(ApartmentState.STA);
+            progressForm._backgroundThread.Start();
 
-        private void SetDialogResult(DialogResult dialogResult)
-        {
-            Action action = () => { DialogResult = dialogResult; };
+            while (!progressForm._backgroundThread.Join(TimeSpan.FromMilliseconds(100)))
+            {
+                Application.DoEvents();
+            }
 
-            if (InvokeRequired)
-                Invoke(action);
-            else
-                action();
+            progressForm.Close();
+
+            if (null != threadException)
+                throw threadException;
         }
     }
 }

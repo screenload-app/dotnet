@@ -33,6 +33,8 @@ namespace Greenshot
             }
         }
 
+        public const string ConfirmationDialogName = "QuickImageEditorConfirmation";
+
         private const int ADORNER_HALF_SIZE = 4;
 
         private readonly Form _surfaceForm;
@@ -678,6 +680,9 @@ namespace Greenshot
         {
             switch (e.Command)
             {
+                case QuickImageEditorCommand.Select:
+                    _surface.DrawingMode = DrawingModes.None;
+                    break;
                 case QuickImageEditorCommand.Arrow:
                     _surface.DrawingMode = DrawingModes.Arrow;
                     _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
@@ -725,12 +730,8 @@ namespace Greenshot
                     if (DrawingModes.StepLabel == _surface.DrawingMode)
                     {
                         var color = (Color) e.Argument;
-                        var backColor = Color.White;
-
-                        if (color.R > 127 && color.G > 127 && color.B > 127)
-                            backColor = Color.DimGray;
-
-                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = backColor;
+                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value =
+                            ColorUtility.CalculateContrastColor(color);
                         _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = color;
                     }
                     else
@@ -803,10 +804,9 @@ namespace Greenshot
 
         private void Cancel()
         {
-            if (_surface.Modified && DialogResult.Yes != MessageBox.Show(this,
-                    Language.GetString("QuickImageEditorForm_Leave_Confirmation_Text"),
-                    Language.GetString("QuickImageEditorForm_Leave_Confirmation_Title"), MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button2))
+            if (_surface.Modified && DialogResult.Yes != DialogHelper.ShowYesNoDialogWithCheckbox(this,
+                    ConfirmationDialogName, Language.GetString("QuickImageEditorForm_Leave_Confirmation_Text"),
+                    Language.GetString("QuickImageEditorForm_Leave_Confirmation_Title")))
                 return;
 
             _result = QuickImageEditorResult.NoAction;

@@ -1,9 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <language description="Russian" ietf="ru-RU" version="1.0.0">
   <resources>
-    <resource name="label_AfterUploadLinkToClipBoard">
-      Добавить ссылку в буфер обмена
-    </resource>
+    <resource name="label_AfterUploadLinkToClipBoard">Добавить в буфер обмена</resource>
+    <resource name="label_AfterUploadLinkOpenInBrowser">Открыть в браузере</resource>
+    <resource name="label_AfterUploadLinkShowDetails">Открыть окно с детальной информацией</resource>
     <resource name="anonymous_access">
       Использовать анонимный доступ
     </resource>
@@ -37,5 +37,15 @@
     <resource name="communication_wait">
       Устанавливается связь с Download.Ru. Пожалуйста, подождите...
     </resource>
+
+    <resource name="LinkType.Image">ссылку на изображение</resource>
+    <resource name="LinkType.Page">ссылку на страницу</resource>
+
+    <resource name="success_info">Изображение было успешно сохранено на Download.Ru! Вы можете получить к нему доступ по этим ссылкам:</resource>
+    <resource name="success_pagelink">Ссылка на страницу:</resource>
+    <resource name="success_directlink">Прямая ссылка:</resource>
+    <resource name="success_copy">Копировать</resource>
+    <resource name="success_donotshow">Не отображать это окно</resource>
+    <resource name="success_done">ОК</resource>
   </resources>
 </language>

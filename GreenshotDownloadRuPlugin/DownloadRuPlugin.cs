@@ -21,13 +21,13 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotDownloadRuPlugin.Forms;
-using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 using log4net;
 
@@ -138,8 +138,9 @@ namespace GreenshotDownloadRuPlugin
         /// </summary>
         public string Upload(ICaptureDetails captureDetails, ISurface surfaceToUpload)
         {
-            SurfaceOutputSettings outputSettings =
+            var outputSettings =
                 new SurfaceOutputSettings(_config.UploadFormat, _config.UploadJpegQuality, false);
+
             try
             {
                 string filename = Path.GetFileName(FilenameHelper.GetFilename(_config.UploadFormat, captureDetails));
@@ -147,32 +148,77 @@ namespace GreenshotDownloadRuPlugin
 
                 FileEntry fileEntry = null;
 
-                var progressForm = new ProgressForm(() =>
+                ProgressForm.ShowAndProcess(() =>
                 {
                     fileEntry = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
                 });
 
-                if (DialogResult.OK != progressForm.ShowDialog())
-                {
-                    if (null != progressForm.Exception)
-                        throw progressForm.Exception;
-
+                if (null == fileEntry)
                     return null;
-                }
 
-                // TODO $ Перенести!
-                var url = $"https://download.ru/{fileEntry?.Preview?.UrlsEntry?.Large}";
-
-                if (string.IsNullOrEmpty(url))
-                    return null;
+                string defaultUrl = LinkHelper.BuildDirectLink(fileEntry);
 
                 if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
-                    ClipboardHelper.SetClipboardData(url);
+                {
+                    string clipboardUrl;
 
-                var successForm = new SuccessForm(fileEntry);
-                successForm.Show();
+                    switch (_config.AfterUploadLinkToClipBoardMode)
+                    {
+                        case LinkType.Image:
+                            clipboardUrl = LinkHelper.BuildDirectLink(fileEntry);
+                            break;
+                        case LinkType.Page:
+                            clipboardUrl = LinkHelper.BuildPageLink(fileEntry);
+                            break;
+                        default:
+                            clipboardUrl = null;
+                            break;
+                    }
 
-                return url;
+                    if (null != clipboardUrl)
+                    {
+                        ClipboardHelper.SetClipboardData(clipboardUrl);
+                        defaultUrl = clipboardUrl;
+                    }
+                }
+
+                if (_config.AfterUploadLinkShowDetails)
+                {
+                    var successForm = new SuccessForm(_config, fileEntry);
+                    successForm.Show();
+                }
+
+                if (_config.AfterUploadLinkOpenInBrowser)
+                {
+                    string browserUrl;
+
+                    switch (_config.AfterUploadLinkOpenInBrowserMode)
+                    {
+                        case LinkType.Image:
+                            browserUrl = LinkHelper.BuildDirectLink(fileEntry);
+                            break;
+                        case LinkType.Page:
+                            browserUrl = LinkHelper.BuildPageLink(fileEntry);
+                            break;
+                        default:
+                            browserUrl = null;
+                            break;
+                    }
+
+                    if (null == browserUrl)
+                        return defaultUrl;
+
+                    try
+                    {
+                        Process.Start(browserUrl);
+                    }
+                    catch (Exception exception)
+                    {
+                        Log.Error(exception);
+                    }
+                }
+
+                return defaultUrl;
             }
             catch (Exception ex)
             {

@@ -4,18 +4,22 @@ using GreenshotPlugin.Core;
 
 namespace GreenshotDownloadRuPlugin.Forms
 {
-    public partial class SuccessForm : Form
+    public partial class SuccessForm : DownloadRuForm
     {
-        public SuccessForm(FileEntry fileEntry)
+        private readonly DownloadRuConfiguration _config;
+
+        public SuccessForm(DownloadRuConfiguration config, FileEntry fileEntry)
         {
             if (null == fileEntry)
                 throw new ArgumentNullException(nameof(fileEntry));
 
-            InitializeComponent();
+            _config = config ?? throw new ArgumentNullException(nameof(config));
 
-            // TODO: $ Перенести!
-            directLinkTextBox.Text = $"https://download.ru/{fileEntry.Preview.UrlsEntry.Large}";
-            pageLinkTextBox.Text = $"https://download.ru/f/{fileEntry.Id}";
+            InitializeComponent();
+            Icon = GreenshotResources.getGreenshotIcon();
+            
+            directLinkTextBox.Text = LinkHelper.BuildDirectLink(fileEntry);
+            pageLinkTextBox.Text = LinkHelper.BuildPageLink(fileEntry);
 
             var screen = Screen.FromControl(this);
             var workingArea = screen.WorkingArea;
@@ -37,6 +41,11 @@ namespace GreenshotDownloadRuPlugin.Forms
         private void PageLinkButton_Click(object sender, EventArgs e)
         {
             ClipboardHelper.SetClipboardData(pageLinkTextBox.Text);
+        }
+
+        private void doNotShowCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            _config.AfterUploadLinkShowDetails = !doNotShowCheckBox.Checked;
         }
     }
 }

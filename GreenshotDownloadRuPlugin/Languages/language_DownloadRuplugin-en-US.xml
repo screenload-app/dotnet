@@ -37,5 +37,9 @@
     <resource name="communication_wait">
       Communicating with Download.Ru. Please wait...
     </resource>
+
+    <resource name="LinkType.Image">direct image link</resource>
+    <resource name="LinkType.Page">link to page</resource>
+
   </resources>
 </language>

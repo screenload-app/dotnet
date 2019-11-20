@@ -65,6 +65,9 @@
     <Compile Include="Controls\NonJumpingPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\SimpleColorButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\ToolStripColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -188,8 +191,10 @@
     <Compile Include="Forms\SurfaceForm.Designer.cs">
       <DependentUpon>SurfaceForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\ColorUtility.cs" />
     <Compile Include="Helpers\HotkeyHelper.cs" />
     <Compile Include="Helpers\HotkeyInfo.cs" />
+    <Compile Include="Helpers\DialogHelper.cs" />
     <Compile Include="Helpers\NotifyIconHelper.cs" />
     <Compile Include="Helpers\QuickImageEditorCommandEventArgs.cs" />
     <Compile Include="Forms\QuickImageEditorForm.cs">
@@ -317,6 +322,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PrintOptionsDialog.resx">
+      <DependentUpon>PrintOptionsDialog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\QuickImageEditorForm.resx">
       <DependentUpon>QuickImageEditorForm.cs</DependentUpon>

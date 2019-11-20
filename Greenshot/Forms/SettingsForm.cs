@@ -447,8 +447,12 @@ namespace Greenshot {
 			numericUpDown_daysbetweencheck.Value = coreConfiguration.UpdateCheckInterval;
 			numericUpDown_daysbetweencheck.Enabled = !coreConfiguration.Values["UpdateCheckInterval"].IsFixed;
 			numericUpdownIconSize.Value = coreConfiguration.IconSize.Width /16 * 16;
+
 			CheckDestinationSettings();
-		}
+
+            editorConfirmationCheckBox.Checked =
+                !DialogHelper.IsDoNotShowDialogSet(QuickImageEditorForm.ConfirmationDialogName);
+        }
 
 		private void SaveSettings() {
 			if (combobox_language.SelectedItem != null) {
@@ -515,7 +519,10 @@ namespace Greenshot {
 			} catch (Exception e) {
 				Log.Warn("Problem checking registry, ignoring for now: ", e);
 			}
-		}
+
+            DialogHelper.SetDoNotShowDialog(QuickImageEditorForm.ConfirmationDialogName,
+                !editorConfirmationCheckBox.Checked);
+        }
 
 		private void Settings_cancelClick(object sender, EventArgs e) {
 			DialogResult = DialogResult.Cancel;
@@ -686,7 +693,7 @@ namespace Greenshot {
 
         private void CaptureAreaColorCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            captureAreaColorButton.Enabled = captureAreaColorCheckBox.Checked;
+            captureAreaColorButton.Visible = captureAreaColorCheckBox.Checked;
         }
     }
 

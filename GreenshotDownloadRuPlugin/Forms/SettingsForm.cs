@@ -20,6 +20,7 @@
  */
 using System;
 using System.Windows.Forms;
+using GreenshotPlugin.Core;
 
 namespace GreenshotDownloadRuPlugin.Forms
 {
@@ -28,23 +29,33 @@ namespace GreenshotDownloadRuPlugin.Forms
 	/// </summary>
 	public partial class SettingsForm : DownloadRuForm {
 
-		string boxTicket = string.Empty;
-
 		public SettingsForm(DownloadRuConfiguration config) {
 			//
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			Icon = GreenshotPlugin.Core.GreenshotResources.getGreenshotIcon();
-
+			Icon = GreenshotResources.getGreenshotIcon();
 		}
 
-		void ButtonOKClick(object sender, EventArgs e) {
-			DialogResult = DialogResult.OK;
-		}
-		
-		void ButtonCancelClick(object sender, System.EventArgs e) {
-			DialogResult = DialogResult.Cancel;
-		}
-	}
+        private void SettingsForm_Load(object sender, EventArgs e)
+        {
+            checkboxAfterUploadLinkToClipBoard_CheckedChanged(this, null);
+            openInBrowserCheckBox_CheckedChanged(this, null);
+        }
+
+        private void checkboxAfterUploadLinkToClipBoard_CheckedChanged(object sender, EventArgs e)
+        {
+            toClipBoardComboBox.Enabled = checkboxAfterUploadLinkToClipBoard.Checked;
+        }
+
+        private void openInBrowserCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            openInBrowserComboBox.Enabled = openInBrowserCheckBox.Checked;
+        }
+
+        private void buttonOK_Click(object sender, EventArgs e)
+        {
+            DialogResult = DialogResult.OK;
+        }
+    }
 }

@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.Globalization;
+using System.Linq;
 using System.Windows.Forms;
 using Greenshot.Helpers;
 using GreenshotPlugin.Controls;
@@ -11,13 +13,17 @@ namespace Greenshot.Controls
     {
         private readonly bool _initializationComplete;
 
+        private readonly ReadOnlyCollection<HotkeyInfo> _hotkeyInfoCollection;
+
         public HotkeyInfo HotkeyInfo { get; }
 
-        public HotkeyResolvingControl(HotkeyInfo hotkeyInfo)
+        public HotkeyResolvingControl(ReadOnlyCollection<HotkeyInfo> hotkeyInfoCollection, HotkeyInfo hotkeyInfo)
             : this()
         {
             if (null == hotkeyInfo)
                 throw new ArgumentNullException(nameof(hotkeyInfo));
+
+            _hotkeyInfoCollection = hotkeyInfoCollection ?? throw new ArgumentNullException(nameof(hotkeyInfoCollection));
 
             mGroupBox.Text = hotkeyInfo.ActionText;
 
@@ -112,6 +118,16 @@ namespace Greenshot.Controls
                 return;
             }
 
+            var internalConflictHotkeyInfo = _hotkeyInfoCollection.FirstOrDefault(hi =>
+                hi.Solution == HotkeySolution.Custom && HotkeyHelper.Equals(hi.Hotkey, hotkey) ||
+                hi.Solution == HotkeySolution.Default && HotkeyHelper.Equals(hi.DefaultHotkey, hotkey));
+
+            if (null != internalConflictHotkeyInfo)
+            {
+                ShowConflictMessage(internalConflictHotkeyInfo.ActionText);
+                return;
+            }
+
             if (HotkeySolution.Default == HotkeyInfo.Solution)
                 HotkeyHelper.UnregisterHotkey(HotkeyInfo.DefaultHotkey);
 
@@ -172,9 +188,12 @@ namespace Greenshot.Controls
             }
         }
 
-        private void ShowConflictMessage()
+        private void ShowConflictMessage(string internalConflictActionText = null)
         {
-            var conflictHotkeyErrorMessage = Language.GetString("hotkey_resolving_message");
+            var conflictHotkeyErrorMessage = null == internalConflictActionText
+                ? Language.GetString("hotkey_external_conflict_message")
+                : Language.GetFormattedString("hotkey_internal_conflict_message", internalConflictActionText);
+
             MessageBox.Show(this, conflictHotkeyErrorMessage, "Greenshot", MessageBoxButtons.OK,
                 MessageBoxIcon.Warning);
         }
@@ -183,6 +202,15 @@ namespace Greenshot.Controls
         {
             if (HotkeySolution.Default == HotkeyInfo.Solution)
                 return;
+
+            var internalConflictHotkeyInfo = _hotkeyInfoCollection.FirstOrDefault(hi =>
+                hi.Solution == HotkeySolution.Custom && HotkeyHelper.Equals(hi.Hotkey, HotkeyInfo.DefaultHotkey));
+
+            if (null != internalConflictHotkeyInfo)
+            {
+                ShowConflictMessage(internalConflictHotkeyInfo.ActionText);
+                return;
+            }
 
             if (HotkeySolution.Custom == HotkeyInfo.Solution)
                 HotkeyHelper.UnregisterHotkey(HotkeyInfo.Hotkey);

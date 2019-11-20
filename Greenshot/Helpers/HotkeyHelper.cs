@@ -130,7 +130,7 @@ namespace Greenshot.Helpers
             if (leftVirtualKeyCode != rightVirtualKeyCode)
                 return false;
 
-            return false;
+            return true;
         }
 
         public static bool TryRegisterHotkey(HotkeyAction action, string hotkeyString)

@@ -47,155 +47,205 @@ namespace GreenshotDownloadRuPlugin.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.buttonOK = new GreenshotPlugin.Controls.GreenshotButton();
             this.buttonCancel = new GreenshotPlugin.Controls.GreenshotButton();
             this.combobox_uploadimageformat = new GreenshotPlugin.Controls.GreenshotComboBox();
             this.label_upload_format = new GreenshotPlugin.Controls.GreenshotLabel();
-            this.label_AfterUpload = new GreenshotPlugin.Controls.GreenshotLabel();
             this.checkboxAfterUploadLinkToClipBoard = new GreenshotPlugin.Controls.GreenshotCheckBox();
-            this.checkbox_anonymous_access = new GreenshotPlugin.Controls.GreenshotCheckBox();
-            this.label_anonymous_access = new GreenshotPlugin.Controls.GreenshotLabel();
             this.checkboxAfterUploadSharedLink = new GreenshotPlugin.Controls.GreenshotCheckBox();
-            this.greenshotLabel1 = new GreenshotPlugin.Controls.GreenshotLabel();
+            this.afterUploadGroupBox = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.openInBrowserComboBox = new GreenshotPlugin.Controls.GreenshotComboBox();
+            this.toClipBoardComboBox = new GreenshotPlugin.Controls.GreenshotComboBox();
+            this.showDetailsCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.openInBrowserCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.anonymousAccessCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.afterUploadGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
             // buttonOK
             // 
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonOK.LanguageKey = "OK";
-            this.buttonOK.Location = new System.Drawing.Point(267, 119);
+            this.buttonOK.Location = new System.Drawing.Point(264, 217);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
-            this.buttonOK.TabIndex = 12;
+            this.buttonOK.TabIndex = 4;
             this.buttonOK.Text = "Ok";
             this.buttonOK.UseVisualStyleBackColor = true;
-            this.buttonOK.Click += new System.EventHandler(this.ButtonOKClick);
+            this.buttonOK.Click += new System.EventHandler(this.buttonOK_Click);
             // 
             // buttonCancel
             // 
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.LanguageKey = "CANCEL";
-            this.buttonCancel.Location = new System.Drawing.Point(348, 119);
+            this.buttonCancel.Location = new System.Drawing.Point(345, 217);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
-            this.buttonCancel.TabIndex = 13;
+            this.buttonCancel.TabIndex = 5;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
-            this.buttonCancel.Click += new System.EventHandler(this.ButtonCancelClick);
             // 
             // combobox_uploadimageformat
             // 
-            this.combobox_uploadimageformat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.combobox_uploadimageformat.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.combobox_uploadimageformat.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.combobox_uploadimageformat.FormattingEnabled = true;
-            this.combobox_uploadimageformat.Location = new System.Drawing.Point(208, 12);
+            this.combobox_uploadimageformat.Location = new System.Drawing.Point(231, 15);
             this.combobox_uploadimageformat.Name = "combobox_uploadimageformat";
             this.combobox_uploadimageformat.PropertyName = "UploadFormat";
             this.combobox_uploadimageformat.SectionName = "DownloadRu";
-            this.combobox_uploadimageformat.Size = new System.Drawing.Size(215, 21);
-            this.combobox_uploadimageformat.TabIndex = 5;
+            this.combobox_uploadimageformat.Size = new System.Drawing.Size(189, 21);
+            this.combobox_uploadimageformat.TabIndex = 1;
             // 
             // label_upload_format
             // 
             this.label_upload_format.LanguageKey = "downloadru.label_upload_format";
-            this.label_upload_format.Location = new System.Drawing.Point(10, 12);
+            this.label_upload_format.Location = new System.Drawing.Point(12, 15);
             this.label_upload_format.Name = "label_upload_format";
-            this.label_upload_format.Size = new System.Drawing.Size(192, 20);
-            this.label_upload_format.TabIndex = 4;
+            this.label_upload_format.Size = new System.Drawing.Size(213, 20);
+            this.label_upload_format.TabIndex = 0;
             this.label_upload_format.Text = "Image format";
-            // 
-            // label_AfterUpload
-            // 
-            this.label_AfterUpload.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_AfterUpload.LanguageKey = "downloadru.label_AfterUpload";
-            this.label_AfterUpload.Location = new System.Drawing.Point(10, 44);
-            this.label_AfterUpload.Name = "label_AfterUpload";
-            this.label_AfterUpload.Size = new System.Drawing.Size(179, 21);
-            this.label_AfterUpload.TabIndex = 8;
-            this.label_AfterUpload.Text = "After upload";
             // 
             // checkboxAfterUploadLinkToClipBoard
             // 
-            this.checkboxAfterUploadLinkToClipBoard.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkboxAfterUploadLinkToClipBoard.AutoSize = true;
             this.checkboxAfterUploadLinkToClipBoard.LanguageKey = "downloadru.label_AfterUploadLinkToClipBoard";
-            this.checkboxAfterUploadLinkToClipBoard.Location = new System.Drawing.Point(208, 43);
+            this.checkboxAfterUploadLinkToClipBoard.Location = new System.Drawing.Point(6, 42);
             this.checkboxAfterUploadLinkToClipBoard.Name = "checkboxAfterUploadLinkToClipBoard";
             this.checkboxAfterUploadLinkToClipBoard.PropertyName = "AfterUploadLinkToClipBoard";
             this.checkboxAfterUploadLinkToClipBoard.SectionName = "DownloadRu";
             this.checkboxAfterUploadLinkToClipBoard.Size = new System.Drawing.Size(104, 17);
-            this.checkboxAfterUploadLinkToClipBoard.TabIndex = 10;
+            this.checkboxAfterUploadLinkToClipBoard.TabIndex = 1;
             this.checkboxAfterUploadLinkToClipBoard.Text = "Link to clipboard";
             this.checkboxAfterUploadLinkToClipBoard.UseVisualStyleBackColor = true;
-            // 
-            // checkbox_anonymous_access
-            // 
-            this.checkbox_anonymous_access.AutoSize = true;
-            this.checkbox_anonymous_access.Location = new System.Drawing.Point(208, 95);
-            this.checkbox_anonymous_access.Name = "checkbox_anonymous_access";
-            this.checkbox_anonymous_access.PropertyName = "AnonymousAccess";
-            this.checkbox_anonymous_access.SectionName = "DownloadRu";
-            this.checkbox_anonymous_access.Size = new System.Drawing.Size(15, 14);
-            this.checkbox_anonymous_access.TabIndex = 14;
-            this.checkbox_anonymous_access.UseVisualStyleBackColor = true;
-            // 
-            // label_anonymous_access
-            // 
-            this.label_anonymous_access.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.label_anonymous_access.LanguageKey = "downloadru.anonymous_access";
-            this.label_anonymous_access.Location = new System.Drawing.Point(10, 95);
-            this.label_anonymous_access.Name = "label_anonymous_access";
-            this.label_anonymous_access.Size = new System.Drawing.Size(192, 21);
-            this.label_anonymous_access.TabIndex = 15;
-            this.label_anonymous_access.Text = "Use anonym access";
+            this.checkboxAfterUploadLinkToClipBoard.CheckedChanged += new System.EventHandler(this.checkboxAfterUploadLinkToClipBoard_CheckedChanged);
             // 
             // checkboxAfterUploadSharedLink
             // 
             this.checkboxAfterUploadSharedLink.AccessibleName = "";
-            this.checkboxAfterUploadSharedLink.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.checkboxAfterUploadSharedLink.AutoSize = true;
             this.checkboxAfterUploadSharedLink.LanguageKey = "downloadru.label_AfterUploadSharedLink";
-            this.checkboxAfterUploadSharedLink.Location = new System.Drawing.Point(208, 68);
+            this.checkboxAfterUploadSharedLink.Location = new System.Drawing.Point(6, 19);
             this.checkboxAfterUploadSharedLink.Name = "checkboxAfterUploadSharedLink";
             this.checkboxAfterUploadSharedLink.PropertyName = "SharedLink";
             this.checkboxAfterUploadSharedLink.SectionName = "DownloadRu";
             this.checkboxAfterUploadSharedLink.Size = new System.Drawing.Size(85, 17);
-            this.checkboxAfterUploadSharedLink.TabIndex = 17;
+            this.checkboxAfterUploadSharedLink.TabIndex = 0;
             this.checkboxAfterUploadSharedLink.Text = "Share image";
             this.checkboxAfterUploadSharedLink.UseVisualStyleBackColor = true;
             // 
-            // greenshotLabel1
+            // afterUploadGroupBox
             // 
-            this.greenshotLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.greenshotLabel1.LanguageKey = "downloadru.label_AfterUpload";
-            this.greenshotLabel1.Location = new System.Drawing.Point(10, 69);
-            this.greenshotLabel1.Name = "greenshotLabel1";
-            this.greenshotLabel1.Size = new System.Drawing.Size(179, 21);
-            this.greenshotLabel1.TabIndex = 16;
-            this.greenshotLabel1.Text = "After upload";
+            this.afterUploadGroupBox.Controls.Add(this.openInBrowserComboBox);
+            this.afterUploadGroupBox.Controls.Add(this.toClipBoardComboBox);
+            this.afterUploadGroupBox.Controls.Add(this.showDetailsCheckBox);
+            this.afterUploadGroupBox.Controls.Add(this.openInBrowserCheckBox);
+            this.afterUploadGroupBox.Controls.Add(this.checkboxAfterUploadLinkToClipBoard);
+            this.afterUploadGroupBox.Controls.Add(this.checkboxAfterUploadSharedLink);
+            this.afterUploadGroupBox.LanguageKey = "downloadru.label_AfterUpload";
+            this.afterUploadGroupBox.Location = new System.Drawing.Point(12, 39);
+            this.afterUploadGroupBox.Name = "afterUploadGroupBox";
+            this.afterUploadGroupBox.Size = new System.Drawing.Size(408, 112);
+            this.afterUploadGroupBox.TabIndex = 2;
+            this.afterUploadGroupBox.TabStop = false;
+            this.afterUploadGroupBox.Text = "After upload";
+            // 
+            // openInBrowserComboBox
+            // 
+            this.openInBrowserComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.openInBrowserComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.openInBrowserComboBox.Enabled = false;
+            this.openInBrowserComboBox.FormattingEnabled = true;
+            this.openInBrowserComboBox.LanguagePrefix = "downloadru";
+            this.openInBrowserComboBox.Location = new System.Drawing.Point(219, 61);
+            this.openInBrowserComboBox.Name = "openInBrowserComboBox";
+            this.openInBrowserComboBox.PropertyName = "AfterUploadLinkOpenInBrowserMode";
+            this.openInBrowserComboBox.SectionName = "DownloadRu";
+            this.openInBrowserComboBox.Size = new System.Drawing.Size(183, 21);
+            this.openInBrowserComboBox.TabIndex = 4;
+            // 
+            // toClipBoardComboBox
+            // 
+            this.toClipBoardComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.toClipBoardComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toClipBoardComboBox.Enabled = false;
+            this.toClipBoardComboBox.FormattingEnabled = true;
+            this.toClipBoardComboBox.LanguagePrefix = "downloadru";
+            this.toClipBoardComboBox.Location = new System.Drawing.Point(219, 38);
+            this.toClipBoardComboBox.Name = "toClipBoardComboBox";
+            this.toClipBoardComboBox.PropertyName = "AfterUploadLinkToClipBoardMode";
+            this.toClipBoardComboBox.SectionName = "DownloadRu";
+            this.toClipBoardComboBox.Size = new System.Drawing.Size(183, 21);
+            this.toClipBoardComboBox.TabIndex = 2;
+            // 
+            // showDetailsCheckBox
+            // 
+            this.showDetailsCheckBox.AutoSize = true;
+            this.showDetailsCheckBox.LanguageKey = "downloadru.label_AfterUploadLinkShowDetails";
+            this.showDetailsCheckBox.Location = new System.Drawing.Point(6, 88);
+            this.showDetailsCheckBox.Name = "showDetailsCheckBox";
+            this.showDetailsCheckBox.PropertyName = "AfterUploadLinkShowDetails";
+            this.showDetailsCheckBox.SectionName = "DownloadRu";
+            this.showDetailsCheckBox.Size = new System.Drawing.Size(234, 17);
+            this.showDetailsCheckBox.TabIndex = 5;
+            this.showDetailsCheckBox.Text = "Open a window with the detailed information";
+            this.showDetailsCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // openInBrowserCheckBox
+            // 
+            this.openInBrowserCheckBox.AutoSize = true;
+            this.openInBrowserCheckBox.LanguageKey = "downloadru.label_AfterUploadLinkOpenInBrowser";
+            this.openInBrowserCheckBox.Location = new System.Drawing.Point(6, 65);
+            this.openInBrowserCheckBox.Name = "openInBrowserCheckBox";
+            this.openInBrowserCheckBox.PropertyName = "AfterUploadLinkOpenInBrowser";
+            this.openInBrowserCheckBox.SectionName = "DownloadRu";
+            this.openInBrowserCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.openInBrowserCheckBox.TabIndex = 3;
+            this.openInBrowserCheckBox.Text = "Open in browser:";
+            this.openInBrowserCheckBox.UseVisualStyleBackColor = true;
+            this.openInBrowserCheckBox.CheckedChanged += new System.EventHandler(this.openInBrowserCheckBox_CheckedChanged);
+            // 
+            // anonymousAccessCheckBox
+            // 
+            this.anonymousAccessCheckBox.AutoSize = true;
+            this.anonymousAccessCheckBox.LanguageKey = "downloadru.anonymous_access";
+            this.anonymousAccessCheckBox.Location = new System.Drawing.Point(18, 175);
+            this.anonymousAccessCheckBox.Name = "anonymousAccessCheckBox";
+            this.anonymousAccessCheckBox.PropertyName = "AnonymousAccess";
+            this.anonymousAccessCheckBox.SectionName = "DownloadRu";
+            this.anonymousAccessCheckBox.Size = new System.Drawing.Size(122, 17);
+            this.anonymousAccessCheckBox.TabIndex = 3;
+            this.anonymousAccessCheckBox.Text = "Use anonym access";
+            this.anonymousAccessCheckBox.UseVisualStyleBackColor = true;
             // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(432, 151);
-            this.Controls.Add(this.checkboxAfterUploadSharedLink);
-            this.Controls.Add(this.greenshotLabel1);
-            this.Controls.Add(this.label_anonymous_access);
-            this.Controls.Add(this.checkbox_anonymous_access);
-            this.Controls.Add(this.checkboxAfterUploadLinkToClipBoard);
-            this.Controls.Add(this.label_AfterUpload);
+            this.CancelButton = this.buttonCancel;
+            this.ClientSize = new System.Drawing.Size(432, 252);
+            this.Controls.Add(this.anonymousAccessCheckBox);
+            this.Controls.Add(this.afterUploadGroupBox);
             this.Controls.Add(this.label_upload_format);
             this.Controls.Add(this.combobox_uploadimageformat);
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LanguageKey = "downloadru.settings_title";
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
-            this.Text = "DownloadRu settings";
+            this.Text = "Download.Ru settings";
+            this.Load += new System.EventHandler(this.SettingsForm_Load);
+            this.afterUploadGroupBox.ResumeLayout(false);
+            this.afterUploadGroupBox.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -204,11 +254,13 @@ namespace GreenshotDownloadRuPlugin.Forms
 		private GreenshotPlugin.Controls.GreenshotLabel label_upload_format;
 		private GreenshotPlugin.Controls.GreenshotButton buttonCancel;
 		private GreenshotPlugin.Controls.GreenshotButton buttonOK;
-		private GreenshotPlugin.Controls.GreenshotLabel label_AfterUpload;
 		private GreenshotPlugin.Controls.GreenshotCheckBox checkboxAfterUploadLinkToClipBoard;
-        private GreenshotPlugin.Controls.GreenshotCheckBox checkbox_anonymous_access;
-        private GreenshotPlugin.Controls.GreenshotLabel label_anonymous_access;
         private GreenshotPlugin.Controls.GreenshotCheckBox checkboxAfterUploadSharedLink;
-        private GreenshotPlugin.Controls.GreenshotLabel greenshotLabel1;
-	}
+        private GreenshotPlugin.Controls.GreenshotGroupBox afterUploadGroupBox;
+        private GreenshotPlugin.Controls.GreenshotComboBox toClipBoardComboBox;
+        private GreenshotPlugin.Controls.GreenshotCheckBox showDetailsCheckBox;
+        private GreenshotPlugin.Controls.GreenshotCheckBox openInBrowserCheckBox;
+        private GreenshotPlugin.Controls.GreenshotCheckBox anonymousAccessCheckBox;
+        private GreenshotPlugin.Controls.GreenshotComboBox openInBrowserComboBox;
+    }
 }

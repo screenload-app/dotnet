@@ -268,6 +268,7 @@ ${hostname} Имя ПК
 		<resource name="settings_printoptions">Параметры печати</resource>
 		<resource name="settings_qualitysettings">Параметры качества</resource>
 		<resource name="settings_reducecolors">Уменьшить количество цветов максимально до 256</resource>
+    <resource name="settings_editorconfirmation">Подтверждение при выходе из режима быстрого редактирования</resource>
 		<resource name="settings_registerhotkeys">Регистрация горячих клавиш</resource>
 		<resource name="settings_showflashlight">Показывать вспышку</resource>
 		<resource name="settings_shownotify">Показывать уведомления</resource>
@@ -297,18 +298,18 @@ ${hostname} Имя ПК
     <!-- hotkeys -->
 
     <resource name="hotkeys_resolving_caption">Задать горячие клавиши</resource>
-	  <resource name="hotkeys_resolving_info">Вы не установили одну или несколько горячих клавиш. Хотите продолжить установку?
+	  <resource name="hotkeys_conflicts_warning">Вы не установили одну или несколько горячих клавиш. Хотите продолжить установку?
 
 Все функции Greenshot по-прежнему работают прямо из контекстного меню через значок в трее.
     </resource>
 	  <resource name="hotkeys_resolving_ok">ОК</resource>
 	  <resource name="hotkeys_resolving_cancel">Отмена</resource>
 
-	  <resource name="hotkey_resolving_message">It is not possible to use a combination, as it is already in use by another program! Enter a different combination or disable software that uses hotkeys.</resource>
+	  <resource name="hotkey_external_conflict_message">Невозможно использовать комбинацию, так как она уже используется другой программой! Введите другую комбинацию или деактивируйте программу, которая использует эту горячую клавишу.</resource>
+    <resource name="hotkey_internal_conflict_message">Невозможно использовать комбинацию, так как она уже используется для «{0}»!</resource>
     <resource name="hotkey_resolving_retry">По умолчанию [{0}]</resource>
 	  <resource name="hotkey_resolving_other_combination">Задать комбинацию:</resource>
 	  <resource name="hotkey_resolving_ignore">Не использовать</resource>
-
 
 	  <resource name="capture_fullscreen">Захват полного экрана</resource>
 	  <resource name="capture_window">Захват окна</resource>

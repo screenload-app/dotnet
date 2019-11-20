@@ -4,6 +4,7 @@ namespace Greenshot.Helpers
 {
     public enum QuickImageEditorCommand
     {
+        Select,
         Arrow,
         Pencil,
         Line,

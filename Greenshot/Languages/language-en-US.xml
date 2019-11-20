@@ -271,6 +271,7 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 		<resource name="settings_waittime">Milliseconds to wait before capture</resource>
 		<resource name="settings_window_capture_mode">Window capture mode</resource>
 		<resource name="settings_windowscapture">Window capture</resource>
+
 		<resource name="tooltip_firststart">Right-click here or press the {0} key.</resource>
 		<resource name="update_found">A newer version of Greenshot is available! Do you want to download Greenshot {0}?</resource>
 		<resource name="wait_ie_capture">Please wait while the page in Internet Explorer is captured...</resource>
@@ -311,12 +312,12 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
     <!-- Hotkeys -->
 
 	  <resource name="hotkey_resolving_retry">Default {0}</resource>
-    <resource name="hotkeys_resolving_caption">Set hotkeys</resource>
-    <resource name="hotkeys_resolving_info">You have not set one or more hotkeys. Do you want to continue to set up?
+    <resource name="hotkeys_conflicts_warning">You have not set one or more hotkeys. Do you want to continue to set up?
 
 All Greenshot functions still work directly from the context menu via the tray icon.
     </resource>
-    <resource name="hotkey_resolving_message"></resource>
+    <resource name="hotkey_external_conflict_message">It is not possible to use a combination, as it is already in use by another program! Enter a different combination or disable software that uses hotkeys.</resource>
+    <resource name="hotkey_internal_conflict_message">It is not possible to use a combination, as it is already for &quot;{0}&quot;!</resource>
 
 	  <resource name="capture_fullscreen">Capture full screen</resource>
 	  <resource name="capture_window">Capture window</resource>

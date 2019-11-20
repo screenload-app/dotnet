@@ -25,6 +25,24 @@ using GreenshotPlugin.Core;
 
 namespace GreenshotPlugin.Controls {
 	public class GreenshotComboBox : ComboBox, IGreenshotConfigBindable {
+
+        public class ComboBoxItem
+        {
+            public string Text { get; }
+            public object Value { get; }
+
+            public ComboBoxItem(string text, object value)
+            {
+                Text = text ?? throw new ArgumentNullException(nameof(text));
+                Value = value ?? throw new ArgumentNullException(nameof(value));
+            }
+
+            public override string ToString()
+            {
+                return Text;
+            }
+        }
+
 		private Type _enumType;
 		private Enum _selectedEnum;
 
@@ -37,63 +55,103 @@ namespace GreenshotPlugin.Controls {
 			set;
 		}
 
-		public GreenshotComboBox() {
+        [Category("Greenshot"), DefaultValue(null)]
+        public string LanguagePrefix { get; set; }
+
+        public GreenshotComboBox() {
 			SelectedIndexChanged += delegate {
 				StoreSelectedEnum();
 			};
 		}
 
-		public void SetValue(Enum currentValue) {
-			if (currentValue != null) {
-				_selectedEnum = currentValue;
-				SelectedItem = Language.Translate(currentValue);
-			}
-		}
+        public void SetValue(Enum currentValue)
+        {
+            if (currentValue != null)
+            {
+                _selectedEnum = currentValue;
 
-		/// <summary>
-		/// This is a method to popululate the ComboBox
-		/// with the items from the enumeration
-		/// </summary>
-		/// <param name="enumType">TEnum to populate with</param>
-		public void Populate(Type enumType) {
-			// Store the enum-type, so we can work with it
-			_enumType = enumType;
+                foreach (ComboBoxItem item in Items)
+                {
+                    if (currentValue.Equals(item.Value))
+                    {
+                        SelectedItem = item;
+                        break;
+                    }
+                }
+            }
+        }
 
-			var availableValues = Enum.GetValues(enumType);
-			Items.Clear();
-			foreach (var enumValue in availableValues) {
-				Items.Add(Language.Translate((Enum)enumValue));
-			}
-		}
+        /// <summary>
+        /// This is a method to popululate the ComboBox
+        /// with the items from the enumeration
+        /// </summary>
+        /// <param name="enumType">TEnum to populate with</param>
+        public void Populate(Type enumType)
+        {
+            // Store the enum-type, so we can work with it
+            _enumType = enumType;
 
-		/// <summary>
-		/// Store the selected value internally
-		/// </summary>
-		private void StoreSelectedEnum() {
-			string enumTypeName = _enumType.Name;
-			string selectedValue = SelectedItem as string;
-			var availableValues = Enum.GetValues(_enumType);
-			object returnValue = null;
+            var availableValues = Enum.GetValues(enumType);
+            Items.Clear();
 
-			try {
-				returnValue = Enum.Parse(_enumType, selectedValue);
-			} catch (Exception) {
-				// Ignore
-			}
+            foreach (var enumValue in availableValues)
+            {
+                var key = enumType.Name + "." + enumValue;
 
-			foreach (Enum enumValue in availableValues) {
-				string enumKey = enumTypeName + "." + enumValue;
-				if (Language.HasKey(enumKey)) {
-					string translation = Language.GetString(enumTypeName + "." + enumValue);
-					if (translation.Equals(selectedValue)) {
-						returnValue = enumValue;
-					}
-				}
-			}
-			_selectedEnum = (Enum)returnValue;
-		}
+                string textValue = Language.HasKey(LanguagePrefix, key)
+                    ? Language.GetString(LanguagePrefix, key)
+                    : Language.Translate((Enum) enumValue);
 
-		/// <summary>
+                var comboBoxItem = new ComboBoxItem(textValue, enumValue);
+
+                Items.Add(comboBoxItem);
+            }
+        }
+
+        /// <summary>
+        /// Store the selected value internally
+        /// </summary>
+        private void StoreSelectedEnum()
+        {
+            ComboBoxItem selectedValue = SelectedItem as ComboBoxItem;
+
+            object returnValue = selectedValue?.Value;
+            _selectedEnum = (Enum)returnValue;
+
+
+            //string enumTypeName = _enumType.Name;
+            //string selectedValue = SelectedItem as string;
+            //var availableValues = Enum.GetValues(_enumType);
+            //object returnValue = null;
+
+            //try
+            //{
+            //    returnValue = Enum.Parse(_enumType, selectedValue);
+            //}
+            //catch (Exception)
+            //{
+            //    // Ignore
+            //}
+
+            //foreach (Enum enumValue in availableValues)
+            //{
+            //    string enumKey = enumTypeName + "." + enumValue;
+
+            //    if (Language.HasKey(enumKey))
+            //    {
+            //        string translation = Language.GetString(enumKey);
+
+            //        if (translation.Equals(selectedValue))
+            //        {
+            //            returnValue = enumValue;
+            //        }
+            //    }
+            //}
+
+            //_selectedEnum = (Enum) returnValue;
+        }
+
+        /// <summary>
 		/// Get the selected enum value from the combobox, uses generics
 		/// </summary>
 		/// <returns>The enum value of the combobox</returns>

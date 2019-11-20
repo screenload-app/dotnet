@@ -32,16 +32,28 @@ namespace GreenshotDownloadRuPlugin {
 		[IniProperty("UploadFormat", Description="What file type to use for uploading", DefaultValue="png")]
 		public OutputFormat UploadFormat;
 
-		[IniProperty("UploadJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
+        [IniProperty("UploadJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
 		public int UploadJpegQuality;
 
         [IniProperty("AfterUploadLinkToClipBoard", Description = "After upload send Download.Ru link to clipboard.", DefaultValue = "true")]
 		public bool AfterUploadLinkToClipBoard;
 
+        [IniProperty("AfterUploadLinkOpenInBrowser", Description = "After upload open Download.Ru link in browser.", DefaultValue = "true")]
+        public bool AfterUploadLinkOpenInBrowser;
+
+        [IniProperty("AfterUploadLinkShowDetails", Description = "After open a window with the detailed information.", DefaultValue = "true")]
+        public bool AfterUploadLinkShowDetails;
+
+        [IniProperty("AfterUploadLinkToClipBoardMode", DefaultValue = "Image")]
+        public LinkType AfterUploadLinkToClipBoardMode;
+
+        [IniProperty("AfterUploadLinkOpenInBrowserMode", DefaultValue = "Image")]
+        public LinkType AfterUploadLinkOpenInBrowserMode;
+
         //[IniProperty("UseSharedLink", Description = "Use the shared link, instead of the private, on the clipboard", DefaultValue = "True")]
         //public bool UseSharedLink;
 
-		[IniProperty("DownloadRuToken", Description = "Token.", DefaultValue = "")]
+        [IniProperty("DownloadRuToken", Description = "Token.", DefaultValue = "")]
 		public string DownloadRuToken;
 
         [IniProperty("AnonymousAccess", Description = "Use anonymous access to Download.Ru", DefaultValue = "false")]

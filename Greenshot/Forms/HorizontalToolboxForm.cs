@@ -14,6 +14,10 @@ namespace Greenshot
         private const int HTCLIENT = 0x1;
         private const int HTCAPTION = 0x2;
 
+        private const string WhiteImageKey = "White";
+        private const string BlackImageKey = "Black";
+
+
         //protected override CreateParams CreateParams
         //{
         //    get
@@ -56,6 +60,8 @@ namespace Greenshot
             colorButton.FlatAppearance.BorderColor = color;
             colorButton.FlatAppearance.MouseDownBackColor = CalculateColor(color, 0.67F);
             colorButton.FlatAppearance.MouseOverBackColor = CalculateColor(color, 0.87F);
+
+            colorButton.ImageKey = ColorUtility.IsDark(color) ? WhiteImageKey : BlackImageKey;
         }
 
         public void SetCanUndo(bool canUndo)
@@ -80,6 +86,11 @@ namespace Greenshot
             }
 
             base.WndProc(ref m);
+        }
+
+        private void SelectButton_Click(object sender, EventArgs e)
+        {
+            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Select));
         }
 
         private void ArrowButton_Click(object sender, EventArgs e)

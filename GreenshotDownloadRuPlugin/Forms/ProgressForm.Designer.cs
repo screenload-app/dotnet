@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
             this.cancelButton = new System.Windows.Forms.Button();
             this.mProgressBar = new System.Windows.Forms.ProgressBar();
             this.mTimer = new System.Windows.Forms.Timer(this.components);
@@ -37,19 +38,22 @@
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(12, 25);
+            this.cancelButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.cancelButton.FlatAppearance.BorderSize = 0;
+            this.cancelButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cancelButton.Image = ((System.Drawing.Image)(resources.GetObject("cancelButton.Image")));
+            this.cancelButton.Location = new System.Drawing.Point(385, 3);
             this.cancelButton.Name = "cancelButton";
-            this.cancelButton.Size = new System.Drawing.Size(75, 23);
+            this.cancelButton.Size = new System.Drawing.Size(16, 16);
             this.cancelButton.TabIndex = 1;
-            this.cancelButton.Text = "Cancel";
             this.cancelButton.UseVisualStyleBackColor = true;
             this.cancelButton.Click += new System.EventHandler(this.CancelButton_Click);
             // 
             // mProgressBar
             // 
-            this.mProgressBar.Location = new System.Drawing.Point(92, 25);
+            this.mProgressBar.Location = new System.Drawing.Point(15, 25);
             this.mProgressBar.Name = "mProgressBar";
-            this.mProgressBar.Size = new System.Drawing.Size(300, 23);
+            this.mProgressBar.Size = new System.Drawing.Size(377, 23);
             this.mProgressBar.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.mProgressBar.TabIndex = 2;
             // 
@@ -80,7 +84,6 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
-            this.Load += new System.EventHandler(this.ProgressForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
