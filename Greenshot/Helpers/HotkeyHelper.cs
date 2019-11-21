@@ -17,6 +17,8 @@ namespace Greenshot.Helpers
         private readonly CoreConfiguration _coreConfiguration;
         private readonly List<HotkeyInfo> _hotkeyInfoList;
 
+        public IList<HotkeyInfo> HotkeyInfoList => _hotkeyInfoList;
+
         public HotkeyHelper(CoreConfiguration coreConfiguration)
         {
             _coreConfiguration = coreConfiguration ?? throw new ArgumentNullException(nameof(coreConfiguration));
@@ -34,6 +36,8 @@ namespace Greenshot.Helpers
 
                 _hotkeyInfoList.Add(new HotkeyInfo(hotkeyAction, text, defaultHotkey));
             }
+
+            FillSolutionsFromConfiguration();
         }
 
         public void RegisterHotkeys(IWin32Window owner)
@@ -43,11 +47,11 @@ namespace Greenshot.Helpers
 
             HotkeyControl.UnregisterHotkeys();
 
+            FillSolutionsFromConfiguration();
+
+            // Пытаемся регистрировать и устанавливаем Unsolved, если не получилось.
             foreach (var hotkeyInfo in _hotkeyInfoList)
             {
-                var configurationKey = GetConfigurationKey(hotkeyInfo.Action);
-                hotkeyInfo.Hotkey = (string)_coreConfiguration.Values[configurationKey].Value;
-
                 if (IsNoneKey(hotkeyInfo.Hotkey))
                 {
                     hotkeyInfo.Solution = HotkeySolution.Disabled;
@@ -69,12 +73,14 @@ namespace Greenshot.Helpers
                 hotkeyInfo.Solution = HotkeySolution.Default;
             }
 
+            // Форма разрешения конфликтов (если нужно).
             if (_hotkeyInfoList.All(hi => hi.Solution != HotkeySolution.Unsolved))
                 return;
-
-            var hotkeysResolvingForm = new HotkeysResolvingForm(_hotkeyInfoList);
+            
+            var hotkeysResolvingForm = new HotkeysResolvingForm(this);
             hotkeysResolvingForm.ShowDialog(owner);
 
+            // Обновляем конфигурацию на основе выбора пользователя.
             foreach (var hotkeyInfo in _hotkeyInfoList)
             {
                 var configurationKey = GetConfigurationKey(hotkeyInfo.Action);
@@ -95,6 +101,124 @@ namespace Greenshot.Helpers
             }
 
             IniConfig.Save();
+        }
+
+        public bool TrySetDefaultHotkey(IWin32Window owner, HotkeyAction hotkeyAction)
+        {
+            var hotkeyInfo = GetHotkeyInfo(hotkeyAction);
+
+            if (HotkeySolution.Default == hotkeyInfo.Solution)
+                return true;
+
+            var internalConflictHotkeyInfo = _hotkeyInfoList.FirstOrDefault(hi =>
+                hi.Solution == HotkeySolution.Custom && Equals(hi.Hotkey, hotkeyInfo.DefaultHotkey));
+
+            if (null != internalConflictHotkeyInfo)
+            {
+                ShowConflictMessage(owner, internalConflictHotkeyInfo.ActionText);
+                return false;
+            }
+
+            if (HotkeySolution.Custom == hotkeyInfo.Solution)
+                UnregisterHotkey(hotkeyInfo.Hotkey);
+
+            if (!TryRegisterHotkey(hotkeyInfo.Action, hotkeyInfo.DefaultHotkey))
+            {
+                ShowConflictMessage(owner);
+                return false;
+            }
+
+            hotkeyInfo.Solution = HotkeySolution.Default;
+            return true;
+        }
+
+        public bool TrySetHotkey(IWin32Window owner, HotkeyAction hotkeyAction, string hotkey)
+        {
+            var hotkeyInfo = GetHotkeyInfo(hotkeyAction);
+
+            if (null == hotkey)
+                hotkey = HotkeyControl.HotkeyToString(Keys.None, Keys.None);
+
+            if (IsNoneKey(hotkey))
+            {
+                hotkeyInfo.Solution = HotkeySolution.Disabled;
+                return true;
+            }
+
+            if (HotkeySolution.Custom == hotkeyInfo.Solution && Equals(hotkey, hotkeyInfo.Hotkey))
+                return true;
+
+            if (Equals(hotkey, hotkeyInfo.DefaultHotkey))
+                return TrySetDefaultHotkey(owner, hotkeyAction);
+
+            var internalConflictHotkeyInfo = _hotkeyInfoList.FirstOrDefault(hi =>
+                hi.Solution == HotkeySolution.Custom && Equals(hi.Hotkey, hotkey) ||
+                hi.Solution == HotkeySolution.Default && Equals(hi.DefaultHotkey, hotkey));
+
+            if (null != internalConflictHotkeyInfo)
+            {
+                ShowConflictMessage(owner, internalConflictHotkeyInfo.ActionText);
+                return false;
+            }
+
+            if (HotkeySolution.Default == hotkeyInfo.Solution)
+                UnregisterHotkey(hotkeyInfo.DefaultHotkey);
+
+            if (HotkeySolution.Custom == hotkeyInfo.Solution)
+                UnregisterHotkey(hotkeyInfo.Hotkey);
+
+            if (!TryRegisterHotkey(hotkeyInfo.Action, hotkey))
+            {
+                ShowConflictMessage(owner);
+                return false;
+            }
+
+            hotkeyInfo.Solution = HotkeySolution.Custom;
+            hotkeyInfo.Hotkey = hotkey;
+
+            return true;
+        }
+
+        public void DisableHotkey(HotkeyAction hotkeyAction)
+        {
+            var hotkeyInfo = GetHotkeyInfo(hotkeyAction);
+
+            switch (hotkeyInfo.Solution)
+            {
+                case HotkeySolution.Default:
+                    UnregisterHotkey(hotkeyInfo.DefaultHotkey);
+                    break;
+                case HotkeySolution.Custom:
+                    UnregisterHotkey(hotkeyInfo.Hotkey);
+                    break;
+            }
+
+            hotkeyInfo.Solution = HotkeySolution.Disabled;
+        }
+
+        public HotkeyInfo GetHotkeyInfo(HotkeyAction hotkeyAction)
+        {
+            return _hotkeyInfoList.First(hi => hi.Action == hotkeyAction);
+        }
+
+        public bool HasUnsolved()
+        {
+            foreach (var hotkeyInfo in _hotkeyInfoList)
+            {
+                if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void AllUnsolvedToDisabled()
+        {
+            foreach (var hotkeyInfo in _hotkeyInfoList)
+            {
+                if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
+                    hotkeyInfo.Solution = HotkeySolution.Disabled;
+            }
         }
 
         public static bool IsNoneKey(string hotkeyString)
@@ -172,6 +296,25 @@ namespace Greenshot.Helpers
                 return;
 
             HotkeyControl.UnregisterHotkey(modifierKeyCode, virtualKeyCode);
+        }
+
+        private static void ShowConflictMessage(IWin32Window owner, string internalConflictActionText = null)
+        {
+            var conflictHotkeyErrorMessage = null == internalConflictActionText
+                ? Language.GetString("hotkey_external_conflict_message")
+                : Language.GetFormattedString("hotkey_internal_conflict_message", internalConflictActionText);
+
+            MessageBox.Show(owner, conflictHotkeyErrorMessage, "Greenshot", MessageBoxButtons.OK,
+                MessageBoxIcon.Warning);
+        }
+
+        private void FillSolutionsFromConfiguration()
+        {
+            foreach (var hotkeyInfo in _hotkeyInfoList)
+            {
+                var configurationKey = GetConfigurationKey(hotkeyInfo.Action);
+                hotkeyInfo.Hotkey = (string)_coreConfiguration.Values[configurationKey].Value;
+            }
         }
 
         private static string GetConfigurationKey(HotkeyAction action)

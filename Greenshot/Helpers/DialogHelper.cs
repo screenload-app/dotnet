@@ -25,7 +25,7 @@ namespace Greenshot.Helpers
         private const uint MB_DEFBUTTON2 = 0x00000100;
 
         [DllImport("shlwapi.dll", EntryPoint = "SHMessageBoxCheckA")]
-        public static extern int SHMessageBoxCheck([In] IntPtr hwnd, [In] String pszText, [In] String pszTitle,
+        public static extern int SHMessageBoxCheck([In] IntPtr hwnd, [In] string pszText, [In] string pszTitle,
             [In] uint uType, [In] int iDefault, [In] string pszRegVal);
 
         #endregion

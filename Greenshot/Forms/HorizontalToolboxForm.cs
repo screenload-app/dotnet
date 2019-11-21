@@ -57,6 +57,9 @@ namespace Greenshot
 
         public void SetColor(Color color)
         {
+            if (color == Color.Transparent)
+                color = BackColor;
+
             colorButton.BackColor = color;
             colorButton.FlatAppearance.BorderColor = color;
             colorButton.FlatAppearance.MouseDownBackColor = CalculateColor(color, 0.67F);

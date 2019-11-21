@@ -156,9 +156,15 @@ namespace GreenshotPlugin.Core {
 		public string OutputPrintFooterPattern { get; set; }
 		[IniProperty("NotificationSound", Description = "The wav-file to play when a capture is taken, loaded only once at the Greenshot startup", DefaultValue="default")]
 		public string NotificationSound { get; set; }
+
 		[IniProperty("UseProxy", Description="Use your global proxy?", DefaultValue="True")]
 		public bool UseProxy { get; set; }
-		[IniProperty("IECapture", Description="Enable/disable IE capture", DefaultValue="True")]
+
+        [IniProperty("UseStableVersionsOnly", DefaultValue = "True")]
+        public bool UseStableVersionsOnly { get; set; }
+
+
+        [IniProperty("IECapture", Description="Enable/disable IE capture", DefaultValue="True")]
 		public bool IECapture { get; set; }
 		[IniProperty("IEFieldCapture", Description="Enable/disable IE field capture, very slow but will make it possible to annotate the fields of a capture in the editor.", DefaultValue="False")]
 		public bool IEFieldCapture { get; set; }

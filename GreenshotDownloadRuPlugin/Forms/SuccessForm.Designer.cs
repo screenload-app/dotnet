@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SuccessForm));
             this.captionLabel = new GreenshotPlugin.Controls.GreenshotLabel();
             this.mPictureBox = new System.Windows.Forms.PictureBox();
@@ -39,6 +40,8 @@
             this.pageLinkTextBox = new GreenshotPlugin.Controls.GreenshotTextBox();
             this.okButton = new GreenshotPlugin.Controls.GreenshotButton();
             this.doNotShowCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.mTimer = new System.Windows.Forms.Timer(this.components);
+            this.automaticallyCloseCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.mPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -142,17 +145,37 @@
             this.doNotShowCheckBox.LanguageKey = "downloadru.success_donotshow";
             this.doNotShowCheckBox.Location = new System.Drawing.Point(15, 214);
             this.doNotShowCheckBox.Name = "doNotShowCheckBox";
-            this.doNotShowCheckBox.Size = new System.Drawing.Size(161, 17);
+            this.doNotShowCheckBox.Size = new System.Drawing.Size(158, 17);
             this.doNotShowCheckBox.TabIndex = 9;
-            this.doNotShowCheckBox.Text = "Don\'t show this dialog again.";
+            this.doNotShowCheckBox.Text = "Don\'t show this dialog again";
             this.doNotShowCheckBox.UseVisualStyleBackColor = true;
             this.doNotShowCheckBox.CheckedChanged += new System.EventHandler(this.doNotShowCheckBox_CheckedChanged);
+            // 
+            // mTimer
+            // 
+            this.mTimer.Interval = 1000;
+            this.mTimer.Tick += new System.EventHandler(this.MTimer_Tick);
+            // 
+            // automaticallyCloseCheckBox
+            // 
+            this.automaticallyCloseCheckBox.AutoSize = true;
+            this.automaticallyCloseCheckBox.LanguageKey = "downloadru.success_automaticallyclose";
+            this.automaticallyCloseCheckBox.Location = new System.Drawing.Point(15, 246);
+            this.automaticallyCloseCheckBox.Name = "automaticallyCloseCheckBox";
+            this.automaticallyCloseCheckBox.PropertyName = "AutomaticallyCloseSuccessForm";
+            this.automaticallyCloseCheckBox.SectionName = "DownloadRu";
+            this.automaticallyCloseCheckBox.Size = new System.Drawing.Size(173, 17);
+            this.automaticallyCloseCheckBox.TabIndex = 10;
+            this.automaticallyCloseCheckBox.Text = "Automatically close the window";
+            this.automaticallyCloseCheckBox.UseVisualStyleBackColor = true;
+            this.automaticallyCloseCheckBox.CheckedChanged += new System.EventHandler(this.AutomaticallyCloseCheckBox_CheckedChanged);
             // 
             // SuccessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(551, 277);
+            this.Controls.Add(this.automaticallyCloseCheckBox);
             this.Controls.Add(this.doNotShowCheckBox);
             this.Controls.Add(this.okButton);
             this.Controls.Add(this.pageLinkButton);
@@ -172,6 +195,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Greenshot";
             this.TopMost = true;
+            this.Load += new System.EventHandler(this.SuccessForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.mPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -190,5 +214,7 @@
         private GreenshotPlugin.Controls.GreenshotTextBox pageLinkTextBox;
         private GreenshotPlugin.Controls.GreenshotButton okButton;
         private GreenshotPlugin.Controls.GreenshotCheckBox doNotShowCheckBox;
+        private System.Windows.Forms.Timer mTimer;
+        private GreenshotPlugin.Controls.GreenshotCheckBox automaticallyCloseCheckBox;
     }
 }

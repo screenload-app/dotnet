@@ -18,160 +18,185 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows.Forms;
 
+using System;
+using System.Globalization;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using System.Text;
+using System.Windows.Forms;
+using System.Xml;
 using Greenshot.Configuration;
-using GreenshotPlugin.Core;
 using Greenshot.IniFile;
+using GreenshotPlugin.Core;
 using log4net;
 
-namespace Greenshot.Experimental {
-	/// <summary>
-	/// Description of RssFeedHelper.
-	/// </summary>
-	public static class UpdateHelper {
-		private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateHelper));
-		private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
-		private const string StableDownloadLink = "https://download.ru/greenshot/get";
-		private const string VersionHistoryLink = "https://download.ru/greenshot/get";
-		private static readonly object LockObject = new object();
-		private static RssFile _latestGreenshot;
-		private static string _downloadLink = StableDownloadLink;
+namespace Greenshot.Helpers
+{
+    public sealed class VersionInfo
+    {
+        private readonly XmlNode _xmlNode;
 
-		/// <summary>
-		/// Is an update check needed?
-		/// </summary>
-		/// <returns>bool true if yes</returns>
-		public static bool IsUpdateCheckNeeded() {
-			lock (LockObject)
-			{
-				if (CoreConfig.UpdateCheckInterval == 0)
-				{
-					return false;
-				}
-				DateTime checkTime = CoreConfig.LastUpdateCheck;
-				checkTime = checkTime.AddDays(CoreConfig.UpdateCheckInterval);
-				if (DateTime.Now.CompareTo(checkTime) < 0)
-				{
-					Log.DebugFormat("No need to check RSS feed for updates, feed check will be after {0}", checkTime);
-					return false;
-				}
-				Log.DebugFormat("Update check is due, last check was {0} check needs to be made after {1} (which is one {2} later)", CoreConfig.LastUpdateCheck, checkTime, CoreConfig.UpdateCheckInterval);
-				if (!RssHelper.IsRssModifiedAfter(CoreConfig.LastUpdateCheck))
-				{
-					Log.DebugFormat("RSS feed has not been updated since after {0}", CoreConfig.LastUpdateCheck);
-					return false;
-				}
-			}
-			return true;
-		}
+        public Version Version { get; }
+        public string File { get; }
 
-		/// <summary>
-		/// Read the RSS feed to see if there is a Greenshot update
-		/// </summary>
-		public static void CheckAndAskForUpdate() {
-			lock (LockObject) {
-				Version currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-				// Test like this:
-				// currentVersion = new Version("0.8.1.1198");
-	
-				try {
-					_latestGreenshot = null;
-					ProcessRssInfo(currentVersion);
-					if (_latestGreenshot != null) {
-						MainForm.Instance.NotifyIcon.BalloonTipClicked += HandleBalloonTipClick;
-						MainForm.Instance.NotifyIcon.BalloonTipClosed += CleanupBalloonTipClick;
-						MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot", Language.GetFormattedString(LangKey.update_found, "'" + _latestGreenshot.File + "'"), ToolTipIcon.Info);
-					}
-					CoreConfig.LastUpdateCheck = DateTime.Now;
-				} catch (Exception e) {
-					Log.Error("An error occured while checking for updates, the error will be ignored: ", e);
-				}
-			}
-		}
+        public string Info
+        {
+            get
+            {
+                var infoNode = _xmlNode.SelectSingleNode($"info[@locale=\"{Language.CurrentLanguage}\"]") ??
+                               _xmlNode.SelectSingleNode("info[@locale=\"en-US\"]");
 
-		private static void CleanupBalloonTipClick(object sender, EventArgs e) {
-			MainForm.Instance.NotifyIcon.BalloonTipClicked -= HandleBalloonTipClick;
-			MainForm.Instance.NotifyIcon.BalloonTipClosed -= CleanupBalloonTipClick;
-		}
-		
-		private static void HandleBalloonTipClick(object sender, EventArgs e) {
-			try {
-				if (_latestGreenshot != null) {
-					// "Direct" download link
-					// Process.Start(latestGreenshot.Link);
-					// Go to getgreenshot.org
-					Process.Start(_downloadLink);
-				}
-			} catch (Exception) {
-				MessageBox.Show(Language.GetFormattedString(LangKey.error_openlink, _downloadLink), Language.GetString(LangKey.error));
-			} finally {
-				CleanupBalloonTipClick(sender, e);
-			}
-		}
+                return infoNode?.InnerText;
+            }
+        }
 
-		private static void ProcessRssInfo(Version currentVersion) {
-			// Reset latest Greenshot
-			IList<RssFile> rssFiles = RssHelper.ReadRss();
+        public bool Unwanted { get; set; }
 
-			if (rssFiles == null) {
-				return;
-			}
+        public VersionInfo(XmlNode xmlNode)
+        {
+            _xmlNode = xmlNode ?? throw new ArgumentNullException(nameof(xmlNode));
 
-			// Retrieve the current and latest greenshot
-			foreach(RssFile rssFile in rssFiles) {
-				if (rssFile.File.StartsWith("Greenshot")) {
-					// check for exe
-					if (!rssFile.IsExe) {
-						continue;
-					}
+            var numberValue = xmlNode.Attributes?["number"].Value;
 
-					// do we have a version?
-					if (rssFile.Version == null) {
-						Log.DebugFormat("Skipping unversioned exe {0} which is published at {1} : {2}", rssFile.File, rssFile.Pubdate.ToLocalTime(), rssFile.Link);
-						continue;
-					}
+            if (null == numberValue)
+                throw new InvalidOperationException("null == numberValue");
 
-					// if the file is unstable, we will skip it when:
-					// the current version is a release or release candidate AND check unstable is turned off.
-					if (rssFile.IsUnstable) {
-						// Skip if we shouldn't check unstables
-						if ((CoreConfig.BuildState == BuildStates.RELEASE) && !CoreConfig.CheckForUnstable) {
-							continue;
-						}
-					}
+            Version = new Version(numberValue);
 
-					// if the file is a release candidate, we will skip it when:
-					// the current version is a release AND check unstable is turned off.
-					if (rssFile.IsReleaseCandidate) {
-						if (CoreConfig.BuildState == BuildStates.RELEASE && !CoreConfig.CheckForUnstable) {
-							continue;
-						}
-					}
+            var file = xmlNode.Attributes?["file"].Value;
+            File = file ?? throw new InvalidOperationException("null == file");
+        }
+    }
 
-					// Compare versions
-					int versionCompare = rssFile.Version.CompareTo(currentVersion);
-					if (versionCompare > 0) {
-						Log.DebugFormat("Found newer Greenshot '{0}' with version {1} published at {2} : {3}", rssFile.File, rssFile.Version, rssFile.Pubdate.ToLocalTime(), rssFile.Link);
-						if (_latestGreenshot == null || rssFile.Version.CompareTo(_latestGreenshot.Version) > 0) {
-							_latestGreenshot = rssFile;
-							if (rssFile.IsReleaseCandidate || rssFile.IsUnstable) {
-								_downloadLink = VersionHistoryLink;
-							} else {
-								_downloadLink = StableDownloadLink;
-							}
-						}
-					} else if (versionCompare < 0) {
-						Log.DebugFormat("Skipping older greenshot with version {0}", rssFile.Version);
-					} else if (versionCompare == 0) {
-						Log.DebugFormat("Found current version as exe {0} with version {1} published at {2} : {3}", rssFile.File, rssFile.Version, rssFile.Pubdate.ToLocalTime(), rssFile.Link);
-					}
-				}
-			}
-		}
-	}
+    public static class UpdateHelper
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateHelper));
+        private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
+
+        private const string VersionHistoryLink = "https://d2n4w7xg423fnr.cloudfront.net/temp/Nov2019/update/VersionHistory.xml";
+        public const string DownloadLinkTemplate = "https://d2n4w7xg423fnr.cloudfront.net/temp/Nov2019/update/{0}";
+
+        private static readonly object LockObject = new object();
+
+        private static VersionInfo _lastVersion;
+
+        /// <summary>
+        /// Is an update check needed?
+        /// </summary>
+        /// <returns>bool true if yes</returns>
+        public static bool IsUpdateCheckNeeded()
+        {
+            lock (LockObject)
+            {
+                if (CoreConfig.UpdateCheckInterval == 0)
+                    return false;
+
+                var lastUpdateCheck = CoreConfig.LastUpdateCheck;
+                lastUpdateCheck = lastUpdateCheck.AddDays(CoreConfig.UpdateCheckInterval);
+
+                if (DateTime.Now.CompareTo(lastUpdateCheck) < 0)
+                    return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Read the RSS feed to see if there is a Greenshot update
+        /// </summary>
+        public static bool CheckAndAskForUpdate(CoreConfiguration configuration)
+        {
+            if (null == configuration)
+                throw new ArgumentNullException(nameof(configuration));
+
+            lock (LockObject)
+            {
+                var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+                // Test like this:
+                // currentVersion = new Version("0.8.1.1198");
+
+                try
+                {
+                    VersionInfo lastVersion;
+
+                    using (var webClient = new WebClient())
+                    {
+                        webClient.Encoding = Encoding.UTF8;
+
+                        var versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
+
+                        var xmlDocument = new XmlDocument();
+                        xmlDocument.LoadXml(versionHistoryText);
+
+                        var xPath = configuration.UseStableVersionsOnly ? "version[@type='release']" : "version";
+
+                        var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
+
+                        if (null == versionNodes)
+                            throw new InvalidOperationException("null == versionNodes");
+
+                        var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
+
+                        lastVersion = versionInfoList.OrderByDescending(vi => vi.Version).First();
+                    }
+
+                    if (null == _lastVersion)
+                        _lastVersion = lastVersion;
+                    else
+                    {
+                        if (_lastVersion.Version >= lastVersion.Version && _lastVersion.Unwanted)
+                            return false; // Уже оповещали
+
+                        _lastVersion = lastVersion;
+                    }
+
+                    if (_lastVersion.Version <= currentVersion)
+                        return false;
+
+                    var text = Language.GetFormattedString(LangKey.update_found, _lastVersion.Version);
+
+                    if (null != _lastVersion.Info)
+                        text = $"{text} {_lastVersion.Info}";
+
+                    MainForm.Instance.NotifyIcon.BalloonTipClicked += HandleBalloonTipClick;
+                    MainForm.Instance.NotifyIcon.BalloonTipClosed += CleanupBalloonTipClick;
+                    MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot", text, ToolTipIcon.Info);
+
+                    CoreConfig.LastUpdateCheck = DateTime.Now;
+
+                    return true;
+                }
+                catch (Exception e)
+                {
+                    Log.Error("An error occured while checking for updates, the error will be ignored: ", e);
+                    return false;
+                }
+            }
+        }
+
+        private static void HandleBalloonTipClick(object sender, EventArgs e)
+        {
+            CleanupBalloonTipClick(sender, e);
+
+            var text = Language.GetFormattedString("update_confirmation", _lastVersion.Version);
+
+            if (DialogResult.Yes == MessageBox.Show(MainForm.Instance, text, "Greenshot", MessageBoxButtons.YesNo,
+                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1))
+            {
+                var updateForm = new UpdateForm(_lastVersion,
+                    string.Format(CultureInfo.InvariantCulture, DownloadLinkTemplate, _lastVersion.File));
+                updateForm.Show(MainForm.Instance);
+            }
+            else
+                _lastVersion.Unwanted = true;
+        }
+
+        private static void CleanupBalloonTipClick(object sender, EventArgs e)
+        {
+            MainForm.Instance.NotifyIcon.BalloonTipClicked -= HandleBalloonTipClick;
+            MainForm.Instance.NotifyIcon.BalloonTipClosed -= CleanupBalloonTipClick;
+        }
+    }
 }

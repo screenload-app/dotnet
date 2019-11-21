@@ -80,6 +80,8 @@ namespace Greenshot {
             this.tabcontrol = new System.Windows.Forms.TabControl();
             this.tab_general = new GreenshotPlugin.Controls.GreenshotTabPage();
             this.groupbox_network = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.onlyStableVersionsCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.checkUpdatesButton = new GreenshotPlugin.Controls.GreenshotButton();
             this.numericUpDown_daysbetweencheck = new System.Windows.Forms.NumericUpDown();
             this.label_checkperiod = new GreenshotPlugin.Controls.GreenshotLabel();
             this.checkbox_usedefaultproxy = new GreenshotPlugin.Controls.GreenshotCheckBox();
@@ -96,6 +98,7 @@ namespace Greenshot {
             this.fullscreen_hotkeyControl = new GreenshotPlugin.Controls.HotkeyControl();
             this.tab_capture = new GreenshotPlugin.Controls.GreenshotTabPage();
             this.groupbox_editor = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.editorConfirmationCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_editor_match_capture_size = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.groupbox_iecapture = new GreenshotPlugin.Controls.GreenshotGroupBox();
             this.checkbox_ie_capture = new GreenshotPlugin.Controls.GreenshotCheckBox();
@@ -148,7 +151,6 @@ namespace Greenshot {
             this.checkbox_enableexpert = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.listview_clipboardformats = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.editorConfirmationCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.groupbox_preferredfilesettings.SuspendLayout();
             this.groupbox_applicationsettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpdownIconSize)).BeginInit();
@@ -250,7 +252,7 @@ namespace Greenshot {
             this.label_language.Location = new System.Drawing.Point(6, 20);
             this.label_language.Name = "label_language";
             this.label_language.Size = new System.Drawing.Size(181, 23);
-            this.label_language.TabIndex = 10;
+            this.label_language.TabIndex = 0;
             this.label_language.Text = "Language";
             // 
             // combobox_language
@@ -261,7 +263,7 @@ namespace Greenshot {
             this.combobox_language.MaxDropDownItems = 15;
             this.combobox_language.Name = "combobox_language";
             this.combobox_language.Size = new System.Drawing.Size(210, 21);
-            this.combobox_language.TabIndex = 0;
+            this.combobox_language.TabIndex = 1;
             // 
             // combobox_primaryimageformat
             // 
@@ -344,7 +346,7 @@ namespace Greenshot {
             this.groupbox_applicationsettings.Location = new System.Drawing.Point(2, 6);
             this.groupbox_applicationsettings.Name = "groupbox_applicationsettings";
             this.groupbox_applicationsettings.Size = new System.Drawing.Size(412, 89);
-            this.groupbox_applicationsettings.TabIndex = 14;
+            this.groupbox_applicationsettings.TabIndex = 0;
             this.groupbox_applicationsettings.TabStop = false;
             this.groupbox_applicationsettings.Text = "Application Settings";
             // 
@@ -368,7 +370,7 @@ namespace Greenshot {
             0});
             this.numericUpdownIconSize.Name = "numericUpdownIconSize";
             this.numericUpdownIconSize.Size = new System.Drawing.Size(44, 20);
-            this.numericUpdownIconSize.TabIndex = 1;
+            this.numericUpdownIconSize.TabIndex = 3;
             this.numericUpdownIconSize.Value = new decimal(new int[] {
             16,
             0,
@@ -381,7 +383,7 @@ namespace Greenshot {
             this.label_icon_size.Location = new System.Drawing.Point(6, 44);
             this.label_icon_size.Name = "label_icon_size";
             this.label_icon_size.Size = new System.Drawing.Size(350, 16);
-            this.label_icon_size.TabIndex = 6;
+            this.label_icon_size.TabIndex = 2;
             this.label_icon_size.Text = "Icon size";
             // 
             // checkbox_autostartshortcut
@@ -390,7 +392,7 @@ namespace Greenshot {
             this.checkbox_autostartshortcut.Location = new System.Drawing.Point(8, 60);
             this.checkbox_autostartshortcut.Name = "checkbox_autostartshortcut";
             this.checkbox_autostartshortcut.Size = new System.Drawing.Size(397, 25);
-            this.checkbox_autostartshortcut.TabIndex = 2;
+            this.checkbox_autostartshortcut.TabIndex = 4;
             this.checkbox_autostartshortcut.Text = "Launch Greenshot on startup";
             this.checkbox_autostartshortcut.UseVisualStyleBackColor = true;
             // 
@@ -533,23 +535,49 @@ namespace Greenshot {
             this.tab_general.Location = new System.Drawing.Point(4, 22);
             this.tab_general.Name = "tab_general";
             this.tab_general.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_general.Size = new System.Drawing.Size(423, 379);
+            this.tab_general.Size = new System.Drawing.Size(423, 389);
             this.tab_general.TabIndex = 0;
             this.tab_general.Text = "General";
             this.tab_general.UseVisualStyleBackColor = true;
             // 
             // groupbox_network
             // 
+            this.groupbox_network.Controls.Add(this.onlyStableVersionsCheckBox);
+            this.groupbox_network.Controls.Add(this.checkUpdatesButton);
             this.groupbox_network.Controls.Add(this.numericUpDown_daysbetweencheck);
             this.groupbox_network.Controls.Add(this.label_checkperiod);
             this.groupbox_network.Controls.Add(this.checkbox_usedefaultproxy);
             this.groupbox_network.LanguageKey = "settings_network";
             this.groupbox_network.Location = new System.Drawing.Point(3, 253);
             this.groupbox_network.Name = "groupbox_network";
-            this.groupbox_network.Size = new System.Drawing.Size(412, 72);
-            this.groupbox_network.TabIndex = 54;
+            this.groupbox_network.Size = new System.Drawing.Size(412, 98);
+            this.groupbox_network.TabIndex = 2;
             this.groupbox_network.TabStop = false;
             this.groupbox_network.Text = "Network and updates";
+            // 
+            // onlyStableVersionsCheckBox
+            // 
+            this.onlyStableVersionsCheckBox.AutoSize = true;
+            this.onlyStableVersionsCheckBox.LanguageKey = "settings_usestableversionsonly";
+            this.onlyStableVersionsCheckBox.Location = new System.Drawing.Point(8, 69);
+            this.onlyStableVersionsCheckBox.Name = "onlyStableVersionsCheckBox";
+            this.onlyStableVersionsCheckBox.PropertyName = "UseStableVersionsOnly";
+            this.onlyStableVersionsCheckBox.Size = new System.Drawing.Size(140, 17);
+            this.onlyStableVersionsCheckBox.TabIndex = 3;
+            this.onlyStableVersionsCheckBox.Text = "Use stable versions only";
+            this.onlyStableVersionsCheckBox.UseVisualStyleBackColor = true;
+            this.onlyStableVersionsCheckBox.CheckedChanged += new System.EventHandler(this.onlyStableVersionsCheckBox_CheckedChanged);
+            // 
+            // checkUpdatesButton
+            // 
+            this.checkUpdatesButton.LanguageKey = "settings_checkupdatesbutton";
+            this.checkUpdatesButton.Location = new System.Drawing.Point(212, 65);
+            this.checkUpdatesButton.Name = "checkUpdatesButton";
+            this.checkUpdatesButton.Size = new System.Drawing.Size(190, 23);
+            this.checkUpdatesButton.TabIndex = 4;
+            this.checkUpdatesButton.Text = "Check for updates right now";
+            this.checkUpdatesButton.UseVisualStyleBackColor = true;
+            this.checkUpdatesButton.Click += new System.EventHandler(this.checkUpdatesButton_Click);
             // 
             // numericUpDown_daysbetweencheck
             // 
@@ -561,7 +589,7 @@ namespace Greenshot {
             0});
             this.numericUpDown_daysbetweencheck.Name = "numericUpDown_daysbetweencheck";
             this.numericUpDown_daysbetweencheck.Size = new System.Drawing.Size(57, 20);
-            this.numericUpDown_daysbetweencheck.TabIndex = 8;
+            this.numericUpDown_daysbetweencheck.TabIndex = 2;
             this.numericUpDown_daysbetweencheck.ThousandsSeparator = true;
             // 
             // label_checkperiod
@@ -570,7 +598,7 @@ namespace Greenshot {
             this.label_checkperiod.Location = new System.Drawing.Point(5, 39);
             this.label_checkperiod.Name = "label_checkperiod";
             this.label_checkperiod.Size = new System.Drawing.Size(334, 23);
-            this.label_checkperiod.TabIndex = 19;
+            this.label_checkperiod.TabIndex = 1;
             this.label_checkperiod.Text = "Update check interval in days (0=no check)";
             // 
             // checkbox_usedefaultproxy
@@ -580,7 +608,7 @@ namespace Greenshot {
             this.checkbox_usedefaultproxy.Name = "checkbox_usedefaultproxy";
             this.checkbox_usedefaultproxy.PropertyName = "UseProxy";
             this.checkbox_usedefaultproxy.Size = new System.Drawing.Size(397, 25);
-            this.checkbox_usedefaultproxy.TabIndex = 7;
+            this.checkbox_usedefaultproxy.TabIndex = 0;
             this.checkbox_usedefaultproxy.Text = "Use default system proxy";
             this.checkbox_usedefaultproxy.UseVisualStyleBackColor = true;
             // 
@@ -600,7 +628,7 @@ namespace Greenshot {
             this.groupbox_hotkeys.Location = new System.Drawing.Point(2, 98);
             this.groupbox_hotkeys.Name = "groupbox_hotkeys";
             this.groupbox_hotkeys.Size = new System.Drawing.Size(412, 152);
-            this.groupbox_hotkeys.TabIndex = 15;
+            this.groupbox_hotkeys.TabIndex = 1;
             this.groupbox_hotkeys.TabStop = false;
             this.groupbox_hotkeys.Text = "Hotkeys";
             // 
@@ -610,7 +638,7 @@ namespace Greenshot {
             this.label_lastregion_hotkey.Location = new System.Drawing.Point(6, 94);
             this.label_lastregion_hotkey.Name = "label_lastregion_hotkey";
             this.label_lastregion_hotkey.Size = new System.Drawing.Size(212, 20);
-            this.label_lastregion_hotkey.TabIndex = 53;
+            this.label_lastregion_hotkey.TabIndex = 6;
             this.label_lastregion_hotkey.Text = "Capture last region";
             // 
             // lastregion_hotkeyControl
@@ -621,7 +649,8 @@ namespace Greenshot {
             this.lastregion_hotkeyControl.Name = "lastregion_hotkeyControl";
             this.lastregion_hotkeyControl.PropertyName = "LastregionHotkey";
             this.lastregion_hotkeyControl.Size = new System.Drawing.Size(179, 20);
-            this.lastregion_hotkeyControl.TabIndex = 5;
+            this.lastregion_hotkeyControl.TabIndex = 7;
+            this.lastregion_hotkeyControl.TextChanged += new System.EventHandler(this.Lastregion_hotkeyControl_TextChanged);
             // 
             // label_ie_hotkey
             // 
@@ -629,7 +658,7 @@ namespace Greenshot {
             this.label_ie_hotkey.Location = new System.Drawing.Point(6, 120);
             this.label_ie_hotkey.Name = "label_ie_hotkey";
             this.label_ie_hotkey.Size = new System.Drawing.Size(212, 20);
-            this.label_ie_hotkey.TabIndex = 51;
+            this.label_ie_hotkey.TabIndex = 8;
             this.label_ie_hotkey.Text = "Capture Internet Explorer";
             // 
             // ie_hotkeyControl
@@ -640,7 +669,8 @@ namespace Greenshot {
             this.ie_hotkeyControl.Name = "ie_hotkeyControl";
             this.ie_hotkeyControl.PropertyName = "IEHotkey";
             this.ie_hotkeyControl.Size = new System.Drawing.Size(179, 20);
-            this.ie_hotkeyControl.TabIndex = 6;
+            this.ie_hotkeyControl.TabIndex = 9;
+            this.ie_hotkeyControl.TextChanged += new System.EventHandler(this.Ie_hotkeyControl_TextChanged);
             // 
             // label_region_hotkey
             // 
@@ -648,7 +678,7 @@ namespace Greenshot {
             this.label_region_hotkey.Location = new System.Drawing.Point(6, 68);
             this.label_region_hotkey.Name = "label_region_hotkey";
             this.label_region_hotkey.Size = new System.Drawing.Size(212, 20);
-            this.label_region_hotkey.TabIndex = 49;
+            this.label_region_hotkey.TabIndex = 4;
             this.label_region_hotkey.Text = "Capture region";
             // 
             // label_window_hotkey
@@ -657,7 +687,7 @@ namespace Greenshot {
             this.label_window_hotkey.Location = new System.Drawing.Point(6, 42);
             this.label_window_hotkey.Name = "label_window_hotkey";
             this.label_window_hotkey.Size = new System.Drawing.Size(212, 23);
-            this.label_window_hotkey.TabIndex = 48;
+            this.label_window_hotkey.TabIndex = 2;
             this.label_window_hotkey.Text = "Capture window";
             // 
             // label_fullscreen_hotkey
@@ -666,7 +696,7 @@ namespace Greenshot {
             this.label_fullscreen_hotkey.Location = new System.Drawing.Point(6, 16);
             this.label_fullscreen_hotkey.Name = "label_fullscreen_hotkey";
             this.label_fullscreen_hotkey.Size = new System.Drawing.Size(212, 23);
-            this.label_fullscreen_hotkey.TabIndex = 47;
+            this.label_fullscreen_hotkey.TabIndex = 0;
             this.label_fullscreen_hotkey.Text = "Capture full screen";
             // 
             // region_hotkeyControl
@@ -677,7 +707,8 @@ namespace Greenshot {
             this.region_hotkeyControl.Name = "region_hotkeyControl";
             this.region_hotkeyControl.PropertyName = "RegionHotkey";
             this.region_hotkeyControl.Size = new System.Drawing.Size(179, 20);
-            this.region_hotkeyControl.TabIndex = 4;
+            this.region_hotkeyControl.TabIndex = 5;
+            this.region_hotkeyControl.TextChanged += new System.EventHandler(this.Region_hotkeyControl_TextChanged);
             // 
             // window_hotkeyControl
             // 
@@ -688,6 +719,7 @@ namespace Greenshot {
             this.window_hotkeyControl.PropertyName = "WindowHotkey";
             this.window_hotkeyControl.Size = new System.Drawing.Size(179, 20);
             this.window_hotkeyControl.TabIndex = 3;
+            this.window_hotkeyControl.TextChanged += new System.EventHandler(this.Window_hotkeyControl_TextChanged);
             // 
             // fullscreen_hotkeyControl
             // 
@@ -697,7 +729,8 @@ namespace Greenshot {
             this.fullscreen_hotkeyControl.Name = "fullscreen_hotkeyControl";
             this.fullscreen_hotkeyControl.PropertyName = "FullscreenHotkey";
             this.fullscreen_hotkeyControl.Size = new System.Drawing.Size(179, 20);
-            this.fullscreen_hotkeyControl.TabIndex = 2;
+            this.fullscreen_hotkeyControl.TabIndex = 1;
+            this.fullscreen_hotkeyControl.TextChanged += new System.EventHandler(this.Fullscreen_hotkeyControl_TextChanged);
             // 
             // tab_capture
             // 
@@ -724,6 +757,18 @@ namespace Greenshot {
             this.groupbox_editor.TabIndex = 27;
             this.groupbox_editor.TabStop = false;
             this.groupbox_editor.Text = "Editor";
+            // 
+            // editorConfirmationCheckBox
+            // 
+            this.editorConfirmationCheckBox.LanguageKey = "settings_editorconfirmation";
+            this.editorConfirmationCheckBox.Location = new System.Drawing.Point(6, 39);
+            this.editorConfirmationCheckBox.Name = "editorConfirmationCheckBox";
+            this.editorConfirmationCheckBox.PropertyName = "";
+            this.editorConfirmationCheckBox.SectionName = "";
+            this.editorConfirmationCheckBox.Size = new System.Drawing.Size(397, 25);
+            this.editorConfirmationCheckBox.TabIndex = 16;
+            this.editorConfirmationCheckBox.Text = "Ask for confirmation when leaving quick edit mode";
+            this.editorConfirmationCheckBox.UseVisualStyleBackColor = true;
             // 
             // checkbox_editor_match_capture_size
             // 
@@ -931,7 +976,7 @@ namespace Greenshot {
             this.tab_output.Location = new System.Drawing.Point(4, 22);
             this.tab_output.Name = "tab_output";
             this.tab_output.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_output.Size = new System.Drawing.Size(423, 397);
+            this.tab_output.Size = new System.Drawing.Size(423, 389);
             this.tab_output.TabIndex = 1;
             this.tab_output.Text = "Output";
             this.tab_output.UseVisualStyleBackColor = true;
@@ -942,7 +987,7 @@ namespace Greenshot {
             this.tab_destinations.LanguageKey = "settings_destination";
             this.tab_destinations.Location = new System.Drawing.Point(4, 22);
             this.tab_destinations.Name = "tab_destinations";
-            this.tab_destinations.Size = new System.Drawing.Size(423, 397);
+            this.tab_destinations.Size = new System.Drawing.Size(423, 389);
             this.tab_destinations.TabIndex = 4;
             this.tab_destinations.Text = "Destination";
             this.tab_destinations.UseVisualStyleBackColor = true;
@@ -956,7 +1001,7 @@ namespace Greenshot {
             this.tab_printer.Location = new System.Drawing.Point(4, 22);
             this.tab_printer.Name = "tab_printer";
             this.tab_printer.Padding = new System.Windows.Forms.Padding(3);
-            this.tab_printer.Size = new System.Drawing.Size(423, 397);
+            this.tab_printer.Size = new System.Drawing.Size(423, 389);
             this.tab_printer.TabIndex = 2;
             this.tab_printer.Text = "Printer";
             this.tab_printer.UseVisualStyleBackColor = true;
@@ -1144,7 +1189,7 @@ namespace Greenshot {
             this.tab_plugins.LanguageKey = "settings_plugins";
             this.tab_plugins.Location = new System.Drawing.Point(4, 22);
             this.tab_plugins.Name = "tab_plugins";
-            this.tab_plugins.Size = new System.Drawing.Size(423, 397);
+            this.tab_plugins.Size = new System.Drawing.Size(423, 389);
             this.tab_plugins.TabIndex = 2;
             this.tab_plugins.Text = "Plugins";
             this.tab_plugins.UseVisualStyleBackColor = true;
@@ -1199,7 +1244,7 @@ namespace Greenshot {
             this.tab_expert.LanguageKey = "expertsettings";
             this.tab_expert.Location = new System.Drawing.Point(4, 22);
             this.tab_expert.Name = "tab_expert";
-            this.tab_expert.Size = new System.Drawing.Size(423, 397);
+            this.tab_expert.Size = new System.Drawing.Size(423, 389);
             this.tab_expert.TabIndex = 5;
             this.tab_expert.Text = "Expert";
             this.tab_expert.UseVisualStyleBackColor = true;
@@ -1389,18 +1434,6 @@ namespace Greenshot {
             this.columnHeader1.Text = "Destination";
             this.columnHeader1.Width = 225;
             // 
-            // editorConfirmationCheckBox
-            // 
-            this.editorConfirmationCheckBox.LanguageKey = "settings_editorconfirmation";
-            this.editorConfirmationCheckBox.Location = new System.Drawing.Point(6, 39);
-            this.editorConfirmationCheckBox.Name = "editorConfirmationCheckBox";
-            this.editorConfirmationCheckBox.PropertyName = "";
-            this.editorConfirmationCheckBox.SectionName = "";
-            this.editorConfirmationCheckBox.Size = new System.Drawing.Size(397, 25);
-            this.editorConfirmationCheckBox.TabIndex = 16;
-            this.editorConfirmationCheckBox.Text = "Ask for confirmation when leaving quick edit mode";
-            this.editorConfirmationCheckBox.UseVisualStyleBackColor = true;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1428,6 +1461,7 @@ namespace Greenshot {
             this.tabcontrol.ResumeLayout(false);
             this.tab_general.ResumeLayout(false);
             this.groupbox_network.ResumeLayout(false);
+            this.groupbox_network.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_daysbetweencheck)).EndInit();
             this.groupbox_hotkeys.ResumeLayout(false);
             this.groupbox_hotkeys.PerformLayout();
@@ -1558,5 +1592,7 @@ namespace Greenshot {
         private Controls.ColorButton captureAreaColorButton;
         private GreenshotPlugin.Controls.GreenshotCheckBox captureAreaColorCheckBox;
         private GreenshotPlugin.Controls.GreenshotCheckBox editorConfirmationCheckBox;
+        private GreenshotPlugin.Controls.GreenshotButton checkUpdatesButton;
+        private GreenshotPlugin.Controls.GreenshotCheckBox onlyStableVersionsCheckBox;
     }
 }

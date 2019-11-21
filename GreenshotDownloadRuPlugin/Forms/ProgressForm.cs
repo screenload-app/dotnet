@@ -5,7 +5,7 @@ using log4net;
 
 namespace GreenshotDownloadRuPlugin.Forms
 {
-    public partial class ProgressForm : Form
+    public partial class ProgressForm : DownloadRuForm
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(ProgressForm));
 

@@ -950,7 +950,7 @@ namespace Greenshot.Helpers
         private QuickImageEditorAction ShowQuickEditor(Rectangle rectangle)
         {
             var quickImageEditorResult =
-                QuickImageEditorForm.ShowQuickImageEditor(_capture.Image, _capture.CaptureDetails, rectangle);
+                QuickImageEditorForm.ShowQuickImageEditor(_capture, rectangle);
 
             if (QuickImageEditorAction.None != quickImageEditorResult.Action)
             {
@@ -965,6 +965,10 @@ namespace Greenshot.Helpers
 
                 _capture.Dispose();
                 _capture = capture;
+
+                var tempRectangle = _captureRect;
+                tempRectangle.Offset(_capture.ScreenBounds.Location.X, _capture.ScreenBounds.Location.Y);
+                CoreConfig.LastCapturedRegion = tempRectangle;
             }
             else
             {

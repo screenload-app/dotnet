@@ -71,19 +71,18 @@ namespace Greenshot
             }
         }
 
-        public QuickImageEditorForm(Surface surface, Rectangle holeRectangle)
+        public QuickImageEditorForm(SurfaceForm surfaceForm, Rectangle holeRectangle)
         {
-            if (null == surface)
-                throw new ArgumentNullException(nameof(surface));
-
-            var surfaceForm = surface.FindForm();
-
             _surfaceForm = surfaceForm ?? throw new InvalidOperationException("null == surfaceForm");
             _surfaceForm.KeyDown += Form_KeyDown;
 
-            _surface = surface;
+            _surface = surfaceForm.Surface;
 
             InitializeComponent();
+
+            SuspendLayout();
+            Bounds = surfaceForm.Bounds;
+            ResumeLayout(true);
 
             _coreConfiguration = IniConfig.GetIniSection<CoreConfiguration>();
             BackColor = Color.FromArgb(255, _coreConfiguration.CaptureAreaColor);
@@ -118,32 +117,31 @@ namespace Greenshot
             _surface.CanUndoChanged += (s, args) => { _horizontalToolboxForm.SetCanUndo(_surface.CanUndo); };
         }
 
-        public static QuickImageEditorResult ShowQuickImageEditor(Image screenImage, ICaptureDetails captureDetails, Rectangle holeRectangle)
+        public static QuickImageEditorResult ShowQuickImageEditor(ICapture capture, Rectangle holeRectangle, Form ownerForm = null)
         {
-            if (null == screenImage)
-                throw new ArgumentNullException(nameof(screenImage));
+            if (null == capture)
+                throw new ArgumentNullException(nameof(capture));
 
-            if (null == captureDetails)
-                throw new ArgumentNullException(nameof(captureDetails));
+            var surfaceForm = new SurfaceForm(capture);
 
-            var capture = new Capture((Image)screenImage.Clone());
+            MainForm.Instance.SetSurfaceForm(surfaceForm);
 
-            var surface = new Surface(capture)
-            {
-                CaptureDetails = captureDetails,
-                Modified = false
-            };
-
-            var surfaceForm = new SurfaceForm(surface);
             QuickImageEditorForm quickImageEditorForm = null;
 
             surfaceForm.Load += (sender, args) =>
             {
-                quickImageEditorForm = new QuickImageEditorForm(surface, holeRectangle);
+                if (null != ownerForm)
+                    ownerForm.Opacity = 0;
+
+                quickImageEditorForm = new QuickImageEditorForm(surfaceForm, holeRectangle);
                 quickImageEditorForm.Show(surfaceForm);
             };
 
-            if (DialogResult.OK != surfaceForm.ShowDialog())
+            var dialogResult = surfaceForm.ShowDialog(ownerForm ?? MainForm.Instance);
+
+            MainForm.Instance.ResetSurfaceForm();
+
+            if (DialogResult.OK != dialogResult)
                 return QuickImageEditorResult.NoAction;
 
             return quickImageEditorForm._result;
@@ -151,29 +149,39 @@ namespace Greenshot
 
         private void Form_KeyDown(object sender, KeyEventArgs e)
         {
-            if (Keys.Escape == e.KeyCode)
-                Cancel();
-            else if (e.Control)
+            switch (e.KeyCode)
             {
-                switch (e.KeyCode)
-                {
-                    case Keys.D:
-                        UploadCapture();
-                        break;
-                    case Keys.C:
-                        CopyCapture();
-                        break;
-                    case Keys.S:
-                        SaveCapture();
-                        break;
-                    case Keys.E:
-                        SendToExtendedEditor();
-                        break;
-                    case Keys.Z:
-                        if (_surface.CanUndo)
-                            _surface.Undo();
-                        break;
-                }
+                case Keys.Delete:
+                    _surface.RemoveSelectedElements();
+                    break;
+                case Keys.Escape:
+                    Cancel();
+                    break;
+                default:
+                    if (e.Control)
+                    {
+                        switch (e.KeyCode)
+                        {
+                            case Keys.D:
+                                UploadCapture();
+                                break;
+                            case Keys.C:
+                                CopyCapture();
+                                break;
+                            case Keys.S:
+                                SaveCapture();
+                                break;
+                            case Keys.E:
+                                SendToExtendedEditor();
+                                break;
+                            case Keys.Z:
+                                if (_surface.CanUndo)
+                                    _surface.Undo();
+                                break;
+                        }
+                    }
+
+                    break;
             }
         }
 
@@ -497,7 +505,7 @@ namespace Greenshot
         {
             var toolboxesLocation = CalculateToolboxesLocation(
                 new Rectangle(holePanel.Left, holePanel.Top, holePanel.Width, holePanel.Height),
-                _horizontalToolboxForm.Size, _verticalToolboxForm.Size, Size);
+                _horizontalToolboxForm.Size, _verticalToolboxForm.Size, Bounds);
 
             _horizontalToolboxForm.SuspendLayout();
             _horizontalToolboxForm.Left = toolboxesLocation.HorizontalToolboxLocation.X;
@@ -528,12 +536,12 @@ namespace Greenshot
         }
 
         private static ToolboxesLocation CalculateToolboxesLocation(
-            Rectangle holeRectangle, Size horizontalToolboxSize, Size verticalToolboxSize, Size windowSize)
+            Rectangle holeRectangle, Size horizontalToolboxSize, Size verticalToolboxSize, Rectangle windowRectangle)
         {
             //Horizontal
             var horizontalToolboxPlacing = ToolboxPlacing.Default;
 
-            if (holeRectangle.Y + holeRectangle.Height + horizontalToolboxSize.Height > windowSize.Height)
+            if (holeRectangle.Y + holeRectangle.Height + horizontalToolboxSize.Height > windowRectangle.Height)
             {
                 horizontalToolboxPlacing = ToolboxPlacing.BackSide;
 
@@ -564,7 +572,7 @@ namespace Greenshot
             // Vertical
             var verticalToolboxPlacing = ToolboxPlacing.Default;
 
-            if (holeRectangle.X + holeRectangle.Width + verticalToolboxSize.Width > windowSize.Width)
+            if (holeRectangle.X + holeRectangle.Width + verticalToolboxSize.Width > windowRectangle.Width)
             {
                 verticalToolboxPlacing = ToolboxPlacing.BackSide;
 
@@ -593,7 +601,7 @@ namespace Greenshot
             }
 
             // Граничные случаи
-
+            
             if (horizontalToolboxLeft < 0)
                 horizontalToolboxLeft = 0;
 
@@ -679,8 +687,59 @@ namespace Greenshot
                     break;
             }
 
+            // Корректировка: размеры были по отношению к окну, а нужно по отношению к экрану
+            horizontalToolboxLeft += windowRectangle.X;
+            horizontalToolboxTop += windowRectangle.Y;
+
+            verticalToolboxLeft += windowRectangle.X;
+            verticalToolboxTop += windowRectangle.Y;
+
+            // Если не видно через физ. монитор - то отображаем в правом нижнем углу главного монитора.
+            if (!IsToolboxesOnScreen(
+                new Rectangle(horizontalToolboxLeft, horizontalToolboxTop, horizontalToolboxSize.Width,
+                    horizontalToolboxSize.Height),
+                new Rectangle(verticalToolboxLeft, verticalToolboxTop, verticalToolboxSize.Width,
+                    verticalToolboxSize.Height)))
+            {
+                var primaryScreenBounds = Screen.PrimaryScreen.Bounds;
+
+                horizontalToolboxLeft =
+                    primaryScreenBounds.Width - primaryScreenBounds.X - horizontalToolboxSize.Width;
+                horizontalToolboxTop =
+                    primaryScreenBounds.Height - primaryScreenBounds.Y - horizontalToolboxSize.Height;
+
+                verticalToolboxLeft =
+                    primaryScreenBounds.Width - primaryScreenBounds.X - verticalToolboxSize.Width;
+                verticalToolboxTop =
+                    primaryScreenBounds.Height - primaryScreenBounds.Y - verticalToolboxSize.Height -
+                    horizontalToolboxSize.Height - ADORNER_HALF_SIZE;
+            }
+
             return new ToolboxesLocation(new Point(horizontalToolboxLeft, horizontalToolboxTop),
                 new Point(verticalToolboxLeft, verticalToolboxTop));
+        }
+
+        private static bool IsToolboxesOnScreen(Rectangle horizontalToolboxRectangle, Rectangle verticalToolboxRectangle)
+        {
+            bool isHorizontalToolboxOnScreen = false;
+            bool isVerticalToolboxOnScreen = false;
+
+            foreach (var screen in Screen.AllScreens)
+            {
+                if (!isHorizontalToolboxOnScreen)
+                {
+                    if (screen.Bounds.Contains(horizontalToolboxRectangle))
+                        isHorizontalToolboxOnScreen = true;
+                }
+
+                if (!isVerticalToolboxOnScreen)
+                {
+                    if (screen.Bounds.Contains(verticalToolboxRectangle))
+                        isVerticalToolboxOnScreen = true;
+                }
+            }
+
+            return isHorizontalToolboxOnScreen && isVerticalToolboxOnScreen;
         }
 
         #endregion
@@ -815,7 +874,7 @@ namespace Greenshot
 
         private void Cancel()
         {
-            if (_surface.Modified && DialogResult.Yes != DialogHelper.ShowYesNoDialogWithCheckbox(this,
+            if (_surface.Modified && DialogResult.Yes != DialogHelper.ShowYesNoDialogWithCheckbox(_verticalToolboxForm,
                     ConfirmationDialogName, Language.GetString("QuickImageEditorForm_Leave_Confirmation_Text"),
                     Language.GetString("QuickImageEditorForm_Leave_Confirmation_Title")))
                 return;

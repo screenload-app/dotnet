@@ -50,6 +50,9 @@ namespace GreenshotDownloadRuPlugin {
         [IniProperty("AfterUploadLinkOpenInBrowserMode", DefaultValue = "Image")]
         public LinkType AfterUploadLinkOpenInBrowserMode;
 
+        [IniProperty("AutomaticallyCloseSuccessForm", Description = "Automatically close the success form.", DefaultValue = "true")]
+        public bool AutomaticallyCloseSuccessForm;
+
         //[IniProperty("UseSharedLink", Description = "Use the shared link, instead of the private, on the clipboard", DefaultValue = "True")]
         //public bool UseSharedLink;
 

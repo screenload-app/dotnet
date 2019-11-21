@@ -32,7 +32,6 @@ using System.Threading;
 using System.Windows.Forms;
 
 using Greenshot.Configuration;
-using Greenshot.Experimental;
 using Greenshot.Forms;
 using Greenshot.Help;
 using Greenshot.Helpers;
@@ -365,6 +364,8 @@ namespace Greenshot
         // Make sure we have only one settings form
         private SettingsForm _settingsForm;
 
+        private IWin32Window _surfaceForm;
+
         // Make sure we have only one about form
         private AboutForm _aboutForm;
 
@@ -689,14 +690,14 @@ namespace Greenshot
                 contextmenu_capturefullscreen.Click += CaptureFullScreenToolStripMenuItemClick;
             }
 
-            var now = DateTime.Now;
-            if ((now.Month == 12 && now.Day > 19 && now.Day < 27) || // christmas
-                (now.Month == 3 && now.Day > 13 && now.Day < 21))
-            {
-                // birthday
-                var resources = new ComponentResourceManager(typeof(MainForm));
-                contextmenu_donate.Image = (Image) resources.GetObject("contextmenu_present.Image");
-            }
+            //var now = DateTime.Now;
+            //if ((now.Month == 12 && now.Day > 19 && now.Day < 27) || // christmas
+            //    (now.Month == 3 && now.Day > 13 && now.Day < 21))
+            //{
+            //    // birthday
+            //    var resources = new ComponentResourceManager(typeof(MainForm));
+            //    contextmenu_donate.Image = (Image) resources.GetObject("contextmenu_present.Image");
+            //}
         }
 
         private void ContextMenuClosing(object sender, EventArgs e)
@@ -1059,6 +1060,16 @@ namespace Greenshot
             }
         }
 
+        public void SetSurfaceForm(IWin32Window window)
+        {
+            _surfaceForm = window ?? throw new ArgumentNullException(nameof(window));
+        }
+
+        public void ResetSurfaceForm()
+        {
+            _surfaceForm = null;
+        }
+
         /// <summary>
         /// The "About Greenshot" entry is clicked
         /// </summary>
@@ -1331,7 +1342,12 @@ namespace Greenshot
                 return;
             }
 
-            new BugReportForm(exceptionText).ShowDialog();
+            var surfaceForm = Instance?._surfaceForm as Form;
+
+            if ((surfaceForm?.IsDisposed ?? true) || !surfaceForm.Visible)
+                surfaceForm = null;
+
+            new BugReportForm(exceptionText).ShowDialog(surfaceForm);
         }
 
         /// <summary>
@@ -1567,6 +1583,8 @@ namespace Greenshot
         /// <param name="e"></param>
         private void BackgroundWorkerTimerTick(object sender, EventArgs e)
         {
+            backgroundWorkerTimer.Interval = 10 * 60 * 1000;
+
             if (_conf.MinimizeWorkingSetSize)
             {
                 PsAPI.EmptyWorkingSet();
@@ -1576,7 +1594,7 @@ namespace Greenshot
             {
                 LOG.Debug("BackgroundWorkerTimerTick checking for update");
                 // Start update check in the background
-                var backgroundTask = new Thread(UpdateHelper.CheckAndAskForUpdate)
+                var backgroundTask = new Thread(() => { UpdateHelper.CheckAndAskForUpdate(coreConfiguration); })
                 {
                     Name = "Update check",
                     IsBackground = true

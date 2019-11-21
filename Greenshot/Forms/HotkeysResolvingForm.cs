@@ -11,15 +11,12 @@ namespace Greenshot
     internal partial class HotkeysResolvingForm : BaseForm
     {
         private readonly ReadOnlyCollection<HotkeyResolvingControl> _hotkeyResolvingControls;
-        private readonly ReadOnlyCollection<HotkeyInfo> _hotkeyInfoCollection;
+        private readonly HotkeyHelper _hotkeyHelper;
 
-        public HotkeysResolvingForm(IEnumerable<HotkeyInfo> hotkeyInfoList)
+        public HotkeysResolvingForm(HotkeyHelper hotkeyHelper)
             : this()
         {
-            if (null == hotkeyInfoList)
-                throw new ArgumentNullException(nameof(hotkeyInfoList));
-
-            _hotkeyInfoCollection = new ReadOnlyCollection<HotkeyInfo>(new List<HotkeyInfo>(hotkeyInfoList));
+            _hotkeyHelper = hotkeyHelper ?? throw new ArgumentNullException(nameof(hotkeyHelper));
 
             var hotkeyResolvingControls = new List<HotkeyResolvingControl>();
 
@@ -27,12 +24,12 @@ namespace Greenshot
             mFlowLayoutPanel.SuspendLayout();
             SuspendLayout();
             
-            foreach (var hotkeyInfo in _hotkeyInfoCollection)
+            foreach (var hotkeyInfo in hotkeyHelper.HotkeyInfoList)
             {
                 if (HotkeySolution.Unsolved != hotkeyInfo.Solution)
                     continue;
 
-                var hotkeyResolvingControl = new HotkeyResolvingControl(_hotkeyInfoCollection, hotkeyInfo);
+                var hotkeyResolvingControl = new HotkeyResolvingControl(hotkeyHelper, hotkeyInfo.Action);
 
                 hotkeyResolvingControls.Add(hotkeyResolvingControl);
                 conflictsFlowLayoutPanel.Controls.Add(hotkeyResolvingControl);
@@ -68,15 +65,7 @@ namespace Greenshot
             if (!isValid)
                 return;
 
-            var solved = true;
-
-            foreach (var hotkeyInfo in _hotkeyInfoCollection)
-            {
-                if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
-                    solved = false;
-            }
-
-            if (!solved)
+            if (_hotkeyHelper.HasUnsolved())
             {
                 var errorMessage = Language.GetString("hotkeys_conflicts_warning");
 
@@ -84,11 +73,7 @@ namespace Greenshot
                         MessageBoxButtons.OKCancel, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button1))
                     return;
 
-                foreach (var hotkeyInfo in _hotkeyInfoCollection)
-                {
-                    if (HotkeySolution.Unsolved == hotkeyInfo.Solution)
-                        hotkeyInfo.Solution = HotkeySolution.Disabled;
-                }
+                _hotkeyHelper.AllUnsolvedToDisabled();
             }
 
             DialogResult = DialogResult.OK;

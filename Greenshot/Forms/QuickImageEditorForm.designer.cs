@@ -70,17 +70,15 @@
             this.Controls.Add(this.holePanel);
             this.Cursor = System.Windows.Forms.Cursors.NoMove2D;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
-            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickImageEditorForm";
             this.Opacity = 0.4D;
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.Fuchsia;
-            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.QuickImageEditorForm_Load);
             this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.Form_KeyDown);
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.QuickImageEditorCoverForm_MouseDown);

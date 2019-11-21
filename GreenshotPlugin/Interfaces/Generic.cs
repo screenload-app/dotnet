@@ -106,15 +106,15 @@ namespace Greenshot.Plugin
 	/// </summary>
 	public interface ISurface : IDisposable
 	{
-		event SurfaceSizeChangeEventHandler SurfaceSizeChanged;
+        event SurfaceSizeChangeEventHandler SurfaceSizeChanged;
 		event SurfaceMessageEventHandler SurfaceMessage;
 		event SurfaceDrawingModeEventHandler DrawingModeChanged;
 		event SurfaceElementEventHandler MovingElementChanged;
 
-		/// <summary>
-		/// Start valueof the step-labels (counts)
-		/// </summary>
-		int CounterStart { get; set; }
+        /// <summary>
+        /// Start valueof the step-labels (counts)
+        /// </summary>
+        int CounterStart { get; set; }
 
 		/// <summary>
 		/// Unique ID of the Surface

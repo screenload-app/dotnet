@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Forms;
 using Greenshot.Helpers;
 using GreenshotPlugin.Controls;
@@ -13,17 +11,16 @@ namespace Greenshot.Controls
     {
         private readonly bool _initializationComplete;
 
-        private readonly ReadOnlyCollection<HotkeyInfo> _hotkeyInfoCollection;
+        private readonly HotkeyHelper _hotkeyHelper;
+        private readonly HotkeyAction _hotkeyAction;
 
-        public HotkeyInfo HotkeyInfo { get; }
-
-        public HotkeyResolvingControl(ReadOnlyCollection<HotkeyInfo> hotkeyInfoCollection, HotkeyInfo hotkeyInfo)
+        public HotkeyResolvingControl(HotkeyHelper hotkeyHelper, HotkeyAction hotkeyAction)
             : this()
         {
-            if (null == hotkeyInfo)
-                throw new ArgumentNullException(nameof(hotkeyInfo));
+            _hotkeyHelper = hotkeyHelper ?? throw new ArgumentNullException(nameof(hotkeyHelper));
+            _hotkeyAction = hotkeyAction;
 
-            _hotkeyInfoCollection = hotkeyInfoCollection ?? throw new ArgumentNullException(nameof(hotkeyInfoCollection));
+            var hotkeyInfo = _hotkeyHelper.GetHotkeyInfo(hotkeyAction);
 
             mGroupBox.Text = hotkeyInfo.ActionText;
 
@@ -44,8 +41,6 @@ namespace Greenshot.Controls
                     ignoreRadioButton.Checked = true;
                     break;
             }
-
-            HotkeyInfo = hotkeyInfo;
 
             _initializationComplete = true;
         }
@@ -78,7 +73,7 @@ namespace Greenshot.Controls
             if (!defaultRadioButton.Checked)
                 return;
 
-            SetDefaultHotkey();
+            defaultRadioButton.Checked = _hotkeyHelper.TrySetDefaultHotkey(this, _hotkeyAction);
         }
 
         private void otherCombinationHotkeyControl_Enter(object sender, EventArgs e)
@@ -109,48 +104,16 @@ namespace Greenshot.Controls
                 return;
             }
 
-            if (HotkeySolution.Custom == HotkeyInfo.Solution && HotkeyHelper.Equals(hotkey, HotkeyInfo.Hotkey))
-                return;
-
-            if (HotkeyHelper.Equals(hotkey, HotkeyInfo.DefaultHotkey))
+            if (!_hotkeyHelper.TrySetHotkey(this, _hotkeyAction, hotkey))
             {
-                SetDefaultHotkey();
-                return;
-            }
-
-            var internalConflictHotkeyInfo = _hotkeyInfoCollection.FirstOrDefault(hi =>
-                hi.Solution == HotkeySolution.Custom && HotkeyHelper.Equals(hi.Hotkey, hotkey) ||
-                hi.Solution == HotkeySolution.Default && HotkeyHelper.Equals(hi.DefaultHotkey, hotkey));
-
-            if (null != internalConflictHotkeyInfo)
-            {
-                ShowConflictMessage(internalConflictHotkeyInfo.ActionText);
-                return;
-            }
-
-            if (HotkeySolution.Default == HotkeyInfo.Solution)
-                HotkeyHelper.UnregisterHotkey(HotkeyInfo.DefaultHotkey);
-
-            if (HotkeySolution.Custom == HotkeyInfo.Solution)
-                HotkeyHelper.UnregisterHotkey(HotkeyInfo.Hotkey);
-
-            if (!HotkeyHelper.TryRegisterHotkey(HotkeyInfo.Action, hotkey))
-            {
-                ShowConflictMessage();
-
                 var form = FindForm();
 
                 if (form != null)
-                    form.ActiveControl = (Control) form.AcceptButton;
+                    form.ActiveControl = (Control)form.AcceptButton;
 
                 otherCombinationRadioButton.Checked = false;
                 otherCombinationHotkeyControl.Clear();
-
-                return;
             }
-
-            HotkeyInfo.Solution = HotkeySolution.Custom;
-            HotkeyInfo.Hotkey = hotkey;
         }
 
         private void otherCombinationRadioButton_CheckedChanged(object sender, EventArgs e)
@@ -173,57 +136,7 @@ namespace Greenshot.Controls
                 return;
 
             if (ignoreRadioButton.Checked)
-            {
-                switch (HotkeyInfo.Solution)
-                {
-                    case HotkeySolution.Default:
-                        HotkeyHelper.UnregisterHotkey(HotkeyInfo.DefaultHotkey);
-                        break;
-                    case HotkeySolution.Custom:
-                        HotkeyHelper.UnregisterHotkey(HotkeyInfo.Hotkey);
-                        break;
-                }
-
-                HotkeyInfo.Solution = HotkeySolution.Disabled;
-            }
-        }
-
-        private void ShowConflictMessage(string internalConflictActionText = null)
-        {
-            var conflictHotkeyErrorMessage = null == internalConflictActionText
-                ? Language.GetString("hotkey_external_conflict_message")
-                : Language.GetFormattedString("hotkey_internal_conflict_message", internalConflictActionText);
-
-            MessageBox.Show(this, conflictHotkeyErrorMessage, "Greenshot", MessageBoxButtons.OK,
-                MessageBoxIcon.Warning);
-        }
-
-        private void SetDefaultHotkey()
-        {
-            if (HotkeySolution.Default == HotkeyInfo.Solution)
-                return;
-
-            var internalConflictHotkeyInfo = _hotkeyInfoCollection.FirstOrDefault(hi =>
-                hi.Solution == HotkeySolution.Custom && HotkeyHelper.Equals(hi.Hotkey, HotkeyInfo.DefaultHotkey));
-
-            if (null != internalConflictHotkeyInfo)
-            {
-                ShowConflictMessage(internalConflictHotkeyInfo.ActionText);
-                return;
-            }
-
-            if (HotkeySolution.Custom == HotkeyInfo.Solution)
-                HotkeyHelper.UnregisterHotkey(HotkeyInfo.Hotkey);
-
-            if (!HotkeyHelper.TryRegisterHotkey(HotkeyInfo.Action, HotkeyInfo.DefaultHotkey))
-            {
-                ShowConflictMessage();
-                defaultRadioButton.Checked = false;
-
-                return;
-            }
-
-            HotkeyInfo.Solution = HotkeySolution.Default;
+                _hotkeyHelper.DisableHotkey(_hotkeyAction);
         }
     }
 }

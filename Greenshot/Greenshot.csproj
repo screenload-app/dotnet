@@ -65,6 +65,9 @@
     <Compile Include="Controls\NonJumpingPanel.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\ProgressBarWithText.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\SimpleColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -190,6 +193,12 @@
     </Compile>
     <Compile Include="Forms\SurfaceForm.Designer.cs">
       <DependentUpon>SurfaceForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\UpdateForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\UpdateForm.Designer.cs">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ColorUtility.cs" />
     <Compile Include="Helpers\HotkeyHelper.cs" />
@@ -341,6 +350,9 @@
     <EmbeddedResource Include="Forms\TornEdgeSettingsForm.resx">
       <DependentUpon>TornEdgeSettingsForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Forms\UpdateForm.resx">
+      <DependentUpon>UpdateForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\VerticalToolboxForm.resx">
       <DependentUpon>VerticalToolboxForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -348,9 +360,11 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Sounds.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="greenshot.manifest" />
     <None Include="Languages\language-en-US.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="Languages\language-ru-RU.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

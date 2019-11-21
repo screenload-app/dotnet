@@ -47,11 +47,14 @@
     <resource name="LinkType.Image">ссылку на изображение</resource>
     <resource name="LinkType.Page">ссылку на страницу</resource>
 
+    <resource name="progressform_caption">Загрузка изображения...</resource>
+
     <resource name="success_info">Изображение было успешно сохранено на Download.Ru! Вы можете получить к нему доступ по этим ссылкам:</resource>
     <resource name="success_pagelink">Ссылка на страницу:</resource>
     <resource name="success_directlink">Прямая ссылка:</resource>
     <resource name="success_copy">Копировать</resource>
     <resource name="success_donotshow">Не отображать это окно</resource>
+    <resource name="success_automaticallyclose">Автоматически закрывать окно</resource>
     <resource name="success_done">ОК</resource>
   </resources>
 </language>

@@ -28,12 +28,10 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ProgressForm));
-            this.cancelButton = new System.Windows.Forms.Button();
+            this.cancelButton = new GreenshotPlugin.Controls.GreenshotButton();
             this.mProgressBar = new System.Windows.Forms.ProgressBar();
-            this.mTimer = new System.Windows.Forms.Timer(this.components);
-            this.captionLabel = new System.Windows.Forms.Label();
+            this.captionLabel = new GreenshotPlugin.Controls.GreenshotLabel();
             this.SuspendLayout();
             // 
             // cancelButton
@@ -60,11 +58,12 @@
             // captionLabel
             // 
             this.captionLabel.AutoSize = true;
+            this.captionLabel.LanguageKey = "downloadru.progressform_caption";
             this.captionLabel.Location = new System.Drawing.Point(12, 9);
             this.captionLabel.Name = "captionLabel";
-            this.captionLabel.Size = new System.Drawing.Size(134, 13);
+            this.captionLabel.Size = new System.Drawing.Size(98, 13);
             this.captionLabel.TabIndex = 0;
-            this.captionLabel.Text = "Загрузка изображения...";
+            this.captionLabel.Text = "Uploading image ...";
             // 
             // ProgressForm
             // 
@@ -76,6 +75,7 @@
             this.Controls.Add(this.mProgressBar);
             this.Controls.Add(this.cancelButton);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "ProgressForm";
@@ -91,9 +91,8 @@
 
         #endregion
 
-        private System.Windows.Forms.Button cancelButton;
+        private GreenshotPlugin.Controls.GreenshotButton cancelButton;
         private System.Windows.Forms.ProgressBar mProgressBar;
-        private System.Windows.Forms.Timer mTimer;
-        private System.Windows.Forms.Label captionLabel;
+        private GreenshotPlugin.Controls.GreenshotLabel captionLabel;
     }
 }

@@ -68,7 +68,6 @@ namespace Greenshot {
 			this.contextmenu_settings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripMiscSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_help = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
-			this.contextmenu_donate = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_about = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripCloseSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_exit = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
@@ -98,7 +97,6 @@ namespace Greenshot {
 									this.contextmenu_settings,
 									this.toolStripMiscSeparator,
 									this.contextmenu_help,
-									this.contextmenu_donate,
 									this.contextmenu_about,
 									this.toolStripCloseSeparator,
 									this.contextmenu_exit});
@@ -224,13 +222,6 @@ namespace Greenshot {
 			this.contextmenu_help.Size = new System.Drawing.Size(170, 22);
 			this.contextmenu_help.Click += new System.EventHandler(this.Contextmenu_helpClick);
 			// 
-			// contextmenu_donate
-			// 
-			this.contextmenu_donate.Image = ((System.Drawing.Image)(resources.GetObject("contextmenu_donate.Image")));
-			this.contextmenu_donate.Name = "contextmenu_donate";
-			this.contextmenu_donate.Size = new System.Drawing.Size(170, 22);
-			this.contextmenu_donate.Click += new System.EventHandler(this.Contextmenu_donateClick);
-			// 
 			// contextmenu_about
 			// 
 			this.contextmenu_about.Name = "contextmenu_about";
@@ -258,7 +249,7 @@ namespace Greenshot {
 			// backgroundWorkerTimer
 			// 
 			this.backgroundWorkerTimer.Enabled = true;
-			this.backgroundWorkerTimer.Interval = 300000;
+            this.backgroundWorkerTimer.Interval = 5 * 1000;
 			this.backgroundWorkerTimer.Tick += new System.EventHandler(this.BackgroundWorkerTimerTick);
 			// 
 			// MainForm
@@ -284,7 +275,6 @@ namespace Greenshot {
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_openrecentcapture;
 		private System.Windows.Forms.Timer backgroundWorkerTimer;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureie;
-		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_donate;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_openfile;
 		private System.Windows.Forms.ToolStripSeparator toolStripPluginSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureclipboard;

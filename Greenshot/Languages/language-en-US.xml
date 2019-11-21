@@ -267,13 +267,18 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 		<resource name="settings_tooltip_registerhotkeys">Defines whether the shortcuts Prnt, Ctrl + Print, Alt + Prnt are reserved for global use by Greenshot at program startup, until the program is shut down.</resource>
 		<resource name="settings_tooltip_storagelocation">Location where screenshots are stored by default (leave empty for saving to your desktop)</resource>
 		<resource name="settings_usedefaultproxy">Use default system proxy</resource>
+    <resource name="settings_usestableversionsonly">Use stable versions only</resource>
+    <resource name="settings_checkupdatesbutton">Check for updates right now</resource>
 		<resource name="settings_visualization">Effects</resource>
 		<resource name="settings_waittime">Milliseconds to wait before capture</resource>
 		<resource name="settings_window_capture_mode">Window capture mode</resource>
 		<resource name="settings_windowscapture">Window capture</resource>
 
 		<resource name="tooltip_firststart">Right-click here or press the {0} key.</resource>
-		<resource name="update_found">A newer version of Greenshot is available! Do you want to download Greenshot {0}?</resource>
+		
+    <resource name="update_found">A newer version of Greenshot is available! Do you want to download Greenshot {0}?</resource>
+    <resource name="update_confirmation">Do you want to download and install Greenshot {0}?</resource>
+
 		<resource name="wait_ie_capture">Please wait while the page in Internet Explorer is captured...</resource>
 		<resource name="warning">Warning</resource>
 		<resource name="WindowCaptureMode.Aero">Use custom color</resource>
@@ -356,5 +361,19 @@ All Greenshot functions still work directly from the context menu via the tray i
     <resource name="exported_to_FileNoDialog">Screenshot saved.</resource>
     <resource name="exported_to_FileDialog">Screenshot saved.</resource>
     <resource name="exported_to_Printer">Screenshot sent to the printer.</resource>
+
+    <!-- Updates -->
+    <resource name="updateform">Update</resource>
+    <resource name="updateform_caption">Downloading Greenshot {0}, please wait...</resource>
+    <resource name="updateform_cancel">Cancel</resource>
+
+    <resource name="updateform_byte">B</resource>
+    <resource name="updateform_kilobyte">kB</resource>
+    <resource name="updateform_megabyte">M</resource>
+
+    <resource name="checkingforupdates">Checking for updates...</resource>
+    <resource name="noupdatesfound">No updates found!</resource>
+
+    <resource name="update_error">An error occured while downloading: {0}</resource>
   </resources>
 </language>

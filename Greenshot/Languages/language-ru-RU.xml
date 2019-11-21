@@ -281,12 +281,15 @@ ${hostname} Имя ПК
 		<resource name="settings_tooltip_registerhotkeys">Определяет, работают ли ярлыки Prnt, Ctrl + Print, Alt + Prnt для глобального использования Greenshot при запуске программы, пока программа работает.</resource>
 		<resource name="settings_tooltip_storagelocation">Место хранения скриншотов по умолчанию (оставьте пустым для сохранения на рабочий стол)</resource>
 		<resource name="settings_usedefaultproxy">Использовать прокси-систему по умолчанию</resource>
+    <resource name="settings_usestableversionsonly">Только стабильные версии</resource>
+    <resource name="settings_checkupdatesbutton">Проверить обновления сейчас</resource>
 		<resource name="settings_visualization">Эффекты</resource>
 		<resource name="settings_waittime">Ожидание перед захватом в миллисекундах</resource>
 		<resource name="settings_window_capture_mode">Режим захвата окна</resource>
 		<resource name="settings_windowscapture">Снимок окна</resource>
 		<resource name="tooltip_firststart">Щёлкните здесь правой кнопкой мыши или нажмите клавишу {0}.</resource>
 		<resource name="update_found">Доступна новая версия Greenshot! Вы хотите скачать Greenshot {0}?</resource>
+    <resource name="update_confirmation">Вы хотите скачать и установить Greenshot {0}?</resource>
 		<resource name="wait_ie_capture">Пожалуйста, подождите, пока страница в Internet Explorer захватывается...</resource>
 		<resource name="warning">Внимание</resource>
 		<resource name="WindowCaptureMode.Aero">Использовать другой цвет</resource>
@@ -350,6 +353,19 @@ ${hostname} Имя ПК
     <resource name="exported_to_FileNoDialog">Скриншот сохранен. Нажмите чтобы открыть.</resource>
     <resource name="exported_to_FileDialog">Скриншот сохранен. Нажмите чтобы открыть.</resource>
     <resource name="exported_to_Printer">Скриншот отправлен на печать.</resource>
+
+    <!-- Updates -->
+    <resource name="updateform">Обновление Greenshot</resource>
+    <resource name="updateform_caption">Скачиваем Greenshot {0}, ожидайте...</resource>
+    <resource name="updateform_cancel">Отмена</resource>
+
+    <resource name="updateform_byte">Б</resource>
+    <resource name="updateform_kilobyte">Кбайт</resource>
+    <resource name="updateform_megabyte">Мбайт</resource>
+
+    <resource name="checkingforupdates">Проверка обновлений...</resource>
+    <resource name="noupdatesfound">Обновления не найдены!</resource>
+    <resource name="update_error">Произошла ошибка во время загрузки: {0}</resource>
 
   </resources>
 </language>
