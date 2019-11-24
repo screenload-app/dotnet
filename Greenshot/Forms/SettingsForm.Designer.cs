@@ -890,6 +890,7 @@ namespace Greenshot {
             this.captureAreaColorCheckBox.LanguageKey = "capture_area_color";
             this.captureAreaColorCheckBox.Location = new System.Drawing.Point(11, 102);
             this.captureAreaColorCheckBox.Name = "captureAreaColorCheckBox";
+            this.captureAreaColorCheckBox.PropertyName = "IsCaptureAreaColorUsed";
             this.captureAreaColorCheckBox.Size = new System.Drawing.Size(131, 17);
             this.captureAreaColorCheckBox.TabIndex = 4;
             this.captureAreaColorCheckBox.Text = "Set capture area color";
@@ -901,7 +902,7 @@ namespace Greenshot {
             this.captureAreaColorButton.Image = ((System.Drawing.Image)(resources.GetObject("captureAreaColorButton.Image")));
             this.captureAreaColorButton.Location = new System.Drawing.Point(197, 94);
             this.captureAreaColorButton.Name = "captureAreaColorButton";
-            this.captureAreaColorButton.SelectedColor = System.Drawing.Color.White;
+            this.captureAreaColorButton.SelectedColor = System.Drawing.Color.MediumSeaGreen;
             this.captureAreaColorButton.Size = new System.Drawing.Size(29, 30);
             this.captureAreaColorButton.TabIndex = 5;
             this.captureAreaColorButton.UseVisualStyleBackColor = true;

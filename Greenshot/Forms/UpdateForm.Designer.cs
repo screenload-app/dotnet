@@ -66,9 +66,9 @@
             this.captionLabel.Location = new System.Drawing.Point(12, 12);
             this.captionLabel.Margin = new System.Windows.Forms.Padding(12, 12, 12, 0);
             this.captionLabel.Name = "captionLabel";
-            this.captionLabel.Size = new System.Drawing.Size(202, 13);
+            this.captionLabel.Size = new System.Drawing.Size(226, 13);
             this.captionLabel.TabIndex = 0;
-            this.captionLabel.Text = "Greenshot updating, please wait...";
+            this.captionLabel.Text = "Downloading Greenshot, please wait...";
             // 
             // mProgressBar
             // 
@@ -108,13 +108,13 @@
             // infoTextBox
             // 
             this.infoTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.infoTextBox.Location = new System.Drawing.Point(12, 84);
-            this.infoTextBox.Margin = new System.Windows.Forms.Padding(12);
+            this.infoTextBox.Location = new System.Drawing.Point(12, 72);
+            this.infoTextBox.Margin = new System.Windows.Forms.Padding(12, 0, 12, 12);
             this.infoTextBox.Multiline = true;
             this.infoTextBox.Name = "infoTextBox";
             this.infoTextBox.ReadOnly = true;
             this.infoTextBox.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.infoTextBox.Size = new System.Drawing.Size(461, 86);
+            this.infoTextBox.Size = new System.Drawing.Size(461, 98);
             this.infoTextBox.TabIndex = 4;
             // 
             // UpdateForm

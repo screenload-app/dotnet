@@ -124,7 +124,7 @@ namespace Greenshot.Helpers {
 			return true;
 		}
 
-		public ContextMenuStrip MainMenu => MainForm.Instance.MainMenu;
+        public ContextMenuStrip MainMenu => MainForm.Instance.MainMenu;
 
 		public IDictionary<PluginAttribute, IGreenshotPlugin> Plugins => plugins;
 

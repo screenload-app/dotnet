@@ -23,25 +23,30 @@ using Greenshot.IniFile;
 using GreenshotDownloadRuPlugin.Forms;
 using GreenshotPlugin.Core;
 
-namespace GreenshotDownloadRuPlugin {
-	/// <summary>
-	/// Description of DownloadRuConfiguration.
-	/// </summary>
-	[IniSection("DownloadRu", Description = "Greenshot Download.Ru Plugin configuration")]
-	public class DownloadRuConfiguration : IniSection {
-		[IniProperty("UploadFormat", Description="What file type to use for uploading", DefaultValue="png")]
-		public OutputFormat UploadFormat;
+namespace GreenshotDownloadRuPlugin
+{
+    /// <summary>
+    /// Description of DownloadRuConfiguration.
+    /// </summary>
+    [IniSection("DownloadRu", Description = "Greenshot Download.Ru Plugin configuration")]
+    public class DownloadRuConfiguration : IniSection
+    {
+        [IniProperty("UploadFormat", Description = "What file type to use for uploading", DefaultValue = "png")]
+        public OutputFormat UploadFormat;
 
-        [IniProperty("UploadJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
-		public int UploadJpegQuality;
+        [IniProperty("UploadJpegQuality", Description = "JPEG file save quality in %.", DefaultValue = "80")]
+        public int UploadJpegQuality;
 
-        [IniProperty("AfterUploadLinkToClipBoard", Description = "After upload send Download.Ru link to clipboard.", DefaultValue = "true")]
-		public bool AfterUploadLinkToClipBoard;
+        [IniProperty("AfterUploadLinkToClipBoard", Description = "After upload send Download.Ru link to clipboard.",
+            DefaultValue = "true")]
+        public bool AfterUploadLinkToClipBoard;
 
-        [IniProperty("AfterUploadLinkOpenInBrowser", Description = "After upload open Download.Ru link in browser.", DefaultValue = "true")]
+        [IniProperty("AfterUploadLinkOpenInBrowser", Description = "After upload open Download.Ru link in browser.",
+            DefaultValue = "true")]
         public bool AfterUploadLinkOpenInBrowser;
 
-        [IniProperty("AfterUploadLinkShowDetails", Description = "After open a window with the detailed information.", DefaultValue = "true")]
+        [IniProperty("AfterUploadLinkShowDetails", Description = "After open a window with the detailed information.",
+            DefaultValue = "true")]
         public bool AfterUploadLinkShowDetails;
 
         [IniProperty("AfterUploadLinkToClipBoardMode", DefaultValue = "Image")]
@@ -50,31 +55,30 @@ namespace GreenshotDownloadRuPlugin {
         [IniProperty("AfterUploadLinkOpenInBrowserMode", DefaultValue = "Image")]
         public LinkType AfterUploadLinkOpenInBrowserMode;
 
-        [IniProperty("AutomaticallyCloseSuccessForm", Description = "Automatically close the success form.", DefaultValue = "true")]
+        [IniProperty("AutomaticallyCloseSuccessForm", Description = "Automatically close success form.",
+            DefaultValue = "true")]
         public bool AutomaticallyCloseSuccessForm;
 
         //[IniProperty("UseSharedLink", Description = "Use the shared link, instead of the private, on the clipboard", DefaultValue = "True")]
         //public bool UseSharedLink;
 
         [IniProperty("DownloadRuToken", Description = "Token.", DefaultValue = "")]
-		public string DownloadRuToken;
+        public string DownloadRuToken;
 
         [IniProperty("AnonymousAccess", Description = "Use anonymous access to Download.Ru", DefaultValue = "false")]
         public bool AnonymousAccess;
 
         [IniProperty("SharedLink", Description = "Share the image after it is loaded", DefaultValue = "true")]
         public bool SharedLink;
-        /// <summary>
-		/// A form for token
-		/// </summary>
-		/// <returns>bool true if OK was pressed, false if cancel</returns>
-		public bool ShowConfigDialog() {
-			DialogResult result = new SettingsForm(this).ShowDialog();
-			if (result == DialogResult.OK) {
-				return true;
-			}
-			return false;
-		}
 
-	}
+        /// <summary>
+        /// A form for token
+        /// </summary>
+        /// <returns>bool true if OK was pressed, false if cancel</returns>
+        public bool ShowConfigDialog()
+        {
+            var result = new SettingsForm(this).ShowDialog();
+            return result == DialogResult.OK;
+        }
+    }
 }

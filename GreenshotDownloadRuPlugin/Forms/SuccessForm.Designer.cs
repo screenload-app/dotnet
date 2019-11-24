@@ -42,6 +42,7 @@
             this.doNotShowCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.mTimer = new System.Windows.Forms.Timer(this.components);
             this.automaticallyCloseCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.shareFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)(this.mPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -69,10 +70,10 @@
             this.directLinkLabel.AutoSize = true;
             this.directLinkLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.directLinkLabel.LanguageKey = "downloadru.success_directlink";
-            this.directLinkLabel.Location = new System.Drawing.Point(12, 152);
+            this.directLinkLabel.Location = new System.Drawing.Point(11, 165);
             this.directLinkLabel.Name = "directLinkLabel";
             this.directLinkLabel.Size = new System.Drawing.Size(69, 13);
-            this.directLinkLabel.TabIndex = 2;
+            this.directLinkLabel.TabIndex = 4;
             this.directLinkLabel.Text = "Direct link:";
             // 
             // pageLinkLabel
@@ -83,26 +84,26 @@
             this.pageLinkLabel.Location = new System.Drawing.Point(12, 102);
             this.pageLinkLabel.Name = "pageLinkLabel";
             this.pageLinkLabel.Size = new System.Drawing.Size(64, 13);
-            this.pageLinkLabel.TabIndex = 3;
+            this.pageLinkLabel.TabIndex = 1;
             this.pageLinkLabel.Text = "Page link:";
             // 
             // directLinkTextBox
             // 
             this.directLinkTextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.directLinkTextBox.Location = new System.Drawing.Point(164, 126);
+            this.directLinkTextBox.Location = new System.Drawing.Point(163, 139);
             this.directLinkTextBox.Multiline = true;
             this.directLinkTextBox.Name = "directLinkTextBox";
             this.directLinkTextBox.ReadOnly = true;
             this.directLinkTextBox.Size = new System.Drawing.Size(294, 65);
-            this.directLinkTextBox.TabIndex = 4;
+            this.directLinkTextBox.TabIndex = 5;
             // 
             // directLinkButton
             // 
             this.directLinkButton.LanguageKey = "downloadru.success_copy";
-            this.directLinkButton.Location = new System.Drawing.Point(464, 168);
+            this.directLinkButton.Location = new System.Drawing.Point(465, 181);
             this.directLinkButton.Name = "directLinkButton";
             this.directLinkButton.Size = new System.Drawing.Size(75, 23);
-            this.directLinkButton.TabIndex = 5;
+            this.directLinkButton.TabIndex = 6;
             this.directLinkButton.Text = "Copy";
             this.directLinkButton.UseVisualStyleBackColor = true;
             this.directLinkButton.Click += new System.EventHandler(this.DirectLinkButton_Click);
@@ -113,7 +114,7 @@
             this.pageLinkButton.Location = new System.Drawing.Point(464, 98);
             this.pageLinkButton.Name = "pageLinkButton";
             this.pageLinkButton.Size = new System.Drawing.Size(75, 23);
-            this.pageLinkButton.TabIndex = 7;
+            this.pageLinkButton.TabIndex = 3;
             this.pageLinkButton.Text = "Copy";
             this.pageLinkButton.UseVisualStyleBackColor = true;
             this.pageLinkButton.Click += new System.EventHandler(this.PageLinkButton_Click);
@@ -125,28 +126,29 @@
             this.pageLinkTextBox.Name = "pageLinkTextBox";
             this.pageLinkTextBox.ReadOnly = true;
             this.pageLinkTextBox.Size = new System.Drawing.Size(294, 20);
-            this.pageLinkTextBox.TabIndex = 6;
+            this.pageLinkTextBox.TabIndex = 2;
             // 
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.LanguageKey = "downloadru.success_done";
-            this.okButton.Location = new System.Drawing.Point(464, 242);
+            this.okButton.Location = new System.Drawing.Point(465, 313);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 23);
-            this.okButton.TabIndex = 8;
+            this.okButton.TabIndex = 10;
             this.okButton.Text = "Done";
             this.okButton.UseVisualStyleBackColor = true;
             this.okButton.Click += new System.EventHandler(this.OkButton_Click);
             // 
             // doNotShowCheckBox
             // 
+            this.doNotShowCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.doNotShowCheckBox.AutoSize = true;
             this.doNotShowCheckBox.LanguageKey = "downloadru.success_donotshow";
-            this.doNotShowCheckBox.Location = new System.Drawing.Point(15, 214);
+            this.doNotShowCheckBox.Location = new System.Drawing.Point(15, 285);
             this.doNotShowCheckBox.Name = "doNotShowCheckBox";
             this.doNotShowCheckBox.Size = new System.Drawing.Size(158, 17);
-            this.doNotShowCheckBox.TabIndex = 9;
+            this.doNotShowCheckBox.TabIndex = 8;
             this.doNotShowCheckBox.Text = "Don\'t show this dialog again";
             this.doNotShowCheckBox.UseVisualStyleBackColor = true;
             this.doNotShowCheckBox.CheckedChanged += new System.EventHandler(this.doNotShowCheckBox_CheckedChanged);
@@ -158,23 +160,35 @@
             // 
             // automaticallyCloseCheckBox
             // 
+            this.automaticallyCloseCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.automaticallyCloseCheckBox.AutoSize = true;
             this.automaticallyCloseCheckBox.LanguageKey = "downloadru.success_automaticallyclose";
-            this.automaticallyCloseCheckBox.Location = new System.Drawing.Point(15, 246);
+            this.automaticallyCloseCheckBox.Location = new System.Drawing.Point(15, 317);
             this.automaticallyCloseCheckBox.Name = "automaticallyCloseCheckBox";
             this.automaticallyCloseCheckBox.PropertyName = "AutomaticallyCloseSuccessForm";
             this.automaticallyCloseCheckBox.SectionName = "DownloadRu";
             this.automaticallyCloseCheckBox.Size = new System.Drawing.Size(173, 17);
-            this.automaticallyCloseCheckBox.TabIndex = 10;
+            this.automaticallyCloseCheckBox.TabIndex = 9;
             this.automaticallyCloseCheckBox.Text = "Automatically close the window";
             this.automaticallyCloseCheckBox.UseVisualStyleBackColor = true;
             this.automaticallyCloseCheckBox.CheckedChanged += new System.EventHandler(this.AutomaticallyCloseCheckBox_CheckedChanged);
+            // 
+            // shareFlowLayoutPanel
+            // 
+            this.shareFlowLayoutPanel.AutoSize = true;
+            this.shareFlowLayoutPanel.Location = new System.Drawing.Point(12, 220);
+            this.shareFlowLayoutPanel.MinimumSize = new System.Drawing.Size(46, 46);
+            this.shareFlowLayoutPanel.Name = "shareFlowLayoutPanel";
+            this.shareFlowLayoutPanel.Size = new System.Drawing.Size(46, 46);
+            this.shareFlowLayoutPanel.TabIndex = 7;
+            this.shareFlowLayoutPanel.WrapContents = false;
             // 
             // SuccessForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(551, 277);
+            this.ClientSize = new System.Drawing.Size(552, 348);
+            this.Controls.Add(this.shareFlowLayoutPanel);
             this.Controls.Add(this.automaticallyCloseCheckBox);
             this.Controls.Add(this.doNotShowCheckBox);
             this.Controls.Add(this.okButton);
@@ -216,5 +230,6 @@
         private GreenshotPlugin.Controls.GreenshotCheckBox doNotShowCheckBox;
         private System.Windows.Forms.Timer mTimer;
         private GreenshotPlugin.Controls.GreenshotCheckBox automaticallyCloseCheckBox;
+        private System.Windows.Forms.FlowLayoutPanel shareFlowLayoutPanel;
     }
 }

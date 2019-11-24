@@ -2,7 +2,7 @@
 <language description="English" ietf="en-US" version="1.0.0">
   <resources>
     <resource name="label_AfterUploadLinkToClipBoard">
-      Link to clipboard
+      Copy to clipboard
     </resource>
     <resource name="anonymous_access">
       Use anonym access

@@ -90,7 +90,7 @@ namespace GreenshotDownloadRuPlugin
             _itemPlugInConfig = new ToolStripMenuItem
             {
                 Image = (Image) _resources.GetObject("DownloadRu16x16"),
-                Text = Language.GetString("downloadru", LangKey.Configure)
+                Text = Language.GetString(Constants.LanguagePrefix, LangKey.Configure)
             };
 
             _itemPlugInConfig.Click += ConfigMenuClick;
@@ -103,7 +103,7 @@ namespace GreenshotDownloadRuPlugin
         public void OnLanguageChanged(object sender, EventArgs e)
         {
             if (_itemPlugInConfig != null)
-                _itemPlugInConfig.Text = Language.GetString("downloadru", LangKey.Configure);
+                _itemPlugInConfig.Text = Language.GetString(Constants.LanguagePrefix, LangKey.Configure);
         }
 
         public virtual void Shutdown()
@@ -222,10 +222,10 @@ namespace GreenshotDownloadRuPlugin
 
                 return defaultUrl;
             }
-            catch (Exception ex)
+            catch (Exception exception)
             {
-                Log.Error("Error uploading.", ex);
-                MessageBox.Show(Language.GetString("downloadru", LangKey.upload_failure) + @" " + ex.Message);
+                Log.Error("Error uploading.", exception);
+                MessageBox.Show(Language.GetString(Constants.LanguagePrefix, LangKey.upload_failure) + @" " + exception.Message);
                 return null;
             }
         }

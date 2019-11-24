@@ -376,6 +376,8 @@ namespace Greenshot
 
         public NotifyIcon NotifyIcon => notifyIcon;
 
+        internal CoreConfiguration CoreConfiguration => coreConfiguration;
+
         public MainForm(CopyDataTransport dataTransport)
         {
             _instance = this;
@@ -1008,19 +1010,19 @@ namespace Greenshot
             });
         }
 
-        /// <summary>
-        /// Context menu entry "Support Greenshot"
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Contextmenu_donateClick(object sender, EventArgs e)
-        {
-            BeginInvoke((MethodInvoker) delegate
-            {
-                Process.Start("http://getgreenshot.org/support/?version=" +
-                              Assembly.GetEntryAssembly().GetName().Version);
-            });
-        }
+        ///// <summary>
+        ///// Context menu entry "Support Greenshot"
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Contextmenu_donateClick(object sender, EventArgs e)
+        //{
+        //    BeginInvoke((MethodInvoker) delegate
+        //    {
+        //        Process.Start("http://getgreenshot.org/support/?version=" +
+        //                      Assembly.GetEntryAssembly().GetName().Version);
+        //    });
+        //}
 
         /// <summary>
         /// Context menu entry "Preferences"
@@ -1439,7 +1441,9 @@ namespace Greenshot
         {
             _conf.ValidateAndCorrectOutputFilePath();
             _conf.ValidateAndCorrectOutputFileAsFullpath();
+
             string path = _conf.OutputFileAsFullpath;
+
             if (!File.Exists(path))
             {
                 path = FilenameHelper.FillVariables(_conf.OutputFilePath, false);
@@ -1471,7 +1475,12 @@ namespace Greenshot
             catch (Exception ex)
             {
                 // Make sure we show what we tried to open in the exception
-                ex.Data.Add("path", path);
+
+                const string pathKey = "path";
+
+                if (!ex.Data.Contains(pathKey))
+                    ex.Data.Add(pathKey, path);
+
                 LOG.Warn("Couldn't open the path to the last exported file", ex);
                 // No reason to create a bug-form, we just display the error.
                 MessageBox.Show(this, ex.Message, "Opening " + path, MessageBoxButtons.OK, MessageBoxIcon.Error);

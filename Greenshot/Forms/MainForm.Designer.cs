@@ -64,7 +64,9 @@ namespace Greenshot {
 			this.toolStripOpenFolderSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_openrecentcapture = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripPluginSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.contextmenu_quicksettings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
+            this.toolStripSettingsSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.contextmenu_quicksettings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
+            this.contextMenuGeneralSettings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_settings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripMiscSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_help = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
@@ -92,7 +94,7 @@ namespace Greenshot {
 									this.contextmenu_openfile,
 									this.toolStripOpenFolderSeparator,
 									this.contextmenu_openrecentcapture,
-									this.toolStripPluginSeparator,
+									this.toolStripSettingsSeparator,
 									this.contextmenu_quicksettings,
 									this.contextmenu_settings,
 									this.toolStripMiscSeparator,
@@ -191,28 +193,41 @@ namespace Greenshot {
 			this.contextmenu_openrecentcapture.Name = "contextmenu_openrecentcapture";
 			this.contextmenu_openrecentcapture.Size = new System.Drawing.Size(170, 22);
 			this.contextmenu_openrecentcapture.Click += new System.EventHandler(this.Contextmenu_OpenRecent);
-			// 
-			// toolStripPluginSeparator
-			// 
-			this.toolStripPluginSeparator.Name = "toolStripPluginSeparator";
-			this.toolStripPluginSeparator.Size = new System.Drawing.Size(167, 6);
-			this.toolStripPluginSeparator.Tag = "PluginsAreAddedBefore";
-			// 
-			// contextmenu_quicksettings
-			// 
-			this.contextmenu_quicksettings.Name = "contextmenu_quicksettings";
+            // 
+            // toolStripSettingsSeparator
+            // 
+            this.toolStripSettingsSeparator.Name = "toolStripSettingsSeparator";
+            this.toolStripSettingsSeparator.Size = new System.Drawing.Size(167, 6);
+            // 
+            // contextmenu_quicksettings
+            // 
+            this.contextmenu_quicksettings.Name = "contextmenu_quicksettings";
 			this.contextmenu_quicksettings.Size = new System.Drawing.Size(170, coreConfiguration.IconSize.Height + 8);
-			// 
-			// contextmenu_settings
-			// 
-			this.contextmenu_settings.Image = ((System.Drawing.Image)(resources.GetObject("contextmenu_settings.Image")));
-			this.contextmenu_settings.Name = "contextmenu_settings";
+            // 
+            // contextmenu_settings
+            // 
+            this.contextmenu_settings.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+                this.toolStripPluginSeparator,
+                this.contextMenuGeneralSettings});
+            this.contextmenu_settings.Name = "contextmenu_settings";
 			this.contextmenu_settings.Size = new System.Drawing.Size(170, 22);
-			this.contextmenu_settings.Click += new System.EventHandler(this.Contextmenu_settingsClick);
-			// 
-			// toolStripMiscSeparator
-			// 
-			this.toolStripMiscSeparator.Name = "toolStripMiscSeparator";
+            this.contextmenu_settings.Tag = "Settings";
+            // 
+            // toolStripPluginSeparator
+            // 
+            this.toolStripPluginSeparator.Name = "toolStripPluginSeparator";
+            this.toolStripPluginSeparator.Size = new System.Drawing.Size(167, 6);
+            // 
+            // contextMenuGeneralSettings
+            // 
+            this.contextMenuGeneralSettings.Image = ((System.Drawing.Image)(resources.GetObject("contextmenu_generalsettings.Image")));
+            this.contextMenuGeneralSettings.Name = "contextmenu_generalsettings";
+            this.contextMenuGeneralSettings.Size = new System.Drawing.Size(170, 22);
+            this.contextMenuGeneralSettings.Click += new System.EventHandler(this.Contextmenu_settingsClick);
+            // 
+            // toolStripMiscSeparator
+            // 
+            this.toolStripMiscSeparator.Name = "toolStripMiscSeparator";
 			this.toolStripMiscSeparator.Size = new System.Drawing.Size(167, 6);
 			// 
 			// contextmenu_help
@@ -276,10 +291,12 @@ namespace Greenshot {
 		private System.Windows.Forms.Timer backgroundWorkerTimer;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureie;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_openfile;
-		private System.Windows.Forms.ToolStripSeparator toolStripPluginSeparator;
+        private System.Windows.Forms.ToolStripSeparator toolStripSettingsSeparator;
+        private System.Windows.Forms.ToolStripSeparator toolStripPluginSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureclipboard;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_quicksettings;
-		private System.Windows.Forms.ToolStripSeparator toolStripMiscSeparator;
+        private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextMenuGeneralSettings;
+        private System.Windows.Forms.ToolStripSeparator toolStripMiscSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_help;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_capturewindow;
 		private System.Windows.Forms.ToolStripSeparator toolStripOpenFolderSeparator;

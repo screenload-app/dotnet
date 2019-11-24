@@ -183,7 +183,7 @@ namespace Greenshot.Helpers
             var text = Language.GetFormattedString("update_confirmation", _lastVersion.Version);
 
             if (DialogResult.Yes == MessageBox.Show(MainForm.Instance, text, "Greenshot", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Information, MessageBoxDefaultButton.Button1))
+                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
             {
                 var updateForm = new UpdateForm(_lastVersion,
                     string.Format(CultureInfo.InvariantCulture, DownloadLinkTemplate, _lastVersion.File));

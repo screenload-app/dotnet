@@ -60,8 +60,9 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="contextmenu_openfile">Open image from file</resource>
 		<resource name="contextmenu_openrecentcapture">Open last capture location</resource>
 		<resource name="contextmenu_quicksettings">Quick preferences</resource>
-		<resource name="contextmenu_settings">Preferences...</resource>
-		<resource name="destination_exportfailed">Error while exporting to {0}. Please try again.</resource>
+		<resource name="contextmenu_settings">Settings</resource>
+    <resource name="contextmenu_generalsettings">Preferences...</resource>
+    <resource name="destination_exportfailed">Error while exporting to {0}. Please try again.</resource>
 		<resource name="editor_align_bottom">Bottom</resource>
 		<resource name="editor_align_center">Center</resource>
 		<resource name="editor_align_horizontal">Horizontal alignment</resource>
@@ -276,7 +277,7 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 
 		<resource name="tooltip_firststart">Right-click here or press the {0} key.</resource>
 		
-    <resource name="update_found">A newer version of Greenshot is available! Do you want to download Greenshot {0}?</resource>
+    <resource name="update_found">A newer version of Greenshot is available! Click here for download.</resource>
     <resource name="update_confirmation">Do you want to download and install Greenshot {0}?</resource>
 
 		<resource name="wait_ie_capture">Please wait while the page in Internet Explorer is captured...</resource>

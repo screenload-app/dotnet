@@ -118,9 +118,9 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.checkboxAfterUploadLinkToClipBoard.Name = "checkboxAfterUploadLinkToClipBoard";
             this.checkboxAfterUploadLinkToClipBoard.PropertyName = "AfterUploadLinkToClipBoard";
             this.checkboxAfterUploadLinkToClipBoard.SectionName = "DownloadRu";
-            this.checkboxAfterUploadLinkToClipBoard.Size = new System.Drawing.Size(104, 17);
+            this.checkboxAfterUploadLinkToClipBoard.Size = new System.Drawing.Size(108, 17);
             this.checkboxAfterUploadLinkToClipBoard.TabIndex = 1;
-            this.checkboxAfterUploadLinkToClipBoard.Text = "Link to clipboard";
+            this.checkboxAfterUploadLinkToClipBoard.Text = "Copy to clipboard";
             this.checkboxAfterUploadLinkToClipBoard.UseVisualStyleBackColor = true;
             this.checkboxAfterUploadLinkToClipBoard.CheckedChanged += new System.EventHandler(this.checkboxAfterUploadLinkToClipBoard_CheckedChanged);
             // 
@@ -250,7 +250,8 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.PerformLayout();
 
 		}
-		private GreenshotPlugin.Controls.GreenshotComboBox combobox_uploadimageformat;
+
+        private GreenshotPlugin.Controls.GreenshotComboBox combobox_uploadimageformat;
 		private GreenshotPlugin.Controls.GreenshotLabel label_upload_format;
 		private GreenshotPlugin.Controls.GreenshotButton buttonCancel;
 		private GreenshotPlugin.Controls.GreenshotButton buttonOK;

@@ -39,18 +39,25 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.ServiceModel.Web" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DownloadRuConfiguration.cs" />
-    <Compile Include="DownloadRuCredentials.cs" />
+    <Compile Include="Constants.cs" />
     <Compile Include="DownloadRuDestination.cs" />
     <Compile Include="DownloadRuEntities.cs" />
     <Compile Include="DownloadRuPlugin.cs" />
     <Compile Include="DownloadRuUtils.cs" />
     <Compile Include="Forms\DownloadRuForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LoginForm.Designer.cs">
+      <DependentUpon>LoginForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\ProgressForm.cs">
       <SubType>Form</SubType>
@@ -79,6 +86,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Utils\JSONSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DownloadRuPlugin.resx">
@@ -102,6 +110,7 @@
   <ItemGroup>
     <Content Include="Languages\language_DownloadRuplugin-ru-RU.xml" />
     <Content Include="Languages\language_DownloadRuplugin-en-US.xml" />
+    <None Include="Resources\pluso.png" />
     <None Include="Resources\DownloadRu16x16.png" />
   </ItemGroup>
   <ItemGroup>
@@ -110,6 +119,7 @@
       <Name>GreenshotPlugin</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>mkdir "$(SolutionDir)Greenshot\bin\$(Configuration)\Plugins\$(ProjectName)"

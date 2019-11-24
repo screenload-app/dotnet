@@ -30,6 +30,8 @@
         {
             this.sizeLabel = new Greenshot.Controls.TransparentLabel();
             this.holePanel = new Greenshot.Controls.DoubleBufferedPanel();
+            this.innerPanel = new Greenshot.Controls.DoubleBufferedPanel();
+            this.holePanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // sizeLabel
@@ -48,16 +50,32 @@
             // 
             // holePanel
             // 
-            this.holePanel.BackColor = System.Drawing.Color.Fuchsia;
+            this.holePanel.BackColor = System.Drawing.Color.Transparent;
+            this.holePanel.Controls.Add(this.innerPanel);
             this.holePanel.Cursor = System.Windows.Forms.Cursors.Default;
             this.holePanel.Location = new System.Drawing.Point(39, 85);
             this.holePanel.Name = "holePanel";
+            this.holePanel.Padding = new System.Windows.Forms.Padding(8);
             this.holePanel.Size = new System.Drawing.Size(400, 200);
             this.holePanel.TabIndex = 1;
             this.holePanel.Paint += new System.Windows.Forms.PaintEventHandler(this.HolePanel_Paint);
             this.holePanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseDown);
             this.holePanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseMove);
             this.holePanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseUp);
+            // 
+            // innerPanel
+            // 
+            this.innerPanel.BackColor = System.Drawing.Color.Fuchsia;
+            this.innerPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.innerPanel.Location = new System.Drawing.Point(8, 8);
+            this.innerPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.innerPanel.Name = "innerPanel";
+            this.innerPanel.Size = new System.Drawing.Size(384, 184);
+            this.innerPanel.TabIndex = 0;
+            this.innerPanel.Paint += new System.Windows.Forms.PaintEventHandler(this.InnerPanel_Paint);
+            this.innerPanel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseDown);
+            this.innerPanel.MouseMove += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseMove);
+            this.innerPanel.MouseUp += new System.Windows.Forms.MouseEventHandler(this.HolePanel_MouseUp);
             // 
             // QuickImageEditorForm
             // 
@@ -69,6 +87,7 @@
             this.Controls.Add(this.sizeLabel);
             this.Controls.Add(this.holePanel);
             this.Cursor = System.Windows.Forms.Cursors.NoMove2D;
+            this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -84,6 +103,7 @@
             this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.QuickImageEditorCoverForm_MouseDown);
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.QuickImageEditorCoverForm_MouseMove);
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.QuickImageEditorCoverForm_MouseUp);
+            this.holePanel.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -92,5 +112,6 @@
         #endregion
         private Greenshot.Controls.DoubleBufferedPanel holePanel;
         private Greenshot.Controls.TransparentLabel sizeLabel;
+        private Greenshot.Controls.DoubleBufferedPanel innerPanel;
     }
 }

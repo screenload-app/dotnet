@@ -18,8 +18,10 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace GreenshotPlugin.Controls {
-	partial class OAuthLoginForm {
+namespace GreenshotPlugin.Controls
+{
+    partial class OAuthLoginForm
+    {
         /// <summary>
         /// Required designer variable.
         /// </summary>
@@ -31,7 +33,8 @@ namespace GreenshotPlugin.Controls {
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
-            if (disposing && (components != null)) {
+            if (disposing && (components != null))
+            {
                 components.Dispose();
             }
             base.Dispose(disposing);
@@ -43,9 +46,10 @@ namespace GreenshotPlugin.Controls {
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
-        private void InitializeComponent() {
+        private void InitializeComponent()
+        {
             this._addressTextBox = new System.Windows.Forms.TextBox();
-            this._browser = new GreenshotPlugin.Controls.ExtendedWebBrowser();
+            this._browser = new ExtendedWebBrowser();
             this.SuspendLayout();
             // 
             // _addressTextBox
@@ -54,8 +58,8 @@ namespace GreenshotPlugin.Controls {
             this._addressTextBox.Dock = System.Windows.Forms.DockStyle.Top;
             this._addressTextBox.Enabled = false;
             this._addressTextBox.Location = new System.Drawing.Point(0, 0);
-            this._addressTextBox.Name = "_addressTextBox";
-            this._addressTextBox.Size = new System.Drawing.Size(584, 20);
+            this._addressTextBox.Name = "addressTextBox";
+            this._addressTextBox.Size = new System.Drawing.Size(595, 20);
             this._addressTextBox.TabIndex = 3;
             this._addressTextBox.TabStop = false;
             // 
@@ -64,30 +68,29 @@ namespace GreenshotPlugin.Controls {
             this._browser.Dock = System.Windows.Forms.DockStyle.Fill;
             this._browser.Location = new System.Drawing.Point(0, 20);
             this._browser.MinimumSize = new System.Drawing.Size(100, 100);
-            this._browser.Name = "_browser";
-            this._browser.Size = new System.Drawing.Size(584, 291);
+            this._browser.Name = "browser";
+            this._browser.Size = new System.Drawing.Size(595, 295);
             this._browser.TabIndex = 4;
             // 
             // OAuthLoginForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(584, 311);
+            this.ClientSize = new System.Drawing.Size(595, 315);
             this.Controls.Add(this._browser);
             this.Controls.Add(this._addressTextBox);
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "OAuthLoginForm";
-            this.Load += new System.EventHandler(this.OAuthLoginForm_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private System.Windows.Forms.TextBox _addressTextBox;
-		private ExtendedWebBrowser _browser;
+        private System.Windows.Forms.TextBox _addressTextBox;
+        private ExtendedWebBrowser _browser;
 
-	}
+    }
 }

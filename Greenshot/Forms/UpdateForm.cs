@@ -69,8 +69,10 @@ namespace Greenshot
 
                     var filePath = (string) o;
 
+                    // http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
                     var startInfo = new ProcessStartInfo
                     {
+                        Arguments = "/SILENT",
                         CreateNoWindow = false,
                         UseShellExecute = false,
                         FileName = filePath,
@@ -123,19 +125,19 @@ namespace Greenshot
         {
             mProgressBar.Value = progressPercentage;
 
-            var unit = "Б"; // Б
+            var unit = Language.GetString("updateform_byte"); // Б
 
             if (toReceive > 1024)
             {
                 received /= 1024;
                 toReceive /= 1024;
-                unit = "кбайт"; // кбайт
+                unit = Language.GetString("updateform_kilobyte"); // кбайт
 
                 if (toReceive > 1024)
                 {
                     received /= 1024;
                     toReceive /= 1024;
-                    unit = "Мбайт"; // Мбайт
+                    unit = Language.GetString("updateform_megabyte"); // Мбайт
                 }
             }
 

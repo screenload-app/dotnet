@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-using System;
 using System.ComponentModel;
 using System.Drawing;
 using Greenshot.Plugin;
@@ -38,7 +37,7 @@ namespace GreenshotDownloadRuPlugin
 
         public override string Designation => "DownloadRu";
 
-        public override string Description => Language.GetString("downloadru", LangKey.upload_menu_item);
+        public override string Description => Language.GetString(Constants.LanguagePrefix, LangKey.upload_menu_item);
 
         public override Image DisplayIcon
         {
@@ -52,17 +51,17 @@ namespace GreenshotDownloadRuPlugin
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails)
         {
-            string successMessage = Language.GetString("downloadru", LangKey.upload_success);
+            string successMessage = Language.GetString(Constants.LanguagePrefix, LangKey.upload_success);
 
             if (_plugin.Configuration.AfterUploadLinkToClipBoard)
             {
                 switch (_plugin.Configuration.AfterUploadLinkToClipBoardMode)
                 {
                     case LinkType.Image:
-                        successMessage = Language.GetString("downloadru", LangKey.upload_success_and_copy_imagelink);
+                        successMessage = Language.GetString(Constants.LanguagePrefix, LangKey.upload_success_and_copy_imagelink);
                         break;
                     case LinkType.Page:
-                        successMessage = Language.GetString("downloadru", LangKey.upload_success_and_copy_pagelink);
+                        successMessage = Language.GetString(Constants.LanguagePrefix, LangKey.upload_success_and_copy_pagelink);
                         break;
                 }
             }

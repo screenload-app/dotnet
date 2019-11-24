@@ -61,7 +61,8 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="contextmenu_openfile">Открыть изображение из файла</resource>
 		<resource name="contextmenu_openrecentcapture">Открыть последнее место захвата</resource>
 		<resource name="contextmenu_quicksettings">Быстрые настройки</resource>
-		<resource name="contextmenu_settings">Предпочтения...</resource>
+    <resource name="contextmenu_settings">Настройки</resource>
+    <resource name="contextmenu_generalsettings">Предпочтения...</resource>
 		<resource name="destination_exportfailed">Ошибка при экспорте {0}. Пожалуйста, попробуйте ещё раз.</resource>
 		<resource name="editor_align_bottom">Внизу</resource>
 		<resource name="editor_align_center">По центру</resource>
@@ -282,13 +283,13 @@ ${hostname} Имя ПК
 		<resource name="settings_tooltip_storagelocation">Место хранения скриншотов по умолчанию (оставьте пустым для сохранения на рабочий стол)</resource>
 		<resource name="settings_usedefaultproxy">Использовать прокси-систему по умолчанию</resource>
     <resource name="settings_usestableversionsonly">Только стабильные версии</resource>
-    <resource name="settings_checkupdatesbutton">Проверить обновления сейчас</resource>
+    <resource name="settings_checkupdatesbutton">Произвести проверку обновлений</resource>
 		<resource name="settings_visualization">Эффекты</resource>
 		<resource name="settings_waittime">Ожидание перед захватом в миллисекундах</resource>
 		<resource name="settings_window_capture_mode">Режим захвата окна</resource>
 		<resource name="settings_windowscapture">Снимок окна</resource>
 		<resource name="tooltip_firststart">Щёлкните здесь правой кнопкой мыши или нажмите клавишу {0}.</resource>
-		<resource name="update_found">Доступна новая версия Greenshot! Вы хотите скачать Greenshot {0}?</resource>
+		<resource name="update_found">Доступна новая версия Greenshot! Нажмите чтобы установить.</resource>
     <resource name="update_confirmation">Вы хотите скачать и установить Greenshot {0}?</resource>
 		<resource name="wait_ie_capture">Пожалуйста, подождите, пока страница в Internet Explorer захватывается...</resource>
 		<resource name="warning">Внимание</resource>

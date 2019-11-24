@@ -24,10 +24,9 @@ using System.Drawing;
 using System.Net;
 using System.Text;
 using Greenshot.IniFile;
-using GreenshotPlugin.Controls;
+using GreenshotDownloadRuPlugin.Forms;
 using GreenshotPlugin.Core;
-using System.Runtime.Serialization.Json;
-using System.IO;
+using GreenshotDownloadRuPlugin.Utils;
 using log4net;
 
 namespace GreenshotDownloadRuPlugin
@@ -51,9 +50,10 @@ namespace GreenshotDownloadRuPlugin
         private static bool Authorize()
         {
             string authorizeUrl =
-                $"{AuthorizeUri}?client_id={DownloadRuCredentials.ClientId}&response_type=code&state=downloadru&redirect_uri={RedirectUri}";
+                $"{AuthorizeUri}?client_id={Constants.ClientId}&response_type=code&state=downloadru&redirect_uri={RedirectUri}";
 
-            var loginForm = new OAuthLoginForm(Language.GetString("downloadru", LangKey.Authorize), new Size(1060, 600),
+            var loginForm = new LoginForm(Language.GetString(Constants.LanguagePrefix, LangKey.Authorize),
+                new Size(1060, 600),
                 authorizeUrl, RedirectUri);
 
             loginForm.ShowDialog();
@@ -67,9 +67,7 @@ namespace GreenshotDownloadRuPlugin
                 return false;
 
             string authorizationResponse = PostAndReturn(new Uri(TokenUri),
-                string.Format("grant_type=authorization_code&code={0}&client_id={1}&client_secret={2}&redirect_uri={3}",
-                    callbackParameters["code"], DownloadRuCredentials.ClientId, DownloadRuCredentials.ClientSecret,
-                    RedirectUri));
+                $"grant_type=authorization_code&code={callbackParameters["code"]}&client_id={Constants.ClientId}&client_secret={Constants.ClientSecret}&redirect_uri={RedirectUri}");
             var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
 
             Config.DownloadRuToken = authorization.AccessToken;
@@ -126,12 +124,8 @@ namespace GreenshotDownloadRuPlugin
             while (true)
             {
                 if (!Config.AnonymousAccess && string.IsNullOrEmpty(Config.DownloadRuToken))
-                {
                     if (!Authorize())
-                    {
                         return null;
-                    }
-                }
 
                 IDictionary<string, object> parameters = new Dictionary<string, object>();
                 parameters.Add("filename", image);
@@ -144,7 +138,7 @@ namespace GreenshotDownloadRuPlugin
                         ? Language.CurrentLanguage.Substring(0, 2)
                         : "en";
                     string addAnonymKey = (Config.AnonymousAccess)
-                        ? $"&anonym_key={DownloadRuCredentials.AnonimKey}"
+                        ? $"&anonym_key={Constants.AnonymousKey}"
                         : "";
 
                     if (Config.AnonymousAccess && !Config.SharedLink)
@@ -178,53 +172,7 @@ namespace GreenshotDownloadRuPlugin
 
                 var upload = JSONSerializer.Deserialize<Upload>(response);
 
-                //var largeImage = upload?.File?.Preview?.UrlsEntry?.Large;
-
-                //return $"https://download.ru/f/{upload.Entries.Id}";
-                //return $"https://download.ru/{largeImage}";
-
                 return upload.File;
-            }
-        }
-    }
-
-    /// <summary>
-    /// A simple helper class for the DataContractJsonSerializer
-    /// </summary>
-    public static class JSONSerializer
-    {
-        /// <summary>
-        /// Helper method to serialize object to JSON
-        /// </summary>
-        /// <param name="jsonObject">JSON object</param>
-        /// <returns>string</returns>
-        public static string Serialize(object jsonObject)
-        {
-            var serializer = new DataContractJsonSerializer(jsonObject.GetType());
-
-            using (MemoryStream stream = new MemoryStream())
-            {
-                serializer.WriteObject(stream, jsonObject);
-                return Encoding.UTF8.GetString(stream.ToArray());
-            }
-        }
-
-        /// <summary>
-        /// Helper method to parse JSON to object
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="jsonString"></param>
-        /// <returns></returns>
-        public static T Deserialize<T>(string jsonString)
-        {
-            var deserializer = new DataContractJsonSerializer(typeof(T));
-
-            using (var stream = new MemoryStream())
-            {
-                byte[] content = Encoding.UTF8.GetBytes(jsonString);
-                stream.Write(content, 0, content.Length);
-                stream.Seek(0, SeekOrigin.Begin);
-                return (T) deserializer.ReadObject(stream);
             }
         }
     }

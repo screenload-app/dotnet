@@ -308,6 +308,9 @@ namespace GreenshotPlugin.Core {
 
         // Quick Image Editor
 
+        [IniProperty("IsCaptureAreaColorUsed", DefaultValue = "False")]
+        public bool IsCaptureAreaColorUsed { get; set; }
+
         [IniProperty("CaptureAreaColor", Description = "The background capture color.")]
         public Color CaptureAreaColor { get; set; }
 

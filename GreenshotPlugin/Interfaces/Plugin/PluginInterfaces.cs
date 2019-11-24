@@ -163,12 +163,13 @@ namespace Greenshot.Plugin {
 	/// For Greenshot this is implmented in the PluginHelper
 	/// </summary>
 	public interface IGreenshotHost {
-		ContextMenuStrip MainMenu {
-			get;
-		}
+        ContextMenuStrip MainMenu
+        {
+            get;
+        }
 
-		// This is a reference to the MainForm, can be used for Invoking on the UI thread.
-		Form GreenshotForm {
+        // This is a reference to the MainForm, can be used for Invoking on the UI thread.
+        Form GreenshotForm {
 			get;
 		}
 		
