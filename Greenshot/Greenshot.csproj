@@ -89,7 +89,13 @@
     <Compile Include="Controls\Pipette.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\TransparentFlowLayoutPanel.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\TransparentLabel.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\TransparentPanel.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Destinations\ClipboardDestination.cs" />
@@ -197,7 +203,7 @@
     <Compile Include="Forms\UpdateForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\UpdateForm.Designer.cs">
+    <Compile Include="Forms\UpdateForm.designer.cs">
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ColorUtility.cs" />
@@ -360,7 +366,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Sounds.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="greenshot.manifest" />
     <None Include="Languages\language-en-US.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

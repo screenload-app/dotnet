@@ -2,8 +2,9 @@
 <language description="Russian" ietf="ru-RU" version="1.0.0">
   <resources>
     <resource name="label_AfterUploadLinkToClipBoard">Добавить в буфер обмена</resource>
-    <resource name="label_AfterUploadLinkOpenInBrowser">Открыть в браузере</resource>
-    <resource name="label_AfterUploadLinkShowDetails">Открыть окно с детальной информацией</resource>
+    <resource name="label_AfterUploadOpenInBrowser">Открыть в браузере</resource>
+    <resource name="label_AfterUploadShowDetails">Открыть окно с детальной информацией</resource>
+    <resource name="label_AfterUploadShowNotification">Показать системное оповещение</resource>
     <resource name="anonymous_access">
       Использовать анонимный доступ
     </resource>

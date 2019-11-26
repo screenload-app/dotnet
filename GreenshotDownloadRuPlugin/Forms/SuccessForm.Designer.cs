@@ -200,11 +200,12 @@
             this.Controls.Add(this.directLinkLabel);
             this.Controls.Add(this.mPictureBox);
             this.Controls.Add(this.captionLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SuccessForm";
+            this.Opacity = 0.9D;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "Greenshot";

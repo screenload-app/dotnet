@@ -269,6 +269,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.HorizontalToolboxForm_Load);
             this.ResumeLayout(false);
 

@@ -1,6 +1,6 @@
 ﻿#define ExeName "Greenshot"
-#define Version "1.3.2.0"
-#define FileVersion "1.3.2.0-local"
+#define Version "1.4.0.0"
+#define FileVersion "1.4.0.0-local"
 
 ; Include the scripts to install .NET Framework
 ; See http://www.codeproject.com/KB/install/dotnetfx_innosetup_instal.aspx
@@ -388,7 +388,6 @@ end;
 Filename: "{code:getNGENPath}\ngen.exe"; Parameters: "install ""{app}\{#ExeName}.exe"""; StatusMsg: "{cm:optimize}"; Flags: runhidden runasoriginaluser
 Filename: "{code:getNGENPath}\ngen.exe"; Parameters: "install ""{app}\GreenshotPlugin.dll"""; StatusMsg: "{cm:optimize}"; Flags: runhidden runasoriginaluser
 Filename: "{app}\{#ExeName}.exe"; Description: "{cm:startgreenshot}"; Parameters: "{code:GetParamsForGS}"; WorkingDir: "{app}"; Flags: nowait postinstall runasoriginaluser
-Filename: "https://analytics.webmoney.ru/statistics/187871ba896764a04fede6ff1a9e8c09"; Flags: shellexec runasoriginaluser
 
 [InstallDelete]
 Name: {app}; Type: dirifempty;

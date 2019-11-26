@@ -138,6 +138,7 @@
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "VerticalToolboxForm";
+            this.TopMost = true;
             this.Load += new System.EventHandler(this.VerticalToolboxForm_Load);
             this.ResumeLayout(false);
 

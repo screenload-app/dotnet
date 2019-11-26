@@ -8,6 +8,7 @@ namespace Greenshot.Controls
     public class ProgressBarWithText : ProgressBar
     {
         public String CustomText { get; set; }
+        public Color BarColor { get; set; } = Color.LawnGreen;
 
         public ProgressBarWithText()
         {
@@ -18,18 +19,24 @@ namespace Greenshot.Controls
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            var clientRectangle = ClientRectangle;
+            var clipRectangle = e.ClipRectangle;
             var g = e.Graphics;
 
-            ProgressBarRenderer.DrawHorizontalBar(g, clientRectangle);
-            clientRectangle.Inflate(-3, -3);
+            ProgressBarRenderer.DrawHorizontalBar(g, clipRectangle);
+            clipRectangle.Inflate(-3, -3);
 
             if (Value > 0)
             {
                 // As we doing this ourselves we need to draw the chunks on the progress bar
-                var rectangle = new Rectangle(clientRectangle.X, clientRectangle.Y,
-                    (int) Math.Round((float) Value / Maximum * clientRectangle.Width), clientRectangle.Height);
-                ProgressBarRenderer.DrawHorizontalChunks(g, rectangle);
+                var rectangle = new Rectangle(clipRectangle.X, clipRectangle.Y,
+                    (int) Math.Round((float) Value / Maximum * clipRectangle.Width), clipRectangle.Height);
+
+                //ProgressBarRenderer.DrawHorizontalChunks(g, rectangle);
+
+                using (Brush brush = new SolidBrush(BarColor))
+                {
+                    e.Graphics.FillRectangle(brush, rectangle);
+                }
             }
 
             using (var font = new Font(FontFamily.GenericSerif, Height / 2F))
@@ -37,7 +44,11 @@ namespace Greenshot.Controls
                 SizeF stringSize = g.MeasureString(CustomText, font);
                 Point location = new Point(Convert.ToInt32(Width / 2F - stringSize.Width / 2),
                     Convert.ToInt32(Height / 2F - stringSize.Height / 2));
-                g.DrawString(CustomText, font, Brushes.Black, location);
+
+                using (Brush brush = new SolidBrush(ForeColor))
+                {
+                    g.DrawString(CustomText, font, brush, location);
+                }
             }
         }
     }

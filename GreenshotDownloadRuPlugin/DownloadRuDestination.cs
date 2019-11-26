@@ -19,15 +19,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.Windows.Forms;
 using Greenshot.Plugin;
 using GreenshotPlugin.Core;
+using log4net;
 
 namespace GreenshotDownloadRuPlugin
 {
     public class DownloadRuDestination : AbstractDestination
     {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(DownloadRuDestination));
+
         private readonly DownloadRuPlugin _plugin;
 
         public DownloadRuDestination(DownloadRuPlugin plugin)
@@ -71,15 +76,31 @@ namespace GreenshotDownloadRuPlugin
                 SuccessMessage = successMessage
             };
 
-            string uploadUrl = _plugin.Upload(captureDetails, surface);
+            string uploadUrl;
+            bool exportMade;
 
-            if (uploadUrl != null)
+            try
             {
-                exportInformation.ExportMade = true;
-                exportInformation.Uri = uploadUrl;
+                uploadUrl = _plugin.Upload(captureDetails, surface);
+                exportMade = true;
+            }
+            catch (Exception exception)
+            {
+                Log.Error("Error uploading.", exception);
+
+                uploadUrl = null;
+                exportMade = false;
+                MessageBox.Show(Language.GetString(Constants.LanguagePrefix, LangKey.upload_failure) + @" " + exception.Message);
             }
 
+            exportInformation.ExportMade = exportMade;
+            exportInformation.Uri = uploadUrl;
+
+            if (!_plugin.Configuration.AfterUploadShowNotification)
+                exportInformation.ShowNotification = false;
+
             ProcessExport(exportInformation, surface);
+
             return exportInformation;
         }
     }

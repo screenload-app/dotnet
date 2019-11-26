@@ -41,19 +41,22 @@ namespace GreenshotDownloadRuPlugin
             DefaultValue = "true")]
         public bool AfterUploadLinkToClipBoard;
 
-        [IniProperty("AfterUploadLinkOpenInBrowser", Description = "After upload open Download.Ru link in browser.",
+        [IniProperty("AfterUploadOpenInBrowser", Description = "After upload open Download.Ru link in browser.",
             DefaultValue = "true")]
-        public bool AfterUploadLinkOpenInBrowser;
+        public bool AfterUploadOpenInBrowser;
 
-        [IniProperty("AfterUploadLinkShowDetails", Description = "After open a window with the detailed information.",
+        [IniProperty("AfterUploadShowDetails", Description = "After open a window with the detailed information.",
             DefaultValue = "true")]
-        public bool AfterUploadLinkShowDetails;
+        public bool AfterUploadShowDetails;
+
+        [IniProperty("AfterUploadShowNotification", DefaultValue = "true")]
+        public bool AfterUploadShowNotification;
 
         [IniProperty("AfterUploadLinkToClipBoardMode", DefaultValue = "Image")]
         public LinkType AfterUploadLinkToClipBoardMode;
 
-        [IniProperty("AfterUploadLinkOpenInBrowserMode", DefaultValue = "Image")]
-        public LinkType AfterUploadLinkOpenInBrowserMode;
+        [IniProperty("AfterUploadOpenInBrowserMode", DefaultValue = "Image")]
+        public LinkType AfterUploadOpenInBrowserMode;
 
         [IniProperty("AutomaticallyCloseSuccessForm", Description = "Automatically close success form.",
             DefaultValue = "true")]

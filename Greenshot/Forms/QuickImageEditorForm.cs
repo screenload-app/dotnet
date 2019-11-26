@@ -80,9 +80,9 @@ namespace Greenshot
             }
         }
 
-        public QuickImageEditorForm(SurfaceForm surfaceForm, Rectangle holeRectangle)
+        private QuickImageEditorForm(SurfaceForm surfaceForm, Rectangle holeRectangle)
         {
-            _surfaceForm = surfaceForm ?? throw new InvalidOperationException("null == surfaceForm");
+            _surfaceForm = surfaceForm;
             _surfaceForm.KeyDown += Form_KeyDown;
 
             _surface = surfaceForm.Surface;
@@ -767,7 +767,7 @@ namespace Greenshot
                                     horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalsSize;
                             break;
                         case ToolboxPlacing.Inside:
-                            verticalToolboxTop -= horizontalToolboxSize.Height + _adornerHalsSize * 2;
+                            verticalToolboxTop -= horizontalToolboxSize.Height + _adornerHalsSize;
                             break;
                     }
 

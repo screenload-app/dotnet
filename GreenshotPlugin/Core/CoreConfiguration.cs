@@ -40,11 +40,11 @@ namespace GreenshotPlugin.Core {
 		Screen, GDI, Aero, AeroTransparent, Auto
 	}
 
-	public enum BuildStates {
-		UNSTABLE,
-		RELEASE_CANDIDATE,
-		RELEASE
-	}
+	//public enum BuildStates {
+	//	UNSTABLE,
+	//	RELEASE_CANDIDATE,
+	//	RELEASE
+	//}
 	
 	public enum ClickActions {
 		DO_NOTHING,
@@ -119,12 +119,12 @@ namespace GreenshotPlugin.Core {
 		public bool OutputFileAutoReduceColors { get; set; }
 		[IniProperty("OutputFileReduceColorsTo", Description = "Amount of colors to reduce to, when reducing", DefaultValue = "256")]
 		public int OutputFileReduceColorsTo { get; set; }
-
-		[IniProperty("OutputFileCopyPathToClipboard", Description="When saving a screenshot, copy the path to the clipboard?", DefaultValue="true")]
+        [IniProperty("UseQuickEditMode", Description = "Preferably use quick edit mode", DefaultValue = "true")]
+        public bool UseQuickEditMode { get; set; }
+        [IniProperty("OutputFileCopyPathToClipboard", Description="When saving a screenshot, copy the path to the clipboard?", DefaultValue="true")]
 		public bool OutputFileCopyPathToClipboard { get; set; }
 		[IniProperty("OutputFileAsFullpath", Description="SaveAs Full path?")]
 		public string OutputFileAsFullpath { get; set; }
-
 		[IniProperty("OutputFileJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
 		public int OutputFileJpegQuality { get; set; }
 		[IniProperty("OutputFilePromptQuality", Description="Ask for the quality before saving?", DefaultValue="false")]
@@ -160,10 +160,6 @@ namespace GreenshotPlugin.Core {
 		[IniProperty("UseProxy", Description="Use your global proxy?", DefaultValue="True")]
 		public bool UseProxy { get; set; }
 
-        [IniProperty("UseStableVersionsOnly", DefaultValue = "True")]
-        public bool UseStableVersionsOnly { get; set; }
-
-
         [IniProperty("IECapture", Description="Enable/disable IE capture", DefaultValue="True")]
 		public bool IECapture { get; set; }
 		[IniProperty("IEFieldCapture", Description="Enable/disable IE field capture, very slow but will make it possible to annotate the fields of a capture in the editor.", DefaultValue="False")]
@@ -180,8 +176,9 @@ namespace GreenshotPlugin.Core {
 		[IniProperty("ExcludeDestinations", Description = "Comma separated list of destinations which should be disabled.")]
 		public List<string> ExcludeDestinations { get; set; }
 
-		[IniProperty("UpdateCheckInterval", Description="How many days between every update check? (0=no checks)", DefaultValue="14")]
+		[IniProperty("UpdateCheckInterval", Description="How many days between every update check? (0=no checks)", DefaultValue="1")]
 		public int UpdateCheckInterval { get; set; }
+
 		[IniProperty("LastUpdateCheck", Description="Last update check")]
 		public DateTime LastUpdateCheck { get; set; }
 
@@ -317,20 +314,20 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         /// Specifies what THIS build is
         /// </summary>
-        public BuildStates BuildState {
-			get {
-				string informationalVersion = Application.ProductVersion;
-				if (informationalVersion != null) {
-					if (informationalVersion.ToLowerInvariant().Contains("-rc")) {
-						return BuildStates.RELEASE_CANDIDATE;
-					}
-					if (informationalVersion.ToLowerInvariant().Contains("-unstable")) {
-						return BuildStates.UNSTABLE;
-					}
-				}
-				return BuildStates.RELEASE;
-			}
-		}
+  //      public BuildStates BuildState {
+		//	get {
+		//		string informationalVersion = Application.ProductVersion;
+		//		if (informationalVersion != null) {
+		//			if (informationalVersion.ToLowerInvariant().Contains("-rc")) {
+		//				return BuildStates.RELEASE_CANDIDATE;
+		//			}
+		//			if (informationalVersion.ToLowerInvariant().Contains("-unstable")) {
+		//				return BuildStates.UNSTABLE;
+		//			}
+		//		}
+		//		return BuildStates.RELEASE;
+		//	}
+		//}
 
 		public bool UseLargeIcons => IconSize.Width >= 32 || IconSize.Height >= 32;
 

@@ -152,7 +152,7 @@ namespace Greenshot.Forms {
 			var toolStripMenuSelectListItem = new ToolStripMenuSelectListItem
 			{
 				Text = label
-			};
+            };
 			if (image == null) {
 				image = _defaultImage;
 			}

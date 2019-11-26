@@ -128,7 +128,7 @@ namespace GreenshotDownloadRuPlugin.Forms
 
         private void doNotShowCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            _config.AfterUploadLinkShowDetails = !doNotShowCheckBox.Checked;
+            _config.AfterUploadShowDetails = !doNotShowCheckBox.Checked;
         }
 
         private void AutomaticallyCloseCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -150,7 +150,7 @@ namespace GreenshotDownloadRuPlugin.Forms
 
             if (0 == _countdown)
             {
-                Close();
+                OkButton_Click(this, null);
                 return;
             }
 

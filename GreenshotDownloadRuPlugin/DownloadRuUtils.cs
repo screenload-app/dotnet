@@ -130,8 +130,10 @@ namespace GreenshotDownloadRuPlugin
                 IDictionary<string, object> parameters = new Dictionary<string, object>();
                 parameters.Add("filename", image);
 
-                var response = "";
+                string response;
+
                 string sharedLink = (Config.SharedLink) ? "&shared=true" : "";
+
                 try
                 {
                     string locale = (Language.CurrentLanguage.Length > 1)
@@ -158,6 +160,8 @@ namespace GreenshotDownloadRuPlugin
                         Config.DownloadRuToken = null;
                         continue;
                     }
+
+                    throw;
                 }
 
                 Log.DebugFormat("DownloadRu response: {0}", response);

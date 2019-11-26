@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Threading;
 using System.Windows.Forms;
 using Greenshot.Helpers;
 using GreenshotPlugin.Controls;
@@ -14,23 +12,52 @@ namespace Greenshot
 {
     public partial class UpdateForm : GreenshotForm
     {
-        private readonly string _downloadLink;
-        private readonly WebClient _webClient;
-        private readonly string _tempFilePath;
+        //private class WebClient : System.Net.WebClient
+        //{
+        //    public int Timeout { get; set; }
+
+        //    protected override System.Net.WebRequest GetWebRequest(Uri uri)
+        //    {
+        //        var webRequest = base.GetWebRequest(uri);
+
+        //        if (null == webRequest)
+        //            throw new InvalidOperationException("null == webRequest");
+
+        //        webRequest.Timeout = Timeout;
+        //        ((System.Net.HttpWebRequest)webRequest).ReadWriteTimeout = Timeout;
+        //        return webRequest;
+        //    }
+        //}
+
+        private const int WM_LBUTTONDBLCLK = 0x00A3;
+
+        private const int WM_NCHITTEST = 0x84;
+        private const int HTCLIENT = 0x1;
+        private const int HTCAPTION = 0x2;
+
+        private static readonly object Locker = new object();
+
+        private static UpdateForm _instance;
+
         private readonly VersionInfo _versionInfo;
+        private readonly WebClient _webClient;
+
+        private string _tempFilePath;
 
         private bool _closed;
 
-        public UpdateForm(VersionInfo versionInfo, string downloadLink)
+        private UpdateForm(VersionInfo versionInfo)
         {
-            _versionInfo = versionInfo ?? throw new ArgumentNullException(nameof(versionInfo));
-
-            _downloadLink = downloadLink ?? throw new ArgumentNullException(nameof(downloadLink));
-
             InitializeComponent();
 
-            if (null != versionInfo.Info)
-                infoTextBox.Text = versionInfo.Info;
+            _versionInfo = versionInfo ?? throw new ArgumentNullException(nameof(versionInfo));
+
+            string info = versionInfo.Info;
+
+            if (string.IsNullOrEmpty(info))
+                info = Language.GetFormattedString("UpdateForm_Info", versionInfo.Version);
+
+            infoLabel.Text = info;
 
             var screen = Screen.FromControl(this);
             var workingArea = screen.WorkingArea;
@@ -39,18 +66,27 @@ namespace Greenshot
             Left = workingArea.Width - Width;
 
             _webClient = new WebClient();
+            //_webClient = new WebClient
+            //{
+            //    Timeout = 10 * 1000
+            //};
+
             _webClient.DownloadProgressChanged += (sender, args) =>
             {
                 ReportProgress(args.ProgressPercentage, args.BytesReceived, args.TotalBytesToReceive);
             };
+
             _webClient.DownloadFileCompleted += (sender, args) =>
             {
                 if (null != args.Error)
                 {
-                    captionLabel.Text = Language.GetString("error");
+                    mProgressBar.BarColor = Color.Red;
+                    mProgressBar.Invalidate();
+                    mProgressBar.Update();
 
-                    infoTextBox.BackColor = Color.LightPink;
-                    infoTextBox.Text = Language.GetFormattedString("update_error", args.Error.Message);
+                    infoLabel.BackColor = Color.LightPink;
+                    infoLabel.Text = Language.GetFormattedString("update_error", args.Error.Message);
+
                     return;
                 }
 
@@ -63,81 +99,102 @@ namespace Greenshot
                 if (_closed || IsDisposed)
                     return;
 
-                var thread = new Thread(o =>
+                UpdateHelper.RunUpdate(_tempFilePath);
+
+                lock (Locker)
                 {
-                    Thread.Sleep(500); // ждем, пока приложение закроется...
+                    _instance = null;
+                }
 
-                    var filePath = (string) o;
-
-                    // http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
-                    var startInfo = new ProcessStartInfo
-                    {
-                        Arguments = "/SILENT",
-                        CreateNoWindow = false,
-                        UseShellExecute = false,
-                        FileName = filePath,
-                        WindowStyle = ProcessWindowStyle.Hidden
-                    };
-
-                    try
-                    {
-                        Process.Start(startInfo);
-                    }
-                    catch (Exception exception)
-                    {
-                        MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    }
-                })
-                {
-                    IsBackground = false
-                };
-
-                thread.Start(_tempFilePath);
-                MainForm.Instance.Exit();
+                DialogResult = DialogResult.OK;
             };
+        }
 
-            _tempFilePath = Path.Combine(Path.GetTempPath(), versionInfo.File);
+        public static DialogResult ShowSingleDialog(VersionInfo versionInfo)
+        {
+            if (null == versionInfo)
+                throw new ArgumentNullException(nameof(versionInfo));
+
+            lock (Locker)
+            {
+                if (null != _instance)
+                    return DialogResult.Cancel;
+
+                _instance = new UpdateForm(versionInfo);
+            }
+
+            return _instance.ShowDialog();
+        }
+
+        protected override void WndProc(ref Message m)
+        {
+            if (m.Msg == WM_LBUTTONDBLCLK)
+                return;
+
+            switch (m.Msg)
+            {
+                case WM_NCHITTEST:
+                    base.WndProc(ref m);
+
+                    if ((int)m.Result == HTCLIENT)
+                        m.Result = (IntPtr)HTCAPTION;
+
+                    return;
+            }
+
+            base.WndProc(ref m);
+        }
+
+        private void okLabel_Click(object sender, EventArgs e){
+            okLabel.Enabled = false;
+
+            bottomFlowPanel.SuspendLayout();
+            bottomFlowPanel.Controls.Clear();
+            bottomFlowPanel.Controls.Add(progressBottomPanel);
+            progressBottomPanel.Visible = true;
+            bottomFlowPanel.ResumeLayout(true);
+
+            _tempFilePath = Path.Combine(Path.GetTempPath(), _versionInfo.File);
 
             if (File.Exists(_tempFilePath))
                 File.Delete(_tempFilePath);
-        }
 
-        private void UpdateForm_Load(object sender, EventArgs e)
-        {
             mProgressBar.CustomText = "0%";
-            captionLabel.Text = Language.GetFormattedString("updateform_caption", _versionInfo.Version);
-            _webClient.DownloadFileAsync(new Uri(_downloadLink), _tempFilePath);
+            _webClient.DownloadFileAsync(new Uri(_versionInfo.DownloadLink), _tempFilePath);
         }
 
-        private void cancelButton_Click(object sender, EventArgs e)
+        private void cancelLabel_Click(object sender, EventArgs e)
         {
-            _webClient.CancelAsync();
-            Close();
-        }
+            if (null != _webClient && _webClient.IsBusy)
+                _webClient.CancelAsync();
 
-        private void UpdateForm_FormClosing(object sender, FormClosingEventArgs e)
-        {
             _closed = true;
-            _webClient.CancelAsync();
+
+            lock (Locker)
+            {
+                _instance = null;
+            }
+
+            DialogResult = DialogResult.Cancel;
         }
 
         private void ReportProgress(int progressPercentage, float received, float toReceive)
         {
             mProgressBar.Value = progressPercentage;
 
-            var unit = Language.GetString("updateform_byte"); // Б
+            var unit = Language.GetString("UpdateForm_byte"); // Б
 
             if (toReceive > 1024)
             {
                 received /= 1024;
                 toReceive /= 1024;
-                unit = Language.GetString("updateform_kilobyte"); // кбайт
+                unit = Language.GetString("UpdateForm_kilobyte"); // кбайт
 
                 if (toReceive > 1024)
                 {
                     received /= 1024;
                     toReceive /= 1024;
-                    unit = Language.GetString("updateform_megabyte"); // Мбайт
+                    unit = Language.GetString("UpdateForm_megabyte"); // Мбайт
                 }
             }
 

@@ -29,14 +29,17 @@ using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
+using Greenshot.Destinations;
 
 namespace Greenshot.Forms
 {
@@ -440,13 +443,17 @@ namespace Greenshot.Forms
                 if (null != SelectedCaptureWindow)
                     _capture.CaptureDetails.Title = SelectedCaptureWindow.Text;
 
-                var quickImageEditorResult =
-                    QuickImageEditorForm.ShowQuickImageEditor(_capture, _captureRect, this);
+                if (coreConfiguration.UseQuickEditMode)
+                {
+                    var quickImageEditorResult =
+                        QuickImageEditorForm.ShowQuickImageEditor(_capture, _captureRect, this);
 
-                if (QuickImageEditorAction.None == quickImageEditorResult.Action)
-                    DialogResult = DialogResult.Cancel;
+                    if (QuickImageEditorAction.None == quickImageEditorResult.Action)
+                        DialogResult = DialogResult.Cancel;
 
-                QuickImageEditorResult = quickImageEditorResult;
+                    QuickImageEditorResult = quickImageEditorResult;
+                }
+
                 // Go and process the capture
                 DialogResult = DialogResult.OK;
             }
@@ -594,45 +601,9 @@ namespace Greenshot.Forms
 
             Rectangle invalidateRectangle;
 
-            if (_mouseDown && _captureMode != CaptureMode.Window)
+            if (_captureMode != CaptureMode.Window)
             {
-                //int x1 = Math.Min(_mX, lastPos.X);
-                //int x2 = Math.Max(_mX, lastPos.X);
-                //int y1 = Math.Min(_mY, lastPos.Y);
-                //int y2 = Math.Max(_mY, lastPos.Y);
-                //x1 = Math.Min(x1, _cursorPos.X);
-                //x2 = Math.Max(x2, _cursorPos.X);
-                //y1 = Math.Min(y1, _cursorPos.Y);
-                //y2 = Math.Max(y2, _cursorPos.Y);
-
-                //// Safety correction
-                //x2 += 2;
-                //y2 += 2;
-
-                //// Here we correct for text-size
-
-                //// Calculate the size
-                //int textForWidth = Math.Max(Math.Abs(_mX - _cursorPos.X), Math.Abs(_mX - lastPos.X));
-                //int textForHeight = Math.Max(Math.Abs(_mY - _cursorPos.Y), Math.Abs(_mY - lastPos.Y));
-
-                //using (Font rulerFont = new Font(FontFamily.GenericSansSerif, 8))
-                //{
-                //    Size measureWidth =
-                //        TextRenderer.MeasureText(textForWidth.ToString(CultureInfo.InvariantCulture), rulerFont);
-                //    x1 -= measureWidth.Width + 15;
-
-                //    Size measureHeight = TextRenderer.MeasureText(textForHeight.ToString(CultureInfo.InvariantCulture),
-                //        rulerFont);
-                //    y1 -= measureHeight.Height + 10;
-                //}
-
-                //invalidateRectangle = new Rectangle(x1, y1, x2 - x1, y2 - y1);
-                //Invalidate(invalidateRectangle);
-
-                Invalidate();
-            }
-            else if (_captureMode != CaptureMode.Window)
-            {
+                // Оси (которые на весь экран)
                 if (!IsTerminalServerSession)
                 {
                     Rectangle allScreenBounds = WindowCapture.GetScreenBounds();
@@ -661,6 +632,44 @@ namespace Greenshot.Forms
                             GuiRectangle.GetGuiRectangle(_cursorPos.X - 2, allScreenBounds.Top, 75, Height + 2);
                         Invalidate(invalidateRectangle);
                     }
+                }
+
+                if (_mouseDown)
+                {
+                    // Прямоугольник (надпись в центре + заливака, если установлено)
+                    int x1 = Math.Min(_mX, lastPos.X);
+                    int x2 = Math.Max(_mX, lastPos.X);
+                    int y1 = Math.Min(_mY, lastPos.Y);
+                    int y2 = Math.Max(_mY, lastPos.Y);
+
+                    x1 = Math.Min(x1, _cursorPos.X);
+                    x2 = Math.Max(x2, _cursorPos.X);
+                    y1 = Math.Min(y1, _cursorPos.Y);
+                    y2 = Math.Max(y2, _cursorPos.Y);
+
+                    // Safety correction
+                    x2 += 2;
+                    y2 += 2;
+
+                    // Here we correct for text-size
+
+                    // Calculate the size
+                    //int textForWidth = Math.Max(Math.Abs(_mX - _cursorPos.X), Math.Abs(_mX - lastPos.X));
+                    //int textForHeight = Math.Max(Math.Abs(_mY - _cursorPos.Y), Math.Abs(_mY - lastPos.Y));
+
+                    //using (Font rulerFont = new Font(FontFamily.GenericSansSerif, 8))
+                    //{
+                    //    Size measureWidth =
+                    //        TextRenderer.MeasureText(textForWidth.ToString(CultureInfo.InvariantCulture), rulerFont);
+                    //    x1 -= measureWidth.Width + 15;
+
+                    //    Size measureHeight = TextRenderer.MeasureText(textForHeight.ToString(CultureInfo.InvariantCulture),
+                    //        rulerFont);
+                    //    y1 -= measureHeight.Height + 10;
+                    //}
+
+                    invalidateRectangle = new Rectangle(x1 - 1, y1 - 1, x2 - x1 + 1, y2 - y1 + 1);
+                    Invalidate(invalidateRectangle);
                 }
             }
             else
@@ -748,6 +757,8 @@ namespace Greenshot.Forms
 
                 var fixedRect = IsAnimating(_windowAnimator) ? _windowAnimator.Current : _captureRect;
 
+                Debug.WriteLine("_captureRect=" + _captureRect);
+
                 // TODO: enable when the screen capture code works reliable
                 //if (capture.CaptureDetails.CaptureMode == CaptureMode.Video) {
                 //	graphics.FillRectangle(RedOverlayBrush, fixedRect);
@@ -757,6 +768,7 @@ namespace Greenshot.Forms
                     using (var brush = new SolidBrush(_overlayColor.Value))
                     {
                         graphics.FillRectangle(brush, fixedRect);
+                        Debug.WriteLine("DRAW fixedRect=" + fixedRect);
                     }
 
                 Rectangle screenBounds = _capture.ScreenBounds;
@@ -764,13 +776,10 @@ namespace Greenshot.Forms
                 using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
                 using (Pen pen = new Pen(brush))
                 {
-                    graphics.DrawLine(pen, fixedRect.X, screenBounds.Y, fixedRect.X, screenBounds.Height);
-                    graphics.DrawLine(pen, screenBounds.X, fixedRect.Y, screenBounds.Width, fixedRect.Y);
-
-                    graphics.DrawLine(pen, fixedRect.X + fixedRect.Width, screenBounds.Y, fixedRect.X + fixedRect.Width,
-                        screenBounds.Height);
-                    graphics.DrawLine(pen, screenBounds.X, fixedRect.Y + fixedRect.Height, screenBounds.Width,
-                        fixedRect.Y + fixedRect.Height);
+                    graphics.DrawLine(pen, screenBounds.X, _mY, screenBounds.Width, _mY);
+                    graphics.DrawLine(pen, _mX, screenBounds.Y, _mX, screenBounds.Height);
+                    graphics.DrawLine(pen, screenBounds.X, _cursorPos.Y, screenBounds.Width, _cursorPos.Y);
+                    graphics.DrawLine(pen, _cursorPos.X, screenBounds.Y, _cursorPos.X, screenBounds.Height);
                 }
 
                 //using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
@@ -954,8 +963,8 @@ namespace Greenshot.Forms
                 if (newSize >= 4)
                 {
                     // Only show if 4pt or larger.
-                    //if (newSize > 48)
-                    //    newSize = 48;
+                    if (newSize > 32)
+                        newSize = 32;
 
                     // Draw the size.
                     using (Font newSizeFont = new Font(FontFamily.GenericSansSerif, newSize, FontStyle.Bold))
@@ -1124,6 +1133,15 @@ namespace Greenshot.Forms
                 new float[] {0, 0, 0, 1, 0},
                 new float[] {1, 1, 1, 0, 0}
             };
+
+            //float[][] colorMatrixElements =
+            //{
+            //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
+            //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
+            //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
+            //    new float[] {0, 0, 0, 1, 0},
+            //    new float[] {1, 1, 1, 0, 1}
+            //};
 
             var colorMatrix = new ColorMatrix(colorMatrixElements);
 

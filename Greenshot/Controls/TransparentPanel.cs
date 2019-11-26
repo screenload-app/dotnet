@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
-using GreenshotPlugin.Controls;
 
 namespace Greenshot.Controls
 {
-    public sealed class TransparentLabel : GreenshotLabel
+    internal class TransparentPanel : Panel
     {
         const int WM_NCHITTEST = 0x0084;
         const int HTTRANSPARENT = -1;

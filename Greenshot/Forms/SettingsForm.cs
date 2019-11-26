@@ -50,7 +50,7 @@ namespace Greenshot
 
         private readonly ToolTip _toolTip = new ToolTip();
         private bool _inHotkey;
-        private int _daysbetweencheckPreviousValue;
+        //private int _daysbetweencheckPreviousValue;
 
         private HotkeyHelper _hotkeyHelper;
 
@@ -85,7 +85,7 @@ namespace Greenshot
             // Changes for BUG-2077
             numericUpDown_daysbetweencheck.ValueChanged += NumericUpDownDaysbetweencheckOnValueChanged;
 
-            _daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
+            //_daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
 
             //HotkeyControl.UnregisterHotkeys();
             _hotkeyHelper = new HotkeyHelper(coreConfiguration);
@@ -104,20 +104,20 @@ namespace Greenshot
         /// <param name="eventArgs">EventArgs</param>
         private void NumericUpDownDaysbetweencheckOnValueChanged(object sender, EventArgs eventArgs)
         {
-            int currentValue = (int) numericUpDown_daysbetweencheck.Value;
+            //int currentValue = (int) numericUpDown_daysbetweencheck.Value;
 
-            // Check if we can into the forbidden range
-            if (currentValue > 0 && currentValue < 7)
-            {
-                if (_daysbetweencheckPreviousValue <= currentValue)
-                {
-                    numericUpDown_daysbetweencheck.Value = 7;
-                }
-                else
-                {
-                    numericUpDown_daysbetweencheck.Value = 0;
-                }
-            }
+            //// Check if we can into the forbidden range
+            //if (currentValue > 0 && currentValue < 7)
+            //{
+            //    if (_daysbetweencheckPreviousValue <= currentValue)
+            //    {
+            //        numericUpDown_daysbetweencheck.Value = 7;
+            //    }
+            //    else
+            //    {
+            //        numericUpDown_daysbetweencheck.Value = 0;
+            //    }
+            //}
 
             if ((int) numericUpDown_daysbetweencheck.Value < 0)
             {
@@ -129,7 +129,7 @@ namespace Greenshot
                 numericUpDown_daysbetweencheck.Value = 365;
             }
 
-            _daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
+            //_daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
         }
 
         private void EnterHotkeyControl(object sender, EventArgs e)
@@ -956,9 +956,9 @@ namespace Greenshot
             thread.Start();
         }
 
-        private void onlyStableVersionsCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void checkbox_checkunstableupdates_CheckedChanged(object sender, EventArgs e)
         {
-            coreConfiguration.UseStableVersionsOnly = onlyStableVersionsCheckBox.Checked;
+            coreConfiguration.CheckForUnstable = checkbox_checkunstableupdates.Checked;
         }
     }
 

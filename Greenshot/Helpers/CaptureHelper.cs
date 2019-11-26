@@ -33,6 +33,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Threading;
 using System.Windows.Forms;
 
@@ -44,7 +45,6 @@ namespace Greenshot.Helpers
     public class CaptureHelper : IDisposable
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(CaptureHelper));
-
         private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
 
         // TODO: when we get the screen capture code working correctly, this needs to be enabled
@@ -413,6 +413,7 @@ namespace Greenshot.Helpers
                     break;
                 case CaptureMode.FullScreen:
                     // Check how we need to capture the screen
+                {
                     bool captureTaken = false;
 
                     switch (_screenCaptureMode)
@@ -448,14 +449,22 @@ namespace Greenshot.Helpers
                     if (!captureTaken)
                         _capture = WindowCapture.CaptureScreen(_capture);
 
-                    var fullScreenAction = ShowQuickEditor();
+                    if (CoreConfig.UseQuickEditMode)
+                    {
+                        var fullScreenAction = ShowQuickEditor();
 
-                    if (QuickImageEditorAction.None != fullScreenAction)
+                        if (QuickImageEditorAction.None != fullScreenAction)
+                        {
+                            SetDpi();
+                            HandleCapture(fullScreenAction);
+                        }
+                    }
+                    else
                     {
                         SetDpi();
-                        HandleCapture(fullScreenAction);
+                        HandleCapture();
                     }
-
+                }
                     break;
                 case CaptureMode.Clipboard:
                     Image clipboardImage = ClipboardHelper.GetImage();
@@ -575,9 +584,16 @@ namespace Greenshot.Helpers
 
                         _capture = capture;
 
-                        var lastRegionAction = ShowQuickEditor(CoreConfig.LastCapturedRegion);
+                        QuickImageEditorAction? lastRegionAction = null;
 
-                        if (QuickImageEditorAction.None != lastRegionAction)
+                        var destinations = _capture.CaptureDetails.CaptureDestinations;
+
+                        if (CoreConfig.UseQuickEditMode)
+                            lastRegionAction = ShowQuickEditor(CoreConfig.LastCapturedRegion);
+                        else
+                            capture.Crop(CoreConfig.LastCapturedRegion);
+
+                        if (null == lastRegionAction || QuickImageEditorAction.None != lastRegionAction.Value)
                         {
                             //_capture = WindowCapture.CaptureRectangle(_capture, CoreConfig.LastCapturedRegion);
                             // TODO: Reactive / check if the elements code is activated
@@ -849,61 +865,54 @@ namespace Greenshot.Helpers
             // Get CaptureDetails as we need it even after the capture is disposed
             ICaptureDetails captureDetails = _capture.CaptureDetails;
             bool canDisposeSurface = true;
+            bool successExport = false;
+
+            if (null != quickImageEditorAction)
+            {
+                // В режиме быстрого редактирования - отключаем все обработчики.
+                captureDetails.CaptureDestinations.Clear();
+                canDisposeSurface = false;
+
+                string destinationName;
+
+                switch (quickImageEditorAction)
+                {
+                    case QuickImageEditorAction.DownloadRu:
+                        destinationName = "DownloadRu";
+                        break;
+                    case QuickImageEditorAction.Save:
+                        destinationName = FileWithDialogDestination.DESIGNATION;
+                        break;
+                    case QuickImageEditorAction.Copy:
+                        destinationName = ClipboardDestination.DESIGNATION;
+                        break;
+                    case QuickImageEditorAction.Editor:
+                        destinationName = EditorDestination.DESIGNATION;
+                        break;
+                    default:
+                        destinationName = null;
+                        break;
+                }
+
+                if (null != destinationName)
+                {
+                    var destination = DestinationHelper.GetDestination(destinationName);
+                    var exportInformation = destination?.ExportCapture(false, surface, captureDetails);
+
+                    if (null != exportInformation)
+                    {
+                        if (!exportInformation.ExportMade)
+                            DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface,
+                                captureDetails);
+                        else
+                            successExport = true;
+                    }
+                }
+            }
 
             if (captureDetails.HasDestination(PickerDestination.DESIGNATION))
             {
-                if (null != quickImageEditorAction)
-                {
-                    string destinationName;
-
-                    switch (quickImageEditorAction)
-                    {
-                        case QuickImageEditorAction.DownloadRu:
-                            destinationName = "DownloadRu";
-                            break;
-                        case QuickImageEditorAction.Save:
-                            destinationName = FileWithDialogDestination.DESIGNATION;
-                            break;
-                        case QuickImageEditorAction.Copy:
-                            destinationName = ClipboardDestination.DESIGNATION;
-                            break;
-                        case QuickImageEditorAction.Editor:
-                            destinationName = EditorDestination.DESIGNATION;
-                            break;
-                        default:
-                            destinationName = null;
-                            break;
-                    }
-
-                    if (null != destinationName)
-                    {
-                        var destination = DestinationHelper.GetDestination(destinationName);
-                        var exportInformation = destination?.ExportCapture(false, surface, captureDetails);
-
-                        if (null != exportInformation && !exportInformation.ExportMade)
-                            DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface,
-                                captureDetails);
-                    }
-                }
-                else
-                    DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
-
-                //switch (_captureMode)
-                //{
-                //    case CaptureMode.LastRegion:
-                //    case CaptureMode.FullScreen:
-                //    {
-                //            //ShowQuickEditor(null,
-                //            //    new Rectangle(_capture.Location.X, _capture.Location.Y, surface.Width, surface.Height),
-                //            //    captureDetails);
-                //            //Console.WriteLine(1);
-                //        }
-                //        break;
-                //    default:
-                //        DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
-                //        break;
-                //}
-
+                DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
                 captureDetails.CaptureDestinations.Clear();
                 canDisposeSurface = false;
             }
@@ -915,6 +924,7 @@ namespace Greenshot.Helpers
             _capture = null;
 
             int destinationCount = captureDetails.CaptureDestinations.Count;
+
             if (destinationCount > 0)
             {
                 // Flag to detect if we need to create a temp file for the email
@@ -929,12 +939,18 @@ namespace Greenshot.Helpers
                     Log.InfoFormat("Calling destination {0}", destination.Description);
 
                     ExportInformation exportInformation = destination.ExportCapture(false, surface, captureDetails);
+
                     if (EditorDestination.DESIGNATION.Equals(destination.Designation) && exportInformation.ExportMade)
-                    {
                         canDisposeSurface = false;
-                    }
+
+                    if (exportInformation.ExportMade)
+                        successExport = true;
                 }
             }
+
+            // Проверка обновления после завершения работы с скриншотом
+            if (successExport && CoreConfig.CheckForUnstable)
+                UpdateHelper.CheckAndAskForUpdateInThread(CoreConfig, 7500);
 
             if (canDisposeSurface)
             {
@@ -1401,9 +1417,7 @@ namespace Greenshot.Helpers
                         _capture = capture;
                     }
                     else
-                    {
                         _captureRect = captureForm.CaptureRectangle;
-                    }
 
                     // Get title
                     if (_selectedCaptureWindow != null)

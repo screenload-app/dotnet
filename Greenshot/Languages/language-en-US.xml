@@ -216,7 +216,8 @@ Please check write accessibility of the selected storage location.</resource>
 		<resource name="settings_destination_editor">Open in image editor</resource>
 		<resource name="settings_destination_email">E-Mail</resource>
 		<resource name="settings_destination_file">Save directly (using settings below)</resource>
-		<resource name="settings_destination_fileas">Save as (displaying dialog)</resource>
+    <resource name="settings_destination_fileas">Save as (displaying dialog)</resource>
+    <resource name="settings_useQuickEditMode">Preferably use quick edit mode</resource>
 		<resource name="settings_destination_picker">Select destination dynamically</resource>
 		<resource name="settings_destination_printer">Send to printer</resource>
 		<resource name="settings_editor">Editor</resource>
@@ -376,5 +377,8 @@ All Greenshot functions still work directly from the context menu via the tray i
     <resource name="noupdatesfound">No updates found!</resource>
 
     <resource name="update_error">An error occured while downloading: {0}</resource>
+
+    <resource name="UpdateForm_Info">A newer version of Greenshot is available! Do you want to download and install Greenshot {0}?</resource>
+
   </resources>
 </language>

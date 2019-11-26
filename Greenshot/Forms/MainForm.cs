@@ -408,8 +408,6 @@ namespace Greenshot
             HotkeyControl.RegisterHotkeyHwnd(Handle);
             new HotkeyHelper(_conf).RegisterHotkeys(this);
 
-            new ToolTip();
-
             UpdateUi();
 
             // This forces the registration of all destinations inside Greenshot itself.
@@ -477,6 +475,9 @@ namespace Greenshot
             {
                 PsAPI.EmptyWorkingSet();
             }
+
+            // Скрыть/отобразить пункты до открытия, иначе открывается не в том месте.
+            notifyIcon.MouseDown += (sender, args) => { SimplifyContextMenu(); };
         }
 
         /// <summary>
@@ -656,27 +657,7 @@ namespace Greenshot
 
         private void ContextMenuOpening(object sender, CancelEventArgs e)
         {
-            contextmenu_captureclipboard.Enabled = ClipboardHelper.ContainsImage();
-            contextmenu_capturelastregion.Enabled = coreConfiguration.LastCapturedRegion != Rectangle.Empty;
-
-            // IE context menu code
-            try
-            {
-                if (_conf.IECapture && IeCaptureHelper.IsIeRunning())
-                {
-                    contextmenu_captureie.Enabled = true;
-                    contextmenu_captureiefromlist.Enabled = true;
-                }
-                else
-                {
-                    contextmenu_captureie.Enabled = false;
-                    contextmenu_captureiefromlist.Enabled = false;
-                }
-            }
-            catch (Exception ex)
-            {
-                LOG.WarnFormat("Problem accessing IE information: {0}", ex.Message);
-            }
+            SimplifyContextMenu();
 
             // Multi-Screen captures
             contextmenu_capturefullscreen.Click -= CaptureFullScreenToolStripMenuItemClick;
@@ -700,6 +681,38 @@ namespace Greenshot
             //    var resources = new ComponentResourceManager(typeof(MainForm));
             //    contextmenu_donate.Image = (Image) resources.GetObject("contextmenu_present.Image");
             //}
+        }
+
+        private void SimplifyContextMenu()
+        {
+            contextMenu.SuspendLayout();
+
+            contextmenu_captureclipboard.Visible = ClipboardHelper.ContainsImage();
+            contextmenu_capturelastregion.Visible = coreConfiguration.LastCapturedRegion != Rectangle.Empty;
+
+            // IE context menu code
+            try
+            {
+                if (_conf.IECapture && IeCaptureHelper.IsIeRunning())
+                {
+                    contextmenu_captureie.Visible = true;
+                    contextmenu_captureiefromlist.Visible = true;
+                }
+                else
+                {
+                    contextmenu_captureie.Visible = false;
+                    contextmenu_captureiefromlist.Visible = false;
+                }
+            }
+            catch (Exception ex)
+            {
+                LOG.WarnFormat("Problem accessing IE information: {0}", ex.Message);
+            }
+            
+            contextMenu.ResumeLayout(true);
+            
+            contextMenu.Invalidate();
+            contextMenu.Update();
         }
 
         private void ContextMenuClosing(object sender, EventArgs e)
@@ -1153,8 +1166,10 @@ namespace Greenshot
                 {
                     Text = Language.GetString("settings_capture_mousepointer"),
                     Checked = _conf.CaptureMousepointer,
+                    Size = new Size(180, 22),
                     CheckOnClick = true
                 };
+
                 captureMouseItem.CheckStateChanged += CheckStateChangedHandler;
 
                 contextmenu_quicksettings.DropDownItems.Add(captureMouseItem);
@@ -1584,6 +1599,7 @@ namespace Greenshot
             }
         }
 
+        private static int _lifeTimeHours;
 
         /// <summary>
         /// Do work in the background
@@ -1592,24 +1608,32 @@ namespace Greenshot
         /// <param name="e"></param>
         private void BackgroundWorkerTimerTick(object sender, EventArgs e)
         {
-            backgroundWorkerTimer.Interval = 10 * 60 * 1000;
-
-            if (_conf.MinimizeWorkingSetSize)
-            {
-                PsAPI.EmptyWorkingSet();
-            }
-
-            if (UpdateHelper.IsUpdateCheckNeeded())
+            void CheckAndAskForUpdate()
             {
                 LOG.Debug("BackgroundWorkerTimerTick checking for update");
-                // Start update check in the background
-                var backgroundTask = new Thread(() => { UpdateHelper.CheckAndAskForUpdate(coreConfiguration); })
-                {
-                    Name = "Update check",
-                    IsBackground = true
-                };
-                backgroundTask.Start();
+                UpdateHelper.CheckAndAskForUpdateInThread(coreConfiguration);
             }
+
+            const int secondTimeInterval = 60 * 60 * 1000;
+
+            if (backgroundWorkerTimer.Interval != secondTimeInterval)
+            {
+                backgroundWorkerTimer.Interval = secondTimeInterval;
+
+                if (CoreConfiguration.CheckForUnstable)
+                    CheckAndAskForUpdate(); // при первом запуске, если проверять нестабильные
+
+                return;
+            }
+
+            _lifeTimeHours++;
+
+            if (_conf.MinimizeWorkingSetSize)
+                PsAPI.EmptyWorkingSet();
+
+            if (UpdateHelper.IsUpdateCheckNeeded() ||
+                CoreConfiguration.CheckForUnstable && 0 == _lifeTimeHours % 24) // Раз в сутки, если проверять нестабильные.
+                CheckAndAskForUpdate();
         }
     }
 }

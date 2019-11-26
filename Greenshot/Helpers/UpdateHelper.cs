@@ -1,33 +1,14 @@
-﻿/*
- * Greenshot - a free and open source screenshot tool
- * Copyright (C) 2007-2016 Thomas Braun, Jens Klingen, Robin Krom
- * 
- * For more information see: http://getgreenshot.org/
- * The Greenshot project is hosted on GitHub https://github.com/greenshot/greenshot
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 1 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-using System;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 using System.Xml;
-using Greenshot.Configuration;
 using Greenshot.IniFile;
 using GreenshotPlugin.Core;
 using log4net;
@@ -36,7 +17,9 @@ namespace Greenshot.Helpers
 {
     public sealed class VersionInfo
     {
-        private readonly XmlNode _xmlNode;
+        private const string DefaultLanguageKey = "en-US";
+
+        private readonly Dictionary<string, string> _infoDictionary = new Dictionary<string, string>();
 
         public Version Version { get; }
         public string File { get; }
@@ -45,18 +28,24 @@ namespace Greenshot.Helpers
         {
             get
             {
-                var infoNode = _xmlNode.SelectSingleNode($"info[@locale=\"{Language.CurrentLanguage}\"]") ??
-                               _xmlNode.SelectSingleNode("info[@locale=\"en-US\"]");
+                if (_infoDictionary.ContainsKey(Language.CurrentLanguage))
+                    return _infoDictionary[Language.CurrentLanguage];
 
-                return infoNode?.InnerText;
+                if (_infoDictionary.ContainsKey(DefaultLanguageKey))
+                    return _infoDictionary[DefaultLanguageKey];
+
+                return null;
             }
         }
+
+        public string DownloadLink { get; set; }
 
         public bool Unwanted { get; set; }
 
         public VersionInfo(XmlNode xmlNode)
         {
-            _xmlNode = xmlNode ?? throw new ArgumentNullException(nameof(xmlNode));
+            if (null == xmlNode)
+                throw new ArgumentNullException(nameof(xmlNode));
 
             var numberValue = xmlNode.Attributes?["number"].Value;
 
@@ -67,6 +56,24 @@ namespace Greenshot.Helpers
 
             var file = xmlNode.Attributes?["file"].Value;
             File = file ?? throw new InvalidOperationException("null == file");
+
+            var infoNodes = xmlNode.SelectNodes("info");
+            
+            if (null == infoNodes)
+                return;
+
+            foreach (XmlElement infoNode in  infoNodes)
+            {
+                var locale = infoNode.Attributes["locale"]?.Value;
+
+                if (null == locale)
+                    locale = DefaultLanguageKey;
+
+                if (_infoDictionary.ContainsKey(locale))
+                    continue;
+
+                _infoDictionary.Add(locale, infoNode.InnerText);
+            }
         }
     }
 
@@ -80,6 +87,7 @@ namespace Greenshot.Helpers
 
         private static readonly object LockObject = new object();
 
+        private static volatile bool _updateInProgress;
         private static VersionInfo _lastVersion;
 
         /// <summary>
@@ -88,115 +96,187 @@ namespace Greenshot.Helpers
         /// <returns>bool true if yes</returns>
         public static bool IsUpdateCheckNeeded()
         {
-            lock (LockObject)
-            {
-                if (CoreConfig.UpdateCheckInterval == 0)
-                    return false;
+            if (CoreConfig.UpdateCheckInterval == 0)
+                return false;
 
-                var lastUpdateCheck = CoreConfig.LastUpdateCheck;
-                lastUpdateCheck = lastUpdateCheck.AddDays(CoreConfig.UpdateCheckInterval);
+            var lastUpdateCheck = CoreConfig.LastUpdateCheck;
+            lastUpdateCheck = lastUpdateCheck.AddDays(CoreConfig.UpdateCheckInterval);
 
-                if (DateTime.Now.CompareTo(lastUpdateCheck) < 0)
-                    return false;
-            }
+            if (DateTime.Now.CompareTo(lastUpdateCheck) < 0)
+                return false;
 
             return true;
         }
 
-        /// <summary>
-        /// Read the RSS feed to see if there is a Greenshot update
-        /// </summary>
+        public static void CheckAndAskForUpdateInThread(CoreConfiguration configuration, int millisecondsTimeout = 0)
+        {
+            if (null == configuration)
+                throw new ArgumentNullException(nameof(configuration));
+
+            var backgroundTask = new Thread(() => { CheckAndAskForUpdate(configuration, millisecondsTimeout); })
+            {
+                Name = "Update check", IsBackground = true
+            };
+
+            backgroundTask.Start();
+        }
+
         public static bool CheckAndAskForUpdate(CoreConfiguration configuration)
+        {
+            return CheckAndAskForUpdate(configuration, 0);
+        }
+
+        public static void RunUpdate(string tempFilePath)
+        {
+            if (null == tempFilePath)
+                throw new ArgumentNullException(nameof(tempFilePath));
+
+            var thread = new Thread(o =>
+            {
+                Thread.Sleep(500); // ждем, пока приложение закроется...
+
+                var filePath = (string)o;
+
+                // http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
+                // TODO $ LANG=ru
+                var startInfo = new ProcessStartInfo
+                {
+                    Arguments = "/SILENT /LANG=ru",
+                    CreateNoWindow = false,
+                    UseShellExecute = false,
+                    FileName = filePath,
+                    WindowStyle = ProcessWindowStyle.Hidden
+                };
+
+                try
+                {
+                    Process.Start(startInfo);
+                }
+                catch (Exception exception)
+                {
+                    MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            })
+            {
+                IsBackground = false
+            };
+
+            thread.Start(tempFilePath);
+        }
+
+        private static bool CheckAndAskForUpdate(CoreConfiguration configuration, int millisecondsTimeout)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
 
             lock (LockObject)
             {
-                var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-                // Test like this:
-                // currentVersion = new Version("0.8.1.1198");
+                if (_updateInProgress)
+                    return false;
 
-                try
+                _updateInProgress = true;
+            }
+
+            if (0 != millisecondsTimeout)
+            {
+                Thread.Sleep(millisecondsTimeout);
+            }
+
+            var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
+            // Test like this:
+            // currentVersion = new Version("0.8.1.1198");
+
+            try
+            {
+                VersionInfo lastVersion;
+
+                using (var webClient = new WebClient())
                 {
-                    VersionInfo lastVersion;
+                    webClient.Encoding = Encoding.UTF8;
 
-                    using (var webClient = new WebClient())
-                    {
-                        webClient.Encoding = Encoding.UTF8;
+                    var versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
 
-                        var versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
+                    var xmlDocument = new XmlDocument();
+                    xmlDocument.LoadXml(versionHistoryText);
 
-                        var xmlDocument = new XmlDocument();
-                        xmlDocument.LoadXml(versionHistoryText);
+                    var xPath = configuration.CheckForUnstable ? "version" : "version[@type='release']";
 
-                        var xPath = configuration.UseStableVersionsOnly ? "version[@type='release']" : "version";
+                    var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
 
-                        var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
+                    if (null == versionNodes)
+                        throw new InvalidOperationException("null == versionNodes");
 
-                        if (null == versionNodes)
-                            throw new InvalidOperationException("null == versionNodes");
+                    var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
 
-                        var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
-
-                        lastVersion = versionInfoList.OrderByDescending(vi => vi.Version).First();
-                    }
-
-                    if (null == _lastVersion)
-                        _lastVersion = lastVersion;
-                    else
-                    {
-                        if (_lastVersion.Version >= lastVersion.Version && _lastVersion.Unwanted)
-                            return false; // Уже оповещали
-
-                        _lastVersion = lastVersion;
-                    }
-
-                    if (_lastVersion.Version <= currentVersion)
-                        return false;
-
-                    var text = Language.GetFormattedString(LangKey.update_found, _lastVersion.Version);
-
-                    if (null != _lastVersion.Info)
-                        text = $"{text} {_lastVersion.Info}";
-
-                    MainForm.Instance.NotifyIcon.BalloonTipClicked += HandleBalloonTipClick;
-                    MainForm.Instance.NotifyIcon.BalloonTipClosed += CleanupBalloonTipClick;
-                    MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot", text, ToolTipIcon.Info);
-
-                    CoreConfig.LastUpdateCheck = DateTime.Now;
-
-                    return true;
+                    lastVersion = versionInfoList.OrderByDescending(vi => vi.Version).First();
                 }
-                catch (Exception e)
+
+                if (null == _lastVersion)
+                    _lastVersion = lastVersion;
+                else
                 {
-                    Log.Error("An error occured while checking for updates, the error will be ignored: ", e);
+                    if (_lastVersion.Version >= lastVersion.Version && _lastVersion.Unwanted)
+                    {
+                        lock (LockObject)
+                        {
+                            _updateInProgress = false;
+                        }
+
+                        return false; // Уже оповещали
+                    }
+
+                    _lastVersion = lastVersion;
+                }
+
+                if (_lastVersion.Version <= currentVersion)
+                {
+                    lock (LockObject)
+                    {
+                        _updateInProgress = false;
+                    }
+
                     return false;
                 }
+
+                _lastVersion.DownloadLink = string.Format(CultureInfo.InvariantCulture, DownloadLinkTemplate,
+                    _lastVersion.File);
+
+                CoreConfig.LastUpdateCheck = DateTime.Now;
+
+                new Thread(() =>
+                {
+                    if (DialogResult.OK == UpdateForm.ShowSingleDialog(_lastVersion))
+                    {
+                        try
+                        {
+                            MainForm.Instance.Invoke((MethodInvoker)MainForm.Instance.Exit);
+                        }
+                        catch (Exception e)
+                        {
+                            Log.Error(e);
+                        }
+                    }
+                })
+                { IsBackground = true }.Start();
+
+                lock (LockObject)
+                {
+                    _updateInProgress = false;
+                }
+
+                return true;
             }
-        }
-
-        private static void HandleBalloonTipClick(object sender, EventArgs e)
-        {
-            CleanupBalloonTipClick(sender, e);
-
-            var text = Language.GetFormattedString("update_confirmation", _lastVersion.Version);
-
-            if (DialogResult.Yes == MessageBox.Show(MainForm.Instance, text, "Greenshot", MessageBoxButtons.YesNo,
-                    MessageBoxIcon.Question, MessageBoxDefaultButton.Button1))
+            catch (Exception e)
             {
-                var updateForm = new UpdateForm(_lastVersion,
-                    string.Format(CultureInfo.InvariantCulture, DownloadLinkTemplate, _lastVersion.File));
-                updateForm.Show(MainForm.Instance);
-            }
-            else
-                _lastVersion.Unwanted = true;
-        }
+                Log.Error("An error occured while checking for updates, the error will be ignored: ", e);
 
-        private static void CleanupBalloonTipClick(object sender, EventArgs e)
-        {
-            MainForm.Instance.NotifyIcon.BalloonTipClicked -= HandleBalloonTipClick;
-            MainForm.Instance.NotifyIcon.BalloonTipClosed -= CleanupBalloonTipClick;
+                lock (LockObject)
+                {
+                    _updateInProgress = false;
+                }
+
+                return false;
+            }
         }
     }
 }

@@ -28,68 +28,79 @@ using Greenshot.Plugin;
 using GreenshotPlugin.UnmanagedHelpers;
 using log4net;
 
-namespace GreenshotPlugin.Core {
-	/// <summary>
-	/// Description of AbstractDestination.
-	/// </summary>
-	public abstract class AbstractDestination : IDestination {
-		private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractDestination));
-		private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
-		
-		public virtual int CompareTo(object obj) {
-			IDestination other = obj as IDestination;
-			if (other == null) {
-				return 1;
-			}
-			if (Priority == other.Priority) {
-				return String.Compare(Description, other.Description, StringComparison.Ordinal);
-			}
-			return Priority - other.Priority;
-		}
+namespace GreenshotPlugin.Core
+{
+    /// <summary>
+    /// Description of AbstractDestination.
+    /// </summary>
+    public abstract class AbstractDestination : IDestination
+    {
+        private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractDestination));
+        private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
 
-		public abstract string Designation {
-			get;
-		}
+        public virtual int CompareTo(object obj)
+        {
+            IDestination other = obj as IDestination;
+            if (other == null)
+            {
+                return 1;
+            }
 
-		public abstract string Description {
-			get;
-		}
+            if (Priority == other.Priority)
+            {
+                return String.Compare(Description, other.Description, StringComparison.Ordinal);
+            }
 
-		public virtual int Priority => 10;
+            return Priority - other.Priority;
+        }
 
-		public virtual Image DisplayIcon => null;
+        public abstract string Designation { get; }
 
-		public virtual Keys EditorShortcutKeys => Keys.None;
+        public abstract string Description { get; }
 
-		public virtual IEnumerable<IDestination> DynamicDestinations() {
-			yield break;
-		}
+        public virtual int Priority => 10;
 
-		public void Dispose() {
-			Dispose(true);
-			GC.SuppressFinalize(this);
-		}
+        public virtual Image DisplayIcon => null;
 
-		protected virtual void Dispose(bool disposing) {
-			//if (disposing) {}
-		}
+        public virtual Keys EditorShortcutKeys => Keys.None;
 
-		public virtual bool IsDynamic => false;
+        public virtual IEnumerable<IDestination> DynamicDestinations()
+        {
+            yield break;
+        }
 
-		public virtual bool UseDynamicsOnly => false;
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-		public virtual bool IsLinkable => false;
+        protected virtual void Dispose(bool disposing)
+        {
+            //if (disposing) {}
+        }
 
-		public virtual bool IsActive {
-			get {
-				if (CoreConfig.ExcludeDestinations != null && CoreConfig.ExcludeDestinations.Contains(Designation)) {
-					return false;
-				}
-				return true;
-			}
-		}
+        public virtual bool IsDynamic => false;
 
-		public abstract ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails);
+        public virtual bool UseDynamicsOnly => false;
+
+        public virtual bool IsLinkable => false;
+
+        public virtual bool IsActive
+        {
+            get
+            {
+                if (CoreConfig.ExcludeDestinations != null && CoreConfig.ExcludeDestinations.Contains(Designation))
+                {
+                    return false;
+                }
+
+                return true;
+            }
+        }
+
+        public abstract ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
+            ICaptureDetails captureDetails);
 
         /// <summary>
         /// A small helper method to perform some default destination actions, like inform the surface of the export
@@ -98,7 +109,7 @@ namespace GreenshotPlugin.Core {
         /// <param name="surface"></param>
         public void ProcessExport(ExportInformation exportInformation, ISurface surface)
         {
-            if (exportInformation != null && exportInformation.ExportMade)
+            if (exportInformation != null && exportInformation.ExportMade && exportInformation.ShowNotification)
             {
                 var message = exportInformation.SuccessMessage ??
                               Language.GetFormattedString("exported_to", exportInformation.DestinationDescription);
@@ -126,224 +137,273 @@ namespace GreenshotPlugin.Core {
             }
         }
 
-        public override string ToString() {
-			return Description;
-		}
+        public override string ToString()
+        {
+            return Description;
+        }
 
-		/// <summary>
-		/// Helper method to add events which set the tag, this way we can see why there might be a close.
-		/// </summary>
-		/// <param name="menuItem">Item to add the events to</param>
-		/// <param name="menu">Menu to set the tag</param>
-		/// <param name="tagValue">Value for the tag</param>
-		private void AddTagEvents(ToolStripMenuItem menuItem, ContextMenuStrip menu, string tagValue) {
-			if (menuItem != null && menu != null) {
-				menuItem.MouseDown += delegate
-				{
-					Log.DebugFormat("Setting tag to '{0}'", tagValue);
-					menu.Tag = tagValue;
-				};
-				menuItem.MouseUp += delegate
-				{
-					Log.Debug("Deleting tag");
-					menu.Tag = null;
-				};
-			}
-		}
+        /// <summary>
+        /// Helper method to add events which set the tag, this way we can see why there might be a close.
+        /// </summary>
+        /// <param name="menuItem">Item to add the events to</param>
+        /// <param name="menu">Menu to set the tag</param>
+        /// <param name="tagValue">Value for the tag</param>
+        private void AddTagEvents(ToolStripMenuItem menuItem, ContextMenuStrip menu, string tagValue)
+        {
+            if (menuItem != null && menu != null)
+            {
+                menuItem.MouseDown += delegate
+                {
+                    Log.DebugFormat("Setting tag to '{0}'", tagValue);
+                    menu.Tag = tagValue;
+                };
+                menuItem.MouseUp += delegate
+                {
+                    Log.Debug("Deleting tag");
+                    menu.Tag = null;
+                };
+            }
+        }
 
-		/// <summary>
-		/// This method will create and show the destination picker menu
-		/// </summary>
-		/// <param name="addDynamics">Boolean if the dynamic values also need to be added</param>
-		/// <param name="surface">The surface which can be exported</param>
-		/// <param name="captureDetails">Details for the surface</param>
-		/// <param name="destinations">The list of destinations to show</param>
-		/// <returns></returns>
-		public ExportInformation ShowPickerMenu(bool addDynamics, ISurface surface, ICaptureDetails captureDetails, IEnumerable<IDestination> destinations) {
-			// Generate an empty ExportInformation object, for when nothing was selected.
-			ExportInformation exportInformation = new ExportInformation(Designation, Language.GetString("settings_destination_picker"));
-			var menu = new ContextMenuStrip
-			{
-				ImageScalingSize = CoreConfig.IconSize,
-				Tag = null,
-				TopLevel = true
-			};
+        /// <summary>
+        /// This method will create and show the destination picker menu
+        /// </summary>
+        /// <param name="addDynamics">Boolean if the dynamic values also need to be added</param>
+        /// <param name="surface">The surface which can be exported</param>
+        /// <param name="captureDetails">Details for the surface</param>
+        /// <param name="destinations">The list of destinations to show</param>
+        /// <returns></returns>
+        public ExportInformation ShowPickerMenu(bool addDynamics, ISurface surface, ICaptureDetails captureDetails,
+            IEnumerable<IDestination> destinations)
+        {
+            // Generate an empty ExportInformation object, for when nothing was selected.
+            ExportInformation exportInformation =
+                new ExportInformation(Designation, Language.GetString("settings_destination_picker"));
+            var menu = new ContextMenuStrip
+            {
+                ImageScalingSize = CoreConfig.IconSize,
+                Tag = null,
+                TopLevel = true
+            };
 
-			menu.Closing += delegate(object source, ToolStripDropDownClosingEventArgs eventArgs) {
-				Log.DebugFormat("Close reason: {0}", eventArgs.CloseReason);
-				switch (eventArgs.CloseReason) {
-					case ToolStripDropDownCloseReason.AppFocusChange:
-						if (menu.Tag == null) {
-							// Do not allow the close if the tag is not set, this means the user clicked somewhere else.
-							eventArgs.Cancel = true;
-						} else {
-							Log.DebugFormat("Letting the menu 'close' as the tag is set to '{0}'", menu.Tag);
-						}
-						break;
-					case ToolStripDropDownCloseReason.ItemClicked:
-					case ToolStripDropDownCloseReason.CloseCalled:
-						// The ContextMenuStrip can be "closed" for these reasons.
-						break;
-					case ToolStripDropDownCloseReason.Keyboard:
-						// Dispose as the close is clicked
-						if (!captureDetails.HasDestination("Editor")) {
-							surface.Dispose();
-							surface = null;
-						}
-						break;
-					default:
-						eventArgs.Cancel = true;
-						break;
-				}
-			};
-			menu.MouseEnter += delegate
-			{
-				// in case the menu has been unfocused, focus again so that dropdown menus will still open on mouseenter
-				if(!menu.ContainsFocus) menu.Focus();
-			};
-			foreach (IDestination destination in destinations) {
-				// Fix foreach loop variable for the delegate
-				ToolStripMenuItem item = destination.GetMenuItem(addDynamics, menu,
-					delegate(object sender, EventArgs e) {
-						ToolStripMenuItem toolStripMenuItem = sender as ToolStripMenuItem;
-						IDestination clickedDestination = (IDestination) toolStripMenuItem?.Tag;
-						if (clickedDestination == null) {
-							return;
-						}
-						menu.Tag = clickedDestination.Designation;
-						// Export
-						exportInformation = clickedDestination.ExportCapture(true, surface, captureDetails);
-						if (exportInformation != null && exportInformation.ExportMade) {
-							Log.InfoFormat("Export to {0} success, closing menu", exportInformation.DestinationDescription);
-							// close menu if the destination wasn't the editor
-							menu.Close();
+            menu.Closing += delegate(object source, ToolStripDropDownClosingEventArgs eventArgs)
+            {
+                Log.DebugFormat("Close reason: {0}", eventArgs.CloseReason);
+                switch (eventArgs.CloseReason)
+                {
+                    case ToolStripDropDownCloseReason.AppFocusChange:
+                        if (menu.Tag == null)
+                        {
+                            // Do not allow the close if the tag is not set, this means the user clicked somewhere else.
+                            eventArgs.Cancel = true;
+                        }
+                        else
+                        {
+                            Log.DebugFormat("Letting the menu 'close' as the tag is set to '{0}'", menu.Tag);
+                        }
 
-							// Cleanup surface, only if there is no editor in the destinations and we didn't export to the editor
-							if (!captureDetails.HasDestination("Editor") && !"Editor".Equals(clickedDestination.Designation)) {
-								surface.Dispose();
-								surface = null;
-							}
-						} else {
-							Log.Info("Export cancelled or failed, showing menu again");
+                        break;
+                    case ToolStripDropDownCloseReason.ItemClicked:
+                    case ToolStripDropDownCloseReason.CloseCalled:
+                        // The ContextMenuStrip can be "closed" for these reasons.
+                        break;
+                    case ToolStripDropDownCloseReason.Keyboard:
+                        // Dispose as the close is clicked
+                        if (!captureDetails.HasDestination("Editor"))
+                        {
+                            surface.Dispose();
+                            surface = null;
+                        }
 
-							// Make sure a click besides the menu don't close it.
-							menu.Tag = null;
+                        break;
+                    default:
+                        eventArgs.Cancel = true;
+                        break;
+                }
+            };
+            menu.MouseEnter += delegate
+            {
+                // in case the menu has been unfocused, focus again so that dropdown menus will still open on mouseenter
+                if (!menu.ContainsFocus) menu.Focus();
+            };
+            foreach (IDestination destination in destinations)
+            {
+                // Fix foreach loop variable for the delegate
+                ToolStripMenuItem item = destination.GetMenuItem(addDynamics, menu,
+                    delegate(object sender, EventArgs e)
+                    {
+                        ToolStripMenuItem toolStripMenuItem = sender as ToolStripMenuItem;
+                        IDestination clickedDestination = (IDestination) toolStripMenuItem?.Tag;
+                        if (clickedDestination == null)
+                        {
+                            return;
+                        }
 
-							// This prevents the problem that the context menu shows in the task-bar
-							ShowMenuAtCursor(menu);
-						}
-					}
-				);
-				if (item != null) {
-					menu.Items.Add(item);
-				}
-			}
-			// Close
-			menu.Items.Add(new ToolStripSeparator());
-			ToolStripMenuItem closeItem = new ToolStripMenuItem(Language.GetString("editor_close"))
-			{
-				Image = GreenshotResources.getImage("Close.Image")
-			};
-			closeItem.Click += delegate {
-				// This menu entry is the close itself, we can dispose the surface
-				menu.Close();
-				if (!captureDetails.HasDestination("Editor")) {
-					surface.Dispose();
-					surface = null;
-				}
-			};
-			menu.Items.Add(closeItem);
+                        menu.Tag = clickedDestination.Designation;
+                        // Export
+                        exportInformation = clickedDestination.ExportCapture(true, surface, captureDetails);
+                        if (exportInformation != null && exportInformation.ExportMade)
+                        {
+                            Log.InfoFormat("Export to {0} success, closing menu",
+                                exportInformation.DestinationDescription);
+                            // close menu if the destination wasn't the editor
+                            menu.Close();
 
-			ShowMenuAtCursor(menu);
-			return exportInformation;
-		}
+                            // Cleanup surface, only if there is no editor in the destinations and we didn't export to the editor
+                            if (!captureDetails.HasDestination("Editor") &&
+                                !"Editor".Equals(clickedDestination.Designation))
+                            {
+                                surface.Dispose();
+                                surface = null;
+                            }
+                        }
+                        else
+                        {
+                            Log.Info("Export cancelled or failed, showing menu again");
 
-		/// <summary>
-		/// This method will show the supplied context menu at the mouse cursor, also makes sure it has focus and it's not visible in the taskbar.
-		/// </summary>
-		/// <param name="menu"></param>
-		private static void ShowMenuAtCursor(ContextMenuStrip menu) {
-			// find a suitable location
-			Point location = Cursor.Position;
-			Rectangle menuRectangle = new Rectangle(location, menu.Size);
+                            // Make sure a click besides the menu don't close it.
+                            menu.Tag = null;
 
-			menuRectangle.Intersect(WindowCapture.GetScreenBounds());
-			if (menuRectangle.Height < menu.Height) {
-				location.Offset(-40, -(menuRectangle.Height - menu.Height));
-			} else {
-				location.Offset(-40, -10);
-			}
-			// This prevents the problem that the context menu shows in the task-bar
-			User32.SetForegroundWindow(PluginUtils.Host.NotifyIcon.ContextMenuStrip.Handle);
-			menu.Show(location);
-			menu.Focus();
+                            // This prevents the problem that the context menu shows in the task-bar
+                            ShowMenuAtCursor(menu);
+                        }
+                    }
+                );
+                if (item != null)
+                {
+                    menu.Items.Add(item);
+                }
+            }
 
-			// Wait for the menu to close, so we can dispose it.
-			while (true) {
-				if (menu.Visible) {
-					Application.DoEvents();
-					Thread.Sleep(100);
-				} else {
-					menu.Dispose();
-					break;
-				}
-			}
-		}
+            // Close
+            menu.Items.Add(new ToolStripSeparator());
+            ToolStripMenuItem closeItem = new ToolStripMenuItem(Language.GetString("editor_close"))
+            {
+                Image = GreenshotResources.getImage("Close.Image")
+            };
+            closeItem.Click += delegate
+            {
+                // This menu entry is the close itself, we can dispose the surface
+                menu.Close();
+                if (!captureDetails.HasDestination("Editor"))
+                {
+                    surface.Dispose();
+                    surface = null;
+                }
+            };
+            menu.Items.Add(closeItem);
 
-		/// <summary>
-		/// Return a menu item
-		/// </summary>
-		/// <param name="menu"></param>
-		/// <param name="addDynamics"></param>
-		/// <param name="destinationClickHandler"></param>
-		/// <returns>ToolStripMenuItem</returns>
-		public virtual ToolStripMenuItem GetMenuItem(bool addDynamics, ContextMenuStrip menu, EventHandler destinationClickHandler) {
-			var basisMenuItem = new ToolStripMenuItem(Description)
-			{
-				Image = DisplayIcon,
-				Tag = this,
-				Text = Description
-			};
-			AddTagEvents(basisMenuItem, menu, Description);
-			basisMenuItem.Click -= destinationClickHandler;
-			basisMenuItem.Click += destinationClickHandler;		
+            ShowMenuAtCursor(menu);
+            return exportInformation;
+        }
 
-			if (IsDynamic && addDynamics) {
-				basisMenuItem.DropDownOpening += delegate
-				{
-					if (basisMenuItem.DropDownItems.Count == 0) {
-						List<IDestination> subDestinations = new List<IDestination>();
-						// Fixing Bug #3536968 by catching the COMException (every exception) and not displaying the "subDestinations"
-						try {
-							subDestinations.AddRange(DynamicDestinations());
-						} catch (Exception ex) {
-							Log.ErrorFormat("Skipping {0}, due to the following error: {1}", Description, ex.Message);
-						}
-						if (subDestinations.Count > 0) {
-							if (UseDynamicsOnly && subDestinations.Count == 1) {
-								basisMenuItem.Tag = subDestinations[0];
-								basisMenuItem.Text = subDestinations[0].Description;
-								basisMenuItem.Click -= destinationClickHandler;
-								basisMenuItem.Click += destinationClickHandler;
-							} else {
-								foreach (IDestination subDestination in subDestinations) {
-									var destinationMenuItem = new ToolStripMenuItem(subDestination.Description)
-									{
-										Tag = subDestination,
-										Image = subDestination.DisplayIcon
-									};
-									destinationMenuItem.Click += destinationClickHandler;
-									AddTagEvents(destinationMenuItem, menu, subDestination.Description);
-									basisMenuItem.DropDownItems.Add(destinationMenuItem);
-								}
-							}
-						}
-					}
-				};
-			}
+        /// <summary>
+        /// This method will show the supplied context menu at the mouse cursor, also makes sure it has focus and it's not visible in the taskbar.
+        /// </summary>
+        /// <param name="menu"></param>
+        private static void ShowMenuAtCursor(ContextMenuStrip menu)
+        {
+            // find a suitable location
+            Point location = Cursor.Position;
+            Rectangle menuRectangle = new Rectangle(location, menu.Size);
 
-			return basisMenuItem;
-		}
-		
-	}
+            menuRectangle.Intersect(WindowCapture.GetScreenBounds());
+            if (menuRectangle.Height < menu.Height)
+            {
+                location.Offset(-40, -(menuRectangle.Height - menu.Height));
+            }
+            else
+            {
+                location.Offset(-40, -10);
+            }
+
+            // This prevents the problem that the context menu shows in the task-bar
+            User32.SetForegroundWindow(PluginUtils.Host.NotifyIcon.ContextMenuStrip.Handle);
+            menu.Show(location);
+            menu.Focus();
+
+            // Wait for the menu to close, so we can dispose it.
+            while (true)
+            {
+                if (menu.Visible)
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(100);
+                }
+                else
+                {
+                    menu.Dispose();
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Return a menu item
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <param name="addDynamics"></param>
+        /// <param name="destinationClickHandler"></param>
+        /// <returns>ToolStripMenuItem</returns>
+        public virtual ToolStripMenuItem GetMenuItem(bool addDynamics, ContextMenuStrip menu,
+            EventHandler destinationClickHandler)
+        {
+            var basisMenuItem = new ToolStripMenuItem(Description)
+            {
+                Image = DisplayIcon,
+                Tag = this,
+                Text = Description
+            };
+            AddTagEvents(basisMenuItem, menu, Description);
+            basisMenuItem.Click -= destinationClickHandler;
+            basisMenuItem.Click += destinationClickHandler;
+
+            if (IsDynamic && addDynamics)
+            {
+                basisMenuItem.DropDownOpening += delegate
+                {
+                    if (basisMenuItem.DropDownItems.Count == 0)
+                    {
+                        List<IDestination> subDestinations = new List<IDestination>();
+                        // Fixing Bug #3536968 by catching the COMException (every exception) and not displaying the "subDestinations"
+                        try
+                        {
+                            subDestinations.AddRange(DynamicDestinations());
+                        }
+                        catch (Exception ex)
+                        {
+                            Log.ErrorFormat("Skipping {0}, due to the following error: {1}", Description, ex.Message);
+                        }
+
+                        if (subDestinations.Count > 0)
+                        {
+                            if (UseDynamicsOnly && subDestinations.Count == 1)
+                            {
+                                basisMenuItem.Tag = subDestinations[0];
+                                basisMenuItem.Text = subDestinations[0].Description;
+                                basisMenuItem.Click -= destinationClickHandler;
+                                basisMenuItem.Click += destinationClickHandler;
+                            }
+                            else
+                            {
+                                foreach (IDestination subDestination in subDestinations)
+                                {
+                                    var destinationMenuItem = new ToolStripMenuItem(subDestination.Description)
+                                    {
+                                        Tag = subDestination,
+                                        Image = subDestination.DisplayIcon
+                                    };
+                                    destinationMenuItem.Click += destinationClickHandler;
+                                    AddTagEvents(destinationMenuItem, menu, subDestination.Description);
+                                    basisMenuItem.DropDownItems.Add(destinationMenuItem);
+                                }
+                            }
+                        }
+                    }
+                };
+            }
+
+            return basisMenuItem;
+        }
+    }
 }

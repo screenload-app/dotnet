@@ -55,7 +55,6 @@ namespace Greenshot {
 			this.contextmenu_capturewindow = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_capturefullscreen = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_captureie = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
-			this.toolStripListCaptureSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_capturewindowfromlist = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_captureiefromlist = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripOtherSourcesSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -86,7 +85,6 @@ namespace Greenshot {
 									this.contextmenu_capturewindow,
 									this.contextmenu_capturefullscreen,
 									this.contextmenu_captureie,
-									this.toolStripListCaptureSeparator,
 									this.contextmenu_capturewindowfromlist,
 									this.contextmenu_captureiefromlist,
 									this.toolStripOtherSourcesSeparator,
@@ -117,7 +115,6 @@ namespace Greenshot {
 			// 
 			// contextmenu_capturelastregion
 			// 
-			this.contextmenu_capturelastregion.Enabled = false;
 			this.contextmenu_capturelastregion.Image = ((System.Drawing.Image)(resources.GetObject("contextmenu_capturelastregion.Image")));
 			this.contextmenu_capturelastregion.Name = "contextmenu_capturelastregion";
 			this.contextmenu_capturelastregion.ShortcutKeyDisplayString = "Shift + Print";
@@ -145,11 +142,6 @@ namespace Greenshot {
 			this.contextmenu_captureie.ShortcutKeyDisplayString = "Ctrl + Shift + Print";
 			this.contextmenu_captureie.Size = new System.Drawing.Size(170, 22);
 			this.contextmenu_captureie.Click += new System.EventHandler(this.Contextmenu_captureie_Click);
-			// 
-			// toolStripListCaptureSeparator
-			// 
-			this.toolStripListCaptureSeparator.Name = "toolStripListCaptureSeparator";
-			this.toolStripListCaptureSeparator.Size = new System.Drawing.Size(167, 6);
 			// 
 			// contextmenu_capturewindowfromlist
 			// 
@@ -286,7 +278,6 @@ namespace Greenshot {
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureiefromlist;
 		private System.Windows.Forms.ToolStripSeparator toolStripOtherSourcesSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_capturewindowfromlist;
-		private System.Windows.Forms.ToolStripSeparator toolStripListCaptureSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_openrecentcapture;
 		private System.Windows.Forms.Timer backgroundWorkerTimer;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureie;

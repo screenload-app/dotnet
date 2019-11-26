@@ -74,13 +74,13 @@ namespace Greenshot {
             this.textBoxJpegQuality = new System.Windows.Forms.TextBox();
             this.trackBarJpegQuality = new System.Windows.Forms.TrackBar();
             this.groupbox_destination = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.useQuickEditModeCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_picker = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.listview_destinations = new System.Windows.Forms.ListView();
             this.destination = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.tabcontrol = new System.Windows.Forms.TabControl();
             this.tab_general = new GreenshotPlugin.Controls.GreenshotTabPage();
             this.groupbox_network = new GreenshotPlugin.Controls.GreenshotGroupBox();
-            this.onlyStableVersionsCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkUpdatesButton = new GreenshotPlugin.Controls.GreenshotButton();
             this.numericUpDown_daysbetweencheck = new System.Windows.Forms.NumericUpDown();
             this.label_checkperiod = new GreenshotPlugin.Controls.GreenshotLabel();
@@ -465,22 +465,36 @@ namespace Greenshot {
             // 
             // groupbox_destination
             // 
+            this.groupbox_destination.Controls.Add(this.useQuickEditModeCheckBox);
             this.groupbox_destination.Controls.Add(this.checkbox_picker);
             this.groupbox_destination.Controls.Add(this.listview_destinations);
             this.groupbox_destination.LanguageKey = "settings_destination";
             this.groupbox_destination.Location = new System.Drawing.Point(2, 6);
             this.groupbox_destination.Name = "groupbox_destination";
-            this.groupbox_destination.Size = new System.Drawing.Size(412, 311);
-            this.groupbox_destination.TabIndex = 16;
+            this.groupbox_destination.Size = new System.Drawing.Size(412, 339);
+            this.groupbox_destination.TabIndex = 0;
             this.groupbox_destination.TabStop = false;
             this.groupbox_destination.Text = "Destination";
             // 
+            // useQuickEditModeCheckBox
+            // 
+            this.useQuickEditModeCheckBox.AutoSize = true;
+            this.useQuickEditModeCheckBox.LanguageKey = "settings_useQuickEditMode";
+            this.useQuickEditModeCheckBox.Location = new System.Drawing.Point(6, 19);
+            this.useQuickEditModeCheckBox.Name = "useQuickEditModeCheckBox";
+            this.useQuickEditModeCheckBox.PropertyName = "UseQuickEditMode";
+            this.useQuickEditModeCheckBox.Size = new System.Drawing.Size(171, 17);
+            this.useQuickEditModeCheckBox.TabIndex = 0;
+            this.useQuickEditModeCheckBox.Text = "Preferably use quick edit mode";
+            this.useQuickEditModeCheckBox.UseVisualStyleBackColor = true;
+            // 
             // checkbox_picker
             // 
+            this.checkbox_picker.AutoSize = true;
             this.checkbox_picker.LanguageKey = "settings_destination_picker";
-            this.checkbox_picker.Location = new System.Drawing.Point(6, 14);
+            this.checkbox_picker.Location = new System.Drawing.Point(6, 42);
             this.checkbox_picker.Name = "checkbox_picker";
-            this.checkbox_picker.Size = new System.Drawing.Size(394, 24);
+            this.checkbox_picker.Size = new System.Drawing.Size(167, 17);
             this.checkbox_picker.TabIndex = 1;
             this.checkbox_picker.Text = "Select destination dynamically";
             this.checkbox_picker.UseVisualStyleBackColor = true;
@@ -496,10 +510,10 @@ namespace Greenshot {
             this.listview_destinations.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listview_destinations.HideSelection = false;
             this.listview_destinations.LabelWrap = false;
-            this.listview_destinations.Location = new System.Drawing.Point(6, 38);
+            this.listview_destinations.Location = new System.Drawing.Point(6, 65);
             this.listview_destinations.Name = "listview_destinations";
             this.listview_destinations.ShowGroups = false;
-            this.listview_destinations.Size = new System.Drawing.Size(401, 267);
+            this.listview_destinations.Size = new System.Drawing.Size(400, 267);
             this.listview_destinations.Sorting = System.Windows.Forms.SortOrder.Ascending;
             this.listview_destinations.TabIndex = 2;
             this.listview_destinations.UseCompatibleStateImageBehavior = false;
@@ -542,7 +556,6 @@ namespace Greenshot {
             // 
             // groupbox_network
             // 
-            this.groupbox_network.Controls.Add(this.onlyStableVersionsCheckBox);
             this.groupbox_network.Controls.Add(this.checkUpdatesButton);
             this.groupbox_network.Controls.Add(this.numericUpDown_daysbetweencheck);
             this.groupbox_network.Controls.Add(this.label_checkperiod);
@@ -555,25 +568,12 @@ namespace Greenshot {
             this.groupbox_network.TabStop = false;
             this.groupbox_network.Text = "Network and updates";
             // 
-            // onlyStableVersionsCheckBox
-            // 
-            this.onlyStableVersionsCheckBox.AutoSize = true;
-            this.onlyStableVersionsCheckBox.LanguageKey = "settings_usestableversionsonly";
-            this.onlyStableVersionsCheckBox.Location = new System.Drawing.Point(8, 69);
-            this.onlyStableVersionsCheckBox.Name = "onlyStableVersionsCheckBox";
-            this.onlyStableVersionsCheckBox.PropertyName = "UseStableVersionsOnly";
-            this.onlyStableVersionsCheckBox.Size = new System.Drawing.Size(140, 17);
-            this.onlyStableVersionsCheckBox.TabIndex = 3;
-            this.onlyStableVersionsCheckBox.Text = "Use stable versions only";
-            this.onlyStableVersionsCheckBox.UseVisualStyleBackColor = true;
-            this.onlyStableVersionsCheckBox.CheckedChanged += new System.EventHandler(this.onlyStableVersionsCheckBox_CheckedChanged);
-            // 
             // checkUpdatesButton
             // 
             this.checkUpdatesButton.LanguageKey = "settings_checkupdatesbutton";
-            this.checkUpdatesButton.Location = new System.Drawing.Point(212, 65);
+            this.checkUpdatesButton.Location = new System.Drawing.Point(8, 65);
             this.checkUpdatesButton.Name = "checkUpdatesButton";
-            this.checkUpdatesButton.Size = new System.Drawing.Size(190, 23);
+            this.checkUpdatesButton.Size = new System.Drawing.Size(394, 23);
             this.checkUpdatesButton.TabIndex = 4;
             this.checkUpdatesButton.Text = "Check for updates right now";
             this.checkUpdatesButton.UseVisualStyleBackColor = true;
@@ -1307,6 +1307,7 @@ namespace Greenshot {
             this.checkbox_checkunstableupdates.TabIndex = 7;
             this.checkbox_checkunstableupdates.Text = "Check for unstable updates";
             this.checkbox_checkunstableupdates.UseVisualStyleBackColor = true;
+            this.checkbox_checkunstableupdates.CheckedChanged += new System.EventHandler(this.checkbox_checkunstableupdates_CheckedChanged);
             // 
             // checkbox_suppresssavedialogatclose
             // 
@@ -1459,10 +1460,10 @@ namespace Greenshot {
             this.groupbox_qualitysettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarJpegQuality)).EndInit();
             this.groupbox_destination.ResumeLayout(false);
+            this.groupbox_destination.PerformLayout();
             this.tabcontrol.ResumeLayout(false);
             this.tab_general.ResumeLayout(false);
             this.groupbox_network.ResumeLayout(false);
-            this.groupbox_network.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown_daysbetweencheck)).EndInit();
             this.groupbox_hotkeys.ResumeLayout(false);
             this.groupbox_hotkeys.PerformLayout();
@@ -1594,6 +1595,6 @@ namespace Greenshot {
         private GreenshotPlugin.Controls.GreenshotCheckBox captureAreaColorCheckBox;
         private GreenshotPlugin.Controls.GreenshotCheckBox editorConfirmationCheckBox;
         private GreenshotPlugin.Controls.GreenshotButton checkUpdatesButton;
-        private GreenshotPlugin.Controls.GreenshotCheckBox onlyStableVersionsCheckBox;
+        private GreenshotPlugin.Controls.GreenshotCheckBox useQuickEditModeCheckBox;
     }
 }

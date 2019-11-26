@@ -60,6 +60,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.showDetailsCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.openInBrowserCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.anonymousAccessCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
+            this.showNotificationCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.afterUploadGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -68,7 +69,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.buttonOK.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonOK.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonOK.LanguageKey = "OK";
-            this.buttonOK.Location = new System.Drawing.Point(264, 217);
+            this.buttonOK.Location = new System.Drawing.Point(264, 219);
             this.buttonOK.Name = "buttonOK";
             this.buttonOK.Size = new System.Drawing.Size(75, 23);
             this.buttonOK.TabIndex = 4;
@@ -81,7 +82,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.buttonCancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.buttonCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.buttonCancel.LanguageKey = "CANCEL";
-            this.buttonCancel.Location = new System.Drawing.Point(345, 217);
+            this.buttonCancel.Location = new System.Drawing.Point(345, 219);
             this.buttonCancel.Name = "buttonCancel";
             this.buttonCancel.Size = new System.Drawing.Size(75, 23);
             this.buttonCancel.TabIndex = 5;
@@ -140,6 +141,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             // 
             // afterUploadGroupBox
             // 
+            this.afterUploadGroupBox.Controls.Add(this.showNotificationCheckBox);
             this.afterUploadGroupBox.Controls.Add(this.openInBrowserComboBox);
             this.afterUploadGroupBox.Controls.Add(this.toClipBoardComboBox);
             this.afterUploadGroupBox.Controls.Add(this.showDetailsCheckBox);
@@ -149,7 +151,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.afterUploadGroupBox.LanguageKey = "downloadru.label_AfterUpload";
             this.afterUploadGroupBox.Location = new System.Drawing.Point(12, 39);
             this.afterUploadGroupBox.Name = "afterUploadGroupBox";
-            this.afterUploadGroupBox.Size = new System.Drawing.Size(408, 112);
+            this.afterUploadGroupBox.Size = new System.Drawing.Size(408, 134);
             this.afterUploadGroupBox.TabIndex = 2;
             this.afterUploadGroupBox.TabStop = false;
             this.afterUploadGroupBox.Text = "After upload";
@@ -164,7 +166,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.openInBrowserComboBox.LanguagePrefix = "downloadru";
             this.openInBrowserComboBox.Location = new System.Drawing.Point(219, 61);
             this.openInBrowserComboBox.Name = "openInBrowserComboBox";
-            this.openInBrowserComboBox.PropertyName = "AfterUploadLinkOpenInBrowserMode";
+            this.openInBrowserComboBox.PropertyName = "AfterUploadOpenInBrowserMode";
             this.openInBrowserComboBox.SectionName = "DownloadRu";
             this.openInBrowserComboBox.Size = new System.Drawing.Size(183, 21);
             this.openInBrowserComboBox.TabIndex = 4;
@@ -187,10 +189,10 @@ namespace GreenshotDownloadRuPlugin.Forms
             // showDetailsCheckBox
             // 
             this.showDetailsCheckBox.AutoSize = true;
-            this.showDetailsCheckBox.LanguageKey = "downloadru.label_AfterUploadLinkShowDetails";
+            this.showDetailsCheckBox.LanguageKey = "downloadru.label_AfterUploadShowDetails";
             this.showDetailsCheckBox.Location = new System.Drawing.Point(6, 88);
             this.showDetailsCheckBox.Name = "showDetailsCheckBox";
-            this.showDetailsCheckBox.PropertyName = "AfterUploadLinkShowDetails";
+            this.showDetailsCheckBox.PropertyName = "AfterUploadShowDetails";
             this.showDetailsCheckBox.SectionName = "DownloadRu";
             this.showDetailsCheckBox.Size = new System.Drawing.Size(234, 17);
             this.showDetailsCheckBox.TabIndex = 5;
@@ -200,10 +202,10 @@ namespace GreenshotDownloadRuPlugin.Forms
             // openInBrowserCheckBox
             // 
             this.openInBrowserCheckBox.AutoSize = true;
-            this.openInBrowserCheckBox.LanguageKey = "downloadru.label_AfterUploadLinkOpenInBrowser";
+            this.openInBrowserCheckBox.LanguageKey = "downloadru.label_AfterUploadOpenInBrowser";
             this.openInBrowserCheckBox.Location = new System.Drawing.Point(6, 65);
             this.openInBrowserCheckBox.Name = "openInBrowserCheckBox";
-            this.openInBrowserCheckBox.PropertyName = "AfterUploadLinkOpenInBrowser";
+            this.openInBrowserCheckBox.PropertyName = "AfterUploadOpenInBrowser";
             this.openInBrowserCheckBox.SectionName = "DownloadRu";
             this.openInBrowserCheckBox.Size = new System.Drawing.Size(106, 17);
             this.openInBrowserCheckBox.TabIndex = 3;
@@ -213,9 +215,10 @@ namespace GreenshotDownloadRuPlugin.Forms
             // 
             // anonymousAccessCheckBox
             // 
+            this.anonymousAccessCheckBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.anonymousAccessCheckBox.AutoSize = true;
             this.anonymousAccessCheckBox.LanguageKey = "downloadru.anonymous_access";
-            this.anonymousAccessCheckBox.Location = new System.Drawing.Point(18, 175);
+            this.anonymousAccessCheckBox.Location = new System.Drawing.Point(18, 190);
             this.anonymousAccessCheckBox.Name = "anonymousAccessCheckBox";
             this.anonymousAccessCheckBox.PropertyName = "AnonymousAccess";
             this.anonymousAccessCheckBox.SectionName = "DownloadRu";
@@ -224,12 +227,25 @@ namespace GreenshotDownloadRuPlugin.Forms
             this.anonymousAccessCheckBox.Text = "Use anonym access";
             this.anonymousAccessCheckBox.UseVisualStyleBackColor = true;
             // 
+            // showNotificationCheckBox
+            // 
+            this.showNotificationCheckBox.AutoSize = true;
+            this.showNotificationCheckBox.LanguageKey = "downloadru.label_AfterUploadShowNotification";
+            this.showNotificationCheckBox.Location = new System.Drawing.Point(6, 111);
+            this.showNotificationCheckBox.Name = "showNotificationCheckBox";
+            this.showNotificationCheckBox.PropertyName = "AfterUploadShowNotification";
+            this.showNotificationCheckBox.SectionName = "DownloadRu";
+            this.showNotificationCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.showNotificationCheckBox.TabIndex = 6;
+            this.showNotificationCheckBox.Text = "Show notification";
+            this.showNotificationCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(432, 252);
+            this.ClientSize = new System.Drawing.Size(432, 254);
             this.Controls.Add(this.anonymousAccessCheckBox);
             this.Controls.Add(this.afterUploadGroupBox);
             this.Controls.Add(this.label_upload_format);
@@ -263,5 +279,6 @@ namespace GreenshotDownloadRuPlugin.Forms
         private GreenshotPlugin.Controls.GreenshotCheckBox openInBrowserCheckBox;
         private GreenshotPlugin.Controls.GreenshotCheckBox anonymousAccessCheckBox;
         private GreenshotPlugin.Controls.GreenshotComboBox openInBrowserComboBox;
+        private GreenshotPlugin.Controls.GreenshotCheckBox showNotificationCheckBox;
     }
 }

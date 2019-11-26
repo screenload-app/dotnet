@@ -143,73 +143,70 @@ namespace GreenshotDownloadRuPlugin
             var outputSettings =
                 new SurfaceOutputSettings(_config.UploadFormat, _config.UploadJpegQuality, false);
 
-            try
+            string filename = Path.GetFileName(FilenameHelper.GetFilename(_config.UploadFormat, captureDetails));
+            var imageToUpload = new SurfaceContainer(surfaceToUpload, outputSettings, filename);
+
+            FileEntry fileEntry = null;
+
+            ProgressForm.ShowAndProcess(() =>
             {
-                string filename = Path.GetFileName(FilenameHelper.GetFilename(_config.UploadFormat, captureDetails));
-                var imageToUpload = new SurfaceContainer(surfaceToUpload, outputSettings, filename);
+                fileEntry = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
+            });
 
-                FileEntry fileEntry = null;
+            if (null == fileEntry)
+                return null;
 
-                ProgressForm.ShowAndProcess(() =>
+            string defaultUrl = LinkHelper.BuildDirectLink(fileEntry);
+
+            if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
+            {
+                string clipboardUrl;
+
+                switch (_config.AfterUploadLinkToClipBoardMode)
                 {
-                    fileEntry = DownloadRuUtils.UploadToDownloadRu(imageToUpload, captureDetails.Title, filename);
-                });
-
-                if (null == fileEntry)
-                    return null;
-
-                string defaultUrl = LinkHelper.BuildDirectLink(fileEntry);
-
-                if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
-                {
-                    string clipboardUrl;
-
-                    switch (_config.AfterUploadLinkToClipBoardMode)
-                    {
-                        case LinkType.Image:
-                            clipboardUrl = LinkHelper.BuildDirectLink(fileEntry);
-                            break;
-                        case LinkType.Page:
-                            clipboardUrl = LinkHelper.BuildPageLink(fileEntry);
-                            break;
-                        default:
-                            clipboardUrl = null;
-                            break;
-                    }
-
-                    if (null != clipboardUrl)
-                    {
-                        ClipboardHelper.SetClipboardData(clipboardUrl);
-                        defaultUrl = clipboardUrl;
-                    }
+                    case LinkType.Image:
+                        clipboardUrl = LinkHelper.BuildDirectLink(fileEntry);
+                        break;
+                    case LinkType.Page:
+                        clipboardUrl = LinkHelper.BuildPageLink(fileEntry);
+                        break;
+                    default:
+                        clipboardUrl = null;
+                        break;
                 }
 
-                if (_config.AfterUploadLinkShowDetails)
+                if (null != clipboardUrl)
                 {
-                    var successForm = new SuccessForm(_config, fileEntry);
-                    successForm.Show();
+                    ClipboardHelper.SetClipboardData(clipboardUrl);
+                    defaultUrl = clipboardUrl;
+                }
+            }
+
+            if (_config.AfterUploadShowDetails)
+            {
+                var successForm = new SuccessForm(_config, fileEntry);
+                successForm.Show();
+            }
+
+            if (_config.AfterUploadOpenInBrowser)
+            {
+                string browserUrl;
+
+                switch (_config.AfterUploadOpenInBrowserMode)
+                {
+                    case LinkType.Image:
+                        browserUrl = LinkHelper.BuildDirectLink(fileEntry);
+                        break;
+                    case LinkType.Page:
+                        browserUrl = LinkHelper.BuildPageLink(fileEntry);
+                        break;
+                    default:
+                        browserUrl = null;
+                        break;
                 }
 
-                if (_config.AfterUploadLinkOpenInBrowser)
+                if (null != browserUrl)
                 {
-                    string browserUrl;
-
-                    switch (_config.AfterUploadLinkOpenInBrowserMode)
-                    {
-                        case LinkType.Image:
-                            browserUrl = LinkHelper.BuildDirectLink(fileEntry);
-                            break;
-                        case LinkType.Page:
-                            browserUrl = LinkHelper.BuildPageLink(fileEntry);
-                            break;
-                        default:
-                            browserUrl = null;
-                            break;
-                    }
-
-                    if (null == browserUrl)
-                        return defaultUrl;
-
                     try
                     {
                         Process.Start(browserUrl);
@@ -219,15 +216,9 @@ namespace GreenshotDownloadRuPlugin
                         Log.Error(exception);
                     }
                 }
+            }
 
-                return defaultUrl;
-            }
-            catch (Exception exception)
-            {
-                Log.Error("Error uploading.", exception);
-                MessageBox.Show(Language.GetString(Constants.LanguagePrefix, LangKey.upload_failure) + @" " + exception.Message);
-                return null;
-            }
+            return defaultUrl;
         }
     }
 }

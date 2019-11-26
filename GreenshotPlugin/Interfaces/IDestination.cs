@@ -46,6 +46,8 @@ namespace Greenshot.Plugin {
 
 		public string Uri { get; set; }
 
+        public bool ShowNotification { get; set; } = true;
+
 		public string ErrorMessage { get; set; }
 
 		public string Filepath { get; set; }
