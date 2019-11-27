@@ -60,6 +60,7 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="contextmenu_help">Справка</resource>
 		<resource name="contextmenu_openfile">Открыть изображение из файла</resource>
 		<resource name="contextmenu_openrecentcapture">Открыть последнее место захвата</resource>
+    <resource name="copyRecentUrlToolStripMenuItem">Копировать ссылку на последнее изображение</resource>
 		<resource name="contextmenu_quicksettings">Быстрые настройки</resource>
     <resource name="contextmenu_settings">Настройки</resource>
     <resource name="contextmenu_generalsettings">Предпочтения...</resource>
@@ -293,7 +294,9 @@ ${hostname} Имя ПК
 		<resource name="settings_waittime">Ожидание перед захватом в миллисекундах</resource>
 		<resource name="settings_window_capture_mode">Режим захвата окна</resource>
 		<resource name="settings_windowscapture">Снимок окна</resource>
-		<resource name="tooltip_firststart">Щёлкните здесь правой кнопкой мыши или нажмите клавишу {0}.</resource>
+    <resource name="settings_iconsize">Размер иконок</resource>
+
+    <resource name="tooltip_firststart">Щёлкните здесь правой кнопкой мыши или нажмите клавишу {0}.</resource>
 		<resource name="update_found">Доступна новая версия Greenshot! Нажмите чтобы установить.</resource>
     <resource name="update_confirmation">Вы хотите скачать и установить Greenshot {0}?</resource>
 		<resource name="wait_ie_capture">Пожалуйста, подождите, пока страница в Internet Explorer захватывается...</resource>
@@ -368,11 +371,14 @@ ${hostname} Имя ПК
     <resource name="UpdateForm_byte">Б</resource>
     <resource name="UpdateForm_kilobyte">Кбайт</resource>
     <resource name="UpdateForm_megabyte">Мбайт</resource>
+
     <resource name="UpdateForm_Caption">Обновление Greenshot!</resource>
     <resource name="UpdateForm_Info">Доступна версия Greenshot {0}. В ней содержатся важные исправления и улучшения, внесенные на основе наших исследований и замечаний пользователей!</resource>
     <resource name="UpdateForm_UpdateNow">УСТАНОВИТЬ</resource>
     <resource name="UpdateForm_RemindLater">НАПОМНИТЬ ПОЗЖЕ</resource>
     <resource name="UpdateForm_Cancel">ОТМЕНА</resource>
+
+    <resource name="LinkCopiedToClipboard">Ссылка скопирована в буфер обмена!</resource>
 
   </resources>
 </language>

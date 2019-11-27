@@ -66,35 +66,47 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("RegionHotkey", Description="Hotkey for starting the region capture", DefaultValue="PrintScreen")]
 		public string RegionHotkey { get; set; }
-		[IniProperty("WindowHotkey", Description="Hotkey for starting the window capture", DefaultValue="Alt + PrintScreen")]
+
+        [IniProperty("WindowHotkey", Description="Hotkey for starting the window capture", DefaultValue="Alt + PrintScreen")]
 		public string WindowHotkey { get; set; }
-		[IniProperty("FullscreenHotkey", Description="Hotkey for starting the fullscreen capture", DefaultValue="Ctrl + PrintScreen")]
+
+        [IniProperty("FullscreenHotkey", Description="Hotkey for starting the fullscreen capture", DefaultValue="Ctrl + PrintScreen")]
 		public string FullscreenHotkey { get; set; }
-		[IniProperty("LastregionHotkey", Description="Hotkey for starting the last region capture", DefaultValue="Shift + PrintScreen")]
+
+        [IniProperty("LastregionHotkey", Description="Hotkey for starting the last region capture", DefaultValue="Shift + PrintScreen")]
 		public string LastregionHotkey { get; set; }
-		[IniProperty("IEHotkey", Description="Hotkey for starting the IE capture", DefaultValue="Shift + Ctrl + PrintScreen")]
+
+        [IniProperty("IEHotkey", Description="Hotkey for starting the IE capture", DefaultValue="Shift + Ctrl + PrintScreen")]
 		public string IEHotkey { get; set; }
 
 		[IniProperty("IsFirstLaunch", Description="Is this the first time launch?", DefaultValue="true")]
 		public bool IsFirstLaunch { get; set; }
-		[IniProperty("Destinations", Separator=",", Description="Which destinations? Possible options (more might be added by plugins) are: Editor, FileDefault, FileWithDialog, Clipboard, Printer, EMail, Picker", DefaultValue="Picker")]
+
+        [IniProperty("Destinations", Separator=",", Description="Which destinations? Possible options (more might be added by plugins) are: Editor, FileDefault, FileWithDialog, Clipboard, Printer, EMail, Picker", DefaultValue="Picker")]
 		public List<string> OutputDestinations { get; set; } = new List<string>();
-		[IniProperty("ClipboardFormats", Separator=",", Description="Specify which formats we copy on the clipboard? Options are: PNG, HTML, HTMLDATAURL and DIB", DefaultValue="PNG,DIB")]
+
+        [IniProperty("ClipboardFormats", Separator=",", Description="Specify which formats we copy on the clipboard? Options are: PNG, HTML, HTMLDATAURL and DIB", DefaultValue="PNG,DIB")]
 		public List<ClipboardFormat> ClipboardFormats { get; set; } = new List<ClipboardFormat>();
 
 		[IniProperty("CaptureMousepointer", Description="Should the mouse be captured?", DefaultValue="true")]
-		public bool CaptureMousepointer { get; set; }
-		[IniProperty("CaptureWindowsInteractive", Description="Use interactive window selection to capture? (false=Capture active window)", DefaultValue="false")]
-		public bool CaptureWindowsInteractive { get; set; }
-		[IniProperty("CaptureDelay", Description="Capture delay in millseconds.", DefaultValue="100")]
+        public bool CaptureMousepointer { get; set; }
+
+        [IniProperty("CaptureWindowsInteractive", Description="Use interactive window selection to capture? (false=Capture active window)", DefaultValue="false")]
+        public bool CaptureWindowsInteractive { get; set; }
+
+        [IniProperty("CaptureDelay", Description="Capture delay in millseconds.", DefaultValue="100")]
 		public int CaptureDelay { get; set; }
-		[IniProperty("ScreenCaptureMode", Description = "The capture mode used to capture a screen. (Auto, FullScreen, Fixed)", DefaultValue = "Auto")]
+
+        [IniProperty("ScreenCaptureMode", Description = "The capture mode used to capture a screen. (Auto, FullScreen, Fixed)", DefaultValue = "Auto")]
 		public ScreenCaptureMode ScreenCaptureMode { get; set; }
-		[IniProperty("ScreenToCapture", Description = "The screen number to capture when using ScreenCaptureMode Fixed.", DefaultValue = "1")]
+
+        [IniProperty("ScreenToCapture", Description = "The screen number to capture when using ScreenCaptureMode Fixed.", DefaultValue = "1")]
 		public int ScreenToCapture { get; set; }
-		[IniProperty("WindowCaptureMode", Description = "The capture mode used to capture a Window (Screen, GDI, Aero, AeroTransparent, Auto).", DefaultValue = "Auto")]
+
+        [IniProperty("WindowCaptureMode", Description = "The capture mode used to capture a Window (Screen, GDI, Aero, AeroTransparent, Auto).", DefaultValue = "Auto")]
 		public WindowCaptureMode WindowCaptureMode { get; set; }
-		[IniProperty("WindowCaptureAllChildLocations", Description="Enable/disable capture all children, very slow but will make it possible to use this information in the editor.", DefaultValue="False")]
+
+        [IniProperty("WindowCaptureAllChildLocations", Description="Enable/disable capture all children, very slow but will make it possible to use this information in the editor.", DefaultValue="False")]
 		public bool WindowCaptureAllChildLocations { get; set; }
 
 		[IniProperty("DWMBackgroundColor", Description="The background color for a DWM window capture.")]
@@ -102,59 +114,86 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("PlayCameraSound", LanguageKey="settings_playsound",Description="Play a camera sound after taking a capture.", DefaultValue="false")]
 		public bool PlayCameraSound { get; set; } = false;
-		[IniProperty("ShowTrayNotification", LanguageKey="settings_shownotify",Description="Show a notification from the systray when a capture is taken.", DefaultValue="true")]
+
+        [IniProperty("ShowTrayNotification", LanguageKey="settings_shownotify",Description="Show a notification from the systray when a capture is taken.", DefaultValue="true")]
 		public bool ShowTrayNotification { get; set; } = true;
 		
 		[IniProperty("OutputFilePath", Description="Output file path.")]
 		public string OutputFilePath { get; set; }
-		[IniProperty("OutputFileAllowOverwrite", Description = "If the target file already exists True will make Greenshot always overwrite and False will display a 'Save-As' dialog.", DefaultValue = "true")]
+
+        [IniProperty("OutputFileAllowOverwrite", Description = "If the target file already exists True will make Greenshot always overwrite and False will display a 'Save-As' dialog.", DefaultValue = "true")]
 		public bool OutputFileAllowOverwrite { get; set; }
-		[IniProperty("OutputFileFilenamePattern", Description = "Filename pattern for screenshot.", DefaultValue = "${capturetime:d\"yyyy-MM-dd HH_mm_ss\"}-${title}")]
+
+        [IniProperty("OutputFileFilenamePattern", Description = "Filename pattern for screenshot.", DefaultValue = "${capturetime:d\"yyyy-MM-dd HH_mm_ss\"}-${title}")]
 		public string OutputFileFilenamePattern { get; set; }
-		[IniProperty("OutputFileFormat", Description="Default file type for writing screenshots. (bmp, gif, jpg, png, tiff)", DefaultValue="png")]
+
+        [IniProperty("OutputFileFormat", Description="Default file type for writing screenshots. (bmp, gif, jpg, png, tiff)", DefaultValue="png")]
 		public OutputFormat OutputFileFormat { get; set; } = OutputFormat.png;
-		[IniProperty("OutputFileReduceColors", Description="If set to true, than the colors of the output file are reduced to 256 (8-bit) colors", DefaultValue="false")]
+
+        [IniProperty("OutputFileReduceColors", Description="If set to true, than the colors of the output file are reduced to 256 (8-bit) colors", DefaultValue="false")]
 		public bool OutputFileReduceColors { get; set; }
-		[IniProperty("OutputFileAutoReduceColors", Description = "If set to true the amount of colors is counted and if smaller than 256 the color reduction is automatically used.", DefaultValue = "false")]
+
+        [IniProperty("OutputFileAutoReduceColors", Description = "If set to true the amount of colors is counted and if smaller than 256 the color reduction is automatically used.", DefaultValue = "false")]
 		public bool OutputFileAutoReduceColors { get; set; }
-		[IniProperty("OutputFileReduceColorsTo", Description = "Amount of colors to reduce to, when reducing", DefaultValue = "256")]
+
+        [IniProperty("OutputFileReduceColorsTo", Description = "Amount of colors to reduce to, when reducing", DefaultValue = "256")]
 		public int OutputFileReduceColorsTo { get; set; }
+
         [IniProperty("UseQuickEditMode", Description = "Preferably use quick edit mode", DefaultValue = "true")]
         public bool UseQuickEditMode { get; set; }
+
         [IniProperty("OutputFileCopyPathToClipboard", Description="When saving a screenshot, copy the path to the clipboard?", DefaultValue="true")]
 		public bool OutputFileCopyPathToClipboard { get; set; }
-		[IniProperty("OutputFileAsFullpath", Description="SaveAs Full path?")]
+
+        [IniProperty("OutputFileAsFullpath", Description="SaveAs Full path?")]
 		public string OutputFileAsFullpath { get; set; }
-		[IniProperty("OutputFileJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
+
+        [IniProperty("LastSavedUrl")]
+        public string LastSavedUrl { get; set; }
+
+        [IniProperty("OutputFileJpegQuality", Description="JPEG file save quality in %.", DefaultValue="80")]
 		public int OutputFileJpegQuality { get; set; }
-		[IniProperty("OutputFilePromptQuality", Description="Ask for the quality before saving?", DefaultValue="false")]
+
+        [IniProperty("OutputFilePromptQuality", Description="Ask for the quality before saving?", DefaultValue="false")]
 		public bool OutputFilePromptQuality { get; set; }
-		[IniProperty("OutputFileIncrementingNumber", Description="The number for the ${NUM} in the filename pattern, is increased automatically after each save.", DefaultValue="1")]
+
+        [IniProperty("OutputFileIncrementingNumber", Description="The number for the ${NUM} in the filename pattern, is increased automatically after each save.", DefaultValue="1")]
 		public uint OutputFileIncrementingNumber { get; set; }
 
 		[IniProperty("OutputPrintPromptOptions", LanguageKey="settings_alwaysshowprintoptionsdialog", Description="Ask for print options when printing?", DefaultValue="true")]
 		public bool OutputPrintPromptOptions { get; set; }
-		[IniProperty("OutputPrintAllowRotate", LanguageKey="printoptions_allowrotate", Description="Allow rotating the picture for fitting on paper?", DefaultValue="false")]
+
+        [IniProperty("OutputPrintAllowRotate", LanguageKey="printoptions_allowrotate", Description="Allow rotating the picture for fitting on paper?", DefaultValue="false")]
 		public bool OutputPrintAllowRotate { get; set; }
-		[IniProperty("OutputPrintAllowEnlarge", LanguageKey="printoptions_allowenlarge", Description="Allow growing the picture for fitting on paper?", DefaultValue="false")]
+
+        [IniProperty("OutputPrintAllowEnlarge", LanguageKey="printoptions_allowenlarge", Description="Allow growing the picture for fitting on paper?", DefaultValue="false")]
 		public bool OutputPrintAllowEnlarge { get; set; }
-		[IniProperty("OutputPrintAllowShrink", LanguageKey="printoptions_allowshrink", Description="Allow shrinking the picture for fitting on paper?", DefaultValue="true")]
+
+        [IniProperty("OutputPrintAllowShrink", LanguageKey="printoptions_allowshrink", Description="Allow shrinking the picture for fitting on paper?", DefaultValue="true")]
 		public bool OutputPrintAllowShrink { get; set; }
-		[IniProperty("OutputPrintCenter", LanguageKey="printoptions_allowcenter", Description="Center image when printing?", DefaultValue="true")]
+
+        [IniProperty("OutputPrintCenter", LanguageKey="printoptions_allowcenter", Description="Center image when printing?", DefaultValue="true")]
 		public bool OutputPrintCenter { get; set; }
-		[IniProperty("OutputPrintInverted", LanguageKey="printoptions_inverted", Description="Print image inverted (use e.g. for console captures)", DefaultValue="false")]
+
+        [IniProperty("OutputPrintInverted", LanguageKey="printoptions_inverted", Description="Print image inverted (use e.g. for console captures)", DefaultValue="false")]
 		public bool OutputPrintInverted { get; set; }
-		[IniProperty("OutputPrintGrayscale", LanguageKey = "printoptions_printgrayscale", Description = "Force grayscale printing", DefaultValue = "false")]
+
+        [IniProperty("OutputPrintGrayscale", LanguageKey = "printoptions_printgrayscale", Description = "Force grayscale printing", DefaultValue = "false")]
 		public bool OutputPrintGrayscale { get; set; }
-		[IniProperty("OutputPrintMonochrome", LanguageKey = "printoptions_printmonochrome", Description = "Force monorchrome printing", DefaultValue = "false")]
+
+        [IniProperty("OutputPrintMonochrome", LanguageKey = "printoptions_printmonochrome", Description = "Force monorchrome printing", DefaultValue = "false")]
 		public bool OutputPrintMonochrome { get; set; }
-		[IniProperty("OutputPrintMonochromeThreshold", Description = "Threshold for monochrome filter (0 - 255), lower value means less black", DefaultValue = "127")]
+
+        [IniProperty("OutputPrintMonochromeThreshold", Description = "Threshold for monochrome filter (0 - 255), lower value means less black", DefaultValue = "127")]
 		public byte OutputPrintMonochromeThreshold { get; set; }
-		[IniProperty("OutputPrintFooter", LanguageKey = "printoptions_timestamp", Description = "Print footer on print?", DefaultValue = "true")]
+
+        [IniProperty("OutputPrintFooter", LanguageKey = "printoptions_timestamp", Description = "Print footer on print?", DefaultValue = "true")]
 		public bool OutputPrintFooter { get; set; }
-		[IniProperty("OutputPrintFooterPattern", Description = "Footer pattern", DefaultValue = "${capturetime:d\"D\"} ${capturetime:d\"T\"} - ${title}")]
+
+        [IniProperty("OutputPrintFooterPattern", Description = "Footer pattern", DefaultValue = "${capturetime:d\"D\"} ${capturetime:d\"T\"} - ${title}")]
 		public string OutputPrintFooterPattern { get; set; }
-		[IniProperty("NotificationSound", Description = "The wav-file to play when a capture is taken, loaded only once at the Greenshot startup", DefaultValue="default")]
+
+        [IniProperty("NotificationSound", Description = "The wav-file to play when a capture is taken, loaded only once at the Greenshot startup", DefaultValue="default")]
 		public string NotificationSound { get; set; }
 
 		[IniProperty("UseProxy", Description="Use your global proxy?", DefaultValue="True")]
@@ -162,18 +201,23 @@ namespace GreenshotPlugin.Core {
 
         [IniProperty("IECapture", Description="Enable/disable IE capture", DefaultValue="True")]
 		public bool IECapture { get; set; }
-		[IniProperty("IEFieldCapture", Description="Enable/disable IE field capture, very slow but will make it possible to annotate the fields of a capture in the editor.", DefaultValue="False")]
+
+        [IniProperty("IEFieldCapture", Description="Enable/disable IE field capture, very slow but will make it possible to annotate the fields of a capture in the editor.", DefaultValue="False")]
 		public bool IEFieldCapture { get; set; }
-		[IniProperty("WindowClassesToCheckForIE", Description = "Comma separated list of Window-Classes which need to be checked for a IE instance!", DefaultValue = "AfxFrameOrView70,IMWindowClass")]
+
+        [IniProperty("WindowClassesToCheckForIE", Description = "Comma separated list of Window-Classes which need to be checked for a IE instance!", DefaultValue = "AfxFrameOrView70,IMWindowClass")]
 		public List<string> WindowClassesToCheckForIE { get; set; }
-		[IniProperty("AutoCropDifference", Description="Sets how to compare the colors for the autocrop detection, the higher the more is 'selected'. Possible values are from 0 to 255, where everything above ~150 doesn't make much sense!", DefaultValue="10")]
+
+        [IniProperty("AutoCropDifference", Description="Sets how to compare the colors for the autocrop detection, the higher the more is 'selected'. Possible values are from 0 to 255, where everything above ~150 doesn't make much sense!", DefaultValue="10")]
 		public int AutoCropDifference { get; set; }
 
 		[IniProperty("IncludePlugins", Description="Comma separated list of Plugins which are allowed. If something in the list, than every plugin not in the list will not be loaded!")]
 		public List<string> IncludePlugins { get; set; }
-		[IniProperty("ExcludePlugins", Description="Comma separated list of Plugins which are NOT allowed.")]
+
+        [IniProperty("ExcludePlugins", Description="Comma separated list of Plugins which are NOT allowed.")]
 		public List<string> ExcludePlugins { get; set; }
-		[IniProperty("ExcludeDestinations", Description = "Comma separated list of destinations which should be disabled.")]
+
+        [IniProperty("ExcludeDestinations", Description = "Comma separated list of destinations which should be disabled.")]
 		public List<string> ExcludeDestinations { get; set; }
 
 		[IniProperty("UpdateCheckInterval", Description="How many days between every update check? (0=no checks)", DefaultValue="1")]
@@ -184,11 +228,14 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("DisableSettings", Description = "Enable/disable the access to the settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool DisableSettings { get; set; }
-		[IniProperty("DisableQuickSettings", Description = "Enable/disable the access to the quick settings, can only be changed manually in this .ini", DefaultValue = "False")]
+
+        [IniProperty("DisableQuickSettings", Description = "Enable/disable the access to the quick settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool DisableQuickSettings { get; set; }
-		[IniProperty("DisableTrayicon", Description = "Disable the trayicon, can only be changed manually in this .ini", DefaultValue = "False")]
+
+        [IniProperty("DisableTrayicon", Description = "Disable the trayicon, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool HideTrayicon { get; set; }
-		[IniProperty("HideExpertSettings", Description = "Hide expert tab in the settings, can only be changed manually in this .ini", DefaultValue = "False")]
+
+        [IniProperty("HideExpertSettings", Description = "Hide expert tab in the settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool HideExpertSettings { get; set; }
 
 		[IniProperty("ThumnailPreview", Description="Enable/disable thumbnail previews", DefaultValue="True")]
@@ -196,12 +243,14 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("NoGDICaptureForProduct", Description = "List of productnames for which GDI capturing is skipped (using fallback).", DefaultValue = "IntelliJ IDEA")]
 		public List<string> NoGDICaptureForProduct { get; set; }
-		[IniProperty("NoDWMCaptureForProduct", Description = "List of productnames for which DWM capturing is skipped (using fallback).", DefaultValue = "Citrix ICA Client")]
+
+        [IniProperty("NoDWMCaptureForProduct", Description = "List of productnames for which DWM capturing is skipped (using fallback).", DefaultValue = "Citrix ICA Client")]
 		public List<string> NoDWMCaptureForProduct { get; set; }
 
 		[IniProperty("OptimizeForRDP", Description="Make some optimizations for usage with remote desktop", DefaultValue="False")]
 		public bool OptimizeForRDP { get; set; }
-		[IniProperty("DisableRDPOptimizing", Description = "Disable all optimizations for usage with remote desktop", DefaultValue = "False")]
+
+        [IniProperty("DisableRDPOptimizing", Description = "Disable all optimizations for usage with remote desktop", DefaultValue = "False")]
 		public bool DisableRDPOptimizing { get; set; }
 
 		[IniProperty("MinimizeWorkingSetSize", Description="Optimize memory footprint, but with a performance penalty!", DefaultValue="False")]
@@ -239,7 +288,8 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("ZoomerEnabled", Description = "Sets if the zoomer is enabled", DefaultValue = "True")]
 		public bool ZoomerEnabled { get; set; }
-		[IniProperty("ZoomerOpacity", Description = "Specify the transparency for the zoomer, from 0-1 (where 1 is no transparency and 0 is complete transparent. An usefull setting would be 0.7)", DefaultValue = "1")]
+
+        [IniProperty("ZoomerOpacity", Description = "Specify the transparency for the zoomer, from 0-1 (where 1 is no transparency and 0 is complete transparent. An usefull setting would be 0.7)", DefaultValue = "1")]
 		public float ZoomerOpacity { get; set; }
 
 		[IniProperty("MaxMenuItemLength", Description = "Maximum length of submenu items in the context menu, making this longer might cause context menu issues on dual screen systems.", DefaultValue = "25")]
@@ -247,14 +297,17 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("MailApiTo", Description = "The 'to' field for the email destination (settings for Outlook can be found under the Office section)", DefaultValue = "")]
 		public string MailApiTo { get; set; }
-		[IniProperty("MailApiCC", Description = "The 'CC' field for the email destination (settings for Outlook can be found under the Office section)", DefaultValue = "")]
+
+        [IniProperty("MailApiCC", Description = "The 'CC' field for the email destination (settings for Outlook can be found under the Office section)", DefaultValue = "")]
 		public string MailApiCC { get; set; }
-		[IniProperty("MailApiBCC", Description = "The 'BCC' field for the email destination (settings for Outlook can be found under the Office section)", DefaultValue = "")]
+
+        [IniProperty("MailApiBCC", Description = "The 'BCC' field for the email destination (settings for Outlook can be found under the Office section)", DefaultValue = "")]
 		public string MailApiBCC { get; set; }
 
 		[IniProperty("OptimizePNGCommand", Description = "Optional command to execute on a temporary PNG file, the command should overwrite the file and Greenshot will read it back. Note: this command is also executed when uploading PNG's!", DefaultValue = "")]
 		public string OptimizePNGCommand { get; set; }
-		[IniProperty("OptimizePNGCommandArguments", Description = "Arguments for the optional command to execute on a PNG, {0} is replaced by the temp-filename from Greenshot. Note: Temp-file is deleted afterwards by Greenshot.", DefaultValue = "\"{0}\"")]
+
+        [IniProperty("OptimizePNGCommandArguments", Description = "Arguments for the optional command to execute on a PNG, {0} is replaced by the temp-filename from Greenshot. Note: Temp-file is deleted afterwards by Greenshot.", DefaultValue = "\"{0}\"")]
 		public string OptimizePNGCommandArguments { get; set; }
 
 		[IniProperty("LastSaveWithVersion", Description = "Version of Greenshot which created this .ini")]
@@ -270,7 +323,8 @@ namespace GreenshotPlugin.Core {
 		public Size Win10BorderCrop { get; set; }
 
 		private Size _iconSize;
-		[IniProperty("IconSize", Description = "Defines the size of the icons (e.g. for the buttons in the editor), default value 16,16 anything bigger will cause scaling", DefaultValue = "16,16")]
+
+        [IniProperty("IconSize", Description = "Defines the size of the icons (e.g. for the buttons in the editor), default value 16,16 anything bigger will cause scaling", DefaultValue = "16,16")]
 		public Size IconSize {
 			get {
 				return _iconSize;
@@ -300,7 +354,8 @@ namespace GreenshotPlugin.Core {
 
 		[IniProperty("WebRequestTimeout", Description = "The connect timeout value for webrequets, these are seconds", DefaultValue = "100")]
 		public int WebRequestTimeout { get; set; }
-		[IniProperty("WebRequestReadWriteTimeout", Description = "The read/write timeout value for webrequets, these are seconds", DefaultValue = "100")]
+
+        [IniProperty("WebRequestReadWriteTimeout", Description = "The read/write timeout value for webrequets, these are seconds", DefaultValue = "100")]
 		public int WebRequestReadWriteTimeout { get; set; }
 
         // Quick Image Editor

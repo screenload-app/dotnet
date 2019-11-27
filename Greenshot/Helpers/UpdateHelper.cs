@@ -113,12 +113,15 @@ namespace Greenshot.Helpers
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
 
-            var backgroundTask = new Thread(() => { CheckAndAskForUpdate(configuration, millisecondsTimeout); })
+            var thread = new Thread(() =>
             {
-                Name = "Update check", IsBackground = true
+                CheckAndAskForUpdate(configuration, millisecondsTimeout);
+            })
+            {
+                IsBackground = true
             };
 
-            backgroundTask.Start();
+            thread.Start();
         }
 
         public static bool CheckAndAskForUpdate(CoreConfiguration configuration)
@@ -135,13 +138,15 @@ namespace Greenshot.Helpers
             {
                 Thread.Sleep(500); // ждем, пока приложение закроется...
 
-                var filePath = (string)o;
+                var argument = (string[]) o;
+
+                var filePath = argument[0];
+                var language = argument[1];
 
                 // http://www.jrsoftware.org/ishelp/index.php?topic=setupcmdline
-                // TODO $ LANG=ru
                 var startInfo = new ProcessStartInfo
                 {
-                    Arguments = "/SILENT /LANG=ru",
+                    Arguments = $"/SILENT /LANG={language}",
                     CreateNoWindow = false,
                     UseShellExecute = false,
                     FileName = filePath,
@@ -161,7 +166,13 @@ namespace Greenshot.Helpers
                 IsBackground = false
             };
 
-            thread.Start(tempFilePath);
+            var cultureInfo = new CultureInfo(Language.CurrentLanguage);
+
+            thread.Start(new[]
+            {
+                tempFilePath,
+                cultureInfo.TwoLetterISOLanguageName
+            });
         }
 
         private static bool CheckAndAskForUpdate(CoreConfiguration configuration, int millisecondsTimeout)
@@ -244,20 +255,20 @@ namespace Greenshot.Helpers
                 CoreConfig.LastUpdateCheck = DateTime.Now;
 
                 new Thread(() =>
-                {
-                    if (DialogResult.OK == UpdateForm.ShowSingleDialog(_lastVersion))
                     {
                         try
                         {
-                            MainForm.Instance.Invoke((MethodInvoker)MainForm.Instance.Exit);
+                            UpdateForm.ShowSingle(_lastVersion);
                         }
-                        catch (Exception e)
+                        catch (Exception exception)
                         {
-                            Log.Error(e);
+                            Log.Error(exception);
+                            MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
-                    }
-                })
-                { IsBackground = true }.Start();
+                    })
+                {
+                    IsBackground = true
+                }.Start();
 
                 lock (LockObject)
                 {
@@ -266,9 +277,10 @@ namespace Greenshot.Helpers
 
                 return true;
             }
-            catch (Exception e)
+            catch (Exception exception)
             {
-                Log.Error("An error occured while checking for updates, the error will be ignored: ", e);
+                Log.Error("An error occured while checking for updates, the error will be ignored: ", exception);
+                MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 lock (LockObject)
                 {

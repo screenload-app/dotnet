@@ -187,6 +187,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(53)))), ((int)(((byte)(127)))), ((int)(((byte)(196)))));
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UpdateForm_FormClosed);
             this.progressBottomPanel.ResumeLayout(false);
             this.progressBottomPanel.PerformLayout();
             this.bottomFlowPanel.ResumeLayout(false);

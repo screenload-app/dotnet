@@ -156,8 +156,6 @@ namespace GreenshotDownloadRuPlugin
             if (null == fileEntry)
                 return null;
 
-            string defaultUrl = LinkHelper.BuildDirectLink(fileEntry);
-
             if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
             {
                 string clipboardUrl;
@@ -176,10 +174,7 @@ namespace GreenshotDownloadRuPlugin
                 }
 
                 if (null != clipboardUrl)
-                {
                     ClipboardHelper.SetClipboardData(clipboardUrl);
-                    defaultUrl = clipboardUrl;
-                }
             }
 
             if (_config.AfterUploadShowDetails)
@@ -218,7 +213,7 @@ namespace GreenshotDownloadRuPlugin
                 }
             }
 
-            return defaultUrl;
+            return LinkHelper.BuildDirectLink(fileEntry);
         }
     }
 }

@@ -59,6 +59,7 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="contextmenu_help">Help</resource>
 		<resource name="contextmenu_openfile">Open image from file</resource>
 		<resource name="contextmenu_openrecentcapture">Open last capture location</resource>
+    <resource name="copyRecentUrlToolStripMenuItem">Copy last saved url to clipboard</resource>
 		<resource name="contextmenu_quicksettings">Quick preferences</resource>
 		<resource name="contextmenu_settings">Settings</resource>
     <resource name="contextmenu_generalsettings">Preferences...</resource>
@@ -275,6 +276,7 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 		<resource name="settings_waittime">Milliseconds to wait before capture</resource>
 		<resource name="settings_window_capture_mode">Window capture mode</resource>
 		<resource name="settings_windowscapture">Window capture</resource>
+    <resource name="settings_iconsize">Icon size</resource>
 
 		<resource name="tooltip_firststart">Right-click here or press the {0} key.</resource>
 		
@@ -314,7 +316,6 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
     <resource name="editor_resize_aspectratio">Maintain aspect ratio</resource>
     <resource name="editor_resize_width">Width</resource>
     <resource name="editor_resize_height">Height</resource>
-	  <resource name="settings_iconsize">Icon size</resource>
 
     <!-- Hotkeys -->
 
@@ -365,13 +366,11 @@ All Greenshot functions still work directly from the context menu via the tray i
     <resource name="exported_to_Printer">Screenshot sent to the printer.</resource>
 
     <!-- Updates -->
-    <resource name="updateform">Update</resource>
-    <resource name="updateform_caption">Downloading Greenshot {0}, please wait...</resource>
-    <resource name="updateform_cancel">Cancel</resource>
+    <resource name="UpdateForm_Info">A newer version of Greenshot is available! Do you want to download and install Greenshot {0}?</resource>
 
-    <resource name="updateform_byte">B</resource>
-    <resource name="updateform_kilobyte">kB</resource>
-    <resource name="updateform_megabyte">M</resource>
+    <resource name="UpdateForm_byte">B</resource>
+    <resource name="UpdateForm_kilobyte">kB</resource>
+    <resource name="UpdateForm_megabyte">M</resource>
 
     <resource name="checkingforupdates">Checking for updates...</resource>
     <resource name="noupdatesfound">No updates found!</resource>
@@ -379,6 +378,8 @@ All Greenshot functions still work directly from the context menu via the tray i
     <resource name="update_error">An error occured while downloading: {0}</resource>
 
     <resource name="UpdateForm_Info">A newer version of Greenshot is available! Do you want to download and install Greenshot {0}?</resource>
+
+    <resource name="LinkCopiedToClipboard">Link successfully copied to clipboard!</resource>
 
   </resources>
 </language>

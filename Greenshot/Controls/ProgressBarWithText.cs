@@ -15,6 +15,7 @@ namespace Greenshot.Controls
             // Modify the ControlStyles flags
             //http://msdn.microsoft.com/en-us/library/system.windows.forms.controlstyles.aspx
             SetStyle(ControlStyles.UserPaint | ControlStyles.AllPaintingInWmPaint, true);
+            DoubleBuffered = true;
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -22,7 +23,11 @@ namespace Greenshot.Controls
             var clipRectangle = e.ClipRectangle;
             var g = e.Graphics;
 
-            ProgressBarRenderer.DrawHorizontalBar(g, clipRectangle);
+            using (Brush brush = new SolidBrush(BackColor))
+            {
+                e.Graphics.FillRectangle(brush, clipRectangle);
+            }
+
             clipRectangle.Inflate(-3, -3);
 
             if (Value > 0)
@@ -30,8 +35,6 @@ namespace Greenshot.Controls
                 // As we doing this ourselves we need to draw the chunks on the progress bar
                 var rectangle = new Rectangle(clipRectangle.X, clipRectangle.Y,
                     (int) Math.Round((float) Value / Maximum * clipRectangle.Width), clipRectangle.Height);
-
-                //ProgressBarRenderer.DrawHorizontalChunks(g, rectangle);
 
                 using (Brush brush = new SolidBrush(BarColor))
                 {

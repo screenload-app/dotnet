@@ -43,8 +43,6 @@ using Greenshot.IniFile;
 using Greenshot.Destinations;
 using Greenshot.Drawing;
 using log4net;
-using Microsoft.Win32;
-using RegistryUtils;
 using Timer = System.Timers.Timer;
 
 namespace Greenshot
@@ -82,6 +80,7 @@ namespace Greenshot
 
             // Read configuration
             _conf = IniConfig.GetIniSection<CoreConfiguration>();
+
             try
             {
                 // Fix for Bug 2495900, Multi-user Environment
@@ -657,8 +656,6 @@ namespace Greenshot
 
         private void ContextMenuOpening(object sender, CancelEventArgs e)
         {
-            SimplifyContextMenu();
-
             // Multi-Screen captures
             contextmenu_capturefullscreen.Click -= CaptureFullScreenToolStripMenuItemClick;
             contextmenu_capturefullscreen.DropDownOpening -= MultiScreenDropDownOpening;
@@ -708,7 +705,9 @@ namespace Greenshot
             {
                 LOG.WarnFormat("Problem accessing IE information: {0}", ex.Message);
             }
-            
+
+            copyRecentUrlToolStripMenuItem.Visible = !string.IsNullOrEmpty(coreConfiguration.LastSavedUrl);
+
             contextMenu.ResumeLayout(true);
             
             contextMenu.Invalidate();
@@ -1500,6 +1499,18 @@ namespace Greenshot
                 // No reason to create a bug-form, we just display the error.
                 MessageBox.Show(this, ex.Message, "Opening " + path, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        public void CopyRecentUrlToolStripMenuItemClick(object sender, EventArgs eventArgs)
+        {
+            var lastSavedUrl = coreConfiguration.LastSavedUrl;
+
+            if (string.IsNullOrEmpty(lastSavedUrl))
+                return;
+
+            ClipboardHelper.SetClipboardData(lastSavedUrl);
+            NotifyIcon.ShowBalloonTip(10000, "Greenshot", Language.GetString("LinkCopiedToClipboard"),
+                ToolTipIcon.Info);
         }
 
         /// <summary>

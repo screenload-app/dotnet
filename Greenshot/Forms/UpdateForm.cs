@@ -37,7 +37,7 @@ namespace Greenshot
 
         private static readonly object Locker = new object();
 
-        private static UpdateForm _instance;
+        private static bool _shown;
 
         private readonly VersionInfo _versionInfo;
         private readonly WebClient _webClient;
@@ -45,6 +45,8 @@ namespace Greenshot
         private string _tempFilePath;
 
         private bool _closed;
+
+        private bool _closeApp;
 
         private UpdateForm(VersionInfo versionInfo)
         {
@@ -101,29 +103,31 @@ namespace Greenshot
 
                 UpdateHelper.RunUpdate(_tempFilePath);
 
-                lock (Locker)
-                {
-                    _instance = null;
-                }
-
-                DialogResult = DialogResult.OK;
+                _closeApp = true;
+                Close();
             };
         }
 
-        public static DialogResult ShowSingleDialog(VersionInfo versionInfo)
+        public static void ShowSingle(VersionInfo versionInfo)
         {
             if (null == versionInfo)
                 throw new ArgumentNullException(nameof(versionInfo));
 
             lock (Locker)
             {
-                if (null != _instance)
-                    return DialogResult.Cancel;
+                if (_shown)
+                    return;
 
-                _instance = new UpdateForm(versionInfo);
+                _shown = true;
             }
 
-            return _instance.ShowDialog();
+            void ShowForm ()
+            {
+                var form = new UpdateForm(versionInfo);
+                form.Show(MainForm.Instance);
+            }
+            
+            MainForm.Instance.Invoke((Action)ShowForm);
         }
 
         protected override void WndProc(ref Message m)
@@ -172,10 +176,10 @@ namespace Greenshot
 
             lock (Locker)
             {
-                _instance = null;
+                _shown = false;
             }
 
-            DialogResult = DialogResult.Cancel;
+            Close();
         }
 
         private void ReportProgress(int progressPercentage, float received, float toReceive)
@@ -200,6 +204,12 @@ namespace Greenshot
 
             mProgressBar.CustomText = string.Format(CultureInfo.InvariantCulture, " {0}% - {1:0.00}/{2:0.00} {3}",
                 progressPercentage, received, toReceive, unit);
+        }
+
+        private void UpdateForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            if (_closeApp)
+                MainForm.Instance.Invoke((MethodInvoker) MainForm.Instance.Exit);
         }
     }
 }
