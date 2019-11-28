@@ -52,6 +52,8 @@ namespace Greenshot
     /// </summary>
     public partial class MainForm : BaseForm
     {
+        private const string AnalyticsUrl = "https://analytics.webmoney.ru/statistics/187871ba896764a04fede6ff1a9e8c09";
+
         private static ILog LOG;
         private static ResourceMutex _applicationMutex;
         private static CoreConfiguration _conf;
@@ -308,6 +310,16 @@ namespace Greenshot
                 {
                     _conf.IsFirstLaunch = false;
                     IniConfig.Save();
+
+                    try
+                    {
+                        Process.Start(AnalyticsUrl);
+                    }
+                    catch (Exception exception)
+                    {
+                        LOG.Error(exception);
+                    }
+
                     transport.AddCommand(CommandEnum.FirstLaunch);
                 }
 
@@ -432,15 +444,8 @@ namespace Greenshot
                 _conf.OutputDestinations.Add(EditorDestination.DESIGNATION);
             }
 
-            if (_conf.DisableQuickSettings)
-            {
-                contextmenu_quicksettings.Visible = false;
-            }
-            else
-            {
-                // Do after all plugins & finding the destination, otherwise they are missing!
-                InitializeQuickSettingsMenu();
-            }
+            // Do after all plugins & finding the destination, otherwise they are missing!
+            InitializeQuickSettingsMenu();
 
             SoundHelper.Initialize();
 
@@ -707,6 +712,7 @@ namespace Greenshot
             }
 
             copyRecentUrlToolStripMenuItem.Visible = !string.IsNullOrEmpty(coreConfiguration.LastSavedUrl);
+            contextmenu_quicksettings.Visible = _conf.ShowQuickSettings;
 
             contextMenu.ResumeLayout(true);
             
@@ -1151,11 +1157,6 @@ namespace Greenshot
         private void InitializeQuickSettingsMenu()
         {
             contextmenu_quicksettings.DropDownItems.Clear();
-
-            if (_conf.DisableQuickSettings)
-            {
-                return;
-            }
 
             // Only add if the value is not fixed
             if (!_conf.Values["CaptureMousepointer"].IsFixed)
@@ -1610,8 +1611,6 @@ namespace Greenshot
             }
         }
 
-        private static int _lifeTimeHours;
-
         /// <summary>
         /// Do work in the background
         /// </summary>
@@ -1619,10 +1618,10 @@ namespace Greenshot
         /// <param name="e"></param>
         private void BackgroundWorkerTimerTick(object sender, EventArgs e)
         {
-            void CheckAndAskForUpdate()
+            void CheckAndAskForUpdate(UpdateRaised updateRaised)
             {
                 LOG.Debug("BackgroundWorkerTimerTick checking for update");
-                UpdateHelper.CheckAndAskForUpdateInThread(coreConfiguration);
+                UpdateHelper.CheckAndAskForUpdateInThread(updateRaised, coreConfiguration);
             }
 
             const int secondTimeInterval = 60 * 60 * 1000;
@@ -1630,21 +1629,14 @@ namespace Greenshot
             if (backgroundWorkerTimer.Interval != secondTimeInterval)
             {
                 backgroundWorkerTimer.Interval = secondTimeInterval;
-
-                if (CoreConfiguration.CheckForUnstable)
-                    CheckAndAskForUpdate(); // при первом запуске, если проверять нестабильные
-
+                CheckAndAskForUpdate(UpdateRaised.AtStartup); // при первом запуске, если проверять нестабильные
                 return;
             }
-
-            _lifeTimeHours++;
 
             if (_conf.MinimizeWorkingSetSize)
                 PsAPI.EmptyWorkingSet();
 
-            if (UpdateHelper.IsUpdateCheckNeeded() ||
-                CoreConfiguration.CheckForUnstable && 0 == _lifeTimeHours % 24) // Раз в сутки, если проверять нестабильные.
-                CheckAndAskForUpdate();
+            CheckAndAskForUpdate(UpdateRaised.Hourly);
         }
     }
 }

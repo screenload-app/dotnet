@@ -226,8 +226,14 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="settings_capture">Захват</resource>
 		<resource name="settings_capture_mousepointer">Захват указателя мыши</resource>
 		<resource name="settings_capture_windows_interactive">Использовать режим захвата интерактивного окна</resource>
-		<resource name="settings_checkperiod">Проверка обновлений с интервалом в днях (0=не проверять)</resource>
-		<resource name="settings_configureplugin">Сконфигурировать</resource>
+
+    <resource name="Settings_CheckUpdatesAuto">Автоматически</resource>
+    <resource name="Settings_CheckUpdatesManually">Вручную</resource>
+    <resource name="Settings_CheckUpdatesAtStartup">При запуске программы</resource>
+    <resource name="Settings_CheckUpdatesAfterSaving">После сохранения скриншота в облако, файл или буфер обмена</resource>
+    <resource name="Settings_CheckUpdatesOnceADay">Раз в сутки</resource>
+		
+    <resource name="settings_configureplugin">Сконфигурировать</resource>
 		<resource name="settings_copypathtoclipboard">Копировать путь файла каждый раз при сохранении изображения</resource>
 		<resource name="settings_destination">Пункт назначения</resource>
 		<resource name="settings_destination_clipboard">Копировать в буфер</resource>
@@ -261,7 +267,7 @@ ${hostname} Имя ПК
 Пример шаблона: ${YYYY}-${MM}-${DD}\${hh}-${mm}-${ss} 
 Будет создана папка на текущий день, в вашем хранилище по умолчанию, например 2008-06-29.Содержащее имя файла скриншота будет основываться на текущем
 времени, например 11_58_32 (плюс расширения, определённые в настройках)</resource>
-		<resource name="settings_network">Сеть и обновления</resource>
+		<resource name="Settings_UpdatesGroup">Проверка обновлений</resource>
 		<resource name="settings_output">Выходные данные</resource>
 		<resource name="settings_playsound">Воспроизводить звук камеры</resource>
 		<resource name="settings_plugins">Плагины</resource>
@@ -289,12 +295,13 @@ ${hostname} Имя ПК
 		<resource name="settings_tooltip_storagelocation">Место хранения скриншотов по умолчанию (оставьте пустым для сохранения на рабочий стол)</resource>
 		<resource name="settings_usedefaultproxy">Использовать прокси-систему по умолчанию</resource>
     <resource name="settings_usestableversionsonly">Только стабильные версии</resource>
-    <resource name="settings_checkupdatesbutton">Произвести проверку обновлений</resource>
+    <resource name="settings_checkupdatesbutton">Проверить сейчас</resource>
 		<resource name="settings_visualization">Эффекты</resource>
 		<resource name="settings_waittime">Ожидание перед захватом в миллисекундах</resource>
 		<resource name="settings_window_capture_mode">Режим захвата окна</resource>
 		<resource name="settings_windowscapture">Снимок окна</resource>
     <resource name="settings_iconsize">Размер иконок</resource>
+    <resource name="Settings_ShowQuickSettings">Отображать меню быстрых настроек</resource>
 
     <resource name="tooltip_firststart">Щёлкните здесь правой кнопкой мыши или нажмите клавишу {0}.</resource>
 		<resource name="update_found">Доступна новая версия Greenshot! Нажмите чтобы установить.</resource>
@@ -376,6 +383,11 @@ ${hostname} Имя ПК
     <resource name="UpdateForm_Info">Доступна версия Greenshot {0}. В ней содержатся важные исправления и улучшения, внесенные на основе наших исследований и замечаний пользователей!</resource>
     <resource name="UpdateForm_UpdateNow">УСТАНОВИТЬ</resource>
     <resource name="UpdateForm_RemindLater">НАПОМНИТЬ ПОЗЖЕ</resource>
+    <resource name="UpdateForm_RemindLabel">Напомнить</resource>
+    <resource name="UpdateForm_InAnHour">через час</resource>
+    <resource name="UpdateForm_Tomorrow">завтра</resource>
+    <resource name="UpdateForm_DoNotCheck">более не напоминать</resource>
+    <resource name="UpdateForm_OK">ОК</resource>
     <resource name="UpdateForm_Cancel">ОТМЕНА</resource>
 
     <resource name="LinkCopiedToClipboard">Ссылка скопирована в буфер обмена!</resource>

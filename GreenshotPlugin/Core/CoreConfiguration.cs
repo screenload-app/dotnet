@@ -220,17 +220,26 @@ namespace GreenshotPlugin.Core {
         [IniProperty("ExcludeDestinations", Description = "Comma separated list of destinations which should be disabled.")]
 		public List<string> ExcludeDestinations { get; set; }
 
-		[IniProperty("UpdateCheckInterval", Description="How many days between every update check? (0=no checks)", DefaultValue="1")]
-		public int UpdateCheckInterval { get; set; }
+		[IniProperty("CheckUpdatesAuto", DefaultValue = "True")]
+		public bool CheckUpdatesAuto { get; set; }
 
-		[IniProperty("LastUpdateCheck", Description="Last update check")]
-		public DateTime LastUpdateCheck { get; set; }
+        [IniProperty("CheckUpdatesAtStartup", DefaultValue = "True")]
+        public bool CheckUpdatesAtStartup { get; set; }
+
+        [IniProperty("CheckUpdatesAfterSaving", DefaultValue = "True")]
+        public bool CheckUpdatesAfterSaving { get; set; }
+
+        [IniProperty("CheckUpdatesOnceADay", DefaultValue = "True")]
+        public bool CheckUpdatesOnceADay { get; set; }
+
+        [IniProperty("NextUpdateCheck", Description="Next update check")]
+		public DateTime NextUpdateCheck { get; set; }
 
 		[IniProperty("DisableSettings", Description = "Enable/disable the access to the settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool DisableSettings { get; set; }
 
-        [IniProperty("DisableQuickSettings", Description = "Enable/disable the access to the quick settings, can only be changed manually in this .ini", DefaultValue = "False")]
-		public bool DisableQuickSettings { get; set; }
+        [IniProperty("ShowQuickSettings", Description = "Show/hide the access to the quick settings", DefaultValue = "False")]
+		public bool ShowQuickSettings { get; set; }
 
         [IniProperty("DisableTrayicon", Description = "Disable the trayicon, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool HideTrayicon { get; set; }
@@ -492,16 +501,6 @@ namespace GreenshotPlugin.Core {
 				}
 				// Disable the AutoReduceColors as it causes issues with Mozzila applications and some others
 				OutputFileAutoReduceColors = false;
-			}
-
-			// Fix for excessive feed checking
-			if (UpdateCheckInterval != 0 && UpdateCheckInterval <= 7 && LastSaveWithVersion.StartsWith("1.2"))
-			{
-				UpdateCheckInterval = 14;
-			}
-			if (UpdateCheckInterval > 365)
-			{
-				UpdateCheckInterval = 365;
 			}
 
 			// Enable OneNote if upgrading from 1.1

@@ -949,8 +949,8 @@ namespace Greenshot.Helpers
             }
 
             // Проверка обновления после завершения работы с скриншотом
-            if (successExport && CoreConfig.CheckForUnstable)
-                UpdateHelper.CheckAndAskForUpdateInThread(CoreConfig, 7500);
+            if (successExport)
+                UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.AfterSaving, CoreConfig, 7500);
 
             if (canDisposeSurface)
             {

@@ -82,8 +82,6 @@ namespace Greenshot
             ie_hotkeyControl.Leave += LeaveHotkeyControl;
             lastregion_hotkeyControl.Enter += EnterHotkeyControl;
             lastregion_hotkeyControl.Leave += LeaveHotkeyControl;
-            // Changes for BUG-2077
-            numericUpDown_daysbetweencheck.ValueChanged += NumericUpDownDaysbetweencheckOnValueChanged;
 
             //_daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
 
@@ -95,41 +93,6 @@ namespace Greenshot
             ExpertSettingsEnableState(false);
             DisplaySettings();
             CheckSettings();
-        }
-
-        /// <summary>
-        /// This makes sure the check cannot be set to 1-6
-        /// </summary>
-        /// <param name="sender">object</param>
-        /// <param name="eventArgs">EventArgs</param>
-        private void NumericUpDownDaysbetweencheckOnValueChanged(object sender, EventArgs eventArgs)
-        {
-            //int currentValue = (int) numericUpDown_daysbetweencheck.Value;
-
-            //// Check if we can into the forbidden range
-            //if (currentValue > 0 && currentValue < 7)
-            //{
-            //    if (_daysbetweencheckPreviousValue <= currentValue)
-            //    {
-            //        numericUpDown_daysbetweencheck.Value = 7;
-            //    }
-            //    else
-            //    {
-            //        numericUpDown_daysbetweencheck.Value = 0;
-            //    }
-            //}
-
-            if ((int) numericUpDown_daysbetweencheck.Value < 0)
-            {
-                numericUpDown_daysbetweencheck.Value = 0;
-            }
-
-            if ((int) numericUpDown_daysbetweencheck.Value > 365)
-            {
-                numericUpDown_daysbetweencheck.Value = 365;
-            }
-
-            //_daysbetweencheckPreviousValue = (int) numericUpDown_daysbetweencheck.Value;
         }
 
         private void EnterHotkeyControl(object sender, EventArgs e)
@@ -535,9 +498,7 @@ namespace Greenshot
                     checkbox_autostartshortcut.Checked = StartupHelper.HasRunUser();
                 }
             }
-
-            numericUpDown_daysbetweencheck.Value = coreConfiguration.UpdateCheckInterval;
-            numericUpDown_daysbetweencheck.Enabled = !coreConfiguration.Values["UpdateCheckInterval"].IsFixed;
+            
             numericUpdownIconSize.Value = coreConfiguration.IconSize.Width / 16 * 16;
 
             CheckDestinationSettings();
@@ -603,7 +564,6 @@ namespace Greenshot
                 coreConfiguration.CaptureAreaColor = Color.FromArgb(255, captureAreaColorButton.SelectedColor);
 
             coreConfiguration.DWMBackgroundColor = colorButton_window_background.SelectedColor;
-            coreConfiguration.UpdateCheckInterval = (int) numericUpDown_daysbetweencheck.Value;
 
             coreConfiguration.IconSize = new Size((int) numericUpdownIconSize.Value, (int) numericUpdownIconSize.Value);
 
@@ -639,6 +599,10 @@ namespace Greenshot
 
             DialogHelper.SetDoNotShowDialog(QuickImageEditorForm.ConfirmationDialogName,
                 !editorConfirmationCheckBox.Checked);
+
+            if (checkUpdatesAutoRadioButton.Checked && !checkUpdatesAtStartupCheckBox.Checked &&
+                !checkUpdatesAfterSavingCheckBox.Checked && !checkUpdatesOnceADayCheckBox.Checked)
+                checkUpdatesManuallyRadioButton.Checked = true;
         }
 
         private void Settings_cancelClick(object sender, EventArgs e)
@@ -919,7 +883,7 @@ namespace Greenshot
 
             var thread = new Thread(() =>
             {
-                bool updatesFound = UpdateHelper.CheckAndAskForUpdate(coreConfiguration);
+                bool updatesFound = UpdateHelper.CheckAndAskForUpdate(UpdateRaised.Manually, coreConfiguration);
 
                 Action action;
 
@@ -959,6 +923,24 @@ namespace Greenshot
         private void checkbox_checkunstableupdates_CheckedChanged(object sender, EventArgs e)
         {
             coreConfiguration.CheckForUnstable = checkbox_checkunstableupdates.Checked;
+        }
+
+        private void checkUpdatesAutoRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            bool updateOptionsEnabled = checkUpdatesAutoRadioButton.Checked;
+
+            checkUpdatesAtStartupCheckBox.Enabled = updateOptionsEnabled;
+            checkUpdatesAfterSavingCheckBox.Enabled = updateOptionsEnabled;
+            checkUpdatesOnceADayCheckBox.Enabled = updateOptionsEnabled;
+
+            if (!updateOptionsEnabled)
+            {
+                checkUpdatesAtStartupCheckBox.Checked = false;
+                checkUpdatesAfterSavingCheckBox.Checked = false;
+                checkUpdatesOnceADayCheckBox.Checked = false;
+
+                checkUpdatesManuallyRadioButton.Checked = true;
+            }
         }
     }
 

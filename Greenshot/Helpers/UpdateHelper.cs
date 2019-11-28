@@ -15,6 +15,14 @@ using log4net;
 
 namespace Greenshot.Helpers
 {
+    public enum UpdateRaised
+    {
+        Manually,
+        AtStartup,
+        AfterSaving,
+        Hourly
+    }
+
     public sealed class VersionInfo
     {
         private const string DefaultLanguageKey = "en-US";
@@ -64,10 +72,7 @@ namespace Greenshot.Helpers
 
             foreach (XmlElement infoNode in  infoNodes)
             {
-                var locale = infoNode.Attributes["locale"]?.Value;
-
-                if (null == locale)
-                    locale = DefaultLanguageKey;
+                var locale = infoNode.Attributes["locale"]?.Value ?? DefaultLanguageKey;
 
                 if (_infoDictionary.ContainsKey(locale))
                     continue;
@@ -90,32 +95,14 @@ namespace Greenshot.Helpers
         private static volatile bool _updateInProgress;
         private static VersionInfo _lastVersion;
 
-        /// <summary>
-        /// Is an update check needed?
-        /// </summary>
-        /// <returns>bool true if yes</returns>
-        public static bool IsUpdateCheckNeeded()
-        {
-            if (CoreConfig.UpdateCheckInterval == 0)
-                return false;
-
-            var lastUpdateCheck = CoreConfig.LastUpdateCheck;
-            lastUpdateCheck = lastUpdateCheck.AddDays(CoreConfig.UpdateCheckInterval);
-
-            if (DateTime.Now.CompareTo(lastUpdateCheck) < 0)
-                return false;
-
-            return true;
-        }
-
-        public static void CheckAndAskForUpdateInThread(CoreConfiguration configuration, int millisecondsTimeout = 0)
+        public static void CheckAndAskForUpdateInThread(UpdateRaised updateRaised, CoreConfiguration configuration, int millisecondsTimeout = 0)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
 
             var thread = new Thread(() =>
             {
-                CheckAndAskForUpdate(configuration, millisecondsTimeout);
+                CheckAndAskForUpdate(updateRaised, configuration, millisecondsTimeout);
             })
             {
                 IsBackground = true
@@ -124,9 +111,9 @@ namespace Greenshot.Helpers
             thread.Start();
         }
 
-        public static bool CheckAndAskForUpdate(CoreConfiguration configuration)
+        public static bool CheckAndAskForUpdate(UpdateRaised updateRaised, CoreConfiguration configuration)
         {
-            return CheckAndAskForUpdate(configuration, 0);
+            return CheckAndAskForUpdate(updateRaised, configuration, 0);
         }
 
         public static void RunUpdate(string tempFilePath)
@@ -175,7 +162,7 @@ namespace Greenshot.Helpers
             });
         }
 
-        private static bool CheckAndAskForUpdate(CoreConfiguration configuration, int millisecondsTimeout)
+        private static bool CheckAndAskForUpdate(UpdateRaised updateRaised, CoreConfiguration configuration, int millisecondsTimeout)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
@@ -188,14 +175,22 @@ namespace Greenshot.Helpers
                 _updateInProgress = true;
             }
 
+            if (!IsUpdateCheckNeeded(updateRaised))
+            {
+                lock (LockObject)
+                {
+                    _updateInProgress = false;
+                }
+
+                return false;
+            }
+
             if (0 != millisecondsTimeout)
             {
                 Thread.Sleep(millisecondsTimeout);
             }
 
             var currentVersion = Assembly.GetExecutingAssembly().GetName().Version;
-            // Test like this:
-            // currentVersion = new Version("0.8.1.1198");
 
             try
             {
@@ -222,22 +217,8 @@ namespace Greenshot.Helpers
                     lastVersion = versionInfoList.OrderByDescending(vi => vi.Version).First();
                 }
 
-                if (null == _lastVersion)
-                    _lastVersion = lastVersion;
-                else
-                {
-                    if (_lastVersion.Version >= lastVersion.Version && _lastVersion.Unwanted)
-                    {
-                        lock (LockObject)
-                        {
-                            _updateInProgress = false;
-                        }
 
-                        return false; // Уже оповещали
-                    }
-
-                    _lastVersion = lastVersion;
-                }
+                _lastVersion = lastVersion;
 
                 if (_lastVersion.Version <= currentVersion)
                 {
@@ -252,7 +233,8 @@ namespace Greenshot.Helpers
                 _lastVersion.DownloadLink = string.Format(CultureInfo.InvariantCulture, DownloadLinkTemplate,
                     _lastVersion.File);
 
-                CoreConfig.LastUpdateCheck = DateTime.Now;
+                if (CoreConfig.CheckUpdatesAuto && CoreConfig.CheckUpdatesOnceADay)
+                    CoreConfig.NextUpdateCheck = DateTime.UtcNow.AddDays(1);
 
                 new Thread(() =>
                     {
@@ -288,6 +270,35 @@ namespace Greenshot.Helpers
                 }
 
                 return false;
+            }
+        }
+
+        private static bool IsUpdateCheckNeeded(UpdateRaised updateRaised)
+        {
+            if (UpdateRaised.Manually == updateRaised)
+                return true;
+
+            //if (!CoreConfig.CheckUpdatesAuto)
+            //    return false;
+
+            switch (updateRaised)
+            {
+                case UpdateRaised.AtStartup:
+                    return CoreConfig.CheckUpdatesAuto && CoreConfig.CheckUpdatesAtStartup;
+                case UpdateRaised.AfterSaving:
+                    return CoreConfig.CheckUpdatesAuto && CoreConfig.CheckUpdatesAfterSaving;
+                case UpdateRaised.Hourly:
+
+                    var nextUpdateCheck = CoreConfig.NextUpdateCheck;
+
+                    CoreConfig.NextUpdateCheck = CoreConfig.CheckUpdatesAuto && CoreConfig.CheckUpdatesOnceADay
+                        ? DateTime.UtcNow.AddDays(1)
+                        : DateTime.UtcNow.AddYears(100);
+
+                    return nextUpdateCheck <= DateTime.UtcNow;
+
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(updateRaised), updateRaised, null);
             }
         }
     }

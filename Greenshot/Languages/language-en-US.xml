@@ -209,7 +209,11 @@ Please check write accessibility of the selected storage location.</resource>
 		<resource name="settings_capture">Capture</resource>
 		<resource name="settings_capture_mousepointer">Capture mousepointer</resource>
 		<resource name="settings_capture_windows_interactive">Use interactive window capture mode</resource>
-		<resource name="settings_checkperiod">Update check interval in days (0=no check)</resource>
+    <resource name="Settings_CheckUpdatesAuto">Automatically</resource>
+    <resource name="Settings_CheckUpdatesManually">Manually</resource>
+    <resource name="Settings_CheckUpdatesAtStartup">At program startup</resource>
+    <resource name="Settings_CheckUpdatesAfterSaving">After saving the screenshot to the cloud, file or clipboard</resource>
+    <resource name="Settings_CheckUpdatesOnceADay">Once a day</resource>
 		<resource name="settings_configureplugin">Configure</resource>
 		<resource name="settings_copypathtoclipboard">Copy file path to clipboard every time an image is saved</resource>
 		<resource name="settings_destination">Destination</resource>
@@ -244,7 +248,7 @@ You can also have Greenshot create directories dynamically, simply use the backs
 Example: the pattern ${YYYY}-${MM}-${DD}\${hh}-${mm}-${ss}
 will generate a folder for the current day in your default storage location, e.g. 2008-06-29, the contained screenshot file's name will be based on the current
 time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
-		<resource name="settings_network">Network and updates</resource>
+		<resource name="Settings_UpdatesGroup">Check for updates</resource>
 		<resource name="settings_output">Output</resource>
 		<resource name="settings_playsound">Play camera sound</resource>
 		<resource name="settings_plugins">Plugins</resource>
@@ -277,6 +281,7 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 		<resource name="settings_window_capture_mode">Window capture mode</resource>
 		<resource name="settings_windowscapture">Window capture</resource>
     <resource name="settings_iconsize">Icon size</resource>
+    <resource name="Settings_ShowQuickSettings">Show quick settings menu</resource>
 
 		<resource name="tooltip_firststart">Right-click here or press the {0} key.</resource>
 		

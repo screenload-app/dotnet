@@ -34,12 +34,10 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.Globalization;
-using System.Linq;
 using System.Runtime.InteropServices;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
-using Greenshot.Destinations;
 
 namespace Greenshot.Forms
 {
@@ -77,6 +75,10 @@ namespace Greenshot.Forms
         private static readonly Color BorderBackColor = Color.Black;
 
         private static readonly Color SizeLabelForeColor = Color.White;
+        private static readonly Color SizeLabelBackColor = Color.FromArgb(102, Color.Black);
+        private const string SizeLabelFontFamily = "Microsoft Sans Serif";
+        private const int SizeLabelFontSize = 25;
+        private const int SizeLabelMargin = 8;
 
         private readonly Color? _overlayColor;
 
@@ -668,7 +670,19 @@ namespace Greenshot.Forms
                     //    y1 -= measureHeight.Height + 10;
                     //}
 
+                    Size textSize;
+
+                    using (var font = new Font(new FontFamily(SizeLabelFontFamily), SizeLabelFontSize))
+                    {
+                        var text = GetSizeLabelText();
+                        textSize =
+                            TextRenderer.MeasureText(text, font);
+
+                        textSize = new Size(textSize.Width + SizeLabelMargin, textSize.Height + SizeLabelMargin);
+                    }
+
                     invalidateRectangle = new Rectangle(x1 - 1, y1 - 1, x2 - x1 + 1, y2 - y1 + 1);
+                    invalidateRectangle.Inflate(textSize.Width + 1, textSize.Height + 1);
                     Invalidate(invalidateRectangle);
                 }
             }
@@ -757,8 +771,6 @@ namespace Greenshot.Forms
 
                 var fixedRect = IsAnimating(_windowAnimator) ? _windowAnimator.Current : _captureRect;
 
-                Debug.WriteLine("_captureRect=" + _captureRect);
-
                 // TODO: enable when the screen capture code works reliable
                 //if (capture.CaptureDetails.CaptureMode == CaptureMode.Video) {
                 //	graphics.FillRectangle(RedOverlayBrush, fixedRect);
@@ -768,7 +780,6 @@ namespace Greenshot.Forms
                     using (var brush = new SolidBrush(_overlayColor.Value))
                     {
                         graphics.FillRectangle(brush, fixedRect);
-                        Debug.WriteLine("DRAW fixedRect=" + fixedRect);
                     }
 
                 Rectangle screenBounds = _capture.ScreenBounds;
@@ -790,7 +801,8 @@ namespace Greenshot.Forms
 
                 //DrawRulers(graphics, fixedRect);
 
-                DrawSizeOfSelectedRectangle(graphics, fixedRect);
+                if (!fixedRect.IsEmpty)
+                    DrawSize(graphics, fixedRect);
             }
             else
             {
@@ -939,130 +951,184 @@ namespace Greenshot.Forms
 
         #region Размер выделенной области (надпись в центре)
 
-        private void DrawSizeOfSelectedRectangle(Graphics graphics, RectangleF fixedRect)
+        //private SizeF GetLabelSize(Graphics graphics)
+        //{
+        //    using (var font = new Font(new FontFamily("Microsoft Sans Serif"), 25))
+        //    {
+        //        string text = GetText();
+        //        return graphics?.MeasureString(text, font) ?? TextRenderer.MeasureText(text, font);
+        //    }
+        //}
+
+        private string GetSizeLabelText()
         {
-            // Display size of selected rectangle
-            // Prepare the font and text.
-            using (Font sizeFont = new Font(FontFamily.GenericSansSerif, 12))
+            string text;
+
+            if (CaptureMode.Region == _captureMode)
+                text = _captureRect.Width + 1 + "x" +
+                       (_captureRect.Height + 1);
+            else
+                text = _captureRect.Width + "x" + _captureRect.Height;
+
+            return text;
+        }
+
+        private void DrawSize(Graphics graphics, Rectangle fixedRect)
+        {
+            using (var font = new Font(new FontFamily(SizeLabelFontFamily), SizeLabelFontSize))
             {
-                // When capturing a Region we need to add 1 to the height/width for correction
-                string sizeText;
-                if (_captureMode == CaptureMode.Region)
-                    sizeText = _captureRect.Width + 1 + " x " +
-                               (_captureRect.Height + 1); // correct the GUI width to real width for the shown size
-                else
-                    sizeText = _captureRect.Width + " x " + _captureRect.Height;
+                var text = GetSizeLabelText();
+                var textSize = graphics.MeasureString(text, font);
 
-                // Calculate the scaled font size.
-                SizeF extent = graphics.MeasureString(sizeText, sizeFont);
-                float hRatio = _captureRect.Height / (extent.Height * 2);
-                float wRatio = _captureRect.Width / (extent.Width * 2);
-                float ratio = hRatio < wRatio ? hRatio : wRatio;
-                float newSize = sizeFont.Size * ratio;
+                int sizeLabelLeft = fixedRect.X;
+                int sizeLabelTop = fixedRect.Y - (int) textSize.Height - SizeLabelMargin;
 
-                if (newSize >= 4)
+                var screenBounds = _capture.ScreenBounds;
+
+                if (sizeLabelTop < screenBounds.Y)
                 {
-                    // Only show if 4pt or larger.
-                    if (newSize > 32)
-                        newSize = 32;
+                    sizeLabelLeft = fixedRect.X + SizeLabelMargin + 1;
+                    sizeLabelTop = fixedRect.Y + SizeLabelMargin + 1;
+                }
 
-                    // Draw the size.
-                    using (Font newSizeFont = new Font(FontFamily.GenericSansSerif, newSize, FontStyle.Bold))
-                    {
-                        var textSizeF = graphics.MeasureString(sizeText, newSizeFont);
-                        var textSize = new Size((int) textSizeF.Width, (int) textSizeF.Height);
+                if (sizeLabelLeft + textSize.Width > screenBounds.Width)
+                    sizeLabelLeft = fixedRect.X - (int) textSize.Width - SizeLabelMargin;
 
-                        Point sizeLabelLocation =
-                            new Point((int) (fixedRect.X + _captureRect.Width / 2f - textSize.Width / 2f),
-                                (int) (fixedRect.Y + _captureRect.Height / 2f - textSize.Height / 2f));
+                var sizeRectangle = new Rectangle(sizeLabelLeft, sizeLabelTop, (int) textSize.Width + 1,
+                    (int) textSize.Height + 1);
 
-                        // ====================================== > Outline < ======================================
-                        using (var graphicsPath = new GraphicsPath())
-                        {
-                            graphicsPath.AddString(
-                                sizeText,
-                                FontFamily.GenericSansSerif,
-                                (int)FontStyle.Regular,
-                                graphics.DpiY * newSize / 72,
-                                sizeLabelLocation,
-                                new StringFormat());
-
-                            using (Brush brush = new SolidBrush(SizeLabelForeColor))
-                            {
-                                graphics.FillPath(brush, graphicsPath);
-                            }
-
-                            if (!_overlayColor.HasValue)
-                                graphics.DrawPath(Pens.Black, graphicsPath);
-                        }
-                        // ========================================= > END < =========================================
-
-                        // ===================================== > HatchBrush < =====================================
-                        //using (Brush brush = _overlayColor.HasValue
-                        //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-                        //    : new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
-                        //{
-                        //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
-                        //}
-                        // ========================================= > END < =========================================
-
-
-                        // ===================================== > TextureBrush #1 < =====================================
-                        //using (Brush brush = _overlayColor.HasValue
-                        //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-                        //    : new TextureBrush(_capture.Image, new RectangleF(0, 0, sizeLabelLocation.X + textSize.Width, sizeLabelLocation.Y + textSize.Height), GetImageAttributes()))
-                        //{
-                        //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
-                        //}
-                        // =========================================== > END < ===========================================
-
-                        // ===================================== > TextureBrush #2 < =====================================
-                        //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
-                        //var background = CreateSizeLabelBackground(backgroundRectangle);
-
-                        //using (Brush brush = _overlayColor.HasValue
-                        //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-                        //    : new TextureBrush(background, new RectangleF(0, 0, background.Width, background.Height),
-                        //        GetImageAttributes()))
-                        //{
-                        //    using (var backgroundGraphics = Graphics.FromImage(background))
-                        //    {
-                        //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
-                        //    }
-
-                        //    graphics.DrawImage(background, sizeLabelLocation);
-                        //}
-                        // =========================================== > END < ===========================================
-
-                        // ===================================== > TextureBrush #3 < =====================================
-                        //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
-
-                        //var background = CreateSizeLabelBackground(backgroundRectangle);
-                        //var transformedBackground = CreateSizeLabelBackground(backgroundRectangle, ColorTransformKind.Invert);
-
-                        //using (Brush brush = _overlayColor.HasValue
-                        //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-                        //    : new TextureBrush(transformedBackground, new RectangleF(0, 0, background.Width, background.Height)))
-                        //{
-                        //    using (var backgroundGraphics = Graphics.FromImage(background))
-                        //    {
-                        //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
-                        //    }
-
-                        //    graphics.DrawImage(background, sizeLabelLocation);
-                        //}
-                        // =========================================== > END < ===========================================
-
-                        //if (_showDebugInfo && _selectedCaptureWindow != null)
-                        //{
-                        //    string title =
-                        //        $"#{_selectedCaptureWindow.Handle.ToInt64():X} - {(_selectedCaptureWindow.Text.Length > 0 ? _selectedCaptureWindow.Text : _selectedCaptureWindow.Process.ProcessName)}";
-                        //    PointF debugLocation = new PointF(fixedRect.X, fixedRect.Y);
-                        //    graphics.DrawString(title, sizeFont, Brushes.DarkOrange, debugLocation);
-                        //}
-                    }
+                using (var backBrush = new SolidBrush(SizeLabelBackColor))
+                using (var rectanglePen = new Pen(SizeLabelForeColor, 1))
+                using (var foreBrush = new SolidBrush(SizeLabelForeColor))
+                {
+                    graphics.FillRectangle(backBrush, sizeRectangle);
+                    graphics.DrawRectangle(rectanglePen, sizeRectangle);
+                    graphics.DrawString(text, font, foreBrush, new PointF(sizeRectangle.X, sizeRectangle.Y));
                 }
             }
+
+            //// Display size of selected rectangle
+            //// Prepare the font and text.
+            //using (Font sizeFont = new Font(FontFamily.GenericSansSerif, 12))
+            //{
+            //    // When capturing a Region we need to add 1 to the height/width for correction
+            //    string sizeText;
+            //    if (_captureMode == CaptureMode.Region)
+            //        sizeText = _captureRect.Width + 1 + " x " +
+            //                   (_captureRect.Height + 1); // correct the GUI width to real width for the shown size
+            //    else
+            //        sizeText = _captureRect.Width + " x " + _captureRect.Height;
+
+            //    // Calculate the scaled font size.
+            //    SizeF extent = graphics.MeasureString(sizeText, sizeFont);
+            //    float hRatio = _captureRect.Height / (extent.Height * 2);
+            //    float wRatio = _captureRect.Width / (extent.Width * 2);
+            //    float ratio = hRatio < wRatio ? hRatio : wRatio;
+            //    float newSize = sizeFont.Size * ratio;
+
+            //    if (newSize >= 4)
+            //    {
+            //        // Only show if 4pt or larger.
+            //        if (newSize > 32)
+            //            newSize = 32;
+
+            //        // Draw the size.
+            //        using (Font newSizeFont = new Font(FontFamily.GenericSansSerif, newSize, FontStyle.Bold))
+            //        {
+            //            var textSizeF = graphics.MeasureString(sizeText, newSizeFont);
+            //            var textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
+
+            //            Point sizeLabelLocation =
+            //                new Point((int)(fixedRect.X + _captureRect.Width / 2f - textSize.Width / 2f),
+            //                    (int)(fixedRect.Y + _captureRect.Height / 2f - textSize.Height / 2f));
+
+            //            // ====================================== > Outline < ======================================
+            //            using (var graphicsPath = new GraphicsPath())
+            //            {
+            //                graphicsPath.AddString(
+            //                    sizeText,
+            //                    FontFamily.GenericSansSerif,
+            //                    (int)FontStyle.Regular,
+            //                    graphics.DpiY * newSize / 72,
+            //                    sizeLabelLocation,
+            //                    new StringFormat());
+
+            //                using (Brush brush = new SolidBrush(SizeLabelForeColor))
+            //                {
+            //                    graphics.FillPath(brush, graphicsPath);
+            //                }
+
+            //                if (!_overlayColor.HasValue)
+            //                    graphics.DrawPath(Pens.Black, graphicsPath);
+            //            }
+            //            // ========================================= > END < =========================================
+
+            //            // ===================================== > HatchBrush < =====================================
+            //            //using (Brush brush = _overlayColor.HasValue
+            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
+            //            //    : new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
+            //            //{
+            //            //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
+            //            //}
+            //            // ========================================= > END < =========================================
+
+
+            //            // ===================================== > TextureBrush #1 < =====================================
+            //            //using (Brush brush = _overlayColor.HasValue
+            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
+            //            //    : new TextureBrush(_capture.Image, new RectangleF(0, 0, sizeLabelLocation.X + textSize.Width, sizeLabelLocation.Y + textSize.Height), GetImageAttributes()))
+            //            //{
+            //            //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
+            //            //}
+            //            // =========================================== > END < ===========================================
+
+            //            // ===================================== > TextureBrush #2 < =====================================
+            //            //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
+            //            //var background = CreateSizeLabelBackground(backgroundRectangle);
+
+            //            //using (Brush brush = _overlayColor.HasValue
+            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
+            //            //    : new TextureBrush(background, new RectangleF(0, 0, background.Width, background.Height),
+            //            //        GetImageAttributes()))
+            //            //{
+            //            //    using (var backgroundGraphics = Graphics.FromImage(background))
+            //            //    {
+            //            //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
+            //            //    }
+
+            //            //    graphics.DrawImage(background, sizeLabelLocation);
+            //            //}
+            //            // =========================================== > END < ===========================================
+
+            //            // ===================================== > TextureBrush #3 < =====================================
+            //            //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
+
+            //            //var background = CreateSizeLabelBackground(backgroundRectangle);
+            //            //var transformedBackground = CreateSizeLabelBackground(backgroundRectangle, ColorTransformKind.Invert);
+
+            //            //using (Brush brush = _overlayColor.HasValue
+            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
+            //            //    : new TextureBrush(transformedBackground, new RectangleF(0, 0, background.Width, background.Height)))
+            //            //{
+            //            //    using (var backgroundGraphics = Graphics.FromImage(background))
+            //            //    {
+            //            //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
+            //            //    }
+
+            //            //    graphics.DrawImage(background, sizeLabelLocation);
+            //            //}
+            //            // =========================================== > END < ===========================================
+
+            //            //if (_showDebugInfo && _selectedCaptureWindow != null)
+            //            //{
+            //            //    string title =
+            //            //        $"#{_selectedCaptureWindow.Handle.ToInt64():X} - {(_selectedCaptureWindow.Text.Length > 0 ? _selectedCaptureWindow.Text : _selectedCaptureWindow.Process.ProcessName)}";
+            //            //    PointF debugLocation = new PointF(fixedRect.X, fixedRect.Y);
+            //            //    graphics.DrawString(title, sizeFont, Brushes.DarkOrange, debugLocation);
+            //            //}
+            //        }
+            //    }
+            //}
         }
 
         // https://stackoverflow.com/questions/734930/how-to-crop-an-image-using-c

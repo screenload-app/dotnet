@@ -5,7 +5,7 @@ using System.Windows.Forms;
 namespace Greenshot.Controls
 {
     // https://stackoverflow.com/questions/3529928/how-do-i-put-text-on-progressbar
-    public class ProgressBarWithText : ProgressBar
+    public sealed class ProgressBarWithText : ProgressBar
     {
         public String CustomText { get; set; }
         public Color BarColor { get; set; } = Color.LawnGreen;

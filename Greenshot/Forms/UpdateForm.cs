@@ -149,8 +149,39 @@ namespace Greenshot
             base.WndProc(ref m);
         }
 
-        private void okLabel_Click(object sender, EventArgs e){
-            okLabel.Enabled = false;
+        private void laterButton_Click(object sender, EventArgs e)
+        {
+            bottomFlowPanel.SuspendLayout();
+            bottomFlowPanel.Controls.Clear();
+            bottomFlowPanel.Controls.Add(remindBottomPanel);
+            remindBottomPanel.Visible = true;
+            bottomFlowPanel.ResumeLayout(true);
+        }
+
+        private void remindButton_Click(object sender, EventArgs e)
+        {
+            if (inAnHourRadioButton.Checked)
+                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddHours(1);
+            else if (tomorrowRadioButton.Checked)
+                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddHours(24);
+            else
+            {
+                coreConfiguration.CheckUpdatesAuto = false;
+                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddYears(100);
+            }
+
+            _closed = true;
+
+            lock (Locker)
+            {
+                _shown = false;
+            }
+
+            Close();
+        }
+
+        private void updateNowButton_Click(object sender, EventArgs e){
+            updateNowButton.Enabled = false;
 
             bottomFlowPanel.SuspendLayout();
             bottomFlowPanel.Controls.Clear();
@@ -167,7 +198,7 @@ namespace Greenshot
             _webClient.DownloadFileAsync(new Uri(_versionInfo.DownloadLink), _tempFilePath);
         }
 
-        private void cancelLabel_Click(object sender, EventArgs e)
+        private void cancelButton_Click(object sender, EventArgs e)
         {
             if (null != _webClient && _webClient.IsBusy)
                 _webClient.CancelAsync();
