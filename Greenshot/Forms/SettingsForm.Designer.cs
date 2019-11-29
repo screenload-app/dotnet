@@ -386,7 +386,7 @@ namespace Greenshot {
             0});
             this.numericUpdownIconSize.Location = new System.Drawing.Point(422, 45);
             this.numericUpdownIconSize.Maximum = new decimal(new int[] {
-            256,
+            32,
             0,
             0,
             0});
@@ -1301,18 +1301,19 @@ namespace Greenshot {
             this.groupbox_plugins.LanguageKey = "settings_plugins";
             this.groupbox_plugins.Location = new System.Drawing.Point(6, 6);
             this.groupbox_plugins.Name = "groupbox_plugins";
-            this.groupbox_plugins.Size = new System.Drawing.Size(474, 300);
+            this.groupbox_plugins.Size = new System.Drawing.Size(472, 300);
             this.groupbox_plugins.TabIndex = 0;
             this.groupbox_plugins.TabStop = false;
             this.groupbox_plugins.Text = "Plugins";
             // 
             // listview_plugins
             // 
+            this.listview_plugins.Dock = System.Windows.Forms.DockStyle.Top;
             this.listview_plugins.FullRowSelect = true;
             this.listview_plugins.HideSelection = false;
-            this.listview_plugins.Location = new System.Drawing.Point(6, 19);
+            this.listview_plugins.Location = new System.Drawing.Point(3, 16);
             this.listview_plugins.Name = "listview_plugins";
-            this.listview_plugins.Size = new System.Drawing.Size(462, 233);
+            this.listview_plugins.Size = new System.Drawing.Size(466, 233);
             this.listview_plugins.TabIndex = 0;
             this.listview_plugins.UseCompatibleStateImageBehavior = false;
             this.listview_plugins.View = System.Windows.Forms.View.Details;
@@ -1486,9 +1487,10 @@ namespace Greenshot {
             this.checkbox_autoreducecolors.Location = new System.Drawing.Point(6, 120);
             this.checkbox_autoreducecolors.Name = "checkbox_autoreducecolors";
             this.checkbox_autoreducecolors.PropertyName = "OutputFileAutoReduceColors";
-            this.checkbox_autoreducecolors.Size = new System.Drawing.Size(267, 17);
+            this.checkbox_autoreducecolors.Size = new System.Drawing.Size(406, 17);
             this.checkbox_autoreducecolors.TabIndex = 3;
-            this.checkbox_autoreducecolors.Text = "Create an 8-bit image if the colors are less than 256";
+            this.checkbox_autoreducecolors.Text = "Create an 8-bit image if the colors are less than 256 while having a > 8 bits ima" +
+    "ge";
             this.checkbox_autoreducecolors.UseVisualStyleBackColor = true;
             // 
             // label_clipboardformats

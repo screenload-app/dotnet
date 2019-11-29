@@ -44,6 +44,11 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\ExplorerHelper.cs" />
+    <Compile Include="Core\GreenshotResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>GreenshotResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Effects\AdjustEffect.cs" />
     <Compile Include="Effects\BorderEffect.cs" />
     <Compile Include="Core\CaptureHandler.cs" />
@@ -194,7 +199,6 @@
     <Compile Include="Core\EmailConfigHelper.cs" />
     <Compile Include="Core\EnumExtensions.cs" />
     <Compile Include="Core\ExtensionAttribute.cs" />
-    <Compile Include="Core\GreenshotResources.cs" />
     <Compile Include="Core\IEHelper.cs" />
     <Compile Include="Core\ImageHelper.cs" />
     <Compile Include="Core\JSONHelper.cs" />
@@ -241,10 +245,11 @@
     <EmbeddedResource Include="Controls\PleaseWaitForm.resx">
       <DependentUpon>PleaseWaitForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="log4net-embedded.xml" />
     <EmbeddedResource Include="Core\GreenshotResources.resx">
-      <DependentUpon>GreenshotResources.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>GreenshotResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <EmbeddedResource Include="log4net-embedded.xml" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -263,5 +268,17 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\win-white.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-dark-update.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-old-update.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\win-white-update.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\update.ico" />
   </ItemGroup>
 </Project>

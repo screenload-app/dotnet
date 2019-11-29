@@ -15,21 +15,24 @@ namespace Greenshot.Helpers
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(NotifyIconHelper));
 
+        private readonly CoreConfiguration _configuration;
         private readonly NotifyIcon _notifyIcon;
 
         private bool _systemSupportsThemes;
         private RegistryMonitor _registryMonitor;
 
-        public NotifyIconHelper(NotifyIcon notifyIcon)
+        public NotifyIconHelper(NotifyIcon notifyIcon, CoreConfiguration configuration)
         {
             _notifyIcon = notifyIcon ?? throw new ArgumentNullException(nameof(notifyIcon));
+            _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+
             SetNotifyIcon();
 
             if (_systemSupportsThemes)
                 StartThemeWatcher();
         }
 
-        private void SetNotifyIcon()
+        public void SetNotifyIcon()
         {
             RegistryKey personalizeKey = null;
             int? systemUsesLightTheme;
@@ -50,6 +53,8 @@ namespace Greenshot.Helpers
                 personalizeKey?.Close();
             }
 
+            var hasUpdates = UpdateHelper.IsUpdateDetected(_configuration);
+
             Icon themeIcon = null;
 
             if (systemUsesLightTheme.HasValue)
@@ -57,17 +62,17 @@ namespace Greenshot.Helpers
                 switch (systemUsesLightTheme.Value)
                 {
                     case 0:
-                        themeIcon = GreenshotResources.GetWhiteNotifyIcon();
+                        themeIcon = hasUpdates ? GreenshotResources.win_white_update : GreenshotResources.win_white;
                         break;
                     case 1:
-                        themeIcon = GreenshotResources.GetDarkNotifyIcon();
+                        themeIcon = hasUpdates ? GreenshotResources.win_dark_update : GreenshotResources.win_dark;
                         break;
                 }
             }
 
             if (null == themeIcon)
             {
-                _notifyIcon.Icon = GreenshotResources.GetClassicNotifyIcon();
+                _notifyIcon.Icon = hasUpdates ? GreenshotResources.win_old_update : GreenshotResources.win_old;
                 return;
             }
 

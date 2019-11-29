@@ -24,13 +24,16 @@ using GreenshotPlugin.Core;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace Greenshot.Controls {
-	/// <summary>
-	/// ToolStripProfessionalRenderer which draws the Check correctly when the icons are larger
-	/// </summary>
-	public class ContextMenuToolStripProfessionalRenderer : ToolStripProfessionalRenderer {
-		private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
-		private static Image _scaledCheckbox;
+namespace Greenshot.Controls
+{
+    /// <summary>
+    /// ToolStripProfessionalRenderer which draws the Check correctly when the icons are larger
+    /// </summary>
+    public class ContextMenuToolStripProfessionalRenderer : ToolStripProfessionalRenderer
+    {
+        private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
+
+        private static Image _scaledCheckbox;
 
         protected override void OnRenderItemCheck(ToolStripItemImageRenderEventArgs e)
         {
@@ -46,5 +49,6 @@ namespace Greenshot.Controls {
 
             base.OnRenderItemCheck(clone);
         }
+
     }
 }

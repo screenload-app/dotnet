@@ -32,7 +32,7 @@ namespace GreenshotDownloadRuPlugin.Forms
 
             InitializeComponent();
             ClientSize = size;
-            Icon = GreenshotResources.getGreenshotIcon();
+            Icon = GreenshotResources.win_old;
             Text = browserTitle;
             _addressTextBox.Text = authorizationLink;
 

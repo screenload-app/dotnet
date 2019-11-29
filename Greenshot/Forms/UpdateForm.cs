@@ -40,6 +40,7 @@ namespace Greenshot
         private static bool _shown;
 
         private readonly VersionInfo _versionInfo;
+        private readonly bool _raisedManually;
         private readonly WebClient _webClient;
 
         private string _tempFilePath;
@@ -48,11 +49,14 @@ namespace Greenshot
 
         private bool _closeApp;
 
-        private UpdateForm(VersionInfo versionInfo)
+        private UpdateForm(bool raisedManually, bool requestConfirmation)
         {
             InitializeComponent();
 
-            _versionInfo = versionInfo ?? throw new ArgumentNullException(nameof(versionInfo));
+            var versionInfo = VersionInfo.TryLoadFrom(coreConfiguration);
+
+            _versionInfo = versionInfo ?? throw new InvalidOperationException("null == versionInfo");
+            _raisedManually = raisedManually;
 
             string info = versionInfo.Info;
 
@@ -68,6 +72,7 @@ namespace Greenshot
             Left = workingArea.Width - Width;
 
             _webClient = new WebClient();
+
             //_webClient = new WebClient
             //{
             //    Timeout = 10 * 1000
@@ -106,13 +111,16 @@ namespace Greenshot
                 _closeApp = true;
                 Close();
             };
+
+            if (_raisedManually)
+                laterButton.LanguageKey = "UpdateForm_Cancel";
+
+            if (!requestConfirmation)
+                updateNowButton_Click(this, null);
         }
 
-        public static void ShowSingle(VersionInfo versionInfo)
+        public static void ShowSingle(bool raisedManually, bool requestConfirmation = true)
         {
-            if (null == versionInfo)
-                throw new ArgumentNullException(nameof(versionInfo));
-
             lock (Locker)
             {
                 if (_shown)
@@ -120,14 +128,12 @@ namespace Greenshot
 
                 _shown = true;
             }
-
-            void ShowForm ()
-            {
-                var form = new UpdateForm(versionInfo);
-                form.Show(MainForm.Instance);
-            }
             
-            MainForm.Instance.Invoke((Action)ShowForm);
+            MainForm.Instance.InvokeAction(() =>
+            {
+                var form = new UpdateForm(raisedManually, requestConfirmation);
+                form.Show(MainForm.Instance);
+            });
         }
 
         protected override void WndProc(ref Message m)
@@ -151,6 +157,20 @@ namespace Greenshot
 
         private void laterButton_Click(object sender, EventArgs e)
         {
+            if (_raisedManually)
+            {
+                _closed = true;
+
+                lock (Locker)
+                {
+                    _shown = false;
+                }
+
+                Close();
+
+                return;
+            }
+
             bottomFlowPanel.SuspendLayout();
             bottomFlowPanel.Controls.Clear();
             bottomFlowPanel.Controls.Add(remindBottomPanel);
@@ -161,13 +181,13 @@ namespace Greenshot
         private void remindButton_Click(object sender, EventArgs e)
         {
             if (inAnHourRadioButton.Checked)
-                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddHours(1);
+                coreConfiguration.PostponeUpdateMode = PostponeUpdateMode.Hour;
             else if (tomorrowRadioButton.Checked)
-                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddHours(24);
+                coreConfiguration.PostponeUpdateMode = PostponeUpdateMode.Day;
             else
             {
+                coreConfiguration.PostponeUpdateMode = PostponeUpdateMode.None;
                 coreConfiguration.CheckUpdatesAuto = false;
-                coreConfiguration.NextUpdateCheck = DateTime.UtcNow.AddYears(100);
             }
 
             _closed = true;
@@ -180,7 +200,8 @@ namespace Greenshot
             Close();
         }
 
-        private void updateNowButton_Click(object sender, EventArgs e){
+        private void updateNowButton_Click(object sender, EventArgs e)
+        {
             updateNowButton.Enabled = false;
 
             bottomFlowPanel.SuspendLayout();

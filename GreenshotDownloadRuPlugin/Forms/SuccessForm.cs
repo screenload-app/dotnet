@@ -38,7 +38,7 @@ namespace GreenshotDownloadRuPlugin.Forms
             _config = config ?? throw new ArgumentNullException(nameof(config));
 
             InitializeComponent();
-            Icon = GreenshotResources.getGreenshotIcon();
+            Icon = GreenshotResources.win_old;
 
             var directLink = LinkHelper.BuildDirectLink(fileEntry);
             var pageLink = LinkHelper.BuildPageLink(fileEntry);

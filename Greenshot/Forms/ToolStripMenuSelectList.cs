@@ -46,17 +46,23 @@ namespace Greenshot.Forms {
 			private set;
 		}
 
-		public ToolStripMenuSelectList(object identifier, bool allowMultiCheck) {
-			Identifier = identifier;
-			CheckOnClick = false;
-			_multiCheckAllowed = allowMultiCheck;
-			if (_defaultImage == null || _defaultImage.Size != CoreConfig.IconSize) {
-				_defaultImage?.Dispose();
-				_defaultImage = ImageHelper.CreateEmpty(CoreConfig.IconSize.Width, CoreConfig.IconSize.Height, System.Drawing.Imaging.PixelFormat.Format32bppArgb, Color.Transparent, 96f, 96f);
-			}
-			Image = _defaultImage;
-		}
-		public ToolStripMenuSelectList() : this(null,false) {}
+        public ToolStripMenuSelectList(object identifier, bool allowMultiCheck)
+        {
+            Identifier = identifier;
+            CheckOnClick = false;
+            _multiCheckAllowed = allowMultiCheck;
+
+            if (_defaultImage == null || _defaultImage.Size != CoreConfig.IconSize)
+            {
+                _defaultImage?.Dispose();
+                _defaultImage = ImageHelper.CreateEmpty(CoreConfig.IconSize.Width, CoreConfig.IconSize.Height,
+                    System.Drawing.Imaging.PixelFormat.Format32bppArgb, Color.Transparent, 96f, 96f);
+            }
+
+            Image = _defaultImage;
+        }
+
+        public ToolStripMenuSelectList() : this(null,false) {}
 		public ToolStripMenuSelectList(object identifier) : this(identifier,false) {}
 
 		/// <summary>

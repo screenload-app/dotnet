@@ -20,10 +20,10 @@
  */
 
 using System;
-using System.ComponentModel;
 using System.Drawing;
 using System.Windows.Forms;
 using Greenshot.Plugin;
+using GreenshotDownloadRuPlugin.Properties;
 using GreenshotPlugin.Core;
 using log4net;
 
@@ -44,14 +44,7 @@ namespace GreenshotDownloadRuPlugin
 
         public override string Description => Language.GetString(Constants.LanguagePrefix, LangKey.upload_menu_item);
 
-        public override Image DisplayIcon
-        {
-            get
-            {
-                var resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
-                return (Image) resources.GetObject("DownloadRu16x16");
-            }
-        }
+        public override Image DisplayIcon => Resources._16;
 
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails)

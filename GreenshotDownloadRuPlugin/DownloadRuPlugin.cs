@@ -20,14 +20,14 @@
  */
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 using Greenshot.IniFile;
 using Greenshot.Plugin;
 using GreenshotDownloadRuPlugin.Forms;
+using GreenshotDownloadRuPlugin.Properties;
+using GreenshotPlugin.Controls;
 using GreenshotPlugin.Core;
 using log4net;
 
@@ -44,7 +44,6 @@ namespace GreenshotDownloadRuPlugin
         public static PluginAttribute Attributes;
 
         private IGreenshotHost _host;
-        private ComponentResourceManager _resources;
         private ToolStripMenuItem _itemPlugInConfig;
 
         internal DownloadRuConfiguration Configuration => _config;
@@ -85,11 +84,10 @@ namespace GreenshotDownloadRuPlugin
 
             // Register configuration (don't need the configuration itself)
             _config = IniConfig.GetIniSection<DownloadRuConfiguration>();
-            _resources = new ComponentResourceManager(typeof(DownloadRuPlugin));
 
-            _itemPlugInConfig = new ToolStripMenuItem
+            _itemPlugInConfig = new GreenshotToolStripMenuItem()
             {
-                Image = (Image) _resources.GetObject("DownloadRu16x16"),
+                Icon = Resources.icon,
                 Text = Language.GetString(Constants.LanguagePrefix, LangKey.Configure)
             };
 

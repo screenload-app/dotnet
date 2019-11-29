@@ -210,6 +210,7 @@
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ColorUtility.cs" />
+    <Compile Include="Helpers\ControlExtensions.cs" />
     <Compile Include="Helpers\HotkeyHelper.cs" />
     <Compile Include="Helpers\HotkeyInfo.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
@@ -369,7 +370,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Sounds.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="greenshot.manifest" />
+    <None Include="greenshot.manifest">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="Languages\language-en-US.xml">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>

@@ -89,10 +89,6 @@
     <Compile Include="Utils\JSONSerializer.cs" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="DownloadRuPlugin.resx">
-      <DependentUpon>DownloadRuPlugin.cs</DependentUpon>
-      <SubType>Designer</SubType>
-    </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProgressForm.resx">
       <DependentUpon>ProgressForm.cs</DependentUpon>
     </EmbeddedResource>
@@ -110,8 +106,9 @@
   <ItemGroup>
     <Content Include="Languages\language_DownloadRuplugin-ru-RU.xml" />
     <Content Include="Languages\language_DownloadRuplugin-en-US.xml" />
+    <None Include="Resources\icon.ico" />
+    <None Include="Resources\16.png" />
     <None Include="Resources\pluso.png" />
-    <None Include="Resources\DownloadRu16x16.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GreenshotPlugin\GreenshotPlugin.csproj">

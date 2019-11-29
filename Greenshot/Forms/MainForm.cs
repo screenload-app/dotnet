@@ -272,7 +272,7 @@ namespace Greenshot
                         // A dirty fix to make sure the messagebox is visible as a Greenshot window on the taskbar
                         using (Form dummyForm = new Form())
                         {
-                            dummyForm.Icon = GreenshotResources.getGreenshotIcon();
+                            dummyForm.Icon = GreenshotResources.win_old;
                             dummyForm.ShowInTaskbar = true;
                             dummyForm.FormBorderStyle = FormBorderStyle.None;
                             dummyForm.Location = new Point(int.MinValue, int.MinValue);
@@ -410,7 +410,7 @@ namespace Greenshot
                 throw;
             }
 
-            _notifyIconHelper = new NotifyIconHelper(notifyIcon);
+            _notifyIconHelper = new NotifyIconHelper(notifyIcon, coreConfiguration);
 
             // Disable access to the settings, for feature #3521446
             contextmenu_settings.Visible = !_conf.DisableSettings;
@@ -482,6 +482,11 @@ namespace Greenshot
 
             // Скрыть/отобразить пункты до открытия, иначе открывается не в том месте.
             notifyIcon.MouseDown += (sender, args) => { SimplifyContextMenu(); };
+
+            // Иконки с учетом наличия обновлений.
+            OnUpdateStateChanged();
+
+            var vi = VersionInfo.TryLoadFrom(coreConfiguration);
         }
 
         /// <summary>
@@ -615,9 +620,7 @@ namespace Greenshot
                 contextMenu.ImageScalingSize = coreConfiguration.IconSize;
                 string ieExePath = PluginUtils.GetExePath("iexplore.exe");
                 if (!string.IsNullOrEmpty(ieExePath))
-                {
                     contextmenu_captureie.Image = PluginUtils.GetCachedExeIcon(ieExePath, 0);
-                }
             }
         }
 
@@ -637,6 +640,8 @@ namespace Greenshot
                 HotkeyControl.GetLocalizedHotkeyStringFromString(_conf.FullscreenHotkey);
             contextmenu_captureie.ShortcutKeyDisplayString =
                 HotkeyControl.GetLocalizedHotkeyStringFromString(_conf.IEHotkey);
+
+            SetCheckUpdatesToolStripMenuItemText(UpdateHelper.IsUpdateDetected(coreConfiguration));
         }
 
 
@@ -1514,6 +1519,65 @@ namespace Greenshot
                 ToolTipIcon.Info);
         }
 
+        private void CheckUpdatesToolStripMenuItem_Click(object sender, EventArgs eventArgs)
+        {
+            if (UpdateHelper.IsUpdateDetected(coreConfiguration))
+                UpdateForm.ShowSingle(true, false);
+            else
+            {
+                UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, updatesFound =>
+                {
+                    if (!updatesFound)
+                    {
+                        this.InvokeAction(() =>
+                        {
+                            if (IsDisposed)
+                                return;
+
+                            NotifyIcon.ShowBalloonTip(10000, "Greenshot", Language.GetString("noupdatesfound"),
+                                ToolTipIcon.Info);
+                        });
+                    }
+                });
+            }
+        }
+
+        /// <summary>
+        /// Появились обновления (или были установлены)
+        /// </summary>
+        public void OnUpdateStateChanged()
+        {
+            this.InvokeAction(() =>
+            {
+                var hasUpdates = UpdateHelper.IsUpdateDetected(coreConfiguration);
+
+                checkUpdatesToolStripMenuItem.Icon = hasUpdates
+                    ? GreenshotResources.win_old_update
+                    : GreenshotResources.update;
+                SetCheckUpdatesToolStripMenuItemText(hasUpdates);
+
+                _notifyIconHelper.SetNotifyIcon();
+            });
+        }
+
+        private void SetCheckUpdatesToolStripMenuItemText(bool hasUpdates)
+        {
+            if (hasUpdates)
+            {
+                checkUpdatesToolStripMenuItem.Text =
+                    Language.GetFormattedString("checkUpdatesToolStripMenuItemWithUpdates",
+                        UpdateHelper.LastVersion.Version);
+                checkUpdatesToolStripMenuItem.Font = new Font(checkUpdatesToolStripMenuItem.Font, FontStyle.Bold);
+
+            }
+            else
+            {
+                checkUpdatesToolStripMenuItem.Text = Language.GetString(checkUpdatesToolStripMenuItem.Name);
+                checkUpdatesToolStripMenuItem.Font =
+                    new Font(checkUpdatesToolStripMenuItem.Font, FontStyle.Regular);
+            }
+        }
+
         /// <summary>
         /// Shutdown / cleanup
         /// </summary>
@@ -1624,19 +1688,19 @@ namespace Greenshot
                 UpdateHelper.CheckAndAskForUpdateInThread(updateRaised, coreConfiguration);
             }
 
-            const int secondTimeInterval = 60 * 60 * 1000;
+            const int secondTimeInterval = 10 * 60 * 1000;
 
             if (backgroundWorkerTimer.Interval != secondTimeInterval)
             {
                 backgroundWorkerTimer.Interval = secondTimeInterval;
-                CheckAndAskForUpdate(UpdateRaised.AtStartup); // при первом запуске, если проверять нестабильные
+                CheckAndAskForUpdate(UpdateRaised.AtStartup); // при первом запуске
                 return;
             }
 
             if (_conf.MinimizeWorkingSetSize)
                 PsAPI.EmptyWorkingSet();
 
-            CheckAndAskForUpdate(UpdateRaised.Hourly);
+            CheckAndAskForUpdate(UpdateRaised.Timer);
         }
     }
 }

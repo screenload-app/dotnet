@@ -50,19 +50,11 @@ namespace Greenshot.Destinations {
 			}
 		}
 		
-		public override Keys EditorShortcutKeys {
-			get {
-				return Keys.Control | Keys.Shift | Keys.C;
-			}
-		}
+		public override Keys EditorShortcutKeys => Keys.Control | Keys.Shift | Keys.C;
 
-		public override Image DisplayIcon {
-			get {
-				return GreenshotResources.getImage("Clipboard.Image");
-			}
-		}
+        public override Image DisplayIcon => GreenshotResources.Clipboard_Image;
 
-		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
+        public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)
             {
                 SuccessMessage = Language.GetString("exported_to_Clipboard")

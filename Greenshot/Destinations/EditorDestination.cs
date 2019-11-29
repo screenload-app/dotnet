@@ -37,7 +37,7 @@ namespace Greenshot.Destinations {
 		public const string DESIGNATION = "Editor";
 		private readonly IImageEditor editor;
         
-		private static readonly Image modifyImage = GreenshotResources.GetModifyIcon().ToBitmap();
+		private static readonly Image modifyImage = GreenshotResources.Modify_Icon.ToBitmap();
 
 		public EditorDestination() {
 		}

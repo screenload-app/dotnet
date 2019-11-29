@@ -34,7 +34,7 @@ namespace GreenshotDownloadRuPlugin.Forms
 			// The InitializeComponent() call is required for Windows Forms designer support.
 			//
 			InitializeComponent();
-			Icon = GreenshotResources.getGreenshotIcon();
+			Icon = GreenshotResources.win_old;
 		}
 
         private void SettingsForm_Load(object sender, EventArgs e)

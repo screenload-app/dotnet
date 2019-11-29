@@ -61,6 +61,8 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
 		<resource name="contextmenu_openfile">Открыть изображение из файла</resource>
 		<resource name="contextmenu_openrecentcapture">Открыть последнее место захвата</resource>
     <resource name="copyRecentUrlToolStripMenuItem">Копировать ссылку на последнее изображение</resource>
+    <resource name="checkUpdatesToolStripMenuItem">Проверить обновления</resource>
+    <resource name="checkUpdatesToolStripMenuItemWithUpdates">Установить Greenshot {0}</resource>
 		<resource name="contextmenu_quicksettings">Быстрые настройки</resource>
     <resource name="contextmenu_settings">Настройки</resource>
     <resource name="contextmenu_generalsettings">Предпочтения...</resource>

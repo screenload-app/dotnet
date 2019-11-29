@@ -902,9 +902,11 @@ namespace Greenshot.Helpers
                     if (null != exportInformation)
                     {
                         if (!exportInformation.ExportMade)
-                            DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface,
+                            exportInformation = DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION,
+                                surface,
                                 captureDetails);
-                        else
+
+                        if (null != exportInformation && exportInformation.ExportMade)
                             successExport = true;
                     }
                 }
@@ -912,9 +914,12 @@ namespace Greenshot.Helpers
 
             if (captureDetails.HasDestination(PickerDestination.DESIGNATION))
             {
-                DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
+                var exportInformation = DestinationHelper.ExportCapture(false, PickerDestination.DESIGNATION, surface, captureDetails);
                 captureDetails.CaptureDestinations.Clear();
                 canDisposeSurface = false;
+
+                if (null != exportInformation && exportInformation.ExportMade)
+                    successExport = true;
             }
 
             // Disable capturing

@@ -70,13 +70,9 @@ namespace Greenshot.Destinations {
 			}
 		}
 
-		public override Image DisplayIcon {
-			get {
-				return GreenshotResources.getImage("Printer.Image");
-			}
-		}
+		public override Image DisplayIcon => GreenshotResources.Printer_Image;
 
-		public override bool IsDynamic {
+        public override bool IsDynamic {
 			get {
 				return true;
 			}

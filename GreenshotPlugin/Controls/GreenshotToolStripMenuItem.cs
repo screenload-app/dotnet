@@ -20,14 +20,47 @@
  */
 
 using System.ComponentModel;
+using System.Drawing;
+using System.Drawing.Imaging;
 using System.Windows.Forms;
 
-namespace GreenshotPlugin.Controls {
-	public class GreenshotToolStripMenuItem : ToolStripMenuItem, IGreenshotLanguageBindable {
-		[Category("Greenshot"), DefaultValue(null), Description("Specifies key of the language file to use when displaying the text.")]
-		public string LanguageKey {
-			get;
-			set;
-		}
-	}
+namespace GreenshotPlugin.Controls
+{
+    public class GreenshotToolStripMenuItem : ToolStripMenuItem, IGreenshotLanguageBindable
+    {
+        private Image _image;
+        private Icon _icon;
+
+        [Category("Greenshot"), DefaultValue(null),
+         Description("Specifies key of the language file to use when displaying the text.")]
+        public string LanguageKey { get; set; }
+
+        public Icon Icon
+        {
+            get => _icon;
+            set
+            {
+                _image = null;
+                _icon = value;
+            }
+        }
+
+        public override Image Image
+        {
+            get
+            {
+                if (null != _image && PixelFormat.DontCare != _image.PixelFormat &&
+                    _image.Size.Width == Owner.ImageScalingSize.Width)
+                    return _image;
+
+                if (null == Icon)
+                    return _image;
+
+                _image = new Icon(Icon, Owner.ImageScalingSize).ToBitmap();
+
+                return _image;
+            }
+            set => _image = value;
+        }
+    }
 }

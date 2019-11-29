@@ -881,43 +881,30 @@ namespace Greenshot
             checkUpdatesButton.Text = Language.GetString("checkingforupdates");
             checkUpdatesButton.Enabled = false;
 
-            var thread = new Thread(() =>
+            UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, updatesFound =>
             {
-                bool updatesFound = UpdateHelper.CheckAndAskForUpdate(UpdateRaised.Manually, coreConfiguration);
-
-                Action action;
-
                 if (!updatesFound)
                 {
-                    action = () =>
+                    this.InvokeAction(() =>
                     {
                         if (IsDisposed)
                             return;
 
                         checkUpdatesButton.Text = Language.GetString("noupdatesfound");
-                    };
-                    Invoke(action);
+                    });
+
+                    Thread.Sleep(1000);
                 }
 
-                action = () =>
+                this.InvokeAction(() =>
                 {
                     if (IsDisposed)
                         return;
 
                     checkUpdatesButton.Text = Language.GetString("settings_checkupdatesbutton");
                     checkUpdatesButton.Enabled = true;
-                };
-
-                if (!updatesFound)
-                    Thread.Sleep(1000); // „тобы пользователь увидел сообщение
-
-                Invoke(action);
-            })
-            {
-                IsBackground = true
-            };
-
-            thread.Start();
+                });
+            });
         }
 
         private void checkbox_checkunstableupdates_CheckedChanged(object sender, EventArgs e)
@@ -927,13 +914,13 @@ namespace Greenshot
 
         private void checkUpdatesAutoRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            bool updateOptionsEnabled = checkUpdatesAutoRadioButton.Checked;
+            bool checkUpdatesAuto = checkUpdatesAutoRadioButton.Checked;
 
-            checkUpdatesAtStartupCheckBox.Enabled = updateOptionsEnabled;
-            checkUpdatesAfterSavingCheckBox.Enabled = updateOptionsEnabled;
-            checkUpdatesOnceADayCheckBox.Enabled = updateOptionsEnabled;
+            checkUpdatesAtStartupCheckBox.Enabled = checkUpdatesAuto;
+            checkUpdatesAfterSavingCheckBox.Enabled = checkUpdatesAuto;
+            checkUpdatesOnceADayCheckBox.Enabled = checkUpdatesAuto;
 
-            if (!updateOptionsEnabled)
+            if (!checkUpdatesAuto)
             {
                 checkUpdatesAtStartupCheckBox.Checked = false;
                 checkUpdatesAfterSavingCheckBox.Checked = false;
@@ -941,6 +928,9 @@ namespace Greenshot
 
                 checkUpdatesManuallyRadioButton.Checked = true;
             }
+
+            if (checkUpdatesAuto)
+                coreConfiguration.PostponeUpdateMode = PostponeUpdateMode.None;
         }
     }
 

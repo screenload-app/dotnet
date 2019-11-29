@@ -54,12 +54,20 @@ namespace GreenshotPlugin.Core {
 		SHOW_CONTEXT_MENU
 	}
 
+    public enum PostponeUpdateMode
+    {
+        None,
+        Hour,
+        Day
+    }
+
 	/// <summary>
 	/// Description of CoreConfiguration.
 	/// </summary>
 	[IniSection("Core", Description="Greenshot core configuration")]
-	public class CoreConfiguration : IniSection, INotifyPropertyChanged {
-		public event PropertyChangedEventHandler PropertyChanged;
+	public class CoreConfiguration : IniSection, INotifyPropertyChanged
+    {
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		[IniProperty("Language", Description = "The language in IETF format (e.g. en-US)")]
 		public string Language { get; set; }
@@ -232,10 +240,22 @@ namespace GreenshotPlugin.Core {
         [IniProperty("CheckUpdatesOnceADay", DefaultValue = "True")]
         public bool CheckUpdatesOnceADay { get; set; }
 
-        [IniProperty("NextUpdateCheck", Description="Next update check")]
-		public DateTime NextUpdateCheck { get; set; }
+        [IniProperty("PostponeUpdateMode", DefaultValue = "None")]
+        public PostponeUpdateMode PostponeUpdateMode { get; set; }
 
-		[IniProperty("DisableSettings", Description = "Enable/disable the access to the settings, can only be changed manually in this .ini", DefaultValue = "False")]
+        [IniProperty("LastUpdateCheck", Description= "Last update check")]
+		public DateTime LastUpdateCheck { get; set; }
+
+        [IniProperty("LatestDetectedUpdateVersion")]
+        public string LatestDetectedUpdateVersion { get; set; }
+
+        [IniProperty("LatestDetectedUpdateFile")]
+        public string LatestDetectedUpdateFile { get; set; }
+
+        [IniProperty("LatestDetectedUpdateDescriptions")]
+        public Dictionary<string, string> LatestDetectedUpdateDescriptions { get; set; }
+
+        [IniProperty("DisableSettings", Description = "Enable/disable the access to the settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool DisableSettings { get; set; }
 
         [IniProperty("ShowQuickSettings", Description = "Show/hide the access to the quick settings", DefaultValue = "False")]

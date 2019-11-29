@@ -59,13 +59,9 @@ namespace Greenshot.Destinations {
 			}
 		}
 
-		public override Image DisplayIcon {
-			get {
-				return GreenshotResources.getImage("Save.Image");
-			}
-		}
+        public override Image DisplayIcon => GreenshotResources.Save_Image;
 
-		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
+        public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)
             {
                 SuccessMessage = Language.GetString("exported_to_FileDialog")
