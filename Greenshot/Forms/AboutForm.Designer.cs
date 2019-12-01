@@ -62,9 +62,9 @@ namespace Greenshot {
             this.downloadRuLinkLabel = new System.Windows.Forms.LinkLabel();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
             this.lblTranslation = new GreenshotPlugin.Controls.GreenshotLabel();
-            this.helpButton = new System.Windows.Forms.Button();
-            this.donateButton = new System.Windows.Forms.Button();
-            this.updatesButton = new System.Windows.Forms.Button();
+            this.helpButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.donateButton = new GreenshotPlugin.Controls.GreenshotButton();
+            this.updateButton = new GreenshotPlugin.Controls.GreenshotButton();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
@@ -214,39 +214,45 @@ namespace Greenshot {
             // helpButton
             // 
             this.helpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.helpButton.LanguageKey = "About_HelpButton";
             this.helpButton.Location = new System.Drawing.Point(12, 322);
             this.helpButton.Name = "helpButton";
             this.helpButton.Size = new System.Drawing.Size(161, 23);
             this.helpButton.TabIndex = 13;
-            this.helpButton.Text = "Справка";
+            this.helpButton.Text = "Help";
             this.helpButton.UseVisualStyleBackColor = true;
+            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
             // 
             // donateButton
             // 
             this.donateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.donateButton.LanguageKey = "About_DonateButton";
             this.donateButton.Location = new System.Drawing.Point(179, 322);
             this.donateButton.Name = "donateButton";
             this.donateButton.Size = new System.Drawing.Size(161, 23);
             this.donateButton.TabIndex = 14;
-            this.donateButton.Text = "Поддержать автора";
+            this.donateButton.Text = "Donate";
             this.donateButton.UseVisualStyleBackColor = true;
+            this.donateButton.Click += new System.EventHandler(this.donateButton_Click);
             // 
-            // updatesButton
+            // updateButton
             // 
-            this.updatesButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.updatesButton.Location = new System.Drawing.Point(346, 322);
-            this.updatesButton.Name = "updatesButton";
-            this.updatesButton.Size = new System.Drawing.Size(161, 23);
-            this.updatesButton.TabIndex = 15;
-            this.updatesButton.Text = "Проверить обновления";
-            this.updatesButton.UseVisualStyleBackColor = true;
+            this.updateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.updateButton.LanguageKey = "About_UpdateButton";
+            this.updateButton.Location = new System.Drawing.Point(346, 322);
+            this.updateButton.Name = "updateButton";
+            this.updateButton.Size = new System.Drawing.Size(161, 23);
+            this.updateButton.TabIndex = 15;
+            this.updateButton.Text = "Update";
+            this.updateButton.UseVisualStyleBackColor = true;
+            this.updateButton.Click += new System.EventHandler(this.updatesButton_Click);
             // 
             // AboutForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(519, 360);
-            this.Controls.Add(this.updatesButton);
+            this.Controls.Add(this.updateButton);
             this.Controls.Add(this.donateButton);
             this.Controls.Add(this.helpButton);
             this.Controls.Add(this.lblTranslation);
@@ -290,8 +296,8 @@ namespace Greenshot {
 		private GreenshotPlugin.Controls.GreenshotLabel lblBugs;
 		private GreenshotPlugin.Controls.GreenshotLabel lblIcons;
 		private GreenshotPlugin.Controls.GreenshotLabel lblLicense;
-        private System.Windows.Forms.Button helpButton;
-        private System.Windows.Forms.Button donateButton;
-        private System.Windows.Forms.Button updatesButton;
+        private GreenshotPlugin.Controls.GreenshotButton helpButton;
+        private GreenshotPlugin.Controls.GreenshotButton donateButton;
+        private GreenshotPlugin.Controls.GreenshotButton updateButton;
     }
 }

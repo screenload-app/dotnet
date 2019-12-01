@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using Greenshot.Destinations;
 using Greenshot.Drawing;
 using Greenshot.Drawing.Fields;
-using Greenshot.Forms;
 using Greenshot.Helpers;
 using Greenshot.Plugin;
 using GreenshotPlugin.Core;
@@ -49,7 +48,7 @@ namespace Greenshot
         private static readonly Brush AdornerBackBrush = Brushes.White;
         private static readonly Pen AdornerBorderPen = Pens.Black;
 
-        private readonly int _adornerHalsSize;
+        private readonly int _adornerHalfSize;
 
         private HorizontalToolboxForm _horizontalToolboxForm;
         private VerticalToolboxForm _verticalToolboxForm;
@@ -89,7 +88,7 @@ namespace Greenshot
 
             InitializeComponent();
 
-            _adornerHalsSize = holePanel.Padding.Top;
+            _adornerHalfSize = holePanel.Padding.Top;
 
             SuspendLayout();
             Bounds = surfaceForm.Bounds;
@@ -102,12 +101,18 @@ namespace Greenshot
             else
                 Paint += QuickImageEditorForm_Paint;
 
-            var holePanelLocation = new Point(holeRectangle.X - _adornerHalsSize, holeRectangle.Y - _adornerHalsSize);
-            var holePanelSize = new Size(holeRectangle.Width + _adornerHalsSize * 2,
-                holeRectangle.Height + _adornerHalsSize * 2);
+            var holePanelLocation = new Point(holeRectangle.X - _adornerHalfSize, holeRectangle.Y - _adornerHalfSize);
+            var holePanelSize = new Size(holeRectangle.Width + _adornerHalfSize * 2,
+                holeRectangle.Height + _adornerHalfSize * 2);
 
             holePanel.Location = holePanelLocation;
             holePanel.Size = holePanelSize;
+
+            sizeLabel.Paint += (sender, args) =>
+            {
+                args.Graphics.Clear(Color.Black);
+                CaptureForm.DrawSize(args.Graphics, args.ClipRectangle, sizeLabel.Text, false);
+            };
         }
 
         private void QuickImageEditorForm_Load(object sender, EventArgs e)
@@ -210,7 +215,7 @@ namespace Greenshot
             var g = e.Graphics;
             var r = holePanel.ClientRectangle;
 
-            int side = _adornerHalsSize * 2;
+            int side = _adornerHalfSize * 2;
 
             var leftX = r.Left;
             var middleX = (r.Left + r.Width - 1) / 2 - side / 2;
@@ -252,8 +257,8 @@ namespace Greenshot
                 g.DrawRectangle(pen, borderRectangle);
             }
 
-            int largeSide = _adornerHalsSize * 2;
-            int smallSide = _adornerHalsSize;
+            int largeSide = _adornerHalfSize * 2;
+            int smallSide = _adornerHalfSize;
 
             var leftX = r.Left;
             var middleX = (r.Left + r.Width - 1) / 2 - largeSide / 2;
@@ -370,17 +375,17 @@ namespace Greenshot
             if (!_allowMove)
                 return;
 
-            if (_holeStartLocation.Y + (e.Y - _y) < -_adornerHalsSize)
-                _y = _holeStartLocation.Y + e.Y + _adornerHalsSize;
+            if (_holeStartLocation.Y + (e.Y - _y) < -_adornerHalfSize)
+                _y = _holeStartLocation.Y + e.Y + _adornerHalfSize;
 
-            if (_holeStartLocation.X + (e.X - _x) < -_adornerHalsSize)
-                _x = _holeStartLocation.X + e.X + _adornerHalsSize;
+            if (_holeStartLocation.X + (e.X - _x) < -_adornerHalfSize)
+                _x = _holeStartLocation.X + e.X + _adornerHalfSize;
 
-            if (_holeStartLocation.Y + (e.Y - _y) + holePanel.Height > Height + _adornerHalsSize)
-                _y = _holeStartLocation.Y + e.Y + holePanel.Height - Height - _adornerHalsSize;
+            if (_holeStartLocation.Y + (e.Y - _y) + holePanel.Height > Height + _adornerHalfSize)
+                _y = _holeStartLocation.Y + e.Y + holePanel.Height - Height - _adornerHalfSize;
 
-            if (_holeStartLocation.X + (e.X - _x) + holePanel.Width > Width + _adornerHalsSize)
-                _x = _holeStartLocation.X + e.X + holePanel.Width - Width - _adornerHalsSize;
+            if (_holeStartLocation.X + (e.X - _x) + holePanel.Width > Width + _adornerHalfSize)
+                _x = _holeStartLocation.X + e.X + holePanel.Width - Width - _adornerHalfSize;
 
             var top = _holeStartLocation.Y + (e.Y - _y);
             var left = _holeStartLocation.X + (e.X - _x);
@@ -420,8 +425,8 @@ namespace Greenshot
 
             if (sender == innerPanel)
             {
-                _x += _adornerHalsSize;
-                _y += _adornerHalsSize;
+                _x += _adornerHalfSize;
+                _y += _adornerHalfSize;
             }
 
             holePanel.Capture = true;
@@ -446,7 +451,7 @@ namespace Greenshot
             var left = holePanel.Left;
             var width = holePanel.Width;
             var height = holePanel.Height;
-            
+
             var deltaX = e.X - _x;
             var deltaY = e.Y - _y;
 
@@ -500,35 +505,35 @@ namespace Greenshot
                 return;
             }
 
-            if (top < -_adornerHalsSize)
+            if (top < -_adornerHalfSize)
             {
-                height += top + _adornerHalsSize;
-                top = -_adornerHalsSize;
+                height += top + _adornerHalfSize;
+                top = -_adornerHalfSize;
             }
 
-            if (left < -_adornerHalsSize)
+            if (left < -_adornerHalfSize)
             {
-                width += left + _adornerHalsSize;
-                left = -_adornerHalsSize;
+                width += left + _adornerHalfSize;
+                left = -_adornerHalfSize;
             }
 
-            if (top + height > Height + _adornerHalsSize)
+            if (top + height > Height + _adornerHalfSize)
             {
-                height -= top - (Height + _adornerHalsSize - height);
-                top = Height + _adornerHalsSize - height;
+                height -= top - (Height + _adornerHalfSize - height);
+                top = Height + _adornerHalfSize - height;
             }
 
-            if (left + width > Width + _adornerHalsSize)
+            if (left + width > Width + _adornerHalfSize)
             {
-                width -= left - (Width + _adornerHalsSize - width);
-                left = Width + _adornerHalsSize - width;
+                width -= left - (Width + _adornerHalfSize - width);
+                left = Width + _adornerHalfSize - width;
             }
 
-            if (width < _adornerHalsSize * 4)
-                width = _adornerHalsSize * 4;
+            if (width < _adornerHalfSize * 4)
+                width = _adornerHalfSize * 4;
 
-            if (height < _adornerHalsSize * 4)
-                height = _adornerHalsSize * 4;
+            if (height < _adornerHalfSize * 4)
+                height = _adornerHalfSize * 4;
 
             holePanel.Top = top;
             holePanel.Left = left;
@@ -546,14 +551,14 @@ namespace Greenshot
             StopDragOrResizing();
         }
 
-        private void UpdateMouseEdgeProperties(object sender,  int x, int y)
+        private void UpdateMouseEdgeProperties(object sender, int x, int y)
         {
-            var panel = (Panel) sender;
+            var panel = (Panel)sender;
 
-            _isMouseInLeftEdge = x <= _adornerHalsSize * 2;
-            _isMouseInRightEdge = panel.Width - x <= _adornerHalsSize * 2;
-            _isMouseInTopEdge = y <= _adornerHalsSize * 2;
-            _isMouseInBottomEdge = panel.Height - y <= _adornerHalsSize * 2;
+            _isMouseInLeftEdge = x <= _adornerHalfSize * 2;
+            _isMouseInRightEdge = panel.Width - x <= _adornerHalfSize * 2;
+            _isMouseInTopEdge = y <= _adornerHalfSize * 2;
+            _isMouseInBottomEdge = panel.Height - y <= _adornerHalfSize * 2;
         }
 
         private void UpdateMouseCursor()
@@ -595,7 +600,13 @@ namespace Greenshot
 
         private void DisplayHoleSize()
         {
-            sizeLabel.Text = $@"{holePanel.Width - _adornerHalsSize * 2}x{holePanel.Height - _adornerHalsSize * 2}";
+            var text = $@"{holePanel.Width - _adornerHalfSize * 2}x{holePanel.Height - _adornerHalfSize * 2}";
+            var size = CaptureForm.GetSizeLabelSize(text);
+
+            size = new Size(size.Width, size.Height);
+
+            sizeLabel.Size = size;
+            sizeLabel.Text = text;
         }
 
         #endregion
@@ -614,7 +625,7 @@ namespace Greenshot
 
             sizeLabel.Left = sizeLabelLocation.X;
             sizeLabel.Top = sizeLabelLocation.Y;
-            
+
             sizeLabel.Invalidate();
         }
 
@@ -637,13 +648,13 @@ namespace Greenshot
 
         private Point CalculateSizeLabelLocation(Point holeLocation, Size sizeLabelSize, int windowWidth)
         {
-            var sizeLabelLeft = holeLocation.X + _adornerHalsSize;
+            var sizeLabelLeft = holeLocation.X + _adornerHalfSize;
             var sizeLabelTop = holeLocation.Y - sizeLabelSize.Height;
 
             if (sizeLabelTop < 0)
             {
-                sizeLabelLeft = holeLocation.X + _adornerHalsSize * 2 + 1;
-                sizeLabelTop = holeLocation.Y + _adornerHalsSize * 2 + 1;
+                sizeLabelLeft = holeLocation.X + _adornerHalfSize * 2 + 1;
+                sizeLabelTop = holeLocation.Y + _adornerHalfSize * 2 + 1;
             }
 
             if (sizeLabelLeft + sizeLabelSize.Width > windowWidth)
@@ -667,7 +678,7 @@ namespace Greenshot
             }
 
             int horizontalToolboxLeft =
-                holeRectangle.X + holeRectangle.Width - horizontalToolboxSize.Width - _adornerHalsSize;
+                holeRectangle.X + holeRectangle.Width - horizontalToolboxSize.Width - _adornerHalfSize;
             int horizontalToolboxTop;
 
             switch (horizontalToolboxPlacing)
@@ -677,9 +688,9 @@ namespace Greenshot
                     break;
                 case ToolboxPlacing.Inside:
                     horizontalToolboxLeft = holeRectangle.X + holeRectangle.Width - horizontalToolboxSize.Width -
-                                            _adornerHalsSize * 3;
+                                            _adornerHalfSize * 3;
                     horizontalToolboxTop = holeRectangle.Y + holeRectangle.Height - horizontalToolboxSize.Height -
-                                           _adornerHalsSize * 3;
+                                           _adornerHalfSize * 3;
                     break;
                 default:
                     horizontalToolboxTop = holeRectangle.Y + holeRectangle.Height;
@@ -698,7 +709,7 @@ namespace Greenshot
             }
 
             int verticalToolboxTop =
-                holeRectangle.Y + holeRectangle.Height - verticalToolboxSize.Height - _adornerHalsSize;
+                holeRectangle.Y + holeRectangle.Height - verticalToolboxSize.Height - _adornerHalfSize;
             int verticalToolboxLeft;
 
             switch (verticalToolboxPlacing)
@@ -708,9 +719,9 @@ namespace Greenshot
                     break;
                 case ToolboxPlacing.Inside:
                     verticalToolboxLeft = holeRectangle.X + holeRectangle.Width - verticalToolboxSize.Width -
-                                          _adornerHalsSize * 3;
+                                          _adornerHalfSize * 3;
                     verticalToolboxTop = holeRectangle.Y + holeRectangle.Height - verticalToolboxSize.Height -
-                                         _adornerHalsSize * 3;
+                                         _adornerHalfSize * 3;
                     break;
                 default:
                     verticalToolboxLeft = holeRectangle.X + holeRectangle.Width;
@@ -718,7 +729,7 @@ namespace Greenshot
             }
 
             // Граничные случаи
-            
+
             if (horizontalToolboxLeft < 0)
                 horizontalToolboxLeft = 0;
 
@@ -731,30 +742,30 @@ namespace Greenshot
                     switch (verticalToolboxPlacing)
                     {
                         case ToolboxPlacing.BackSide:
-                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalsSize >
+                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalfSize >
                                 verticalToolboxTop)
                                 horizontalToolboxTop =
-                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalsSize;
+                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalfSize;
 
-                            if (verticalToolboxLeft + verticalToolboxSize.Width + _adornerHalsSize >
+                            if (verticalToolboxLeft + verticalToolboxSize.Width + _adornerHalfSize >
                                 horizontalToolboxLeft)
                                 verticalToolboxLeft =
-                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalsSize;
+                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalfSize;
                             break;
                         case ToolboxPlacing.Inside:
-                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalsSize >
+                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalfSize >
                                 verticalToolboxTop)
                                 horizontalToolboxTop =
-                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalsSize;
+                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalfSize;
                             break;
                         default:
-                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalsSize >
+                            if (horizontalToolboxTop + horizontalToolboxSize.Height + _adornerHalfSize >
                                 verticalToolboxTop)
                                 horizontalToolboxTop =
-                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalsSize;
+                                    verticalToolboxTop - horizontalToolboxSize.Height - _adornerHalfSize;
 
-                            if (verticalToolboxLeft - _adornerHalsSize < horizontalToolboxSize.Width)
-                                verticalToolboxLeft = horizontalToolboxSize.Width + _adornerHalsSize;
+                            if (verticalToolboxLeft - _adornerHalfSize < horizontalToolboxSize.Width)
+                                verticalToolboxLeft = horizontalToolboxSize.Width + _adornerHalfSize;
                             break;
                     }
 
@@ -763,13 +774,13 @@ namespace Greenshot
                     switch (verticalToolboxPlacing)
                     {
                         case ToolboxPlacing.BackSide:
-                            if (verticalToolboxLeft + _adornerHalsSize >
+                            if (verticalToolboxLeft + _adornerHalfSize >
                                 horizontalToolboxLeft - verticalToolboxSize.Width)
                                 verticalToolboxLeft =
-                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalsSize;
+                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalfSize;
                             break;
                         case ToolboxPlacing.Inside:
-                            verticalToolboxTop -= horizontalToolboxSize.Height + _adornerHalsSize;
+                            verticalToolboxTop -= horizontalToolboxSize.Height + _adornerHalfSize;
                             break;
                     }
 
@@ -778,26 +789,26 @@ namespace Greenshot
                     switch (verticalToolboxPlacing)
                     {
                         case ToolboxPlacing.BackSide:
-                            if (verticalToolboxLeft + verticalToolboxSize.Width + _adornerHalsSize >
+                            if (verticalToolboxLeft + verticalToolboxSize.Width + _adornerHalfSize >
                                 horizontalToolboxLeft)
                                 verticalToolboxLeft =
-                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalsSize;
+                                    horizontalToolboxLeft - verticalToolboxSize.Width - _adornerHalfSize;
 
-                            if (horizontalToolboxTop < verticalToolboxSize.Height + _adornerHalsSize)
-                                horizontalToolboxTop = verticalToolboxSize.Height + _adornerHalsSize;
+                            if (horizontalToolboxTop < verticalToolboxSize.Height + _adornerHalfSize)
+                                horizontalToolboxTop = verticalToolboxSize.Height + _adornerHalfSize;
                             break;
                         case ToolboxPlacing.Inside:
                             if (horizontalToolboxTop <
-                                verticalToolboxTop + verticalToolboxSize.Height + _adornerHalsSize)
+                                verticalToolboxTop + verticalToolboxSize.Height + _adornerHalfSize)
                                 horizontalToolboxTop =
-                                    verticalToolboxTop + verticalToolboxSize.Height + _adornerHalsSize;
+                                    verticalToolboxTop + verticalToolboxSize.Height + _adornerHalfSize;
                             break;
                         default:
-                            if (horizontalToolboxTop < verticalToolboxSize.Height + _adornerHalsSize)
-                                horizontalToolboxTop = verticalToolboxSize.Height + _adornerHalsSize;
+                            if (horizontalToolboxTop < verticalToolboxSize.Height + _adornerHalfSize)
+                                horizontalToolboxTop = verticalToolboxSize.Height + _adornerHalfSize;
 
-                            if (verticalToolboxLeft < horizontalToolboxSize.Width + _adornerHalsSize)
-                                verticalToolboxLeft = horizontalToolboxSize.Width + _adornerHalsSize;
+                            if (verticalToolboxLeft < horizontalToolboxSize.Width + _adornerHalfSize)
+                                verticalToolboxLeft = horizontalToolboxSize.Width + _adornerHalfSize;
                             break;
                     }
 
@@ -829,7 +840,7 @@ namespace Greenshot
                     primaryScreenBounds.Width - primaryScreenBounds.X - verticalToolboxSize.Width;
                 verticalToolboxTop =
                     primaryScreenBounds.Height - primaryScreenBounds.Y - verticalToolboxSize.Height -
-                    horizontalToolboxSize.Height - _adornerHalsSize;
+                    horizontalToolboxSize.Height - _adornerHalfSize;
             }
 
             return new ToolboxesLocation(new Point(horizontalToolboxLeft, horizontalToolboxTop),
@@ -876,7 +887,7 @@ namespace Greenshot
                     break;
                 case QuickImageEditorCommand.Pencil:
                     _surface.DrawingMode = DrawingModes.Path;
-                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Line:
@@ -887,7 +898,7 @@ namespace Greenshot
                 case QuickImageEditorCommand.Rectangle:
                     _surface.DrawingMode = DrawingModes.Rect;
                     _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Ellipse:
@@ -902,7 +913,7 @@ namespace Greenshot
                     _surface.FieldAggregator.GetField(FieldType.TEXT_HORIZONTAL_ALIGNMENT).Value = StringAlignment.Near;
                     _surface.FieldAggregator.GetField(FieldType.TEXT_VERTICAL_ALIGNMENT).Value = StringAlignment.Near;
                     _surface.FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = 0;
-                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Blur:
@@ -910,13 +921,13 @@ namespace Greenshot
                     break;
                 case QuickImageEditorCommand.Counter:
                     _surface.DrawingMode = DrawingModes.StepLabel;
-                    _horizontalToolboxForm.SetColor((Color) _surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
+                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
                         .Value);
                     break;
                 case QuickImageEditorCommand.Color:
                     if (DrawingModes.StepLabel == _surface.DrawingMode)
                     {
-                        var color = (Color) e.Argument;
+                        var color = (Color)e.Argument;
                         _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value =
                             ColorUtility.CalculateContrastColor(color);
                         _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = color;
@@ -963,7 +974,7 @@ namespace Greenshot
         private void SaveCapture()
         {
             var captureForExport = new Capture(_surface.GetImageForExport());
-            captureForExport.Crop(GetRectangle());
+            captureForExport.Crop(GetActiveRectangle());
 
             var surfaceForExport = new Surface(captureForExport)
             {
@@ -1006,16 +1017,16 @@ namespace Greenshot
                 return QuickImageEditorResult.NoAction;
 
             var image = _surface.GetImageForExport();
-            var rectangle = GetRectangle();
+            var rectangle = GetActiveRectangle();
 
             return new QuickImageEditorResult(action, image, rectangle);
         }
 
-        private Rectangle GetRectangle()
+        private Rectangle GetActiveRectangle()
         {
-            return new Rectangle(holePanel.Left + _adornerHalsSize, holePanel.Top + _adornerHalsSize,
-                holePanel.Width - _adornerHalsSize * 2,
-                holePanel.Height - _adornerHalsSize * 2);
+            return new Rectangle(holePanel.Left + _adornerHalfSize, holePanel.Top + _adornerHalfSize,
+                holePanel.Width - _adornerHalfSize * 2,
+                holePanel.Height - _adornerHalfSize * 2);
         }
 
         #endregion

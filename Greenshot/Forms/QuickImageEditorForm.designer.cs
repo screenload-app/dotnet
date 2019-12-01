@@ -36,12 +36,12 @@
             // 
             // sizeLabel
             // 
-            this.sizeLabel.AutoSize = true;
             this.sizeLabel.BackColor = System.Drawing.Color.Black;
             this.sizeLabel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.sizeLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.sizeLabel.ForeColor = System.Drawing.Color.White;
             this.sizeLabel.Location = new System.Drawing.Point(39, 37);
+            this.sizeLabel.Margin = new System.Windows.Forms.Padding(0);
             this.sizeLabel.Name = "sizeLabel";
             this.sizeLabel.Size = new System.Drawing.Size(150, 41);
             this.sizeLabel.TabIndex = 0;
@@ -105,7 +105,6 @@
             this.MouseUp += new System.Windows.Forms.MouseEventHandler(this.QuickImageEditorCoverForm_MouseUp);
             this.holePanel.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 

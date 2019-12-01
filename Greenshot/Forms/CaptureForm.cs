@@ -1,25 +1,4 @@
-﻿/*
- * Greenshot - a free and open source screenshot tool
- * Copyright (C) 2007-2016 Thomas Braun, Jens Klingen, Robin Krom
- * 
- * For more information see: http://getgreenshot.org/
- * The Greenshot project is hosted on GitHub https://github.com/greenshot/greenshot
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 1 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
-
-using Greenshot.Drawing;
+﻿using Greenshot.Drawing;
 using Greenshot.Helpers;
 using Greenshot.IniFile;
 using Greenshot.Plugin;
@@ -32,6 +11,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
+using System.Linq;
 using System.Security.Permissions;
 using System.Threading;
 using System.Windows.Forms;
@@ -49,21 +29,13 @@ namespace Greenshot
             Initiated,
             Horizontal,
             Vertical
-        };
-
-        //private enum ColorTransformKind
-        //{
-        //    None,
-        //    Invert,
-        //    BlackWhite
-        //}
+        }
 
         private static readonly ILog Log = LogManager.GetLogger(typeof(CaptureForm));
 
         private static readonly CoreConfiguration Conf = IniConfig.GetIniSection<CoreConfiguration>();
 
-        //private static readonly Brush GreenOverlayBrush = new SolidBrush(Color.FromArgb(50, Color.MediumSeaGreen));
-        //private static readonly Pen OverlayPen = new Pen(Color.FromArgb(50, Color.Black));
+
         private static CaptureForm _currentForm;
         private static readonly Brush BackgroundBrush;
 
@@ -137,18 +109,6 @@ namespace Greenshot
             }
         }
 
-        private void ClosedHandler(object sender, EventArgs e)
-        {
-            _currentForm = null;
-            Log.Debug("Remove CaptureForm from currentForm");
-        }
-
-        private void ClosingHandler(object sender, EventArgs e)
-        {
-            Log.Debug("Closing captureform");
-            WindowDetails.UnregisterIgnoreHandle(Handle);
-        }
-
         /// <summary>
         /// This creates the capture form
         /// </summary>
@@ -164,13 +124,16 @@ namespace Greenshot
                 Application.DoEvents();
             }
 
+            // TODO $ Быстрое решение: сначала захыватываем маленькие окна.
+            windows = windows.OrderBy(w => w.Size.Width * w.Size.Height).ToList();
+
             _currentForm = this;
 
             // Enable the AnimatingForm
             EnableAnimation = true;
 
             // clean up
-            FormClosed += ClosedHandler;
+            FormClosed += (sender, args) => { _currentForm = null; };
 
             _capture = capture ?? throw new ArgumentNullException(nameof(capture));
             _windows = windows;
@@ -191,7 +154,7 @@ namespace Greenshot
             // Make sure we never capture the captureform
             WindowDetails.RegisterIgnoreHandle(Handle);
             // Unregister at close
-            FormClosing += ClosingHandler;
+            FormClosing += (sender, args) => { WindowDetails.UnregisterIgnoreHandle(Handle); };
 
             // set cursor location
             _cursorPos = WindowCapture.GetCursorLocationRelativeToScreenBounds();
@@ -218,19 +181,18 @@ namespace Greenshot
         public void MakeInvisibleWithDelay()
         {
             new Thread(() =>
-            {
-                Thread.Sleep(250);
-
-                void MakeInvisible()
                 {
-                    if (IsDisposed)
-                        return;
+                    Thread.Sleep(250);
 
-                    Opacity = 0;
-                }
+                    this.InvokeAction(() =>
+                    {
+                        if (IsDisposed)
+                            return;
 
-                Invoke((Action)MakeInvisible);
-            }) {IsBackground = true}.Start();
+                        Opacity = 0;
+                    });
+                })
+                {IsBackground = true}.Start();
         }
 
         /// <summary>
@@ -251,20 +213,7 @@ namespace Greenshot
             }
         }
 
-        #region key handling		
-
-        private void CaptureFormKeyUp(object sender, KeyEventArgs e)
-        {
-            switch (e.KeyCode)
-            {
-                case Keys.ShiftKey:
-                    _fixMode = FixMode.None;
-                    break;
-                case Keys.ControlKey:
-                    _isCtrlPressed = false;
-                    break;
-            }
-        }
+        #region key handling
 
         /// <summary>
         /// Handle the key down event
@@ -393,9 +342,22 @@ namespace Greenshot
             }
         }
 
+        private void CaptureFormKeyUp(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.ShiftKey:
+                    _fixMode = FixMode.None;
+                    break;
+                case Keys.ControlKey:
+                    _isCtrlPressed = false;
+                    break;
+            }
+        }
+
         #endregion
 
-        #region events
+        #region mouse handling
 
         /// <summary>
         /// The mousedown handler of the capture form
@@ -405,9 +367,7 @@ namespace Greenshot
         private void OnMouseDown(object sender, MouseEventArgs e)
         {
             if (e.Button == MouseButtons.Left)
-            {
                 HandleMouseDown();
-            }
         }
 
         private void HandleMouseDown()
@@ -418,6 +378,58 @@ namespace Greenshot
             _mouseDown = true;
             OnMouseMove(this, null);
             Invalidate();
+        }
+
+        /// <summary>
+        /// The mouse move handler of the capture form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMouseMove(object sender, MouseEventArgs e)
+        {
+            // This method is used to "fix" the mouse coordinates when keeping shift/ctrl pressed
+            Point FixMouseCoordinates(Point currentMouse)
+            {
+                if (_fixMode == FixMode.Initiated)
+                {
+                    if (_previousMousePos.X != currentMouse.X)
+                    {
+                        _fixMode = FixMode.Vertical;
+                    }
+                    else if (_previousMousePos.Y != currentMouse.Y)
+                    {
+                        _fixMode = FixMode.Horizontal;
+                    }
+                }
+                else if (_fixMode == FixMode.Vertical)
+                {
+                    currentMouse = new Point(currentMouse.X, _previousMousePos.Y);
+                }
+                else if (_fixMode == FixMode.Horizontal)
+                {
+                    currentMouse = new Point(_previousMousePos.X, currentMouse.Y);
+                }
+
+                _previousMousePos = currentMouse;
+                return currentMouse;
+            }
+
+            // Make sure the mouse coordinates are fixed, when pressing shift
+            _mouseMovePos = FixMouseCoordinates(User32.GetCursorLocation());
+            _mouseMovePos = WindowCapture.GetLocationRelativeToScreenBounds(_mouseMovePos);
+        }
+
+        /// <summary>
+        /// The mouse up handler of the capture form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            if (_mouseDown)
+            {
+                HandleMouseUp();
+            }
         }
 
         private void HandleMouseUp()
@@ -462,61 +474,7 @@ namespace Greenshot
             }
         }
 
-        /// <summary>
-        /// The mouse up handler of the capture form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnMouseUp(object sender, MouseEventArgs e)
-        {
-            if (_mouseDown)
-            {
-                HandleMouseUp();
-            }
-        }
-
-        /// <summary>
-        /// This method is used to "fix" the mouse coordinates when keeping shift/ctrl pressed
-        /// </summary>
-        /// <param name="currentMouse"></param>
-        /// <returns></returns>
-        private Point FixMouseCoordinates(Point currentMouse)
-        {
-            if (_fixMode == FixMode.Initiated)
-            {
-                if (_previousMousePos.X != currentMouse.X)
-                {
-                    _fixMode = FixMode.Vertical;
-                }
-                else if (_previousMousePos.Y != currentMouse.Y)
-                {
-                    _fixMode = FixMode.Horizontal;
-                }
-            }
-            else if (_fixMode == FixMode.Vertical)
-            {
-                currentMouse = new Point(currentMouse.X, _previousMousePos.Y);
-            }
-            else if (_fixMode == FixMode.Horizontal)
-            {
-                currentMouse = new Point(_previousMousePos.X, currentMouse.Y);
-            }
-
-            _previousMousePos = currentMouse;
-            return currentMouse;
-        }
-
-        /// <summary>
-        /// The mouse move handler of the capture form
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnMouseMove(object sender, MouseEventArgs e)
-        {
-            // Make sure the mouse coordinates are fixed, when pressing shift
-            _mouseMovePos = FixMouseCoordinates(User32.GetCursorLocation());
-            _mouseMovePos = WindowCapture.GetLocationRelativeToScreenBounds(_mouseMovePos);
-        }
+        #endregion
 
         /// <summary>
         /// Helper method to simplify check
@@ -533,54 +491,39 @@ namespace Greenshot
             return animator.HasNext;
         }
 
-        /// <summary>
-        /// update the frame, this only invalidates
-        /// </summary>
         protected override void Animate()
         {
             Point lastPos = _cursorPos;
             _cursorPos = _mouseMovePos;
 
-            if (_selectedCaptureWindow != null && lastPos.Equals(_cursorPos) && !IsAnimating(_zoomAnimator) &&
+            if (_selectedCaptureWindow != null &&
+                lastPos.Equals(_cursorPos) &&
+                !IsAnimating(_zoomAnimator) &&
                 !IsAnimating(_windowAnimator))
                 return;
 
             WindowDetails lastWindow = _selectedCaptureWindow;
-            //bool horizontalMove = false;
-            //bool verticalMove = false;
-
-            //if (lastPos.X != _cursorPos.X)
-            //{
-            //    horizontalMove = true;
-            //}
-
-            //if (lastPos.Y != _cursorPos.Y)
-            //{
-            //    verticalMove = true;
-            //}
 
             if (_captureMode == CaptureMode.Region && _mouseDown)
-            {
                 _captureRect =
                     GuiRectangle.GetGuiRectangle(_cursorPos.X, _cursorPos.Y, _mX - _cursorPos.X, _mY - _cursorPos.Y);
-            }
 
             // Iterate over the found windows and check if the current location is inside a window
             Point cursorPosition = Cursor.Position;
             _selectedCaptureWindow = null;
+
             lock (_windows)
             {
                 foreach (var window in _windows)
                 {
                     if (!window.Contains(cursorPosition))
-                    {
                         continue;
-                    }
 
                     // Only go over the children if we are in window mode
                     _selectedCaptureWindow = CaptureMode.Window == _captureMode
                         ? window.FindChildUnderPoint(cursorPosition)
                         : window;
+
                     break;
                 }
             }
@@ -588,7 +531,9 @@ namespace Greenshot
             if (_selectedCaptureWindow != null && !_selectedCaptureWindow.Equals(lastWindow))
             {
                 _capture.CaptureDetails.Title = _selectedCaptureWindow.Text;
+
                 _capture.CaptureDetails.AddMetaData("windowtitle", _selectedCaptureWindow.Text);
+
                 if (_captureMode == CaptureMode.Window)
                 {
                     // Here we want to capture the window which is under the mouse
@@ -598,139 +543,29 @@ namespace Greenshot
                 }
             }
 
-            //Rectangle invalidateRectangle;
+            if (_mouseDown || CaptureMode.Window == _captureMode || !IsTerminalServerSession)
+                Invalidate();
 
-            //if (_captureMode != CaptureMode.Window)
-            //{
-            //    // Оси (которые на весь экран)
-            //    if (!IsTerminalServerSession)
-            //    {
-            //        Rectangle allScreenBounds = WindowCapture.GetScreenBounds();
-            //        allScreenBounds.Location =
-            //            WindowCapture.GetLocationRelativeToScreenBounds(allScreenBounds.Location);
-            //        if (verticalMove)
-            //        {
-            //            // Before
-            //            invalidateRectangle =
-            //                GuiRectangle.GetGuiRectangle(allScreenBounds.Left, lastPos.Y - 2, Width + 2, 45);
-            //            Invalidate(invalidateRectangle);
-            //            // After
-            //            invalidateRectangle =
-            //                GuiRectangle.GetGuiRectangle(allScreenBounds.Left, _cursorPos.Y - 2, Width + 2, 45);
-            //            Invalidate(invalidateRectangle);
-            //        }
+            if (_captureMode == CaptureMode.Window &&
+                _selectedCaptureWindow != null &&
+                !_selectedCaptureWindow.Equals(lastWindow))
+                _windowAnimator.ChangeDestination(_captureRect, FramesForMillis(700)); // window changes, make new animation from current to target
+            
+            // Check if the animation needs to be drawn
+            if (IsAnimating(_windowAnimator))
+                _windowAnimator.Next();
 
-            //        if (horizontalMove)
-            //        {
-            //            // Before
-            //            invalidateRectangle =
-            //                GuiRectangle.GetGuiRectangle(lastPos.X - 2, allScreenBounds.Top, 75, Height + 2);
-            //            Invalidate(invalidateRectangle);
-            //            // After
-            //            invalidateRectangle =
-            //                GuiRectangle.GetGuiRectangle(_cursorPos.X - 2, allScreenBounds.Top, 75, Height + 2);
-            //            Invalidate(invalidateRectangle);
-            //        }
-            //    }
+            if (_zoomAnimator != null &&
+                (IsAnimating(_zoomAnimator) ||
+                 _captureMode != CaptureMode.Window))
+            {
+                if (Conf.ZoomerEnabled && _captureMode != CaptureMode.Window)
+                    VerifyZoomAnimation(_cursorPos, false);
 
-            //    if (_mouseDown)
-            //    {
-            //        // Прямоугольник (надпись в центре + заливака, если установлено)
-            //        int x1 = Math.Min(_mX, lastPos.X);
-            //        int x2 = Math.Max(_mX, lastPos.X);
-            //        int y1 = Math.Min(_mY, lastPos.Y);
-            //        int y2 = Math.Max(_mY, lastPos.Y);
+                if (IsAnimating(_zoomAnimator))
+                    _zoomAnimator.Next();
+            }
 
-            //        x1 = Math.Min(x1, _cursorPos.X);
-            //        x2 = Math.Max(x2, _cursorPos.X);
-            //        y1 = Math.Min(y1, _cursorPos.Y);
-            //        y2 = Math.Max(y2, _cursorPos.Y);
-
-            //        // Safety correction
-            //        x2 += 2;
-            //        y2 += 2;
-
-            //        // Here we correct for text-size
-
-            //        // Calculate the size
-            //        //int textForWidth = Math.Max(Math.Abs(_mX - _cursorPos.X), Math.Abs(_mX - lastPos.X));
-            //        //int textForHeight = Math.Max(Math.Abs(_mY - _cursorPos.Y), Math.Abs(_mY - lastPos.Y));
-
-            //        //using (Font rulerFont = new Font(FontFamily.GenericSansSerif, 8))
-            //        //{
-            //        //    Size measureWidth =
-            //        //        TextRenderer.MeasureText(textForWidth.ToString(CultureInfo.InvariantCulture), rulerFont);
-            //        //    x1 -= measureWidth.Width + 15;
-
-            //        //    Size measureHeight = TextRenderer.MeasureText(textForHeight.ToString(CultureInfo.InvariantCulture),
-            //        //        rulerFont);
-            //        //    y1 -= measureHeight.Height + 10;
-            //        //}
-
-            //        Size textSize;
-
-            //        using (var font = new Font(new FontFamily(SizeLabelFontFamily), SizeLabelFontSize))
-            //        {
-            //            var text = GetSizeLabelText();
-            //            textSize =
-            //                TextRenderer.MeasureText(text, font);
-
-            //            textSize = new Size(textSize.Width + SizeLabelMargin, textSize.Height + SizeLabelMargin);
-            //        }
-
-            //        invalidateRectangle = new Rectangle(x1 - 1, y1 - 1, x2 - x1 + 1, y2 - y1 + 1);
-            //        invalidateRectangle.Inflate(textSize.Width + 1, textSize.Height + 1);
-            //        Invalidate(invalidateRectangle);
-            //    }
-            //}
-            //else
-            //{
-            //    if (_selectedCaptureWindow != null && !_selectedCaptureWindow.Equals(lastWindow))
-            //    {
-            //        // Window changes, make new animation from current to target
-            //        _windowAnimator.ChangeDestination(_captureRect, FramesForMillis(700));
-            //    }
-            //}
-
-            //// always animate the Window area through to the last frame, so we see the fade-in/out untill the end
-            //// Using a safety "offset" to make sure the text is invalidated too
-            //const int safetySize = 30;
-            //// Check if the animation needs to be drawn
-            //if (IsAnimating(_windowAnimator))
-            //{
-            //    invalidateRectangle = _windowAnimator.Current;
-            //    invalidateRectangle.Inflate(safetySize, safetySize);
-            //    Invalidate(invalidateRectangle);
-            //    invalidateRectangle = _windowAnimator.Next();
-            //    invalidateRectangle.Inflate(safetySize, safetySize);
-            //    Invalidate(invalidateRectangle);
-            //    // Check if this was the last of the windows animations in the normal region capture.
-            //    if (_captureMode != CaptureMode.Window && !IsAnimating(_windowAnimator))
-            //    {
-            //        Invalidate();
-            //    }
-            //}
-
-            //if (_zoomAnimator != null && (IsAnimating(_zoomAnimator) || _captureMode != CaptureMode.Window))
-            //{
-            //    // Make sure we invalidate the old zoom area
-            //    invalidateRectangle = _zoomAnimator.Current;
-            //    invalidateRectangle.Offset(lastPos);
-            //    Invalidate(invalidateRectangle);
-            //    // Only verify if we are really showing the zoom, not the outgoing animation
-            //    if (Conf.ZoomerEnabled && _captureMode != CaptureMode.Window)
-            //    {
-            //        VerifyZoomAnimation(_cursorPos, false);
-            //    }
-
-            //    // The following logic is not needed, next always returns the current if there are no frames left
-            //    // but it makes more sense if we want to change something in the logic
-            //    invalidateRectangle = IsAnimating(_zoomAnimator) ? _zoomAnimator.Next() : _zoomAnimator.Current;
-            //    invalidateRectangle.Offset(_cursorPos);
-            //    Invalidate(invalidateRectangle);
-            //}
-
-            Invalidate();
             // Force update "now"
             Update();
         }
@@ -738,8 +573,8 @@ namespace Greenshot
         /// <summary>
         /// This makes sure there is no background painted, as we have complete "paint" control it doesn't make sense to do otherwise.
         /// </summary>
-        /// <param name="pevent"></param>
-        protected override void OnPaintBackground(PaintEventArgs pevent)
+        /// <param name="prevent"></param>
+        protected override void OnPaintBackground(PaintEventArgs prevent)
         {
         }
 
@@ -752,15 +587,17 @@ namespace Greenshot
         {
             Graphics graphics = e.Graphics;
             Rectangle clipRectangle = e.ClipRectangle;
-            //graphics.BitBlt((Bitmap)buffer, Point.Empty);
-            graphics.DrawImageUnscaled(_capture.Image, Point.Empty);
-            // Only draw Cursor if it's (partly) visible
 
+            graphics.DrawImageUnscaled(_capture.Image, Point.Empty);
+
+            // Only draw Cursor if it's (partly) visible
             if (_capture.Cursor != null && _capture.CursorVisible &&
                 clipRectangle.IntersectsWith(new Rectangle(_capture.CursorLocation, _capture.Cursor.Size)))
             {
                 graphics.DrawIcon(_capture.Cursor, _capture.CursorLocation.X, _capture.CursorLocation.Y);
             }
+
+            var screenBounds = _capture.ScreenBounds;
 
             if (_mouseDown || _captureMode == CaptureMode.Window || IsAnimating(_windowAnimator))
             {
@@ -769,45 +606,53 @@ namespace Greenshot
 
                 var fixedRect = IsAnimating(_windowAnimator) ? _windowAnimator.Current : _captureRect;
 
-                // TODO: enable when the screen capture code works reliable
-                //if (capture.CaptureDetails.CaptureMode == CaptureMode.Video) {
-                //	graphics.FillRectangle(RedOverlayBrush, fixedRect);
-                //} else {
+                if (!fixedRect.IsEmpty)
+                {
+                    if (_overlayColor.HasValue)
+                        using (var brush = new SolidBrush(_overlayColor.Value))
+                        {
+                            graphics.FillRectangle(brush, fixedRect);
+                        }
 
-                if (_overlayColor.HasValue)
-                    using (var brush = new SolidBrush(_overlayColor.Value))
+                    using (var brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
+                    using (var pen = new Pen(brush))
                     {
-                        graphics.FillRectangle(brush, fixedRect);
+                        graphics.DrawLine(pen, screenBounds.X, fixedRect.Y, screenBounds.Width, fixedRect.Y);
+                        graphics.DrawLine(pen, fixedRect.X, screenBounds.Y, fixedRect.X, screenBounds.Height);
+
+                        graphics.DrawLine(pen, screenBounds.X, fixedRect.Y + fixedRect.Height, screenBounds.Width,
+                            fixedRect.Y + fixedRect.Height);
+                        graphics.DrawLine(pen, fixedRect.X + fixedRect.Width, screenBounds.Y,
+                            fixedRect.X + fixedRect.Width, screenBounds.Height);
                     }
 
-                Rectangle screenBounds = _capture.ScreenBounds;
+                    // Рисуем размер
+                    int correction = _captureMode == CaptureMode.Region ? 1 : 0;
 
-                using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
-                using (Pen pen = new Pen(brush))
-                {
-                    graphics.DrawLine(pen, screenBounds.X, _mY, screenBounds.Width, _mY);
-                    graphics.DrawLine(pen, _mX, screenBounds.Y, _mX, screenBounds.Height);
-                    graphics.DrawLine(pen, screenBounds.X, _cursorPos.Y, screenBounds.Width, _cursorPos.Y);
-                    graphics.DrawLine(pen, _cursorPos.X, screenBounds.Y, _cursorPos.X, screenBounds.Height);
+                    var text = $"{fixedRect.Width + correction}x{fixedRect.Height + correction}";
+                    var textSize = GetSizeLabelSize(text);
+
+                    int sizeLabelLeft = fixedRect.X + 1;
+                    int sizeLabelTop = fixedRect.Y - textSize.Height - SizeLabelMargin + 1;
+
+                    if (sizeLabelTop < screenBounds.Y)
+                    {
+                        sizeLabelLeft = fixedRect.X + SizeLabelMargin + 2;
+                        sizeLabelTop = fixedRect.Y + SizeLabelMargin + 2;
+                    }
+
+                    if (sizeLabelLeft + textSize.Width > screenBounds.Width)
+                        sizeLabelLeft = fixedRect.X - textSize.Width - SizeLabelMargin + 1;
+
+                    var textRectangle = new Rectangle(sizeLabelLeft, sizeLabelTop, textSize.Width - 2,
+                        textSize.Height - 2);
+                    DrawSize(graphics, textRectangle, text);
                 }
-
-                //using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
-                //using (Pen pen = new Pen(brush))
-                //{
-                //    graphics.DrawRectangle(pen, fixedRect);
-                //}
-
-                //DrawRulers(graphics, fixedRect);
-
-                if (!fixedRect.IsEmpty)
-                    DrawSize(graphics, fixedRect);
             }
             else
             {
                 if (!IsTerminalServerSession)
                 {
-                    Rectangle screenBounds = _capture.ScreenBounds;
-
                     // Оси координат (до нажатия кнопки мыши).
 
                     using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
@@ -818,25 +663,26 @@ namespace Greenshot
                     }
 
                     // Координаты
-                    string xy = _cursorPos.X + " x " + _cursorPos.Y;
+                    string coordinatesText = $"{_cursorPos.X}x{_cursorPos.Y}";
 
-                    using (Font font = new Font(FontFamily.GenericSansSerif, 8))
+                    using (var font = new Font(FontFamily.GenericSansSerif, 8))
                     {
-                        Size xySize = TextRenderer.MeasureText(xy, font);
-                        using (GraphicsPath gp = RoundedRectangle.Create2(_cursorPos.X + 5, _cursorPos.Y + 5,
-                            xySize.Width - 3, xySize.Height, 3))
+                        var coordinatesTextSize = TextRenderer.MeasureText(coordinatesText, font);
+
+                        using (var graphicsPath = RoundedRectangle.Create2(_cursorPos.X + 5, _cursorPos.Y + 5,
+                            coordinatesTextSize.Width - 3, coordinatesTextSize.Height, 3))
                         {
-                            using (Brush bgBrush = new SolidBrush(_overlayColor ?? Color.White))
+                            using (var brush = new SolidBrush(_overlayColor ?? Color.White))
                             {
-                                graphics.FillPath(bgBrush, gp);
+                                graphics.FillPath(brush, graphicsPath);
                             }
 
-                            using (Pen pen = new Pen(Color.Black))
+                            using (var pen = new Pen(Color.Black))
                             {
-                                graphics.DrawPath(pen, gp);
+                                graphics.DrawPath(pen, graphicsPath);
 
                                 var coordinatePosition = new Point(_cursorPos.X + 5, _cursorPos.Y + 5);
-                                graphics.DrawString(xy, font, pen.Brush, coordinatePosition);
+                                graphics.DrawString(coordinatesText, font, pen.Brush, coordinatePosition);
                             }
                         }
                     }
@@ -849,374 +695,66 @@ namespace Greenshot
                 const int zoomSourceWidth = 25;
                 const int zoomSourceHeight = 25;
 
-                Rectangle sourceRectangle = new Rectangle(_cursorPos.X - zoomSourceWidth / 2,
+                var sourceRectangle = new Rectangle(_cursorPos.X - zoomSourceWidth / 2,
                     _cursorPos.Y - zoomSourceHeight / 2, zoomSourceWidth, zoomSourceHeight);
 
-                Rectangle destinationRectangle = _zoomAnimator.Current;
+                var destinationRectangle = _zoomAnimator.Current;
                 destinationRectangle.Offset(_cursorPos);
                 DrawZoom(graphics, sourceRectangle, destinationRectangle);
             }
         }
 
-        //private void DrawRulers(Graphics graphics, Rectangle fixedRect)
-        //{
-        //    // rulers
-        //    const int dist = 8;
-
-        //    string captureWidth;
-        //    string captureHeight;
-        //    // The following fixes the very old incorrect size information bug
-        //    if (_captureMode == CaptureMode.Window)
-        //    {
-        //        captureWidth = _captureRect.Width.ToString(CultureInfo.InvariantCulture);
-        //        captureHeight = _captureRect.Height.ToString(CultureInfo.InvariantCulture);
-        //    }
-        //    else
-        //    {
-        //        captureWidth = (_captureRect.Width + 1).ToString(CultureInfo.InvariantCulture);
-        //        captureHeight = (_captureRect.Height + 1).ToString(CultureInfo.InvariantCulture);
-        //    }
-
-        //    using (Font rulerFont = new Font(FontFamily.GenericSansSerif, 8))
-        //    {
-        //        Size measureWidth = TextRenderer.MeasureText(captureWidth, rulerFont);
-        //        Size measureHeight = TextRenderer.MeasureText(captureHeight, rulerFont);
-        //        int hSpace = measureWidth.Width + 3;
-        //        int vSpace = measureHeight.Height + 3;
-        //        //Brush bgBrush = new SolidBrush(Color.FromArgb(200, 217, 240, 227));
-        //        Brush bgBrush = new SolidBrush(Color.Transparent);
-
-        //        var rulerBrush = new SolidBrush(Color.Black);
-        //        Pen rulerPen = new Pen(rulerBrush);
-
-        //        // horizontal ruler
-        //        if (fixedRect.Width > hSpace + 3)
-        //        {
-        //            using (GraphicsPath p = RoundedRectangle.Create2(
-        //                fixedRect.X + (fixedRect.Width / 2 - hSpace / 2) + 3,
-        //                fixedRect.Y - dist - 7,
-        //                measureWidth.Width - 3,
-        //                measureWidth.Height,
-        //                3))
-        //            {
-        //                graphics.FillPath(bgBrush, p);
-        //                graphics.DrawPath(rulerPen, p);
-        //                graphics.DrawString(captureWidth, rulerFont, rulerPen.Brush,
-        //                    fixedRect.X + (fixedRect.Width / 2 - hSpace / 2) + 3, fixedRect.Y - dist - 7);
-        //                graphics.DrawLine(rulerPen, fixedRect.X, fixedRect.Y - dist,
-        //                    fixedRect.X + (fixedRect.Width / 2 - hSpace / 2), fixedRect.Y - dist);
-        //                graphics.DrawLine(rulerPen, fixedRect.X + fixedRect.Width / 2 + hSpace / 2,
-        //                    fixedRect.Y - dist, fixedRect.X + fixedRect.Width, fixedRect.Y - dist);
-        //                graphics.DrawLine(rulerPen, fixedRect.X, fixedRect.Y - dist - 3, fixedRect.X,
-        //                    fixedRect.Y - dist + 3);
-        //                graphics.DrawLine(rulerPen, fixedRect.X + fixedRect.Width, fixedRect.Y - dist - 3,
-        //                    fixedRect.X + fixedRect.Width, fixedRect.Y - dist + 3);
-        //            }
-        //        }
-
-        //        // vertical ruler
-        //        if (fixedRect.Height > vSpace + 3)
-        //        {
-        //            using (GraphicsPath p = RoundedRectangle.Create2(
-        //                fixedRect.X - measureHeight.Width + 1,
-        //                fixedRect.Y + (fixedRect.Height / 2 - vSpace / 2) + 2,
-        //                measureHeight.Width - 3,
-        //                measureHeight.Height - 1,
-        //                3))
-        //            {
-        //                graphics.FillPath(bgBrush, p);
-        //                graphics.DrawPath(rulerPen, p);
-        //                graphics.DrawString(captureHeight, rulerFont, rulerPen.Brush,
-        //                    fixedRect.X - measureHeight.Width + 1,
-        //                    fixedRect.Y + (fixedRect.Height / 2 - vSpace / 2) + 2);
-        //                graphics.DrawLine(rulerPen, fixedRect.X - dist, fixedRect.Y, fixedRect.X - dist,
-        //                    fixedRect.Y + (fixedRect.Height / 2 - vSpace / 2));
-        //                graphics.DrawLine(rulerPen, fixedRect.X - dist,
-        //                    fixedRect.Y + fixedRect.Height / 2 + vSpace / 2, fixedRect.X - dist,
-        //                    fixedRect.Y + fixedRect.Height);
-        //                graphics.DrawLine(rulerPen, fixedRect.X - dist - 3, fixedRect.Y, fixedRect.X - dist + 3,
-        //                    fixedRect.Y);
-        //                graphics.DrawLine(rulerPen, fixedRect.X - dist - 3, fixedRect.Y + fixedRect.Height,
-        //                    fixedRect.X - dist + 3, fixedRect.Y + fixedRect.Height);
-        //            }
-        //        }
-
-        //        rulerBrush.Dispose();
-        //        rulerPen.Dispose();
-        //        bgBrush.Dispose();
-        //    }
-        //}
-
         #region Размер выделенной области (надпись в центре)
 
-        //private SizeF GetLabelSize(Graphics graphics)
-        //{
-        //    using (var font = new Font(new FontFamily("Microsoft Sans Serif"), 25))
-        //    {
-        //        string text = GetText();
-        //        return graphics?.MeasureString(text, font) ?? TextRenderer.MeasureText(text, font);
-        //    }
-        //}
-
-        private string GetSizeLabelText()
+        public static Size GetSizeLabelSize(string text)
         {
-            string text;
+            if (null == text)
+                throw new ArgumentNullException(nameof(text));
 
-            if (CaptureMode.Region == _captureMode)
-                text = _captureRect.Width + 1 + "x" +
-                       (_captureRect.Height + 1);
-            else
-                text = _captureRect.Width + "x" + _captureRect.Height;
+            Size textSize;
 
-            return text;
-        }
-
-        private void DrawSize(Graphics graphics, Rectangle fixedRect)
-        {
             using (var font = new Font(new FontFamily(SizeLabelFontFamily), SizeLabelFontSize))
             {
-                var text = GetSizeLabelText();
-                var textSize = graphics.MeasureString(text, font);
-
-                int sizeLabelLeft = fixedRect.X;
-                int sizeLabelTop = fixedRect.Y - (int) textSize.Height - SizeLabelMargin;
-
-                var screenBounds = _capture.ScreenBounds;
-
-                if (sizeLabelTop < screenBounds.Y)
-                {
-                    sizeLabelLeft = fixedRect.X + SizeLabelMargin + 1;
-                    sizeLabelTop = fixedRect.Y + SizeLabelMargin + 1;
-                }
-
-                if (sizeLabelLeft + textSize.Width > screenBounds.Width)
-                    sizeLabelLeft = fixedRect.X - (int) textSize.Width - SizeLabelMargin;
-
-                var sizeRectangle = new Rectangle(sizeLabelLeft, sizeLabelTop, (int) textSize.Width + 1,
-                    (int) textSize.Height + 1);
-
-                using (var backBrush = new SolidBrush(SizeLabelBackColor))
-                using (var rectanglePen = new Pen(SizeLabelForeColor, 1))
-                using (var foreBrush = new SolidBrush(SizeLabelForeColor))
-                {
-                    graphics.FillRectangle(backBrush, sizeRectangle);
-                    graphics.DrawRectangle(rectanglePen, sizeRectangle);
-                    graphics.DrawString(text, font, foreBrush, new PointF(sizeRectangle.X, sizeRectangle.Y));
-                }
+                textSize = TextRenderer.MeasureText(text, font);
             }
 
-            //// Display size of selected rectangle
-            //// Prepare the font and text.
-            //using (Font sizeFont = new Font(FontFamily.GenericSansSerif, 12))
-            //{
-            //    // When capturing a Region we need to add 1 to the height/width for correction
-            //    string sizeText;
-            //    if (_captureMode == CaptureMode.Region)
-            //        sizeText = _captureRect.Width + 1 + " x " +
-            //                   (_captureRect.Height + 1); // correct the GUI width to real width for the shown size
-            //    else
-            //        sizeText = _captureRect.Width + " x " + _captureRect.Height;
+            textSize.Width++;
+            textSize.Height++;
 
-            //    // Calculate the scaled font size.
-            //    SizeF extent = graphics.MeasureString(sizeText, sizeFont);
-            //    float hRatio = _captureRect.Height / (extent.Height * 2);
-            //    float wRatio = _captureRect.Width / (extent.Width * 2);
-            //    float ratio = hRatio < wRatio ? hRatio : wRatio;
-            //    float newSize = sizeFont.Size * ratio;
-
-            //    if (newSize >= 4)
-            //    {
-            //        // Only show if 4pt or larger.
-            //        if (newSize > 32)
-            //            newSize = 32;
-
-            //        // Draw the size.
-            //        using (Font newSizeFont = new Font(FontFamily.GenericSansSerif, newSize, FontStyle.Bold))
-            //        {
-            //            var textSizeF = graphics.MeasureString(sizeText, newSizeFont);
-            //            var textSize = new Size((int)textSizeF.Width, (int)textSizeF.Height);
-
-            //            Point sizeLabelLocation =
-            //                new Point((int)(fixedRect.X + _captureRect.Width / 2f - textSize.Width / 2f),
-            //                    (int)(fixedRect.Y + _captureRect.Height / 2f - textSize.Height / 2f));
-
-            //            // ====================================== > Outline < ======================================
-            //            using (var graphicsPath = new GraphicsPath())
-            //            {
-            //                graphicsPath.AddString(
-            //                    sizeText,
-            //                    FontFamily.GenericSansSerif,
-            //                    (int)FontStyle.Regular,
-            //                    graphics.DpiY * newSize / 72,
-            //                    sizeLabelLocation,
-            //                    new StringFormat());
-
-            //                using (Brush brush = new SolidBrush(SizeLabelForeColor))
-            //                {
-            //                    graphics.FillPath(brush, graphicsPath);
-            //                }
-
-            //                if (!_overlayColor.HasValue)
-            //                    graphics.DrawPath(Pens.Black, graphicsPath);
-            //            }
-            //            // ========================================= > END < =========================================
-
-            //            // ===================================== > HatchBrush < =====================================
-            //            //using (Brush brush = _overlayColor.HasValue
-            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-            //            //    : new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
-            //            //{
-            //            //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
-            //            //}
-            //            // ========================================= > END < =========================================
-
-
-            //            // ===================================== > TextureBrush #1 < =====================================
-            //            //using (Brush brush = _overlayColor.HasValue
-            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-            //            //    : new TextureBrush(_capture.Image, new RectangleF(0, 0, sizeLabelLocation.X + textSize.Width, sizeLabelLocation.Y + textSize.Height), GetImageAttributes()))
-            //            //{
-            //            //    graphics.DrawString(sizeText, newSizeFont, brush, sizeLabelLocation);
-            //            //}
-            //            // =========================================== > END < ===========================================
-
-            //            // ===================================== > TextureBrush #2 < =====================================
-            //            //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
-            //            //var background = CreateSizeLabelBackground(backgroundRectangle);
-
-            //            //using (Brush brush = _overlayColor.HasValue
-            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-            //            //    : new TextureBrush(background, new RectangleF(0, 0, background.Width, background.Height),
-            //            //        GetImageAttributes()))
-            //            //{
-            //            //    using (var backgroundGraphics = Graphics.FromImage(background))
-            //            //    {
-            //            //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
-            //            //    }
-
-            //            //    graphics.DrawImage(background, sizeLabelLocation);
-            //            //}
-            //            // =========================================== > END < ===========================================
-
-            //            // ===================================== > TextureBrush #3 < =====================================
-            //            //var backgroundRectangle = new Rectangle(sizeLabelLocation, textSize);
-
-            //            //var background = CreateSizeLabelBackground(backgroundRectangle);
-            //            //var transformedBackground = CreateSizeLabelBackground(backgroundRectangle, ColorTransformKind.Invert);
-
-            //            //using (Brush brush = _overlayColor.HasValue
-            //            //    ? (Brush)new SolidBrush(SizeLabelForeColor)
-            //            //    : new TextureBrush(transformedBackground, new RectangleF(0, 0, background.Width, background.Height)))
-            //            //{
-            //            //    using (var backgroundGraphics = Graphics.FromImage(background))
-            //            //    {
-            //            //        backgroundGraphics.DrawString(sizeText, newSizeFont, brush, 0, 0);
-            //            //    }
-
-            //            //    graphics.DrawImage(background, sizeLabelLocation);
-            //            //}
-            //            // =========================================== > END < ===========================================
-
-            //            //if (_showDebugInfo && _selectedCaptureWindow != null)
-            //            //{
-            //            //    string title =
-            //            //        $"#{_selectedCaptureWindow.Handle.ToInt64():X} - {(_selectedCaptureWindow.Text.Length > 0 ? _selectedCaptureWindow.Text : _selectedCaptureWindow.Process.ProcessName)}";
-            //            //    PointF debugLocation = new PointF(fixedRect.X, fixedRect.Y);
-            //            //    graphics.DrawString(title, sizeFont, Brushes.DarkOrange, debugLocation);
-            //            //}
-            //        }
-            //    }
-            //}
+            return textSize;
         }
 
-        //// https://stackoverflow.com/questions/734930/how-to-crop-an-image-using-c
-        //private Image CreateSizeLabelBackground(Rectangle rectangle,
-        //    ColorTransformKind colorTransformKind = ColorTransformKind.None)
-        //{
-        //    var bitmap = new Bitmap(_capture.Image);
-        //    bitmap = bitmap.Clone(rectangle, bitmap.PixelFormat);
+        public static void DrawSize(Graphics graphics, Rectangle rectangle, string text, bool applyTransparency = true)
+        {
+            if (null == graphics)
+                throw new ArgumentNullException(nameof(graphics));
 
-        //    if (ColorTransformKind.None != colorTransformKind)
-        //        TransformColors(bitmap, colorTransformKind);
+            if (null == rectangle)
+                throw new ArgumentNullException(nameof(rectangle));
 
-        //    return bitmap;
-        //}
+            if (null == text)
+                throw new ArgumentNullException(nameof(text));
 
-        //// https://stackoverflow.com/questions/11779809/inverting-image-returns-a-black-image/11781561#11781561
-        //private static void TransformColors(Bitmap bitmapImage, ColorTransformKind colorTransformKind)
-        //{
-        //    var bitmapRead = bitmapImage.LockBits(new Rectangle(0, 0, bitmapImage.Width, bitmapImage.Height),
-        //        ImageLockMode.ReadOnly, PixelFormat.Format32bppPArgb);
-        //    var bitmapLength = bitmapRead.Stride * bitmapRead.Height;
-        //    var bitmapBgra = new byte[bitmapLength];
+            var backColor = applyTransparency ? SizeLabelBackColor : Color.FromArgb(255, SizeLabelBackColor);
+            var foreColor = applyTransparency ? SizeLabelForeColor : Color.FromArgb(255, SizeLabelForeColor);
 
-        //    Marshal.Copy(bitmapRead.Scan0, bitmapBgra, 0, bitmapLength);
+            using (var font = new Font(new FontFamily(SizeLabelFontFamily), SizeLabelFontSize))
+            {
+                using (var backBrush = new SolidBrush(backColor))
+                using (var borderPen = new Pen(foreColor, 1))
+                using (var foreBrush = new SolidBrush(foreColor))
+                {
+                    graphics.FillRectangle(backBrush, rectangle);
 
-        //    bitmapImage.UnlockBits(bitmapRead);
+                    var borderRectangle =
+                        new Rectangle(rectangle.X, rectangle.Y, rectangle.Width - 1, rectangle.Height - 1);
 
-        //    for (int i = 0; i < bitmapLength; i += 4)
-        //    {
-        //        switch (colorTransformKind)
-        //        {
-        //            case ColorTransformKind.Invert:
-        //                bitmapBgra[i] = (byte)(255 - bitmapBgra[i]);
-        //                bitmapBgra[i + 1] = (byte)(255 - bitmapBgra[i + 1]);
-        //                bitmapBgra[i + 2] = (byte)(255 - bitmapBgra[i + 2]);
-        //                break;
-        //            case ColorTransformKind.BlackWhite:
-        //            {
-        //                const byte threshold = 100;
-
-        //                byte r = bitmapBgra[i + 2];
-        //                byte g = bitmapBgra[i + 1];
-        //                byte b = bitmapBgra[i];
-
-        //                r = r > threshold && g > threshold && b > threshold ? (byte) 0 : (byte) 255;
-
-        //                bitmapBgra[i] = r;
-        //                bitmapBgra[i + 1] = r;
-        //                bitmapBgra[i + 2] = r;
-        //            }
-        //                break;
-        //        }
-        //    }
-
-        //    var bitmapWrite = bitmapImage.LockBits(new Rectangle(0, 0, bitmapImage.Width, bitmapImage.Height),
-        //        ImageLockMode.WriteOnly, PixelFormat.Format32bppPArgb);
-        //    Marshal.Copy(bitmapBgra, 0, bitmapWrite.Scan0, bitmapLength);
-        //    bitmapImage.UnlockBits(bitmapWrite);
-        //}
-
-        //private ImageAttributes GetImageAttributes()
-        //{
-        //    float[][] colorMatrixElements =
-        //    {
-        //        new float[] {-1, 0, 0, 0, 0},
-        //        new float[] {0, -1, 0, 0, 0},
-        //        new float[] {0, 0, -1, 0, 0},
-        //        new float[] {0, 0, 0, 1, 0},
-        //        new float[] {1, 1, 1, 0, 0}
-        //    };
-
-        //    //float[][] colorMatrixElements =
-        //    //{
-        //    //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
-        //    //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
-        //    //    new float[] {-0.333f, -0.333f, -0.333f, 0, 0},
-        //    //    new float[] {0, 0, 0, 1, 0},
-        //    //    new float[] {1, 1, 1, 0, 1}
-        //    //};
-
-        //    var colorMatrix = new ColorMatrix(colorMatrixElements);
-
-        //    var imageAttributes = new ImageAttributes();
-        //    imageAttributes.SetColorMatrix(colorMatrix);
-
-        //    return imageAttributes;
-        //}
-
-        #endregion
-
+                    graphics.DrawRectangle(borderPen, borderRectangle);
+                    graphics.DrawString(text, font, foreBrush, new PointF(rectangle.X + 5, rectangle.Y));
+                }
+            }
+        }
+        
         #endregion
 
         #region Zoom

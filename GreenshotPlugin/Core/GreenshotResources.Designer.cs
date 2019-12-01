@@ -22,21 +22,21 @@ namespace GreenshotPlugin.Core {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class GreenshotResources {
+    public class GreenshotResources {
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal GreenshotResources() {
+        public GreenshotResources() {
         }
         
         /// <summary>
         ///   Returns the cached ResourceManager instance used by this class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
+        public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("GreenshotPlugin.Core.GreenshotResources", typeof(GreenshotResources).Assembly);
@@ -51,7 +51,7 @@ namespace GreenshotPlugin.Core {
         ///   resource lookups using this strongly typed resource class.
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
+        public static global::System.Globalization.CultureInfo Culture {
             get {
                 return resourceCulture;
             }
@@ -63,7 +63,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Checkerboard_Image {
+        public static System.Drawing.Bitmap Checkerboard_Image {
             get {
                 object obj = ResourceManager.GetObject("Checkerboard_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -73,7 +73,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Clipboard_Image {
+        public static System.Drawing.Bitmap Clipboard_Image {
             get {
                 object obj = ResourceManager.GetObject("Clipboard_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -83,7 +83,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Close_Image {
+        public static System.Drawing.Bitmap Close_Image {
             get {
                 object obj = ResourceManager.GetObject("Close_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -93,7 +93,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Email_Image {
+        public static System.Drawing.Bitmap Email_Image {
             get {
                 object obj = ResourceManager.GetObject("Email_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -103,7 +103,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon Modify_Icon {
+        public static System.Drawing.Icon Modify_Icon {
             get {
                 object obj = ResourceManager.GetObject("Modify_Icon", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -113,7 +113,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Printer_Image {
+        public static System.Drawing.Bitmap Printer_Image {
             get {
                 object obj = ResourceManager.GetObject("Printer_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -123,7 +123,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        internal static System.Drawing.Bitmap Save_Image {
+        public static System.Drawing.Bitmap Save_Image {
             get {
                 object obj = ResourceManager.GetObject("Save_Image", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
@@ -133,7 +133,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon update {
+        public static System.Drawing.Icon update {
             get {
                 object obj = ResourceManager.GetObject("update", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -143,7 +143,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_dark {
+        public static System.Drawing.Icon win_dark {
             get {
                 object obj = ResourceManager.GetObject("win_dark", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -153,7 +153,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_dark_update {
+        public static System.Drawing.Icon win_dark_update {
             get {
                 object obj = ResourceManager.GetObject("win_dark_update", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -163,7 +163,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_old {
+        public static System.Drawing.Icon win_old {
             get {
                 object obj = ResourceManager.GetObject("win_old", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -173,7 +173,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_old_update {
+        public static System.Drawing.Icon win_old_update {
             get {
                 object obj = ResourceManager.GetObject("win_old_update", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -183,7 +183,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_white {
+        public static System.Drawing.Icon win_white {
             get {
                 object obj = ResourceManager.GetObject("win_white", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
@@ -193,7 +193,7 @@ namespace GreenshotPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        internal static System.Drawing.Icon win_white_update {
+        public static System.Drawing.Icon win_white_update {
             get {
                 object obj = ResourceManager.GetObject("win_white_update", resourceCulture);
                 return ((System.Drawing.Icon)(obj));

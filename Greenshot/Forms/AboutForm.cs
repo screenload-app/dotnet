@@ -32,6 +32,7 @@ using Greenshot.IniFile;
 using System.Security.Permissions;
 using log4net;
 using System.Globalization;
+using Greenshot.Help;
 
 namespace Greenshot {
 	/// <summary>
@@ -124,5 +125,40 @@ namespace Greenshot {
 			}
 			return true;
 		}
-	}
+
+        private void helpButton_Click(object sender, EventArgs e)
+        {
+            HelpFileLoader.LoadHelp();
+        }
+
+        private void donateButton_Click(object sender, EventArgs e)
+        {
+            Process.Start("http://getgreenshot.org/support/?version=" +
+                          Assembly.GetEntryAssembly().GetName().Version);
+        }
+
+        private void updatesButton_Click(object sender, EventArgs e)
+        {
+            updateButton.Text = Language.GetString("checkingforupdates");
+            updateButton.Enabled = false;
+
+            UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, result =>
+            {
+                this.InvokeAction(() =>
+                {
+                    if (IsDisposed)
+                        return;
+
+                    updateButton.Text = Language.GetString("About_UpdateButton");
+                    updateButton.Enabled = true;
+
+                    if (UpdateCheckingResult.NotFound == result)
+                    {
+                        MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot",
+                            Language.GetString("noupdatesfound"), ToolTipIcon.Info);
+                    }
+                });
+            });
+        }
+    }
 }

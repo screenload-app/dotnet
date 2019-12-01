@@ -920,8 +920,8 @@ namespace Greenshot
 
             foreach (WindowDetails window in WindowDetails.GetTopLevelWindows())
             {
-
                 string title = window.Text;
+
                 if (title != null)
                 {
                     if (title.Length > _conf.MaxMenuItemLength)
