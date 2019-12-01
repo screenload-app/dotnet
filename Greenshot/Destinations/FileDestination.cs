@@ -24,6 +24,7 @@ using System.IO;
 using System.Windows.Forms;
 
 using Greenshot.Configuration;
+using Greenshot.Helpers;
 using GreenshotPlugin.Core;
 using Greenshot.Plugin;
 using Greenshot.IniFile;
@@ -72,12 +73,14 @@ namespace Greenshot.Destinations {
 				// As we generate a file, the configuration tells us if we allow to overwrite
 				overwrite = CoreConfig.OutputFileAllowOverwrite;
 			}
-			if (CoreConfig.OutputFilePromptQuality) {
-				QualityDialog qualityDialog = new QualityDialog(outputSettings);
-				qualityDialog.ShowDialog();
-			}
 
-			// Catching any exception to prevent that the user can't write in the directory.
+            if (CoreConfig.OutputFilePromptQuality)
+            {
+                QualityDialog qualityDialog = new QualityDialog(outputSettings);
+                qualityDialog.ShowDialog(MainForm.Instance.SurfaceForm);
+            }
+
+            // Catching any exception to prevent that the user can't write in the directory.
 			// This is done for e.g. bugs #2974608, #2963943, #2816163, #2795317, #2789218, #3004642
 			try {
 				ImageOutput.Save(surface, fullPath, overwrite, outputSettings, CoreConfig.OutputFileCopyPathToClipboard);

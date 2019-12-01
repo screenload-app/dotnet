@@ -498,8 +498,16 @@ namespace Greenshot
                     checkbox_autostartshortcut.Checked = StartupHelper.HasRunUser();
                 }
             }
-            
-            numericUpdownIconSize.Value = coreConfiguration.IconSize.Width / 16 * 16;
+
+            switch (coreConfiguration.IconSize.Width)
+            {
+                case 16:
+                    IconSizeComboBox.SelectedIndex = 0;
+                    break;
+                case 32:
+                    IconSizeComboBox.SelectedIndex = 1;
+                    break;
+            }
 
             CheckDestinationSettings();
 
@@ -565,7 +573,15 @@ namespace Greenshot
 
             coreConfiguration.DWMBackgroundColor = colorButton_window_background.SelectedColor;
 
-            coreConfiguration.IconSize = new Size((int) numericUpdownIconSize.Value, (int) numericUpdownIconSize.Value);
+            switch (IconSizeComboBox.SelectedIndex)
+            {
+                case 0:
+                    coreConfiguration.IconSize = new Size(16, 16);
+                    break;
+                case 1:
+                    coreConfiguration.IconSize = new Size(32, 32);
+                    break;
+            }
 
             try
             {
@@ -881,21 +897,8 @@ namespace Greenshot
             checkUpdatesButton.Text = Language.GetString("checkingforupdates");
             checkUpdatesButton.Enabled = false;
 
-            UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, updatesFound =>
+            UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, result =>
             {
-                if (!updatesFound)
-                {
-                    this.InvokeAction(() =>
-                    {
-                        if (IsDisposed)
-                            return;
-
-                        checkUpdatesButton.Text = Language.GetString("noupdatesfound");
-                    });
-
-                    Thread.Sleep(1000);
-                }
-
                 this.InvokeAction(() =>
                 {
                     if (IsDisposed)
@@ -903,6 +906,12 @@ namespace Greenshot
 
                     checkUpdatesButton.Text = Language.GetString("settings_checkupdatesbutton");
                     checkUpdatesButton.Enabled = true;
+
+                    if (UpdateCheckingResult.NotFound == result)
+                    {
+                        MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot",
+                            Language.GetString("noupdatesfound"), ToolTipIcon.Info);
+                    }
                 });
             });
         }

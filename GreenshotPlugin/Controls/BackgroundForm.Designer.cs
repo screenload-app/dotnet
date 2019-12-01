@@ -48,8 +48,9 @@ namespace GreenshotPlugin.Controls
 		/// </summary>
 		private void InitializeComponent()
 		{
+            this.components = new System.ComponentModel.Container();
             this.label_pleasewait = new System.Windows.Forms.Label();
-            this.timer_checkforclose = new System.Windows.Forms.Timer();
+            this.timer_checkforclose = new System.Windows.Forms.Timer(this.components);
             this.SuspendLayout();
             // 
             // label_pleasewait

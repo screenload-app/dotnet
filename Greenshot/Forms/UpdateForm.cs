@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-using System.Globalization;
 using System.IO;
 using System.Net;
 using System.Windows.Forms;
@@ -53,7 +52,7 @@ namespace Greenshot
         {
             InitializeComponent();
 
-            var versionInfo = VersionInfo.TryLoadFrom(coreConfiguration);
+            var versionInfo = VersionInfo.TryLoadFrom(coreConfiguration, !coreConfiguration.CheckForUnstable);
 
             _versionInfo = versionInfo ?? throw new InvalidOperationException("null == versionInfo");
             _raisedManually = raisedManually;
@@ -80,16 +79,16 @@ namespace Greenshot
 
             _webClient.DownloadProgressChanged += (sender, args) =>
             {
-                ReportProgress(args.ProgressPercentage, args.BytesReceived, args.TotalBytesToReceive);
+                mProgressBar.Value = args.ProgressPercentage;
             };
 
             _webClient.DownloadFileCompleted += (sender, args) =>
             {
                 if (null != args.Error)
                 {
-                    mProgressBar.BarColor = Color.Red;
-                    mProgressBar.Invalidate();
-                    mProgressBar.Update();
+                    //mProgressBar.BarColor = Color.Red;
+                    //mProgressBar.Invalidate();
+                    //mProgressBar.Update();
 
                     infoLabel.BackColor = Color.LightPink;
                     infoLabel.Text = Language.GetFormattedString("update_error", args.Error.Message);
@@ -215,7 +214,7 @@ namespace Greenshot
             if (File.Exists(_tempFilePath))
                 File.Delete(_tempFilePath);
 
-            mProgressBar.CustomText = "0%";
+            //mProgressBar.CustomText = "0%";
             _webClient.DownloadFileAsync(new Uri(_versionInfo.DownloadLink), _tempFilePath);
         }
 
@@ -234,29 +233,29 @@ namespace Greenshot
             Close();
         }
 
-        private void ReportProgress(int progressPercentage, float received, float toReceive)
-        {
-            mProgressBar.Value = progressPercentage;
+        //private void ReportProgress(int progressPercentage, float received, float toReceive)
+        //{
+        //    mProgressBar.Value = progressPercentage;
 
-            var unit = Language.GetString("UpdateForm_byte"); // Б
+        //    var unit = Language.GetString("UpdateForm_byte"); // Б
 
-            if (toReceive > 1024)
-            {
-                received /= 1024;
-                toReceive /= 1024;
-                unit = Language.GetString("UpdateForm_kilobyte"); // кбайт
+        //    if (toReceive > 1024)
+        //    {
+        //        received /= 1024;
+        //        toReceive /= 1024;
+        //        unit = Language.GetString("UpdateForm_kilobyte"); // кбайт
 
-                if (toReceive > 1024)
-                {
-                    received /= 1024;
-                    toReceive /= 1024;
-                    unit = Language.GetString("UpdateForm_megabyte"); // Мбайт
-                }
-            }
+        //        if (toReceive > 1024)
+        //        {
+        //            received /= 1024;
+        //            toReceive /= 1024;
+        //            unit = Language.GetString("UpdateForm_megabyte"); // Мбайт
+        //        }
+        //    }
 
-            mProgressBar.CustomText = string.Format(CultureInfo.InvariantCulture, " {0}% - {1:0.00}/{2:0.00} {3}",
-                progressPercentage, received, toReceive, unit);
-        }
+        //    mProgressBar.CustomText = string.Format(CultureInfo.InvariantCulture, " {0}% - {1:0.00}/{2:0.00} {3}",
+        //        progressPercentage, received, toReceive, unit);
+        //}
 
         private void UpdateForm_FormClosed(object sender, FormClosedEventArgs e)
         {

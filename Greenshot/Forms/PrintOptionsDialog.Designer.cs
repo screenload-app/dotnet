@@ -146,7 +146,7 @@ namespace Greenshot.Forms
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button_ok.LanguageKey = "OK";
-            this.button_ok.Location = new System.Drawing.Point(187, 355);
+            this.button_ok.Location = new System.Drawing.Point(187, 340);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 20;
@@ -174,7 +174,7 @@ namespace Greenshot.Forms
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button_cancel.LanguageKey = "CANCEL";
-            this.button_cancel.Location = new System.Drawing.Point(268, 355);
+            this.button_cancel.Location = new System.Drawing.Point(268, 340);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 21;
@@ -277,12 +277,13 @@ namespace Greenshot.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(355, 390);
+            this.ClientSize = new System.Drawing.Size(355, 375);
             this.Controls.Add(this.groupBoxColors);
             this.Controls.Add(this.groupBoxPrintLayout);
             this.Controls.Add(this.button_cancel);
             this.Controls.Add(this.button_ok);
             this.Controls.Add(this.checkbox_dontaskagain);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LanguageKey = "printoptions_title";
             this.MaximizeBox = false;

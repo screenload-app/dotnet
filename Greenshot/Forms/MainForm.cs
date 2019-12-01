@@ -389,6 +389,8 @@ namespace Greenshot
 
         internal CoreConfiguration CoreConfiguration => coreConfiguration;
 
+        internal IWin32Window SurfaceForm => _surfaceForm;
+
         public MainForm(CopyDataTransport dataTransport)
         {
             _instance = this;
@@ -449,8 +451,8 @@ namespace Greenshot
 
             SoundHelper.Initialize();
 
-            coreConfiguration.PropertyChanged += OnIconSizeChanged;
-            OnIconSizeChanged(this, new PropertyChangedEventArgs("IconSize"));
+            coreConfiguration.PropertyChanged += OnConfigurationPropertyChanged;
+            OnConfigurationPropertyChanged(this, new PropertyChangedEventArgs("IconSize"));
 
             // Set the Greenshot icon visibility depending on the configuration. (Added for feature #3521446)
             // Setting it to true this late prevents Problems with the context menu
@@ -485,8 +487,6 @@ namespace Greenshot
 
             // Иконки с учетом наличия обновлений.
             OnUpdateStateChanged();
-
-            var vi = VersionInfo.TryLoadFrom(coreConfiguration);
         }
 
         /// <summary>
@@ -613,7 +613,7 @@ namespace Greenshot
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnIconSizeChanged(object sender, PropertyChangedEventArgs e)
+        private void OnConfigurationPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == "IconSize")
             {
@@ -641,7 +641,7 @@ namespace Greenshot
             contextmenu_captureie.ShortcutKeyDisplayString =
                 HotkeyControl.GetLocalizedHotkeyStringFromString(_conf.IEHotkey);
 
-            SetCheckUpdatesToolStripMenuItemText(UpdateHelper.IsUpdateDetected(coreConfiguration));
+            OnUpdateStateChanged();
         }
 
 
@@ -1127,15 +1127,15 @@ namespace Greenshot
             }
         }
 
-        /// <summary>
-        /// The "Help" entry is clicked
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void Contextmenu_helpClick(object sender, EventArgs e)
-        {
-            HelpFileLoader.LoadHelp();
-        }
+        ///// <summary>
+        ///// The "Help" entry is clicked
+        ///// </summary>
+        ///// <param name="sender"></param>
+        ///// <param name="e"></param>
+        //private void Contextmenu_helpClick(object sender, EventArgs e)
+        //{
+        //    HelpFileLoader.LoadHelp();
+        //}
 
         /// <summary>
         /// The "Exit" entry is clicked
@@ -1525,19 +1525,23 @@ namespace Greenshot
                 UpdateForm.ShowSingle(true, false);
             else
             {
-                UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, updatesFound =>
-                {
-                    if (!updatesFound)
-                    {
-                        this.InvokeAction(() =>
-                        {
-                            if (IsDisposed)
-                                return;
+                checkUpdatesToolStripMenuItem.Text = Language.GetString("checkingforupdates");
+                checkUpdatesToolStripMenuItem.Enabled = false;
 
+                UpdateHelper.CheckAndAskForUpdateInThread(UpdateRaised.Manually, coreConfiguration, 0, result =>
+                {
+                    this.InvokeAction(() =>
+                    {
+                        if (IsDisposed)
+                            return;
+
+                        checkUpdatesToolStripMenuItem.Text = Language.GetString("checkUpdatesToolStripMenuItem");
+                        checkUpdatesToolStripMenuItem.Enabled = true;
+
+                        if (UpdateCheckingResult.NotFound == result)
                             NotifyIcon.ShowBalloonTip(10000, "Greenshot", Language.GetString("noupdatesfound"),
                                 ToolTipIcon.Info);
-                        });
-                    }
+                    });
                 });
             }
         }
@@ -1564,11 +1568,15 @@ namespace Greenshot
         {
             if (hasUpdates)
             {
-                checkUpdatesToolStripMenuItem.Text =
-                    Language.GetFormattedString("checkUpdatesToolStripMenuItemWithUpdates",
-                        UpdateHelper.LastVersion.Version);
-                checkUpdatesToolStripMenuItem.Font = new Font(checkUpdatesToolStripMenuItem.Font, FontStyle.Bold);
+                var versionInfo = UpdateHelper.GetActualUpdateVersionInfo(coreConfiguration);
 
+                if (null != versionInfo)
+                {
+                    checkUpdatesToolStripMenuItem.Text =
+                        Language.GetFormattedString("checkUpdatesToolStripMenuItemWithUpdates",
+                            $"{versionInfo.Version.Major}.{versionInfo.Version.Minor}.{versionInfo.Version.Build}");
+                    checkUpdatesToolStripMenuItem.Font = new Font(checkUpdatesToolStripMenuItem.Font, FontStyle.Bold);
+                }
             }
             else
             {

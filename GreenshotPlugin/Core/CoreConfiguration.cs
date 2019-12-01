@@ -246,6 +246,8 @@ namespace GreenshotPlugin.Core {
         [IniProperty("LastUpdateCheck", Description= "Last update check")]
 		public DateTime LastUpdateCheck { get; set; }
 
+        // Без учета типа обновления (не смотрим release или developer)
+
         [IniProperty("LatestDetectedUpdateVersion")]
         public string LatestDetectedUpdateVersion { get; set; }
 
@@ -254,6 +256,17 @@ namespace GreenshotPlugin.Core {
 
         [IniProperty("LatestDetectedUpdateDescriptions")]
         public Dictionary<string, string> LatestDetectedUpdateDescriptions { get; set; }
+
+        // Только стабильные обновления (release)
+
+        [IniProperty("LatestDetectedStableUpdateVersion")]
+        public string LatestDetectedStableUpdateVersion { get; set; }
+
+        [IniProperty("LatestDetectedStableUpdateFile")]
+        public string LatestDetectedStableUpdateFile { get; set; }
+
+        [IniProperty("LatestDetectedStableUpdateDescriptions")]
+        public Dictionary<string, string> LatestDetectedStableUpdateDescriptions { get; set; }
 
         [IniProperty("DisableSettings", Description = "Enable/disable the access to the settings, can only be changed manually in this .ini", DefaultValue = "False")]
 		public bool DisableSettings { get; set; }

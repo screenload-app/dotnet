@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Windows.Forms;
 
-namespace Greenshot.Helpers
+namespace GreenshotPlugin.Core
 {
-    internal static class ControlExtensions
+    public static class ControlExtensions
     {
         public static void InvokeAction(this Control control, Action action)
         {

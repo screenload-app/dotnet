@@ -448,36 +448,51 @@ namespace GreenshotPlugin.Core {
 
 		#region save-as
 
-		/// <summary>
-		/// Save with showing a dialog
-		/// </summary>
-		/// <param name="surface"></param>
-		/// <param name="captureDetails"></param>
-		/// <returns>Path to filename</returns>
-		public static string SaveWithDialog(ISurface surface, ICaptureDetails captureDetails) {
-			string returnValue = null;
-			using (SaveImageFileDialog saveImageFileDialog = new SaveImageFileDialog(captureDetails)) {
-				DialogResult dialogResult = saveImageFileDialog.ShowDialog();
-				if (dialogResult.Equals(DialogResult.OK)) {
-					try {
-						string fileNameWithExtension = saveImageFileDialog.FileNameWithExtension;
-						SurfaceOutputSettings outputSettings = new SurfaceOutputSettings(FormatForFilename(fileNameWithExtension));
-						if (CoreConfig.OutputFilePromptQuality) {
-							QualityDialog qualityDialog = new QualityDialog(outputSettings);
-							qualityDialog.ShowDialog();
-						}
-						// TODO: For now we always overwrite, should be changed
-						Save(surface, fileNameWithExtension, true, outputSettings, CoreConfig.OutputFileCopyPathToClipboard);
-						returnValue = fileNameWithExtension;
-						IniConfig.Save();
-					} catch (ExternalException) {
-						MessageBox.Show(Language.GetFormattedString("error_nowriteaccess", saveImageFileDialog.FileName).Replace(@"\\", @"\"), Language.GetString("error"));
-					}
-				}
-			}
-			return returnValue;
-		}
-		#endregion
+        /// <summary>
+        /// Save with showing a dialog
+        /// </summary>
+        /// <param name="surface"></param>
+        /// <param name="captureDetails"></param>
+        /// <returns>Path to filename</returns>
+        public static string SaveWithDialog(ISurface surface, ICaptureDetails captureDetails)
+        {
+            string returnValue = null;
+            using (SaveImageFileDialog saveImageFileDialog = new SaveImageFileDialog(captureDetails))
+            {
+                DialogResult dialogResult = saveImageFileDialog.ShowDialog();
+                if (dialogResult.Equals(DialogResult.OK))
+                {
+                    try
+                    {
+                        string fileNameWithExtension = saveImageFileDialog.FileNameWithExtension;
+                        SurfaceOutputSettings outputSettings =
+                            new SurfaceOutputSettings(FormatForFilename(fileNameWithExtension));
+
+                        if (CoreConfig.OutputFilePromptQuality)
+                        {
+                            QualityDialog qualityDialog = new QualityDialog(outputSettings);
+                            DialogManager.ShowDialog(qualityDialog);
+                        }
+
+                        // TODO: For now we always overwrite, should be changed
+                        Save(surface, fileNameWithExtension, true, outputSettings,
+                            CoreConfig.OutputFileCopyPathToClipboard);
+                        returnValue = fileNameWithExtension;
+                        IniConfig.Save();
+                    }
+                    catch (ExternalException)
+                    {
+                        MessageBox.Show(
+                            Language.GetFormattedString("error_nowriteaccess", saveImageFileDialog.FileName)
+                                .Replace(@"\\", @"\"), Language.GetString("error"));
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+
+        #endregion
 
 		/// <summary>
 		/// Create a tmpfile which has the name like in the configured pattern.

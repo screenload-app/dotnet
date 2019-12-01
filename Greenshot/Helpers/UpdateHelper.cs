@@ -23,6 +23,15 @@ namespace Greenshot.Helpers
         Timer
     }
 
+    public enum UpdateCheckingResult
+    {
+        Found,
+        NotFound,
+        Skipped,
+        Busy,
+        Error
+    }
+
     public sealed class VersionInfo
     {
         private const string DownloadLinkTemplate = "https://d2n4w7xg423fnr.cloudfront.net/temp/Nov2019/update/{0}";
@@ -32,7 +41,7 @@ namespace Greenshot.Helpers
         private readonly Dictionary<string, string> _infoDictionary = new Dictionary<string, string>();
 
         public Version Version { get; private set; }
-        public string File { get; protected set; }
+        public string File { get; private set; }
 
         public string Info
         {
@@ -85,7 +94,7 @@ namespace Greenshot.Helpers
             }
         }
 
-        public static VersionInfo TryLoadFrom(CoreConfiguration configuration)
+        public static VersionInfo TryLoadFrom(CoreConfiguration configuration, bool stable)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
@@ -95,22 +104,38 @@ namespace Greenshot.Helpers
             // Доступ к конфигурации только в UI-потоке
             MainForm.Instance.InvokeAction(() =>
             {
-                if (string.IsNullOrEmpty(configuration.LatestDetectedUpdateVersion) ||
-                    string.IsNullOrEmpty(configuration.LatestDetectedUpdateFile))
+                string version;
+                string file;
+                Dictionary<string, string> descriptions;
+
+                if (stable)
+                {
+                    version = configuration.LatestDetectedStableUpdateVersion;
+                    file = configuration.LatestDetectedStableUpdateFile;
+                    descriptions = configuration.LatestDetectedStableUpdateDescriptions;
+                }
+                else
+                {
+                    version = configuration.LatestDetectedUpdateVersion;
+                    file = configuration.LatestDetectedUpdateFile;
+                    descriptions = configuration.LatestDetectedUpdateDescriptions;
+                }
+
+                if (string.IsNullOrEmpty(version) ||
+                    string.IsNullOrEmpty(file))
                     return;
 
                 versionInfo = new VersionInfo
                 {
-                    Version = new Version(configuration.LatestDetectedUpdateVersion),
-                    File = configuration.LatestDetectedUpdateFile
+                    Version = new Version(version),
+                    File = file
                 };
 
-                if (null != configuration.LatestDetectedUpdateDescriptions)
+                if (null != descriptions)
                 {
-                    foreach (var description in configuration.LatestDetectedUpdateDescriptions)
+                    foreach (var description in descriptions)
                     {
-                        // TODO $ Затрем, если в тексте будет комбинация символов "\r"
-                        var unescapedValue = description.Value.Replace("\\n", "\n").Replace("\\r", "\r");
+                        var unescapedValue = Unescape(description.Value);
                         versionInfo._infoDictionary.Add(description.Key, unescapedValue);
                     }
                 }
@@ -119,7 +144,7 @@ namespace Greenshot.Helpers
             return versionInfo;
         }
 
-        public void SaveTo(CoreConfiguration configuration)
+        public void SaveTo(CoreConfiguration configuration, bool stable)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
@@ -128,17 +153,44 @@ namespace Greenshot.Helpers
 
             foreach (var keyValue in _infoDictionary)
             {
-                var escapedValue = keyValue.Value.Replace("\r", "\\r").Replace("\n", "\\n");
+                var escapedValue = Escape(keyValue.Value);
                 escapedDescriptions.Add(keyValue.Key, escapedValue);
             }
 
             // Доступ к конфигурации только в UI-потоке
             MainForm.Instance.InvokeAction(() =>
             {
+                if (stable)
+                {
+
+                    configuration.LatestDetectedStableUpdateVersion = Version.ToString();
+                    configuration.LatestDetectedStableUpdateFile = File;
+                    configuration.LatestDetectedStableUpdateDescriptions = escapedDescriptions;
+
+                    return;
+                }
+
                 configuration.LatestDetectedUpdateVersion = Version.ToString();
                 configuration.LatestDetectedUpdateFile = File;
                 configuration.LatestDetectedUpdateDescriptions = escapedDescriptions;
             });
+        }
+
+        private static string Escape(string value)
+        {
+            return value?.Replace("\\", "\\\\").Replace("\r", "\\r").Replace("\n", "\\n");
+        }
+
+        public static string Unescape(string value)
+        {
+            if (null == value)
+                return null;
+
+            var parts = value.Split(new[] {"\\\\"}, StringSplitOptions.None)
+                .Select(part => part.Replace("\\n", "\n").Replace("\\r", "\r"))
+                .ToArray();
+
+            return string.Join("\\", parts);
         }
     }
 
@@ -169,35 +221,74 @@ namespace Greenshot.Helpers
             }
         }
 
-        public static VersionInfo LastVersion { get; private set; }
+        private static VersionInfo _latestVersion;
+        private static VersionInfo _latestStableVersion;
 
         public static bool IsUpdateDetected(CoreConfiguration configuration)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
 
+            InitIfNeeded(configuration);
+
+            bool checkForUnstable = false;
+
+            // Доступ к параметрам конфигурации - только в UI-потоке.
+            MainForm.Instance.InvokeAction(() =>
+            {
+                checkForUnstable = configuration.CheckForUnstable;
+            });
+
+            bool detected;
+
             lock (LockObject)
             {
-                if (null == LastVersion)
-                    LastVersion = VersionInfo.TryLoadFrom(configuration);
+                var version = checkForUnstable ? _latestVersion?.Version : _latestStableVersion?.Version;
 
-                if (null == LastVersion)
+                if (null == version)
                     return false;
 
-                return LastVersion.Version > CurrentVersion;
+                detected = version > CurrentVersion;
             }
+
+            return detected;
+        }
+
+        public static VersionInfo GetActualUpdateVersionInfo(CoreConfiguration configuration)
+        {
+            if (null == configuration)
+                throw new ArgumentNullException(nameof(configuration));
+
+            InitIfNeeded(configuration);
+
+            bool checkForUnstable = false;
+
+            // Доступ к параметрам конфигурации - только в UI-потоке.
+            MainForm.Instance.InvokeAction(() =>
+            {
+                checkForUnstable = configuration.CheckForUnstable;
+            });
+
+            VersionInfo versionInfo;
+
+            lock (LockObject)
+            {
+                versionInfo = checkForUnstable ? _latestVersion : _latestStableVersion;
+            }
+
+            return versionInfo;
         }
 
         public static void CheckAndAskForUpdateInThread(UpdateRaised updateRaised, CoreConfiguration configuration,
-            int millisecondsTimeout = 0, Action<bool> continueWith = null)
+            int millisecondsTimeout = 0, Action<UpdateCheckingResult> continueWith = null)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
 
             var thread = new Thread(() =>
             {
-                bool updatesFound = CheckAndAskForUpdate(updateRaised, configuration, millisecondsTimeout);
-                continueWith?.Invoke(updatesFound);
+                var checkingResult = CheckAndAskForUpdate(updateRaised, configuration, millisecondsTimeout);
+                continueWith?.Invoke(checkingResult);
             })
             {
                 IsBackground = true
@@ -252,7 +343,39 @@ namespace Greenshot.Helpers
             });
         }
 
-        private static bool CheckAndAskForUpdate(UpdateRaised updateRaised, CoreConfiguration configuration, int millisecondsTimeout)
+        private static void InitIfNeeded(CoreConfiguration configuration)
+        {
+            bool initializationNeeded;
+
+            lock (LockObject)
+            {
+                initializationNeeded = null == _latestStableVersion && null == _latestVersion;
+            }
+
+            if (initializationNeeded)
+            {
+                VersionInfo latestStableVersion = null;
+                VersionInfo latestVersion = null;
+
+                // Доступ к параметрам конфигурации - только в UI-потоке.
+                MainForm.Instance.InvokeAction(() =>
+                {
+                    latestStableVersion = VersionInfo.TryLoadFrom(configuration, true);
+                    latestVersion = VersionInfo.TryLoadFrom(configuration, false);
+                });
+
+                lock (LockObject)
+                {
+                    if (null == _latestStableVersion && null == _latestVersion)
+                    {
+                        _latestStableVersion = latestStableVersion;
+                        _latestVersion = latestVersion;
+                    }
+                }
+            }
+        }
+
+        private static UpdateCheckingResult CheckAndAskForUpdate(UpdateRaised updateRaised, CoreConfiguration configuration, int millisecondsTimeout)
         {
             if (null == configuration)
                 throw new ArgumentNullException(nameof(configuration));
@@ -260,7 +383,7 @@ namespace Greenshot.Helpers
             lock (LockObject)
             {
                 if (_updateInProgress)
-                    return false;
+                    return UpdateCheckingResult.Busy;
 
                 _updateInProgress = true;
             }
@@ -272,30 +395,52 @@ namespace Greenshot.Helpers
                     _updateInProgress = false;
                 }
 
-                return false;
+                return UpdateCheckingResult.Skipped;
             }
 
             if (0 != millisecondsTimeout)
                 Thread.Sleep(millisecondsTimeout);
 
-            try
+            VersionInfo latestVersion;
+            VersionInfo latestStableVersion;
+
+            using (var webClient = new WebClient())
             {
-                VersionInfo lastVersion;
+                webClient.Encoding = Encoding.UTF8;
 
-                using (var webClient = new WebClient())
+                string versionHistoryText;
+
+                try
                 {
-                    webClient.Encoding = Encoding.UTF8;
+                    versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
+                }
+                catch (WebException exception)
+                {
+                    Log.Error("An error occured while checking for updates, the error will be ignored: ", exception);
 
-                    var versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
+                    MainForm.Instance.InvokeAction(() =>
+                    {
+                        if (MainForm.Instance.IsDisposed)
+                            return;
 
-                    var xmlDocument = new XmlDocument();
-                    xmlDocument.LoadXml(versionHistoryText);
+                        MainForm.Instance.NotifyIcon.ShowBalloonTip(10000, "Greenshot", exception.Message,
+                            ToolTipIcon.Error);
+                    });
 
-                    bool checkForUnstable = false;
+                    lock (LockObject)
+                    {
+                        _updateInProgress = false;
+                    }
 
-                    MainForm.Instance.InvokeAction(() => { checkForUnstable = configuration.CheckForUnstable; });
+                    return UpdateCheckingResult.Error;
+                }
 
-                    var xPath = checkForUnstable ? "version" : "version[@type='release']";
+                var xmlDocument = new XmlDocument();
+                xmlDocument.LoadXml(versionHistoryText);
+
+                VersionInfo SelectVersionInfo(bool stable)
+                {
+                    var xPath = stable ? "version[@type='release']" : "version";
 
                     var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
 
@@ -304,62 +449,51 @@ namespace Greenshot.Helpers
 
                     var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
 
-                    lastVersion = versionInfoList.OrderByDescending(vi => vi.Version).First();
+                    return versionInfoList.OrderByDescending(vi => vi.Version).First();
                 }
 
-                lock (LockObject)
-                {
-                    LastVersion = lastVersion;
-                    LastVersion.SaveTo(configuration);
-                }
-                
-                MainForm.Instance.OnUpdateStateChanged(); // Оповещаем о наличии обновления
-
-                if (LastVersion.Version <= CurrentVersion)
-                {
-                    lock (LockObject)
-                    {
-                        _updateInProgress = false;
-                    }
-
-                    return false;
-                }
-
-                new Thread(() =>
-                    {
-                        try
-                        {
-                            UpdateForm.ShowSingle(UpdateRaised.Manually == updateRaised);
-                        }
-                        catch (Exception exception)
-                        {
-                            Log.Error(exception);
-                            MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                        }
-                    })
-                {
-                    IsBackground = true
-                }.Start();
-
-                lock (LockObject)
-                {
-                    _updateInProgress = false;
-                }
-
-                return true;
+                latestVersion = SelectVersionInfo(false);
+                latestStableVersion = SelectVersionInfo(true);
             }
-            catch (Exception exception)
+
+            lock (LockObject)
             {
-                Log.Error("An error occured while checking for updates, the error will be ignored: ", exception);
-                MessageBox.Show(exception.Message, "Greenshot", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                _latestVersion = latestVersion;
+                _latestStableVersion = latestStableVersion;
+            }
 
+            latestVersion?.SaveTo(configuration, false);
+            latestStableVersion?.SaveTo(configuration, true);
+
+            MainForm.Instance.OnUpdateStateChanged(); // Оповещаем о наличии обновления
+
+            bool checkForUnstable = false;
+
+            // Доступ к параметрам конфигурации - только в UI-потоке.
+            MainForm.Instance.InvokeAction(() =>
+            {
+                checkForUnstable = configuration.CheckForUnstable;
+            });
+
+            if (checkForUnstable && null != latestVersion && latestVersion.Version <= CurrentVersion ||
+                !checkForUnstable && null != latestStableVersion && latestStableVersion.Version <= CurrentVersion)
+            {
                 lock (LockObject)
                 {
                     _updateInProgress = false;
                 }
 
-                return false;
+                return UpdateCheckingResult.NotFound;
             }
+
+            UpdateForm.ShowSingle(UpdateRaised.Manually == updateRaised);
+
+            lock (LockObject)
+            {
+                _updateInProgress = false;
+            }
+
+            return UpdateCheckingResult.Found;
         }
 
         private static bool IsUpdateCheckNeeded(UpdateRaised updateRaised)

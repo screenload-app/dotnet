@@ -64,7 +64,7 @@ Also, we would highly appreciate if you checked whether a tracker item already e
     <resource name="checkUpdatesToolStripMenuItemWithUpdates">Install Greenshot {0} Now</resource>
     <resource name="contextmenu_quicksettings">Quick preferences</resource>
 		<resource name="contextmenu_settings">Settings</resource>
-    <resource name="contextmenu_generalsettings">Preferences...</resource>
+    <resource name="contextmenu_generalsettings">Options...</resource>
     <resource name="destination_exportfailed">Error while exporting to {0}. Please try again.</resource>
 		<resource name="editor_align_bottom">Bottom</resource>
 		<resource name="editor_align_center">Center</resource>

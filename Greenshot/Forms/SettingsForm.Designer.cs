@@ -64,8 +64,8 @@ namespace Greenshot {
             this.checkbox_copypathtoclipboard = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_zoomer = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.groupbox_applicationsettings = new GreenshotPlugin.Controls.GreenshotGroupBox();
+            this.IconSizeComboBox = new System.Windows.Forms.ComboBox();
             this.quickSettingsCheckBox = new GreenshotPlugin.Controls.GreenshotCheckBox();
-            this.numericUpdownIconSize = new System.Windows.Forms.NumericUpDown();
             this.label_icon_size = new GreenshotPlugin.Controls.GreenshotLabel();
             this.checkbox_autostartshortcut = new GreenshotPlugin.Controls.GreenshotCheckBox();
             this.checkbox_usedefaultproxy = new GreenshotPlugin.Controls.GreenshotCheckBox();
@@ -157,7 +157,6 @@ namespace Greenshot {
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.groupbox_preferredfilesettings.SuspendLayout();
             this.groupbox_applicationsettings.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpdownIconSize)).BeginInit();
             this.groupbox_qualitysettings.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarJpegQuality)).BeginInit();
             this.groupbox_destination.SuspendLayout();
@@ -350,10 +349,10 @@ namespace Greenshot {
             // groupbox_applicationsettings
             // 
             this.groupbox_applicationsettings.AutoSize = true;
+            this.groupbox_applicationsettings.Controls.Add(this.IconSizeComboBox);
             this.groupbox_applicationsettings.Controls.Add(this.quickSettingsCheckBox);
             this.groupbox_applicationsettings.Controls.Add(this.label_language);
             this.groupbox_applicationsettings.Controls.Add(this.combobox_language);
-            this.groupbox_applicationsettings.Controls.Add(this.numericUpdownIconSize);
             this.groupbox_applicationsettings.Controls.Add(this.label_icon_size);
             this.groupbox_applicationsettings.Controls.Add(this.checkbox_autostartshortcut);
             this.groupbox_applicationsettings.Controls.Add(this.checkbox_usedefaultproxy);
@@ -364,6 +363,18 @@ namespace Greenshot {
             this.groupbox_applicationsettings.TabIndex = 0;
             this.groupbox_applicationsettings.TabStop = false;
             this.groupbox_applicationsettings.Text = "Application Settings";
+            // 
+            // IconSizeComboBox
+            // 
+            this.IconSizeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.IconSizeComboBox.Items.AddRange(new object[] {
+            "16x16",
+            "32x32"});
+            this.IconSizeComboBox.Location = new System.Drawing.Point(407, 43);
+            this.IconSizeComboBox.MaxDropDownItems = 10;
+            this.IconSizeComboBox.Name = "IconSizeComboBox";
+            this.IconSizeComboBox.Size = new System.Drawing.Size(59, 21);
+            this.IconSizeComboBox.TabIndex = 3;
             // 
             // quickSettingsCheckBox
             // 
@@ -376,33 +387,6 @@ namespace Greenshot {
             this.quickSettingsCheckBox.TabIndex = 6;
             this.quickSettingsCheckBox.Text = "Show quick settings menu";
             this.quickSettingsCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // numericUpdownIconSize
-            // 
-            this.numericUpdownIconSize.Increment = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
-            this.numericUpdownIconSize.Location = new System.Drawing.Point(422, 45);
-            this.numericUpdownIconSize.Maximum = new decimal(new int[] {
-            32,
-            0,
-            0,
-            0});
-            this.numericUpdownIconSize.Minimum = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
-            this.numericUpdownIconSize.Name = "numericUpdownIconSize";
-            this.numericUpdownIconSize.Size = new System.Drawing.Size(44, 20);
-            this.numericUpdownIconSize.TabIndex = 3;
-            this.numericUpdownIconSize.Value = new decimal(new int[] {
-            16,
-            0,
-            0,
-            0});
             // 
             // label_icon_size
             // 
@@ -1525,7 +1509,7 @@ namespace Greenshot {
             this.listview_clipboardformats.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.None;
             this.listview_clipboardformats.HideSelection = false;
             this.listview_clipboardformats.LabelWrap = false;
-            this.listview_clipboardformats.Location = new System.Drawing.Point(236, 39);
+            this.listview_clipboardformats.Location = new System.Drawing.Point(236, 19);
             this.listview_clipboardformats.Name = "listview_clipboardformats";
             this.listview_clipboardformats.ShowGroups = false;
             this.listview_clipboardformats.Size = new System.Drawing.Size(230, 72);
@@ -1559,7 +1543,6 @@ namespace Greenshot {
             this.groupbox_preferredfilesettings.PerformLayout();
             this.groupbox_applicationsettings.ResumeLayout(false);
             this.groupbox_applicationsettings.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpdownIconSize)).EndInit();
             this.groupbox_qualitysettings.ResumeLayout(false);
             this.groupbox_qualitysettings.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.trackBarJpegQuality)).EndInit();
@@ -1700,7 +1683,6 @@ namespace Greenshot {
         private GreenshotPlugin.Controls.GreenshotCheckBox checkboxAllowCenter;
 		private GreenshotPlugin.Controls.GreenshotCheckBox checkbox_zoomer;
 		private GreenshotPlugin.Controls.GreenshotLabel label_icon_size;
-		private System.Windows.Forms.NumericUpDown numericUpdownIconSize;
         private Controls.ColorButton captureAreaColorButton;
         private GreenshotPlugin.Controls.GreenshotCheckBox captureAreaColorCheckBox;
         private GreenshotPlugin.Controls.GreenshotCheckBox editorConfirmationCheckBox;
@@ -1712,5 +1694,6 @@ namespace Greenshot {
         private GreenshotPlugin.Controls.GreenshotRadioButton checkUpdatesManuallyRadioButton;
         private GreenshotPlugin.Controls.GreenshotRadioButton checkUpdatesAutoRadioButton;
         private GreenshotPlugin.Controls.GreenshotCheckBox quickSettingsCheckBox;
+        private System.Windows.Forms.ComboBox IconSizeComboBox;
     }
 }

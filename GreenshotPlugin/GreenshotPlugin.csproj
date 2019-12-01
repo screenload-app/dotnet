@@ -43,6 +43,8 @@
     <Compile Include="Controls\GreenshotRadioButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Core\ControlExtensions.cs" />
+    <Compile Include="Core\DialogManager.cs" />
     <Compile Include="Core\ExplorerHelper.cs" />
     <Compile Include="Core\GreenshotResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -245,6 +247,9 @@
     <EmbeddedResource Include="Controls\PleaseWaitForm.resx">
       <DependentUpon>PleaseWaitForm.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\QualityDialog.resx">
+      <DependentUpon>QualityDialog.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Core\GreenshotResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>GreenshotResources.Designer.cs</LastGenOutput>
@@ -253,32 +258,5 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\icon.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Modify.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-dark.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-old.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-white.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-dark-update.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-old-update.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\win-white-update.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\update.ico" />
   </ItemGroup>
 </Project>

@@ -69,7 +69,6 @@ namespace Greenshot {
             this.contextMenuGeneralSettings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.contextmenu_settings = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripMiscSeparator = new System.Windows.Forms.ToolStripSeparator();
-			this.contextmenu_help = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
             this.checkUpdatesToolStripMenuItem = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
             this.contextmenu_about = new GreenshotPlugin.Controls.GreenshotToolStripMenuItem();
 			this.toolStripCloseSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -100,7 +99,6 @@ namespace Greenshot {
                                     this.contextmenu_quicksettings,
                                     this.contextMenuGeneralSettings,
 									this.toolStripMiscSeparator,
-									this.contextmenu_help,
                                     this.checkUpdatesToolStripMenuItem,
                                     this.contextmenu_about,
 									this.toolStripCloseSeparator,
@@ -203,12 +201,6 @@ namespace Greenshot {
             // toolStripMiscSeparator
             // 
             this.toolStripMiscSeparator.Name = "toolStripMiscSeparator";
-			// 
-			// contextmenu_help
-			// 
-			this.contextmenu_help.Icon = ((System.Drawing.Icon)(resources.GetObject("contextmenu_help.Icon")));
-			this.contextmenu_help.Name = "contextmenu_help";
-			this.contextmenu_help.Click += new System.EventHandler(this.Contextmenu_helpClick);
             //
             // checkUpdatesToolStripMenuItem
             //
@@ -218,6 +210,7 @@ namespace Greenshot {
             // 
             // contextmenu_about
             // 
+            this.contextmenu_about.Icon = ((System.Drawing.Icon)(resources.GetObject("aboutToolStripMenuItem.Icon")));
             this.contextmenu_about.Name = "contextmenu_about";
 			this.contextmenu_about.Click += new System.EventHandler(this.Contextmenu_aboutClick);
 			// 
@@ -270,12 +263,10 @@ namespace Greenshot {
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureie;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_openfile;
         private System.Windows.Forms.ToolStripSeparator toolStripSettingsSeparator;
-        //private System.Windows.Forms.ToolStripSeparator toolStripPluginSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_captureclipboard;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_quicksettings;
         private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextMenuGeneralSettings;
         private System.Windows.Forms.ToolStripSeparator toolStripMiscSeparator;
-		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_help;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_capturewindow;
 		private System.Windows.Forms.ToolStripSeparator toolStripOpenFolderSeparator;
 		private GreenshotPlugin.Controls.GreenshotToolStripMenuItem contextmenu_about;

@@ -140,6 +140,7 @@ namespace Greenshot
             var surfaceForm = new SurfaceForm(capture);
 
             MainForm.Instance.SetSurfaceForm(surfaceForm);
+            DialogManager.SetTopForm(surfaceForm);
 
             QuickImageEditorForm quickImageEditorForm = null;
 
@@ -158,6 +159,7 @@ namespace Greenshot
             var dialogResult = surfaceForm.ShowDialog(ownerForm ?? MainForm.Instance);
 
             MainForm.Instance.ResetSurfaceForm();
+            DialogManager.ResetTopForm();
 
             if (DialogResult.OK != dialogResult)
                 return QuickImageEditorResult.NoAction;

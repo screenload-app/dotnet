@@ -65,7 +65,7 @@ Greenshot поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.�
     <resource name="checkUpdatesToolStripMenuItemWithUpdates">Установить Greenshot {0}</resource>
 		<resource name="contextmenu_quicksettings">Быстрые настройки</resource>
     <resource name="contextmenu_settings">Настройки</resource>
-    <resource name="contextmenu_generalsettings">Предпочтения...</resource>
+    <resource name="contextmenu_generalsettings">Настройки...</resource>
 		<resource name="destination_exportfailed">Ошибка при экспорте {0}. Пожалуйста, попробуйте ещё раз.</resource>
 		<resource name="editor_align_bottom">Внизу</resource>
 		<resource name="editor_align_center">По центру</resource>
@@ -383,14 +383,14 @@ ${hostname} Имя ПК
 
     <resource name="UpdateForm_Caption">Обновление Greenshot!</resource>
     <resource name="UpdateForm_Info">Доступна версия Greenshot {0}. В ней содержатся важные исправления и улучшения, внесенные на основе наших исследований и замечаний пользователей!</resource>
-    <resource name="UpdateForm_UpdateNow">УСТАНОВИТЬ</resource>
-    <resource name="UpdateForm_RemindLater">НАПОМНИТЬ ПОЗЖЕ</resource>
+    <resource name="UpdateForm_UpdateNow">Установить</resource>
+    <resource name="UpdateForm_RemindLater">Напомнить позже</resource>
     <resource name="UpdateForm_RemindLabel">Напомнить</resource>
     <resource name="UpdateForm_InAnHour">через час</resource>
     <resource name="UpdateForm_Tomorrow">завтра</resource>
     <resource name="UpdateForm_DoNotCheck">более не напоминать</resource>
     <resource name="UpdateForm_OK">ОК</resource>
-    <resource name="UpdateForm_Cancel">ОТМЕНА</resource>
+    <resource name="UpdateForm_Cancel">Отмена</resource>
 
     <resource name="LinkCopiedToClipboard">Ссылка скопирована в буфер обмена!</resource>
 

@@ -210,7 +210,6 @@
       <DependentUpon>UpdateForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Helpers\ColorUtility.cs" />
-    <Compile Include="Helpers\ControlExtensions.cs" />
     <Compile Include="Helpers\HotkeyHelper.cs" />
     <Compile Include="Helpers\HotkeyInfo.cs" />
     <Compile Include="Helpers\DialogHelper.cs" />
