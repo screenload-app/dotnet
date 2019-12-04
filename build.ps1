@@ -24,7 +24,7 @@
 
 $version=$env:APPVEYOR_BUILD_VERSION
 if ( !$version ) {
-	$version = "1.6.1.0"
+	$version = "1.7.0.0"
 }
 
 $buildType=$env:build_type
@@ -46,7 +46,7 @@ $env:SignTool = "C:\Program Files (x86)\Windows Kits\10\bin\10.0.17134.0\x64\sig
 #$certThumbprint = "fcb671b0b83566d01aee0e142e9ba5a999208ee4"
 $timestampingServer = "http://timestamp.comodoca.com/rfc3161"
 
-Write-Host "Building Greenshot $detailversion"
+Write-Host "Building ScreenLoad $detailversion"
 
 # Create a MD5 string for the supplied filename
 Function MD5($filename) {
@@ -68,7 +68,7 @@ Function SignWithCertificate($filename) {
 
 # Sign the file with Signtool before they are packed in the installer / .zip etc
 Function SignBinaryFilesBeforeBuildingInstaller() {
-	$sourcebase = "$(get-location)\Greenshot\bin\Release"
+	$sourcebase = "$(get-location)\ScreenLoad\bin\Release"
 
 	$INCLUDE=@("*.exe", "*.gsp", "*.dll")
 	Get-ChildItem -Path "$sourcebase" -Recurse -Include $INCLUDE -Exclude "log4net.dll" | foreach {
@@ -100,7 +100,7 @@ Function FillTemplates {
 # Create the MD5 checksum file
 Function MD5Checksums {
 	echo "MD5 Checksums:"
-	$sourcebase = "$(get-location)\Greenshot\bin\Release"
+	$sourcebase = "$(get-location)\ScreenLoad\bin\Release"
 
 	$INCLUDE=@("*.exe", "*.gsp", "*.dll")
 	Get-ChildItem -Path "$sourcebase" -Recurse -Include $INCLUDE | foreach {
@@ -112,12 +112,12 @@ Function MD5Checksums {
 
 # This function creates the paf.exe
 Function PackagePortable {
-	$sourcebase = "$(get-location)\Greenshot\bin\Release"
-	$destbase = "$(get-location)\Greenshot\releases"
+	$sourcebase = "$(get-location)\ScreenLoad\bin\Release"
+	$destbase = "$(get-location)\ScreenLoad\releases"
 
 	# Only remove the paf we are going to create, to prevent adding but keeping the history
-	if (Test-Path  ("$destbase\GreenshotPortable-$version.paf.exe")) {
-		Remove-Item "$destbase\GreenshotPortable-$version.paf.exe" -Confirm:$false
+	if (Test-Path  ("$destbase\ScreenLoadPortable-$version.paf.exe")) {
+		Remove-Item "$destbase\ScreenLoadPortable-$version.paf.exe" -Confirm:$false
 	}
 	# Remove the directory to create the files in
 	if (Test-Path  ("$destbase\portabletmp")) {
@@ -127,35 +127,35 @@ Function PackagePortable {
 
 	$INCLUDE=@("*.gsp", "*.dll", "*.exe", "*.config")
 	Get-ChildItem -Path "$sourcebase\Plugins\" -Recurse -Include $INCLUDE | foreach {
-		$path = $_.fullname -replace ".*\\Plugins\\", "$destbase\portabletmp\App\Greenshot\Plugins\"
+		$path = $_.fullname -replace ".*\\Plugins\\", "$destbase\portabletmp\App\ScreenLoad\Plugins\"
 		New-Item -ItemType File -Path "$path" -Force | Out-Null
 		Copy-Item -Path $_ -Destination "$path" -Force
 	}
 	
 	$INCLUDE=@("help-*.html","language-*.xml")
-	Get-ChildItem -Path "$(get-location)\Greenshot\Languages\" -Recurse -Include $INCLUDE -Exclude "*installer*","*website*" | foreach {
-		$path = $_.fullname -replace ".*\\Languages\\", "$destbase\portabletmp\App\Greenshot\Languages\"
+	Get-ChildItem -Path "$(get-location)\ScreenLoad\Languages\" -Recurse -Include $INCLUDE -Exclude "*installer*","*website*" | foreach {
+		$path = $_.fullname -replace ".*\\Languages\\", "$destbase\portabletmp\App\ScreenLoad\Languages\"
 		New-Item -ItemType File -Path "$path" -Force | Out-Null
 		Copy-Item -Path $_ -Destination "$path" -Force
 	}
-	Copy-Item -Path "$sourcebase\Languages\Plugins\" -Destination "$destbase\portabletmp\App\Greenshot\Languages\Plugins\" -Recurse
+	Copy-Item -Path "$sourcebase\Languages\Plugins\" -Destination "$destbase\portabletmp\App\ScreenLoad\Languages\Plugins\" -Recurse
 	
 	@( "$sourcebase\checksum.MD5",
-		"$sourcebase\Greenshot.exe.config",
-		"$sourcebase\GreenshotPlugin.dll",
+		"$sourcebase\ScreenLoad.exe.config",
+		"$sourcebase\ScreenLoadPlugin.dll",
 		"$sourcebase\LinqBridge.dll",
 		"$sourcebase\log4net.dll",
 		"$sourcebase\log4net-portable.xml",
-		"$destbase\additional_files\*.txt" ) | foreach { Copy-Item $_ "$destbase\portabletmp\App\Greenshot\" }
+		"$destbase\additional_files\*.txt" ) | foreach { Copy-Item $_ "$destbase\portabletmp\App\ScreenLoad\" }
 
 	Copy-Item -Path "$sourcebase\Languages\help-en-US.html" -Destination "$destbase\portabletmp\help.html"
 
-	Copy-Item -Path "$sourcebase\Greenshot.exe" -Destination "$destbase\portabletmp"
+	Copy-Item -Path "$sourcebase\ScreenLoad.exe" -Destination "$destbase\portabletmp"
 
 	Copy-Item -Path "$destbase\appinfo.ini" -Destination "$destbase\portabletmp\App\AppInfo\appinfo.ini"
 		
 	$portableOutput = "$(get-location)\portable"
-	$portableInstaller = "$(get-location)\greenshot\tools\PortableApps.comInstaller\PortableApps.comInstaller.exe"
+	$portableInstaller = "$(get-location)\ScreenLoad\tools\PortableApps.comInstaller\PortableApps.comInstaller.exe"
 	$arguments = @("$destbase\portabletmp")
 	Write-Host "Starting $portableInstaller $arguments"
 	$portableResult = Start-Process -wait -PassThru "$portableInstaller" -ArgumentList $arguments -NoNewWindow -RedirectStandardOutput "$portableOutput.log" -RedirectStandardError "$portableOutput.error"
@@ -180,13 +180,13 @@ Function PackagePortable {
 
 # This function creates the .zip
 Function PackageZip {
-	$sourcebase = "$(get-location)\Greenshot\bin\Release"
-	$destbase = "$(get-location)\Greenshot\releases"
+	$sourcebase = "$(get-location)\ScreenLoad\bin\Release"
+	$destbase = "$(get-location)\ScreenLoad\releases"
 	$destzip = "$destbase\NO-INSTALLER"
 
 	# Only remove the zip we are going to create, to prevent adding but keeping the history
-	if (Test-Path  ("$destbase\Greenshot-NO-INSTALLER-$fileversion.zip")) {
-		Remove-Item "$destbase\Greenshot-NO-INSTALLER-$fileversion.zip" -Confirm:$false
+	if (Test-Path  ("$destbase\ScreenLoad-NO-INSTALLER-$fileversion.zip")) {
+		Remove-Item "$destbase\ScreenLoad-NO-INSTALLER-$fileversion.zip" -Confirm:$false
 	}
 	# Remove the directory to create the files in
 	if (Test-Path  ("$destzip")) {
@@ -194,9 +194,9 @@ Function PackageZip {
 	}
 	New-Item -ItemType directory -Path "$destzip" | Out-Null
 
-	echo ";dummy config, used to make greenshot store the configuration in this directory" | Set-Content "$destzip\greenshot.ini" -encoding UTF8
-	echo ";In this file you should add your default settings" | Set-Content "$destzip\greenshot-defaults.ini" -encoding UTF8
-	echo ";In this file you should add your fixed settings" | Set-Content "$destzip\greenshot-fixed.ini" -encoding UTF8
+	echo ";dummy config, used to make screenload store the configuration in this directory" | Set-Content "$destzip\screenload.ini" -encoding UTF8
+	echo ";In this file you should add your default settings" | Set-Content "$destzip\screenload-defaults.ini" -encoding UTF8
+	echo ";In this file you should add your fixed settings" | Set-Content "$destzip\screenload-fixed.ini" -encoding UTF8
 
 	$INCLUDE=@("*.gsp", "*.dll", "*.exe", "*.config")
 	Get-ChildItem -Path "$sourcebase\Plugins\" -Recurse -Include $INCLUDE | foreach {
@@ -206,7 +206,7 @@ Function PackageZip {
 	}
 	
 	$INCLUDE=@("help-*.html","language-*.xml")
-	Get-ChildItem -Path "$(get-location)\Greenshot\Languages\" -Recurse -Include $INCLUDE -Exclude "*installer*","*website*" | foreach {
+	Get-ChildItem -Path "$(get-location)\ScreenLoad\Languages\" -Recurse -Include $INCLUDE -Exclude "*installer*","*website*" | foreach {
 		$path = $_.fullname -replace ".*\\Languages\\", "$destzip\Languages\"
 		New-Item -ItemType File -Path "$path" -Force | Out-Null
 		Copy-Item -Path $_ -Destination "$path" -Force
@@ -214,19 +214,19 @@ Function PackageZip {
 	Copy-Item -Path "$sourcebase\Languages\Plugins\" -Destination "$destzip\Languages\Plugins\" -Recurse
 	
 	@( "$sourcebase\checksum.MD5",
-		"$sourcebase\Greenshot.exe",
-		"$sourcebase\Greenshot.exe.config",
-		"$sourcebase\GreenshotPlugin.dll",
+		"$sourcebase\ScreenLoad.exe",
+		"$sourcebase\ScreenLoad.exe.config",
+		"$sourcebase\ScreenLoadPlugin.dll",
 		"$sourcebase\LinqBridge.dll",
 		"$sourcebase\log4net.dll",
-		"$(get-location)\Greenshot\log4net-zip.xml"
+		"$(get-location)\ScreenLoad\log4net-zip.xml"
 		"$destbase\additional_files\*.txt" ) | foreach { Copy-Item $_ "$destzip\" }
 
 	Rename-Item "$destzip\log4net-zip.xml" "$destzip\log4net.xml"
 		
 	$zipOutput = "$(get-location)\zip"
-	$zip7 = "$(get-location)\greenshot\tools\7zip\7za.exe"
-	$arguments = @('a', '-mx9', '-tzip', '-r', "$destbase\Greenshot-NO-INSTALLER-$fileversion.zip", "$destzip\*")
+	$zip7 = "$(get-location)\screenload\tools\7zip\7za.exe"
+	$arguments = @('a', '-mx9', '-tzip', '-r', "$destbase\ScreenLoad-NO-INSTALLER-$fileversion.zip", "$destzip\*")
 	Write-Host "Starting $zip7 $arguments"
 	$zipResult = Start-Process -wait -PassThru "$zip7" -ArgumentList $arguments -NoNewWindow -RedirectStandardOutput "$zipOutput.log" -RedirectStandardError "$zipOutput.error"
 	Write-Host "Log output:"
@@ -243,13 +243,13 @@ Function PackageZip {
 
 # This function creates the debug symbols .zip
 Function PackageDbgSymbolsZip {
-	$sourcebase = "$(get-location)\Greenshot\bin\Release"
-	$destbase = "$(get-location)\Greenshot\releases"
+	$sourcebase = "$(get-location)\ScreenLoad\bin\Release"
+	$destbase = "$(get-location)\ScreenLoad\releases"
 	$destdbgzip = "$destbase\DEBUGSYMBOLS"
 
 	# Only remove the zip we are going to create, to prevent adding but keeping the history
-	if (Test-Path  ("$destbase\Greenshot-DEBUGSYMBOLS-$fileversion.zip")) {
-		Remove-Item "$destbase\Greenshot-DEBUGSYMBOLS-$fileversion.zip" -Confirm:$false
+	if (Test-Path  ("$destbase\ScreenLoad-DEBUGSYMBOLS-$fileversion.zip")) {
+		Remove-Item "$destbase\ScreenLoad-DEBUGSYMBOLS-$fileversion.zip" -Confirm:$false
 	}
 	# Remove the directory to create the files in
 	if (Test-Path  ("$destdbgzip")) {
@@ -267,8 +267,8 @@ Function PackageDbgSymbolsZip {
 	@( "$sourcebase\*.pdb") | foreach { Copy-Item $_ "$destdbgzip\" }
 
 	$zipOutput = "$(get-location)\dbgzip"
-	$zip7 = "$(get-location)\greenshot\tools\7zip\7za.exe"
-	$arguments = @('a', '-mx9', '-tzip', '-r', "$destbase\Greenshot-DEBUGSYMBOLS-$fileversion.zip", "$destdbgzip\*")
+	$zip7 = "$(get-location)\screenload\tools\7zip\7za.exe"
+	$arguments = @('a', '-mx9', '-tzip', '-r', "$destbase\ScreenLoad-DEBUGSYMBOLS-$fileversion.zip", "$destdbgzip\*")
 	Write-Host "Starting $zip7 $arguments"
 	$zipResult = Start-Process -wait -PassThru "$zip7" -ArgumentList $arguments -NoNewWindow -RedirectStandardOutput "$zipOutput.log" -RedirectStandardError "$zipOutput.error"
 	Write-Host "Log output:"
@@ -287,11 +287,11 @@ Function PackageDbgSymbolsZip {
 Function PackageInstaller {
 	$setupOutput = "$(get-location)\setup"
 	$innoSetup = "$(get-location)\packages\Tools.InnoSetup.5.5.9\tools\ISCC.exe"
-	$innoSetupFile = "$(get-location)\greenshot\releases\innosetup\setup.iss"
+	$innoSetupFile = "$(get-location)\screenload\releases\innosetup\setup.iss"
 	$arguments = @("/Qp /SSignTool=""$env:SignTool `$p""", $innoSetupFile)
 	
 	if (!$certThumbprint) {
-		$innoSetupFile = "$(get-location)\greenshot\releases\innosetup\setup-omitsignature.iss"
+		$innoSetupFile = "$(get-location)\screenload\releases\innosetup\setup-omitsignature.iss"
 		$arguments = @("/Qp ", $innoSetupFile)
 	}
 	
@@ -310,7 +310,7 @@ Function PackageInstaller {
 # This function tags the current 
 Function TagCode {
 	Write-Host "Add remote via git, so SSH key works"
-	git remote add tagorigin git@bitbucket.org:greenshot/greenshot.git
+	git remote add tagorigin git@bitbucket.org:screenload/screenload.git
 	Write-Host "Setting id_rsa with the content from environment rsakey so we can push a tag"
 	# Write the RSA key contents from the AppVeyor rsakey UI ENV variable to the private key file
 	$key = $env:rsakey
@@ -322,7 +322,7 @@ Function TagCode {
 	$fileContent += "-----END RSA PRIVATE KEY-----" + "`n" 
 	Set-Content c:\users\appveyor\.ssh\id_rsa $fileContent
 	git config --global user.email "getgreenshot@gmail.com"
-	git config --global user.name "Greenshot-AppVeyor"
+	git config --global user.name "ScreenLoad-AppVeyor"
 	Write-Host "Tagging repo with $fileversion"
 	git tag -a $fileversion -m 'Build from AppVeyor'
 	Write-Host "Pushing tag $fileversion to remote"
@@ -339,7 +339,7 @@ if ($certThumbprint) {
 
 # This must be after the signing, otherwise they would be different.
 echo "Generating MD5"
-MD5Checksums | Set-Content "$(get-location)\Greenshot\bin\Release\checksum.MD5" -encoding UTF8
+MD5Checksums | Set-Content "$(get-location)\ScreenLoad\bin\Release\checksum.MD5" -encoding UTF8
 
 echo "Generating Installer"
 PackageInstaller
