@@ -87,7 +87,6 @@
             // infoLabel
             // 
             this.infoLabel.BackColor = System.Drawing.Color.Transparent;
-            this.infoLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.infoLabel.Location = new System.Drawing.Point(111, 35);
             this.infoLabel.Name = "infoLabel";
             this.infoLabel.Size = new System.Drawing.Size(341, 137);
@@ -102,7 +101,7 @@
             this.captionLabel.LanguageKey = "UpdateForm_Caption";
             this.captionLabel.Location = new System.Drawing.Point(108, 12);
             this.captionLabel.Name = "captionLabel";
-            this.captionLabel.Size = new System.Drawing.Size(114, 13);
+            this.captionLabel.Size = new System.Drawing.Size(124, 13);
             this.captionLabel.TabIndex = 0;
             this.captionLabel.Text = "ScreenLoad Update!";
             // 
@@ -257,14 +256,13 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(464, 221);
-            this.ControlBox = false;
             this.Controls.Add(this.mPictureBox);
             this.Controls.Add(this.remindBottomPanel);
             this.Controls.Add(this.bottomFlowPanel);
             this.Controls.Add(this.progressBottomPanel);
             this.Controls.Add(this.infoLabel);
             this.Controls.Add(this.captionLabel);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -273,6 +271,7 @@
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
+            this.Text = "ScreenLoad Update";
             this.TopMost = true;
             this.TransparencyKey = System.Drawing.Color.FromArgb(((int)(((byte)(254)))), ((int)(((byte)(254)))), ((int)(((byte)(254)))));
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.UpdateForm_FormClosed);

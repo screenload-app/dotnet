@@ -21,12 +21,14 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Threading;
 using System.Windows.Forms;
 using ScreenLoad.IniFile;
 using ScreenLoad.Plugin;
 using ScreenLoadPlugin.UnmanagedHelpers;
 using log4net;
+using ScreenLoadPlugin.Controls;
 
 namespace ScreenLoadPlugin.Core
 {
@@ -37,6 +39,9 @@ namespace ScreenLoadPlugin.Core
     {
         private static readonly ILog Log = LogManager.GetLogger(typeof(AbstractDestination));
         private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
+
+        private Icon _icon;
+        private Image _image;
 
         public virtual int CompareTo(object obj)
         {
@@ -59,8 +64,34 @@ namespace ScreenLoadPlugin.Core
         public abstract string Description { get; }
 
         public virtual int Priority => 10;
+        
+        public virtual Icon DisplayIcon
+        {
+            get => _icon;
+            set
+            {
+                _image = null;
+                _icon = value;
+            }
+        }
 
-        public virtual Image DisplayIcon => null;
+        public virtual Image DisplayImage
+        {
+            get
+            {
+                if (null != _image && PixelFormat.DontCare != _image.PixelFormat &&
+                    _image.Size.Width == CoreConfig.IconSize.Width)
+                    return _image;
+
+                if (null == DisplayIcon)
+                    return _image;
+
+                _image = new Icon(DisplayIcon, CoreConfig.IconSize).ToBitmap();
+
+                return _image;
+            }
+            set => _image = value;
+        }
 
         public virtual Keys EditorShortcutKeys => Keys.None;
 
@@ -283,9 +314,10 @@ namespace ScreenLoadPlugin.Core
 
             // Close
             menu.Items.Add(new ToolStripSeparator());
-            ToolStripMenuItem closeItem = new ToolStripMenuItem(Language.GetString("editor_close"))
+            ToolStripMenuItem closeItem = new ScreenLoadToolStripMenuItem
             {
-                Image = ScreenLoadResources.Close_Image
+                Text = Language.GetString("editor_close"),
+                Icon = ScreenLoadResources.Close
             };
             closeItem.Click += delegate
             {
@@ -354,12 +386,13 @@ namespace ScreenLoadPlugin.Core
         public virtual ToolStripMenuItem GetMenuItem(bool addDynamics, ContextMenuStrip menu,
             EventHandler destinationClickHandler)
         {
-            var basisMenuItem = new ToolStripMenuItem(Description)
+            var basisMenuItem = new ScreenLoadToolStripMenuItem
             {
-                Image = DisplayIcon,
+                Image = DisplayImage,
                 Tag = this,
                 Text = Description
             };
+
             AddTagEvents(basisMenuItem, menu, Description);
             basisMenuItem.Click -= destinationClickHandler;
             basisMenuItem.Click += destinationClickHandler;
@@ -394,11 +427,13 @@ namespace ScreenLoadPlugin.Core
                             {
                                 foreach (IDestination subDestination in subDestinations)
                                 {
-                                    var destinationMenuItem = new ToolStripMenuItem(subDestination.Description)
+                                    var destinationMenuItem = new ScreenLoadToolStripMenuItem
                                     {
                                         Tag = subDestination,
-                                        Image = subDestination.DisplayIcon
+                                        Image = subDestination.DisplayImage,
+                                        Text = subDestination.Description
                                     };
+
                                     destinationMenuItem.Click += destinationClickHandler;
                                     AddTagEvents(destinationMenuItem, menu, subDestination.Description);
                                     basisMenuItem.DropDownItems.Add(destinationMenuItem);

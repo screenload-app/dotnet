@@ -154,7 +154,7 @@ namespace ScreenLoad {
 			{
 				panel1.Controls.Add(_surface);
 			}
-			var backgroundForTransparency = ScreenLoadResources.Clipboard_Image;
+			var backgroundForTransparency = ScreenLoadResources.Checkerboard_Image;
 			if (_surface != null)
 			{
 				_surface.TransparencyBackgroundBrush = new TextureBrush(backgroundForTransparency, WrapMode.Tile);
@@ -252,7 +252,7 @@ namespace ScreenLoad {
 					if (!destination.IsActive) {
 						continue;
 					}
-					if (destination.DisplayIcon == null) {
+					if (destination.DisplayImage == null) {
 						continue;
 					}
 					try {
@@ -267,20 +267,21 @@ namespace ScreenLoad {
 
 		private void AddDestinationButton(IDestination toolstripDestination) {
 			if (toolstripDestination.IsDynamic) {
-				ToolStripSplitButton destinationButton = new ToolStripSplitButton
-				{
+				ToolStripSplitButton destinationButton = new ScreenLoadToolStripSplitButton
+                {
 					DisplayStyle = ToolStripItemDisplayStyle.Image,
 					Size = new Size(23, 22),
 					Text = toolstripDestination.Description,
-					Image = toolstripDestination.DisplayIcon
+					Image = toolstripDestination.DisplayImage
 				};
 				//ToolStripDropDownButton destinationButton = new ToolStripDropDownButton();
 
-				ToolStripMenuItem defaultItem = new ToolStripMenuItem(toolstripDestination.Description)
+				ToolStripMenuItem defaultItem = new ScreenLoadToolStripMenuItem
 				{
 					Tag = toolstripDestination,
-					Image = toolstripDestination.DisplayIcon
-				};
+                    Image = toolstripDestination.DisplayImage,
+                    Text = toolstripDestination.Description
+                };
 				defaultItem.Click += delegate {
 					toolstripDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
 				};
@@ -302,11 +303,12 @@ namespace ScreenLoad {
 						subDestinations.Sort();
 						foreach(IDestination subDestination in subDestinations) {
 							IDestination closureFixedDestination = subDestination;
-							ToolStripMenuItem destinationMenuItem = new ToolStripMenuItem(closureFixedDestination.Description)
+							ToolStripMenuItem destinationMenuItem = new ScreenLoadToolStripMenuItem
 							{
 								Tag = closureFixedDestination,
-								Image = closureFixedDestination.DisplayIcon
-							};
+								Image = closureFixedDestination.DisplayImage,
+                                Text = closureFixedDestination.Description
+                            };
 							destinationMenuItem.Click += delegate {
 								closureFixedDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
 							};
@@ -318,12 +320,12 @@ namespace ScreenLoad {
 				destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16), destinationButton);
 				
 			} else {
-				ToolStripButton destinationButton = new ToolStripButton();
+                ScreenLoadToolStripButton destinationButton = new ScreenLoadToolStripButton();
 				destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16), destinationButton);
 				destinationButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
 				destinationButton.Size = new Size(23, 22);
 				destinationButton.Text = toolstripDestination.Description;
-				destinationButton.Image = toolstripDestination.DisplayIcon;
+				destinationButton.Image = toolstripDestination.DisplayImage;
 				destinationButton.Click += delegate {
 					toolstripDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
 				};

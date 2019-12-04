@@ -391,10 +391,10 @@ namespace ScreenLoad
             int imageNr = -1;
             foreach (IDestination currentDestination in DestinationHelper.GetAllDestinations())
             {
-                Image destinationImage = currentDestination.DisplayIcon;
+                Image destinationImage = currentDestination.DisplayImage;
                 if (destinationImage != null)
                 {
-                    imageList.Images.Add(currentDestination.DisplayIcon);
+                    imageList.Images.Add(currentDestination.DisplayImage);
                     imageNr++;
                 }
 

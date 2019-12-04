@@ -70,7 +70,7 @@ namespace ScreenLoad.Destinations {
 			}
 		}
 
-		public override Image DisplayIcon => ScreenLoadResources.Printer_Image;
+		public override Icon DisplayIcon => ScreenLoadResources.Print;
 
         public override bool IsDynamic {
 			get {

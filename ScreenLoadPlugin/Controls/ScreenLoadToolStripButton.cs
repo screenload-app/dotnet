@@ -22,12 +22,12 @@
 using System.ComponentModel;
 using System.Windows.Forms;
 
-namespace ScreenLoadPlugin.Controls {
-	public class ScreenLoadToolStripButton : ToolStripButton, IScreenLoadLanguageBindable {
-		[Category("ScreenLoad"), DefaultValue(null), Description("Specifies key of the language file to use when displaying the text.")]
-		public string LanguageKey {
-			get;
-			set;
-		}
-	}
+namespace ScreenLoadPlugin.Controls
+{
+    public class ScreenLoadToolStripButton : ToolStripButton, IScreenLoadLanguageBindable
+    {
+        [Category("ScreenLoad"), DefaultValue(null),
+         Description("Specifies key of the language file to use when displaying the text.")]
+        public string LanguageKey { get; set; }
+    }
 }

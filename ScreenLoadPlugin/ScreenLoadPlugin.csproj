@@ -29,7 +29,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
-      <HintPath>..\Greenshot\Lib\log4net.dll</HintPath>
+      <HintPath>..\ScreenLoad\Lib\log4net.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Drawing" />
@@ -40,7 +40,10 @@
     <Compile Include="Controls\AnimatingForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotRadioButton.cs">
+    <Compile Include="Controls\ScreenLoadRadioButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Controls\ScreenLoadToolStripSplitButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Core\ControlExtensions.cs" />
@@ -113,32 +116,32 @@
     <Compile Include="Controls\FormWithoutActivation.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotButton.cs">
+    <Compile Include="Controls\ScreenLoadButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotCheckBox.cs">
+    <Compile Include="Controls\ScreenLoadCheckBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotColumnSorter.cs" />
-    <Compile Include="Controls\GreenshotComboBox.cs">
+    <Compile Include="Controls\ScreenLoadColumnSorter.cs" />
+    <Compile Include="Controls\ScreenLoadComboBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotForm.cs">
+    <Compile Include="Controls\ScreenLoadForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotGroupBox.cs">
+    <Compile Include="Controls\ScreenLoadGroupBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotLabel.cs">
+    <Compile Include="Controls\ScreenLoadLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotTabPage.cs">
+    <Compile Include="Controls\ScreenLoadTabPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotTextBox.cs">
+    <Compile Include="Controls\ScreenLoadTextBox.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotToolStripMenuItem.cs">
+    <Compile Include="Controls\ScreenLoadToolStripMenuItem.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\HotkeyControl.cs">
@@ -152,13 +155,13 @@
     </Compile>
     <Compile Include="Controls\IGreenshotConfigBindable.cs" />
     <Compile Include="Controls\IGreenshotLanguageBindable.cs" />
-    <Compile Include="Controls\GreenshotToolStripButton.cs">
+    <Compile Include="Controls\ScreenLoadToolStripButton.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotToolStripLabel.cs">
+    <Compile Include="Controls\ScreenLoadToolStripLabel.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Controls\GreenshotToolDropDownButton.cs">
+    <Compile Include="Controls\ScreenLoadToolDropDownButton.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Controls\OAuthLoginForm.cs">
@@ -253,6 +256,7 @@
     <EmbeddedResource Include="Core\ScreenLoadResources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>ScreenLoadResources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="log4net-embedded.xml" />
   </ItemGroup>

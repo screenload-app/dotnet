@@ -37,8 +37,6 @@ namespace ScreenLoad.Destinations {
 		public const string DESIGNATION = "Editor";
 		private readonly IImageEditor editor;
         
-		private static readonly Image modifyImage = ScreenLoadResources.Modify_Icon.ToBitmap();
-
 		public EditorDestination() {
 		}
 		
@@ -73,10 +71,10 @@ namespace ScreenLoad.Destinations {
 			}
 		}
 
-		public override Image DisplayIcon {
+		public override Icon DisplayIcon {
 			get
             {
-                return modifyImage;
+                return ScreenLoadResources.Editor;
 			}
 		}
 

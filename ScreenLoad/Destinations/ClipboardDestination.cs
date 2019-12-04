@@ -52,7 +52,7 @@ namespace ScreenLoad.Destinations {
 		
 		public override Keys EditorShortcutKeys => Keys.Control | Keys.Shift | Keys.C;
 
-        public override Image DisplayIcon => ScreenLoadResources.Clipboard_Image;
+        public override Icon DisplayIcon => ScreenLoadResources.Copy;
 
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)

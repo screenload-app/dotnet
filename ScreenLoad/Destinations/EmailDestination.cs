@@ -32,7 +32,7 @@ namespace ScreenLoad.Destinations {
 	/// Description of EmailDestination.
 	/// </summary>
 	public class EmailDestination : AbstractDestination {
-		private static readonly Image MailIcon = ScreenLoadResources.Email_Image;
+
 		private static bool _isActiveFlag;
 		private static string _mapiClient;
 		public const string DESIGNATION = "EMail";
@@ -81,7 +81,7 @@ namespace ScreenLoad.Destinations {
 
 		public override Keys EditorShortcutKeys => Keys.Control | Keys.E;
 
-		public override Image DisplayIcon => MailIcon;
+		public override Icon DisplayIcon => ScreenLoadResources.Email;
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)

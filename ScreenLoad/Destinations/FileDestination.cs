@@ -24,7 +24,6 @@ using System.IO;
 using System.Windows.Forms;
 
 using ScreenLoad.Configuration;
-using ScreenLoad.Helpers;
 using ScreenLoadPlugin.Core;
 using ScreenLoad.Plugin;
 using ScreenLoad.IniFile;
@@ -48,7 +47,7 @@ namespace ScreenLoad.Destinations {
 
 		public override Keys EditorShortcutKeys => Keys.Control | Keys.S;
 
-        public override Image DisplayIcon => ScreenLoadResources.Save_Image;
+        public override Icon DisplayIcon => ScreenLoadResources.Save;
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)

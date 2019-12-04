@@ -44,7 +44,7 @@ namespace ScreenLoadDownloadRuPlugin
 
         public override string Description => Language.GetString(Constants.LanguagePrefix, LangKey.upload_menu_item);
 
-        public override Image DisplayIcon => Resources._16;
+        public override Icon DisplayIcon => Resources.icon;
 
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails)

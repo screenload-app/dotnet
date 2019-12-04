@@ -51,7 +51,7 @@ namespace ExternalCommand {
 			yield break;
 		}
 
-		public override Image DisplayIcon => IconCache.IconForCommand(_presetCommand);
+        public override Image DisplayImage => IconCache.IconForCommand(_presetCommand);
 
 		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
 			ExportInformation exportInformation = new ExportInformation(Designation, Description);

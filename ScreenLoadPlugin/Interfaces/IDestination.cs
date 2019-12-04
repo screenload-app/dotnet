@@ -78,10 +78,11 @@ namespace ScreenLoad.Plugin {
 			get;
 		}
 
-		/// <summary>
-		/// Gets an icon for the destination
-		/// </summary>
-		Image DisplayIcon {
+        /// <summary>
+        /// Gets an image for the destination
+        /// </summary>
+        Image DisplayImage
+        {
 			get;
 		}
 

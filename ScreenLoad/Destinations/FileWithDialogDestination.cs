@@ -59,7 +59,7 @@ namespace ScreenLoad.Destinations {
 			}
 		}
 
-        public override Image DisplayIcon => ScreenLoadResources.Save_Image;
+        public override Icon DisplayIcon => ScreenLoadResources.Save;
 
         public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
             var exportInformation = new ExportInformation(Designation, Description)
