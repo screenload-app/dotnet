@@ -9,7 +9,7 @@ namespace GreenshotDownloadRuPlugin
             if (null == fileEntry)
                 throw new ArgumentNullException(nameof(fileEntry));
 
-            return $"https://download.ru/{fileEntry.Preview.UrlsEntry.Large}";
+            return $"https://download.ru{fileEntry.Preview.UrlsEntry.Large}";
         }
 
         public static string BuildPageLink(FileEntry fileEntry)

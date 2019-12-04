@@ -30,6 +30,67 @@ namespace Greenshot
             Vertical
         }
 
+        private struct Invalidation
+        {
+            private Rectangle _current;
+
+            public Rectangle Before { get; set; }
+
+            public Rectangle Current
+            {
+                get => _current;
+                set
+                {
+                    Before = _current;
+                    _current = value;
+                }
+            }
+
+            public bool IsEmpty => Current.IsEmpty;
+
+            public void Invalidate(Control control, int inflate = 0)
+            {
+                var before = Before;
+                var current = Current;
+
+                if (0 != inflate)
+                {
+                    before.Inflate(inflate, inflate);
+                    current.Inflate(inflate, inflate);
+                }
+
+                if (!before.IsEmpty)
+                    control.Invalidate(before);
+
+                if (!current.IsEmpty)
+                    control.Invalidate(current);
+            }
+
+            public void DrawLine(Graphics graphics, Pen pen)
+            {
+                if (Current.IsEmpty)
+                    return;
+
+                int x2;
+                int y2;
+
+                if (1 == Current.Width)
+                {
+                    x2 = Current.X;
+                    y2 = Current.Y + Current.Height;
+                }
+                else if (1 == Current.Height)
+                {
+                    x2 = Current.X + Current.Width;
+                    y2 = Current.Y;
+                }
+                else
+                    throw new InvalidOperationException();
+
+                graphics.DrawLine(pen, Current.X, Current.Y, x2, y2);
+            }
+        }
+
         private static readonly ILog Log = LogManager.GetLogger(typeof(CaptureForm));
 
         private static readonly CoreConfiguration Conf = IniConfig.GetIniSection<CoreConfiguration>();
@@ -46,7 +107,7 @@ namespace Greenshot
         private static readonly Color SizeLabelBackColor = Color.FromArgb(102, Color.Black);
         private const string SizeLabelFontFamily = "Microsoft Sans Serif";
         private const int SizeLabelFontSize = 25;
-        private const int SizeLabelMargin = 8;
+        private const int SizeLabelMargin = 7;
 
         private readonly Color? _overlayColor;
 
@@ -71,10 +132,25 @@ namespace Greenshot
         private readonly ICapture _capture;
         private Point _previousMousePos = Point.Empty;
         private FixMode _fixMode = FixMode.None;
-        private Rectangle _zoomRectangle;
+        private RectangleAnimator _windowAnimator;
+        private RectangleAnimator _zoomAnimator;
         private readonly bool _isZoomerTransparent = Conf.ZoomerOpacity < 1;
         private bool _isCtrlPressed;
         private bool _showDebugInfo;
+
+        private Invalidation _horizontalAxle1Invalidation;
+        private Invalidation _verticalAxle1Invalidation;
+
+        private string _coordinatesText;
+        private Invalidation _coordinatesInvalidation;
+
+        private Invalidation _horizontalAxle2Invalidation;
+        private Invalidation _verticalAxle2Invalidation;
+
+        private Invalidation _holeInvalidation;
+
+        private string _sizeLabelText;
+        private Invalidation _sizeLabelInvalidation;
 
         /// <summary>
         /// Property to access the selected capture rectangle
@@ -122,7 +198,7 @@ namespace Greenshot
                 Application.DoEvents();
             }
 
-            // TODO $ Быстрое решение: сначала захыватываем маленькие окна.
+            // TODO $MarketKernel Быстрое решение: сначала захыватываем маленькие окна.
             //windows = windows.OrderBy(w => w.Size.Width * w.Size.Height).ToList();
 
             _currentForm = this;
@@ -157,6 +233,13 @@ namespace Greenshot
             // set cursor location
             _cursorPos = WindowCapture.GetCursorLocationRelativeToScreenBounds();
 
+            // Initialize the animations, the window capture zooms out from the cursor to the window under the cursor 
+            if (_captureMode == CaptureMode.Window)
+            {
+                _windowAnimator = new RectangleAnimator(new Rectangle(_cursorPos, Size.Empty), _captureRect,
+                    FramesForMillis(700), EasingType.Quintic, EasingMode.EaseOut);
+            }
+
             // Set the zoomer animation
             InitializeZoomer(Conf.ZoomerEnabled);
 
@@ -172,18 +255,18 @@ namespace Greenshot
         public void MakeInvisibleWithDelay()
         {
             new Thread(() =>
+            {
+                Thread.Sleep(250);
+
+                this.InvokeAction(() =>
                 {
-                    Thread.Sleep(250);
+                    if (IsDisposed)
+                        return;
 
-                    this.InvokeAction(() =>
-                    {
-                        if (IsDisposed)
-                            return;
-
-                        Opacity = 0;
-                    });
-                })
-                {IsBackground = true}.Start();
+                    Opacity = 0;
+                });
+            })
+            { IsBackground = true }.Start();
         }
 
         /// <summary>
@@ -193,8 +276,14 @@ namespace Greenshot
         {
             if (isOn)
             {
-                _zoomRectangle = new Rectangle(int.MaxValue, int.MaxValue, 0, 0);
+                // Initialize the zoom with a invalid position
+                _zoomAnimator = new RectangleAnimator(Rectangle.Empty, new Rectangle(int.MaxValue, int.MaxValue, 0, 0),
+                    FramesForMillis(1000), EasingType.Quintic, EasingMode.EaseOut);
                 VerifyZoomAnimation(_cursorPos, false);
+            }
+            else
+            {
+                _zoomAnimator?.ChangeDestination(new Rectangle(Point.Empty, Size.Empty), FramesForMillis(1000));
             }
         }
 
@@ -281,12 +370,18 @@ namespace Greenshot
                             _captureMode = CaptureMode.Window;
                             // "Fade out" Zoom
                             InitializeZoomer(false);
+                            // "Fade in" window
+                            _windowAnimator = new RectangleAnimator(new Rectangle(_cursorPos, Size.Empty), _captureRect,
+                                FramesForMillis(700), EasingType.Quintic, EasingMode.EaseOut);
                             _captureRect = Rectangle.Empty;
                             Invalidate();
                             break;
                         case CaptureMode.Window:
                             // Set the region capture mode
                             _captureMode = CaptureMode.Region;
+                            // "Fade out" window
+                            _windowAnimator.ChangeDestination(new Rectangle(_cursorPos, Size.Empty),
+                                FramesForMillis(700));
                             // Fade in zoom
                             InitializeZoomer(Conf.ZoomerEnabled);
                             _captureRect = Rectangle.Empty;
@@ -454,14 +549,31 @@ namespace Greenshot
         }
 
         #endregion
-        
+
+        /// <summary>
+        /// Helper method to simplify check
+        /// </summary>
+        /// <param name="animator"></param>
+        /// <returns></returns>
+        private bool IsAnimating(IAnimator animator)
+        {
+            if (animator == null)
+            {
+                return false;
+            }
+
+            return animator.HasNext;
+        }
+
         protected override void Animate()
         {
             Point lastPos = _cursorPos;
             _cursorPos = _mouseMovePos;
 
             if (_selectedCaptureWindow != null &&
-                lastPos.Equals(_cursorPos))
+                lastPos.Equals(_cursorPos) &&
+                !IsAnimating(_zoomAnimator) &&
+                !IsAnimating(_windowAnimator))
                 return;
 
             WindowDetails lastWindow = _selectedCaptureWindow;
@@ -505,11 +617,99 @@ namespace Greenshot
                 }
             }
 
-            if (_captureMode != CaptureMode.Window && coreConfiguration.ZoomerEnabled)
-                VerifyZoomAnimation(_cursorPos, false);
+            var screenBounds = _capture.ScreenBounds;
 
-            if (_mouseDown || CaptureMode.Window == _captureMode || !IsTerminalServerSession)
-                Invalidate();
+            Rectangle holeRectangle;
+
+            if (!_mouseDown)
+            {
+                if (CaptureMode.Window != _captureMode)
+                {
+                    if (!IsTerminalServerSession)
+                    {
+                        _horizontalAxle1Invalidation.Current =
+                            new Rectangle(screenBounds.X, _cursorPos.Y, screenBounds.Width, 1);
+                        _verticalAxle1Invalidation.Current =
+                            new Rectangle(_cursorPos.X, screenBounds.Y, 1, screenBounds.Height);
+
+                        _coordinatesText = $"{_cursorPos.X}x{_cursorPos.Y}";
+                        Size coordinatesTextSize;
+
+                        using (var font = new Font(FontFamily.GenericSansSerif, 8))
+                        {
+                            coordinatesTextSize = TextRenderer.MeasureText(_coordinatesText, font);
+                        }
+
+                        _coordinatesInvalidation.Current = new Rectangle(_cursorPos.X + 5, _cursorPos.Y + 5,
+                            coordinatesTextSize.Width - 3,
+                            coordinatesTextSize.Height);
+                    }
+
+                    holeRectangle = Rectangle.Empty;
+                }
+                else
+                {
+                    if (_selectedCaptureWindow != null && !_selectedCaptureWindow.Equals(lastWindow))
+                        _windowAnimator.ChangeDestination(_captureRect, FramesForMillis(700));
+
+                    if (IsAnimating(_windowAnimator))
+                    {
+                        _windowAnimator.Next();
+                        holeRectangle = _windowAnimator.Current;
+                    }
+                    else
+                        holeRectangle = _windowAnimator.Current;
+                }
+            }
+            else
+            {
+                _captureRect.Intersect(new Rectangle(Point.Empty,
+                    _capture.ScreenBounds.Size)); // crop what is outside the screen
+                holeRectangle = _captureRect;
+            }
+
+            if (_mouseDown || _captureMode == CaptureMode.Window)
+            {
+                _horizontalAxle1Invalidation.Current = new Rectangle(screenBounds.X, holeRectangle.Y, screenBounds.Width, 1);
+                _verticalAxle1Invalidation.Current = new Rectangle(holeRectangle.X, screenBounds.Y, 1, screenBounds.Height);
+
+                _horizontalAxle2Invalidation.Current = new Rectangle(screenBounds.X, holeRectangle.Y + holeRectangle.Height, screenBounds.Width, 1);
+                _verticalAxle2Invalidation.Current = new Rectangle(holeRectangle.X + holeRectangle.Width, screenBounds.Y, 1, screenBounds.Height);
+
+                // Hole
+                _holeInvalidation.Current = holeRectangle;
+
+                // Size
+                int correction = _captureMode == CaptureMode.Region ? 1 : 0;
+
+                _sizeLabelText = $"{holeRectangle.Width + correction}x{holeRectangle.Height + correction}";
+                var textSize = GetSizeLabelSize(_sizeLabelText);
+                _sizeLabelInvalidation.Current = GetSizeLabelRectangle(screenBounds, holeRectangle, textSize);
+            }
+
+            _horizontalAxle1Invalidation.Invalidate(this);
+            _verticalAxle1Invalidation.Invalidate(this);
+            _coordinatesInvalidation.Invalidate(this, 1);
+            _horizontalAxle2Invalidation.Invalidate(this);
+            _verticalAxle2Invalidation.Invalidate(this);
+            _holeInvalidation.Invalidate(this);
+            _sizeLabelInvalidation.Invalidate(this);
+
+            if (_zoomAnimator != null && (IsAnimating(_zoomAnimator) || _captureMode != CaptureMode.Window))
+            {
+                // Make sure we invalidate the old zoom area
+                var invalidateRectangle = _zoomAnimator.Current;
+                invalidateRectangle.Offset(lastPos);
+                Invalidate(invalidateRectangle);
+                // Only verify if we are really showing the zoom, not the outgoing animation
+                if (Conf.ZoomerEnabled && _captureMode != CaptureMode.Window)
+                    VerifyZoomAnimation(_cursorPos, false);
+                // The following logic is not needed, next always returns the current if there are no frames left
+                // but it makes more sense if we want to change something in the logic
+                invalidateRectangle = IsAnimating(_zoomAnimator) ? _zoomAnimator.Next() : _zoomAnimator.Current;
+                invalidateRectangle.Offset(_cursorPos);
+                Invalidate(invalidateRectangle);
+            }
 
             // Force update "now"
             Update();
@@ -542,57 +742,26 @@ namespace Greenshot
                 graphics.DrawIcon(_capture.Cursor, _capture.CursorLocation.X, _capture.CursorLocation.Y);
             }
 
-            var screenBounds = _capture.ScreenBounds;
-
             if (_mouseDown || _captureMode == CaptureMode.Window)
             {
-                _captureRect.Intersect(new Rectangle(Point.Empty,
-                    _capture.ScreenBounds.Size)); // crop what is outside the screen
+                if (_overlayColor.HasValue && !_holeInvalidation.IsEmpty)
+                    using (var brush = new SolidBrush(_overlayColor.Value))
+                    {
+                        graphics.FillRectangle(brush, _holeInvalidation.Current);
+                    }
 
-                var fixedRect = _captureRect;
-
-                if (!fixedRect.IsEmpty)
+                using (var brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
+                using (var pen = new Pen(brush))
                 {
-                    if (_overlayColor.HasValue)
-                        using (var brush = new SolidBrush(_overlayColor.Value))
-                        {
-                            graphics.FillRectangle(brush, fixedRect);
-                        }
-
-                    using (var brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
-                    using (var pen = new Pen(brush))
-                    {
-                        graphics.DrawLine(pen, screenBounds.X, fixedRect.Y, screenBounds.Width, fixedRect.Y);
-                        graphics.DrawLine(pen, fixedRect.X, screenBounds.Y, fixedRect.X, screenBounds.Height);
-
-                        graphics.DrawLine(pen, screenBounds.X, fixedRect.Y + fixedRect.Height, screenBounds.Width,
-                            fixedRect.Y + fixedRect.Height);
-                        graphics.DrawLine(pen, fixedRect.X + fixedRect.Width, screenBounds.Y,
-                            fixedRect.X + fixedRect.Width, screenBounds.Height);
-                    }
-
-                    // Рисуем размер
-                    int correction = _captureMode == CaptureMode.Region ? 1 : 0;
-
-                    var text = $"{fixedRect.Width + correction}x{fixedRect.Height + correction}";
-                    var textSize = GetSizeLabelSize(text);
-
-                    int sizeLabelLeft = fixedRect.X + 1;
-                    int sizeLabelTop = fixedRect.Y - textSize.Height - SizeLabelMargin + 1;
-
-                    if (sizeLabelTop < screenBounds.Y)
-                    {
-                        sizeLabelLeft = fixedRect.X + SizeLabelMargin + 2;
-                        sizeLabelTop = fixedRect.Y + SizeLabelMargin + 2;
-                    }
-
-                    if (sizeLabelLeft + textSize.Width > screenBounds.Width)
-                        sizeLabelLeft = fixedRect.X - textSize.Width - SizeLabelMargin + 1;
-
-                    var textRectangle = new Rectangle(sizeLabelLeft, sizeLabelTop, textSize.Width - 2,
-                        textSize.Height - 2);
-                    DrawSize(graphics, textRectangle, text);
+                    _horizontalAxle1Invalidation.DrawLine(graphics, pen);
+                    _verticalAxle1Invalidation.DrawLine(graphics, pen);
+                    _horizontalAxle2Invalidation.DrawLine(graphics, pen);
+                    _verticalAxle2Invalidation.DrawLine(graphics, pen);
                 }
+
+                //Рисуем размер
+                if (!_sizeLabelInvalidation.IsEmpty)
+                    DrawSize(graphics, _sizeLabelInvalidation.Current, _sizeLabelText);
             }
             else
             {
@@ -603,19 +772,17 @@ namespace Greenshot
                     using (Brush brush = new HatchBrush(BorderHatchStyle, BorderForeColor, BorderBackColor))
                     using (Pen pen = new Pen(brush))
                     {
-                        graphics.DrawLine(pen, _cursorPos.X, screenBounds.Y, _cursorPos.X, screenBounds.Height);
-                        graphics.DrawLine(pen, screenBounds.X, _cursorPos.Y, screenBounds.Width, _cursorPos.Y);
+                        _horizontalAxle1Invalidation.DrawLine(graphics, pen);
+                        _verticalAxle1Invalidation.DrawLine(graphics, pen);
                     }
 
                     // Координаты
-                    string coordinatesText = $"{_cursorPos.X}x{_cursorPos.Y}";
-
                     using (var font = new Font(FontFamily.GenericSansSerif, 8))
                     {
-                        var coordinatesTextSize = TextRenderer.MeasureText(coordinatesText, font);
+                        var coordinatesRectangle = _coordinatesInvalidation.Current;
 
-                        using (var graphicsPath = RoundedRectangle.Create2(_cursorPos.X + 5, _cursorPos.Y + 5,
-                            coordinatesTextSize.Width - 3, coordinatesTextSize.Height, 3))
+                        using (var graphicsPath = RoundedRectangle.Create2(coordinatesRectangle.X,
+                            coordinatesRectangle.Y, coordinatesRectangle.Width, coordinatesRectangle.Height, 3))
                         {
                             using (var brush = new SolidBrush(_overlayColor ?? Color.White))
                             {
@@ -626,8 +793,8 @@ namespace Greenshot
                             {
                                 graphics.DrawPath(pen, graphicsPath);
 
-                                var coordinatePosition = new Point(_cursorPos.X + 5, _cursorPos.Y + 5);
-                                graphics.DrawString(coordinatesText, font, pen.Brush, coordinatePosition);
+                                var coordinatePosition = new Point(coordinatesRectangle.X, coordinatesRectangle.Y);
+                                graphics.DrawString(_coordinatesText, font, pen.Brush, coordinatePosition);
                             }
                         }
                     }
@@ -635,7 +802,7 @@ namespace Greenshot
             }
 
             // Zoom
-            if (_captureMode != CaptureMode.Window && coreConfiguration.ZoomerEnabled)
+            if (_zoomAnimator != null && (IsAnimating(_zoomAnimator) || _captureMode != CaptureMode.Window))
             {
                 const int zoomSourceWidth = 25;
                 const int zoomSourceHeight = 25;
@@ -643,7 +810,7 @@ namespace Greenshot
                 var sourceRectangle = new Rectangle(_cursorPos.X - zoomSourceWidth / 2,
                     _cursorPos.Y - zoomSourceHeight / 2, zoomSourceWidth, zoomSourceHeight);
 
-                var destinationRectangle = _zoomRectangle;
+                var destinationRectangle = _zoomAnimator.Current;
                 destinationRectangle.Offset(_cursorPos);
                 DrawZoom(graphics, sourceRectangle, destinationRectangle);
             }
@@ -667,6 +834,25 @@ namespace Greenshot
             textSize.Height++;
 
             return textSize;
+        }
+
+        // TODO $MarketKernel сделать общей c QuickImageEditorForm.CalculateSizeLabelLocation
+        private static Rectangle GetSizeLabelRectangle(Rectangle screenBounds, Rectangle holeRectangle, Size textSize)
+        {
+            int sizeLabelLeft = holeRectangle.X + 1;
+            int sizeLabelTop = holeRectangle.Y - textSize.Height - SizeLabelMargin;
+
+            if (sizeLabelTop < screenBounds.Y)
+            {
+                sizeLabelLeft = holeRectangle.X + SizeLabelMargin + 1;
+                sizeLabelTop = holeRectangle.Y + SizeLabelMargin + 1;
+            }
+
+            if (sizeLabelLeft + textSize.Width > screenBounds.Width)
+                sizeLabelLeft = holeRectangle.X - textSize.Width - SizeLabelMargin;
+
+            return new Rectangle(sizeLabelLeft, sizeLabelTop, textSize.Width - 2,
+                textSize.Height - 2);
         }
 
         public static void DrawSize(Graphics graphics, Rectangle rectangle, string text, bool applyTransparency = true)
@@ -699,7 +885,7 @@ namespace Greenshot
                 }
             }
         }
-        
+
         #endregion
 
         #region Zoom
@@ -720,8 +906,7 @@ namespace Greenshot
             Size zoomSize = new Size(relativeZoomSize, relativeZoomSize);
             Point zoomOffset = new Point(20, 20);
 
-            Rectangle targetRectangle = _zoomRectangle;
-
+            Rectangle targetRectangle = _zoomAnimator.Final;
             targetRectangle.Offset(pos);
             if (!screenBounds.Contains(targetRectangle) ||
                 (!allowZoomOverCaptureRect && _captureRect.IntersectsWith(targetRectangle)))
@@ -735,19 +920,31 @@ namespace Greenshot
                     zoomSize.Width, zoomSize.Height);
                 Rectangle br = new Rectangle(pos.X + zoomOffset.X, pos.Y + zoomOffset.Y, zoomSize.Width,
                     zoomSize.Height);
-
                 if (screenBounds.Contains(br) && (allowZoomOverCaptureRect || !_captureRect.IntersectsWith(br)))
+                {
                     destinationLocation = new Point(zoomOffset.X, zoomOffset.Y);
+                }
                 else if (screenBounds.Contains(bl) && (allowZoomOverCaptureRect || !_captureRect.IntersectsWith(bl)))
+                {
                     destinationLocation = new Point(-zoomOffset.X - zoomSize.Width, zoomOffset.Y);
+                }
                 else if (screenBounds.Contains(tr) && (allowZoomOverCaptureRect || !_captureRect.IntersectsWith(tr)))
+                {
                     destinationLocation = new Point(zoomOffset.X, -zoomOffset.Y - zoomSize.Width);
+                }
                 else if (screenBounds.Contains(tl) && (allowZoomOverCaptureRect || !_captureRect.IntersectsWith(tl)))
+                {
                     destinationLocation = new Point(-zoomOffset.X - zoomSize.Width, -zoomOffset.Y - zoomSize.Width);
+                }
+
                 if (destinationLocation == Point.Empty && !allowZoomOverCaptureRect)
+                {
                     VerifyZoomAnimation(pos, true);
+                }
                 else
-                    _zoomRectangle = new Rectangle(destinationLocation, zoomSize);
+                {
+                    _zoomAnimator.ChangeDestination(new Rectangle(destinationLocation, zoomSize));
+                }
             }
         }
 
