@@ -7,6 +7,9 @@ namespace ScreenLoadPlugin.Core
     {
         public static void InvokeAction(this Control control, Action action)
         {
+            if (control.IsDisposed)
+                return;
+
             if (control.InvokeRequired)
                 control.Invoke(action);
             else

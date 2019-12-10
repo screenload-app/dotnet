@@ -121,7 +121,7 @@ namespace ScreenLoad
             SetSizeLabelLocation();
             sizeLabel.Visible = true;
 
-            _horizontalToolboxForm = new HorizontalToolboxForm();
+            _horizontalToolboxForm = new HorizontalToolboxForm(_coreConfiguration.QuickImageEditorTool);
             _horizontalToolboxForm.KeyDown += Form_KeyDown;
             _horizontalToolboxForm.ServiceCommand += Toolbox_ServiceCommand;
 
@@ -878,51 +878,69 @@ namespace ScreenLoad
         {
             switch (e.Command)
             {
-                case QuickImageEditorCommand.Select:
-                    _surface.DrawingMode = DrawingModes.None;
-                    break;
-                case QuickImageEditorCommand.Arrow:
-                    _surface.DrawingMode = DrawingModes.Arrow;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
-                    break;
-                case QuickImageEditorCommand.Pencil:
-                    _surface.DrawingMode = DrawingModes.Path;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
-                        .Value);
-                    break;
-                case QuickImageEditorCommand.Line:
-                    _surface.DrawingMode = DrawingModes.Line;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
-                        .Value);
-                    break;
-                case QuickImageEditorCommand.Rectangle:
-                    _surface.DrawingMode = DrawingModes.Rect;
-                    _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
-                        .Value);
-                    break;
-                case QuickImageEditorCommand.Ellipse:
-                    _surface.DrawingMode = DrawingModes.Ellipse;
-                    _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
-                        .Value);
-                    break;
-                case QuickImageEditorCommand.Text:
-                    _surface.DrawingMode = DrawingModes.Text;
-                    _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                    _surface.FieldAggregator.GetField(FieldType.TEXT_HORIZONTAL_ALIGNMENT).Value = StringAlignment.Near;
-                    _surface.FieldAggregator.GetField(FieldType.TEXT_VERTICAL_ALIGNMENT).Value = StringAlignment.Near;
-                    _surface.FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = 0;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
-                        .Value);
-                    break;
-                case QuickImageEditorCommand.Blur:
-                    _surface.DrawingMode = DrawingModes.Obfuscate;
-                    break;
-                case QuickImageEditorCommand.Counter:
-                    _surface.DrawingMode = DrawingModes.StepLabel;
-                    _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
-                        .Value);
+                case QuickImageEditorCommand.Tool:
+
+                    var tool = (QuickImageEditorTool) e.Argument;
+
+                    _coreConfiguration.QuickImageEditorTool = tool;
+
+                    switch (tool)
+                    {
+                        case QuickImageEditorTool.Select:
+                            _surface.DrawingMode = DrawingModes.None;
+                            break;
+                        case QuickImageEditorTool.Arrow:
+                            _surface.DrawingMode = DrawingModes.Arrow;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
+                            break;
+                        case QuickImageEditorTool.Pencil:
+                            _surface.DrawingMode = DrawingModes.Path;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Marker:
+                            _surface.DrawingMode = DrawingModes.Highlight;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Line:
+                            _surface.DrawingMode = DrawingModes.Line;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Rectangle:
+                            _surface.DrawingMode = DrawingModes.Rect;
+                            _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Ellipse:
+                            _surface.DrawingMode = DrawingModes.Ellipse;
+                            _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Text:
+                            _surface.DrawingMode = DrawingModes.Text;
+                            _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
+                            _surface.FieldAggregator.GetField(FieldType.TEXT_HORIZONTAL_ALIGNMENT).Value = StringAlignment.Near;
+                            _surface.FieldAggregator.GetField(FieldType.TEXT_VERTICAL_ALIGNMENT).Value = StringAlignment.Near;
+                            _surface.FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = 0;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                                .Value);
+                            break;
+                        case QuickImageEditorTool.Blur:
+                            _surface.DrawingMode = DrawingModes.Obfuscate;
+                            break;
+                        case QuickImageEditorTool.Counter:
+                            _surface.DrawingMode = DrawingModes.StepLabel;
+                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
+                                .Value);
+                            break;
+                        default:
+                            throw new InvalidOperationException("tool=" + tool);
+                    }
+
                     break;
                 case QuickImageEditorCommand.Color:
                     if (DrawingModes.StepLabel == _surface.DrawingMode)
@@ -932,6 +950,8 @@ namespace ScreenLoad
                             ColorUtility.CalculateContrastColor(color);
                         _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = color;
                     }
+                    else if (DrawingModes.Highlight == _surface.DrawingMode)
+                        _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = e.Argument;
                     else
                         _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = e.Argument;
                     break;

@@ -9,6 +9,7 @@
 ScreenLoad comes with ABSOLUTELY NO WARRANTY. This is free software, and you are welcome to redistribute it under certain conditions.
 Details about the GNU General Public License:</resource>
 		<resource name="about_title">About ScreenLoad</resource>
+    <resource name="About_CheckForUpdatesButton">Check for updates</resource>
 		<resource name="application_title">ScreenLoad - the revolutionary screenshot utility</resource>
 		<resource name="bugreport_cancel">Close</resource>
 		<resource name="bugreport_info">Sorry, an unexpected error occured.
@@ -129,6 +130,7 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="editor_load_objects">Load objects from file</resource>
 		<resource name="editor_magnification_factor">Magnification factor</resource>
 		<resource name="editor_match_capture_size">Match capture size</resource>
+    <resource name="settings_editorconfirmation">Ask for confirmation when leaving quick edit mode</resource>
 		<resource name="editor_obfuscate">Obfuscate (O)</resource>
 		<resource name="editor_obfuscate_blur">Blur</resource>
 		<resource name="editor_obfuscate_mode">Obfuscation mode</resource>
@@ -268,6 +270,7 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
 		<resource name="settings_showflashlight">Show flashlight</resource>
 		<resource name="settings_shownotify">Show notifications</resource>
 		<resource name="settings_zoom">Show magnifier</resource>
+    <resource name="capture_area_color">Set capture area color</resource>
 		<resource name="settings_storagelocation">Storage location</resource>
 		<resource name="settings_title">Settings</resource>
 		<resource name="settings_tooltip_filenamepattern">Pattern used for generating filenames when saving screenshots</resource>
@@ -349,6 +352,7 @@ All ScreenLoad functions still work directly from the context menu via the tray 
     <resource name="QuickImageEditor_Select">Selection Tool</resource>
     <resource name="QuickImageEditor_Arrow">Draw arrow</resource>
     <resource name="QuickImageEditor_Pencil">Draw freehand</resource>
+    <resource name="QuickImageEditor_Marker">Highlight</resource>
     <resource name="QuickImageEditor_Line">Draw line</resource>
     <resource name="QuickImageEditor_Rectangle">Draw rectangle</resource>
     <resource name="QuickImageEditor_Ellipse">Draw ellipse</resource>

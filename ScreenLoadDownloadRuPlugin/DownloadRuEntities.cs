@@ -18,7 +18,11 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
+using System;
 using System.Runtime.Serialization;
+using System.Text;
+using System.Web;
 
 namespace ScreenLoadDownloadRuPlugin
 {
@@ -53,9 +57,58 @@ namespace ScreenLoadDownloadRuPlugin
     [DataContract]
     public class FileEntry
     {
+        private string _directLink;
+
         [DataMember(Name = "id")] public string Id { get; set; }
         [DataMember(Name = "name")] public string Name { get; set; }
         [DataMember(Name = "preview")] public PreviewEntry Preview { get; set; }
+        [DataMember(Name = "secure_url")] public string SecureUrl { get; set; }
+
+        [IgnoreDataMember]
+        public string DirectLink
+        {
+            get
+            {
+                if (null == _directLink)
+                {
+                    var secureUrl = $"https://download.ru{SecureUrl}";
+
+                    var uri = new Uri(secureUrl);
+
+                    var queryParameters = HttpUtility.ParseQueryString(uri.Query);
+                    queryParameters["inline"] = "true";
+
+                    var queryString = new StringBuilder();
+
+                    bool first = true;
+
+                    foreach (string queryParameter in queryParameters)
+                    {
+                        var value = queryParameters[queryParameter];
+
+                        value = HttpUtility.UrlEncode(value, Encoding.UTF8);
+
+                        if (first)
+                            first = false;
+                        else
+                            queryString.Append("&");
+
+                        queryString.Append(queryParameter);
+                        queryString.Append("=");
+                        queryString.Append(value);
+                    }
+
+                    var uriBuilder = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath);
+
+                    _directLink = $"{uriBuilder.Uri.AbsoluteUri}?{queryString}";
+                }
+
+                return _directLink;
+            }
+        }
+
+        [IgnoreDataMember]
+        public string PageLink => $"https://download.ru/f/{Id}";
     }
 
     [DataContract]

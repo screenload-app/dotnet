@@ -4,15 +4,7 @@ namespace ScreenLoad.Helpers
 {
     public enum QuickImageEditorCommand
     {
-        Select,
-        Arrow,
-        Pencil,
-        Line,
-        Rectangle,
-        Ellipse,
-        Text,
-        Blur,
-        Counter,
+        Tool,
         Color,
         Undo,
         Upload,

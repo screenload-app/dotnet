@@ -46,47 +46,46 @@ namespace ScreenLoad.Forms {
 		/// </summary>
 		private void InitializeComponent()
 		{
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(LanguageDialog));
-			this.comboBoxLanguage = new System.Windows.Forms.ComboBox();
-			this.btnOK = new System.Windows.Forms.Button();
-			this.SuspendLayout();
-			// 
-			// comboBoxLanguage
-			// 
-			this.comboBoxLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-			this.comboBoxLanguage.FormattingEnabled = true;
-			this.comboBoxLanguage.Location = new System.Drawing.Point(13, 15);
-			this.comboBoxLanguage.Name = "comboBoxLanguage";
-			this.comboBoxLanguage.Size = new System.Drawing.Size(360, 21);
-			this.comboBoxLanguage.TabIndex = 2;
-			// 
-			// btnOK
-			// 
-			this.btnOK.Location = new System.Drawing.Point(126, 42);
-			this.btnOK.Name = "btnOK";
-			this.btnOK.Size = new System.Drawing.Size(75, 23);
-			this.btnOK.TabIndex = 1;
-			this.btnOK.Text = "OK";
-			this.btnOK.UseVisualStyleBackColor = true;
-			this.btnOK.Click += new System.EventHandler(this.BtnOKClick);
-			// 
-			// LanguageDialog
-			// 
-			this.AcceptButton = this.btnOK;
-			this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
-			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-			this.ClientSize = new System.Drawing.Size(390, 77);
-			this.ControlBox = true;
-			this.Controls.Add(this.btnOK);
-			this.Controls.Add(this.comboBoxLanguage);
-			this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-			this.MaximizeBox = false;
-			this.MinimizeBox = false;
-			this.Name = "LanguageDialog";
-			this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-			this.Text = "ScreenLoad: Choose language / Sprache wählen / Taal kiezen";
-			this.TopMost = true;
-			this.ResumeLayout(false);
+            this.comboBoxLanguage = new System.Windows.Forms.ComboBox();
+            this.btnOK = new System.Windows.Forms.Button();
+            this.SuspendLayout();
+            // 
+            // comboBoxLanguage
+            // 
+            this.comboBoxLanguage.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.comboBoxLanguage.FormattingEnabled = true;
+            this.comboBoxLanguage.Location = new System.Drawing.Point(13, 15);
+            this.comboBoxLanguage.Name = "comboBoxLanguage";
+            this.comboBoxLanguage.Size = new System.Drawing.Size(360, 21);
+            this.comboBoxLanguage.TabIndex = 2;
+            // 
+            // btnOK
+            // 
+            this.btnOK.Location = new System.Drawing.Point(162, 42);
+            this.btnOK.Name = "btnOK";
+            this.btnOK.Size = new System.Drawing.Size(75, 23);
+            this.btnOK.TabIndex = 1;
+            this.btnOK.Text = "OK";
+            this.btnOK.UseVisualStyleBackColor = true;
+            this.btnOK.Click += new System.EventHandler(this.BtnOKClick);
+            // 
+            // LanguageDialog
+            // 
+            this.AcceptButton = this.btnOK;
+            this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.ClientSize = new System.Drawing.Size(390, 77);
+            this.Controls.Add(this.btnOK);
+            this.Controls.Add(this.comboBoxLanguage);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Name = "LanguageDialog";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
+            this.Text = "ScreenLoad: Choose language / Sprache wählen / Taal kiezen";
+            this.TopMost = true;
+            this.ResumeLayout(false);
+
 		}
 		private System.Windows.Forms.Button btnOK;
 		private System.Windows.Forms.ComboBox comboBoxLanguage;

@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
+  <version type="development" number="1.8.2.0" file="ScreenLoad-1.8.2.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 1.8.1
+Выбор формы отдельной кнопкой.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 1.8.2]]>
+    </info>
+  </version>
+
+  <version type="development" number="1.8.1.0" file="ScreenLoad-1.8.1.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 1.8.1
+Выбор геометрической фигуры правой кнопкой мыши.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 1.8.1]]>
+    </info>
+  </version>
+  
+  <version type="development" number="1.8.0.0" file="ScreenLoad-1.8.0.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 1.8.0
+1. Поддержка High DPI.
+2. Линия, эллипс, прямоугольник сделаны выпадающим списком.
+3. Запоминаем последний инструмент быстрого-редактора.
+4. Добавлен маркер.
+5. Иконки меню выбора.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 1.8.0]]>
+    </info>
+  </version>
+
+  <version type="development" number="1.7.2.0" file="ScreenLoad-1.7.1.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 1.7.1 под видом 1.7.2 (для проверки системы обновлений).
+1. Новое окно About (пока в обсуждении).
+2. Мелкие исправления]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 1.7.1]]>
+    </info>
+  </version>
+  
   <version type="development" number="1.7.1.0" file="ScreenLoad-1.7.0.0.exe">
     <info locale="ru-RU">
       <![CDATA[Версия 1.7.0 под видом 1.7.1 (для проверки системы обновлений).

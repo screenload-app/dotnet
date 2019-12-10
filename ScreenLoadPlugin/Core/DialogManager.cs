@@ -40,14 +40,11 @@ namespace ScreenLoadPlugin.Core
                 topForm = _topForm;
             }
 
-            if (topForm.IsDisposed)
+            if (topForm?.IsDisposed ?? true)
                 topForm = null;
 
-            topForm.InvokeAction(() =>
+            form.InvokeAction(() =>
             {
-                if (topForm?.IsDisposed ?? true)
-                    topForm = null;
-
                 form.ShowDialog(topForm);
             });
         }

@@ -103,16 +103,6 @@ namespace ScreenLoadPlugin.Core {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
-        public static System.Drawing.Icon Email {
-            get {
-                object obj = ResourceManager.GetObject("Email", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
         public static System.Drawing.Icon Print {
             get {
                 object obj = ResourceManager.GetObject("Print", resourceCulture);

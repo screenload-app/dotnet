@@ -32,19 +32,20 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(HorizontalToolboxForm));
             this.undoButton = new System.Windows.Forms.Button();
             this.colorButton = new System.Windows.Forms.Button();
-            this.expandImageList = new System.Windows.Forms.ImageList(this.components);
+            this.expandMarkImageList = new System.Windows.Forms.ImageList(this.components);
             this.sep2Label = new System.Windows.Forms.Label();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.arrowButton = new System.Windows.Forms.RadioButton();
             this.pencilButton = new System.Windows.Forms.RadioButton();
-            this.rectangleButton = new System.Windows.Forms.RadioButton();
             this.textButton = new System.Windows.Forms.RadioButton();
             this.blurButton = new System.Windows.Forms.RadioButton();
             this.counterButton = new System.Windows.Forms.RadioButton();
-            this.lineRadioButton = new System.Windows.Forms.RadioButton();
-            this.ellipseRadioButton = new System.Windows.Forms.RadioButton();
             this.selectButton = new System.Windows.Forms.RadioButton();
             this.sep1Label = new System.Windows.Forms.Label();
+            this.markerButton = new System.Windows.Forms.RadioButton();
+            this.shapesButton = new System.Windows.Forms.RadioButton();
+            this.shapesImageList = new System.Windows.Forms.ImageList(this.components);
+            this.shapesExpandButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // undoButton
@@ -54,7 +55,7 @@
             this.undoButton.FlatAppearance.BorderSize = 0;
             this.undoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
-            this.undoButton.Location = new System.Drawing.Point(463, 6);
+            this.undoButton.Location = new System.Drawing.Point(427, 6);
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(38, 38);
             this.undoButton.TabIndex = 12;
@@ -71,25 +72,25 @@
             this.colorButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.colorButton.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.colorButton.ImageKey = "White";
-            this.colorButton.ImageList = this.expandImageList;
-            this.colorButton.Location = new System.Drawing.Point(411, 6);
+            this.colorButton.ImageList = this.expandMarkImageList;
+            this.colorButton.Location = new System.Drawing.Point(376, 6);
             this.colorButton.Name = "colorButton";
             this.colorButton.Size = new System.Drawing.Size(38, 38);
             this.colorButton.TabIndex = 10;
             this.colorButton.UseVisualStyleBackColor = false;
             this.colorButton.Click += new System.EventHandler(this.ColorButton_Click);
             // 
-            // expandImageList
+            // expandMarkImageList
             // 
-            this.expandImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("expandImageList.ImageStream")));
-            this.expandImageList.TransparentColor = System.Drawing.Color.Transparent;
-            this.expandImageList.Images.SetKeyName(0, "Black");
-            this.expandImageList.Images.SetKeyName(1, "White");
+            this.expandMarkImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("expandMarkImageList.ImageStream")));
+            this.expandMarkImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.expandMarkImageList.Images.SetKeyName(0, "Black");
+            this.expandMarkImageList.Images.SetKeyName(1, "White");
             // 
             // sep2Label
             // 
             this.sep2Label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.sep2Label.Location = new System.Drawing.Point(455, 6);
+            this.sep2Label.Location = new System.Drawing.Point(419, 6);
             this.sep2Label.Name = "sep2Label";
             this.sep2Label.Size = new System.Drawing.Size(2, 38);
             this.sep2Label.TabIndex = 11;
@@ -129,21 +130,6 @@
             this.pencilButton.UseVisualStyleBackColor = true;
             this.pencilButton.Click += new System.EventHandler(this.PencilButton_Click);
             // 
-            // rectangleButton
-            // 
-            this.rectangleButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.rectangleButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.rectangleButton.FlatAppearance.BorderSize = 0;
-            this.rectangleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.rectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("rectangleButton.Image")));
-            this.rectangleButton.Location = new System.Drawing.Point(191, 6);
-            this.rectangleButton.Name = "rectangleButton";
-            this.rectangleButton.Size = new System.Drawing.Size(38, 38);
-            this.rectangleButton.TabIndex = 5;
-            this.rectangleButton.TabStop = true;
-            this.rectangleButton.UseVisualStyleBackColor = true;
-            this.rectangleButton.Click += new System.EventHandler(this.RectangleButton_Click);
-            // 
             // textButton
             // 
             this.textButton.Appearance = System.Windows.Forms.Appearance.Button;
@@ -151,7 +137,7 @@
             this.textButton.FlatAppearance.BorderSize = 0;
             this.textButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.textButton.Image = ((System.Drawing.Image)(resources.GetObject("textButton.Image")));
-            this.textButton.Location = new System.Drawing.Point(279, 6);
+            this.textButton.Location = new System.Drawing.Point(244, 6);
             this.textButton.Name = "textButton";
             this.textButton.Size = new System.Drawing.Size(38, 38);
             this.textButton.TabIndex = 7;
@@ -166,7 +152,7 @@
             this.blurButton.FlatAppearance.BorderSize = 0;
             this.blurButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.blurButton.Image = ((System.Drawing.Image)(resources.GetObject("blurButton.Image")));
-            this.blurButton.Location = new System.Drawing.Point(323, 6);
+            this.blurButton.Location = new System.Drawing.Point(288, 6);
             this.blurButton.Name = "blurButton";
             this.blurButton.Size = new System.Drawing.Size(38, 38);
             this.blurButton.TabIndex = 8;
@@ -181,43 +167,13 @@
             this.counterButton.FlatAppearance.BorderSize = 0;
             this.counterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.counterButton.Image = ((System.Drawing.Image)(resources.GetObject("counterButton.Image")));
-            this.counterButton.Location = new System.Drawing.Point(367, 6);
+            this.counterButton.Location = new System.Drawing.Point(332, 6);
             this.counterButton.Name = "counterButton";
             this.counterButton.Size = new System.Drawing.Size(38, 38);
             this.counterButton.TabIndex = 9;
             this.counterButton.TabStop = true;
             this.counterButton.UseVisualStyleBackColor = true;
             this.counterButton.Click += new System.EventHandler(this.CounterButton_Click);
-            // 
-            // lineRadioButton
-            // 
-            this.lineRadioButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.lineRadioButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.lineRadioButton.FlatAppearance.BorderSize = 0;
-            this.lineRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.lineRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("lineRadioButton.Image")));
-            this.lineRadioButton.Location = new System.Drawing.Point(147, 6);
-            this.lineRadioButton.Name = "lineRadioButton";
-            this.lineRadioButton.Size = new System.Drawing.Size(38, 38);
-            this.lineRadioButton.TabIndex = 4;
-            this.lineRadioButton.TabStop = true;
-            this.lineRadioButton.UseVisualStyleBackColor = true;
-            this.lineRadioButton.Click += new System.EventHandler(this.LineRadioButton_Click);
-            // 
-            // ellipseRadioButton
-            // 
-            this.ellipseRadioButton.Appearance = System.Windows.Forms.Appearance.Button;
-            this.ellipseRadioButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.ellipseRadioButton.FlatAppearance.BorderSize = 0;
-            this.ellipseRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.ellipseRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("ellipseRadioButton.Image")));
-            this.ellipseRadioButton.Location = new System.Drawing.Point(235, 6);
-            this.ellipseRadioButton.Name = "ellipseRadioButton";
-            this.ellipseRadioButton.Size = new System.Drawing.Size(38, 38);
-            this.ellipseRadioButton.TabIndex = 6;
-            this.ellipseRadioButton.TabStop = true;
-            this.ellipseRadioButton.UseVisualStyleBackColor = true;
-            this.ellipseRadioButton.Click += new System.EventHandler(this.EllipseRadioButton_Click);
             // 
             // selectButton
             // 
@@ -241,20 +197,76 @@
             this.sep1Label.Size = new System.Drawing.Size(2, 38);
             this.sep1Label.TabIndex = 1;
             // 
+            // markerButton
+            // 
+            this.markerButton.Appearance = System.Windows.Forms.Appearance.Button;
+            this.markerButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.markerButton.FlatAppearance.BorderSize = 0;
+            this.markerButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.markerButton.Image = ((System.Drawing.Image)(resources.GetObject("markerButton.Image")));
+            this.markerButton.Location = new System.Drawing.Point(147, 6);
+            this.markerButton.Name = "markerButton";
+            this.markerButton.Size = new System.Drawing.Size(38, 38);
+            this.markerButton.TabIndex = 4;
+            this.markerButton.TabStop = true;
+            this.markerButton.UseVisualStyleBackColor = true;
+            this.markerButton.Click += new System.EventHandler(this.markerButton_Click);
+            // 
+            // shapesButton
+            // 
+            this.shapesButton.Appearance = System.Windows.Forms.Appearance.Button;
+            this.shapesButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.shapesButton.FlatAppearance.BorderSize = 0;
+            this.shapesButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.shapesButton.ImageKey = "Rectangle";
+            this.shapesButton.ImageList = this.shapesImageList;
+            this.shapesButton.Location = new System.Drawing.Point(191, 6);
+            this.shapesButton.Name = "shapesButton";
+            this.shapesButton.Size = new System.Drawing.Size(38, 38);
+            this.shapesButton.TabIndex = 5;
+            this.shapesButton.TabStop = true;
+            this.shapesButton.UseVisualStyleBackColor = true;
+            this.shapesButton.CheckedChanged += new System.EventHandler(this.shapesButton_CheckedChanged);
+            this.shapesButton.Click += new System.EventHandler(this.shapesButton_Click);
+            // 
+            // shapesImageList
+            // 
+            this.shapesImageList.ImageStream = ((System.Windows.Forms.ImageListStreamer)(resources.GetObject("shapesImageList.ImageStream")));
+            this.shapesImageList.TransparentColor = System.Drawing.Color.Transparent;
+            this.shapesImageList.Images.SetKeyName(0, "Rectangle");
+            this.shapesImageList.Images.SetKeyName(1, "Ellipse");
+            this.shapesImageList.Images.SetKeyName(2, "Line");
+            // 
+            // shapesExpandButton
+            // 
+            this.shapesExpandButton.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("shapesExpandButton.BackgroundImage")));
+            this.shapesExpandButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
+            this.shapesExpandButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.shapesExpandButton.FlatAppearance.BorderSize = 0;
+            this.shapesExpandButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.shapesExpandButton.ImageKey = "(none)";
+            this.shapesExpandButton.Location = new System.Drawing.Point(229, 6);
+            this.shapesExpandButton.Name = "shapesExpandButton";
+            this.shapesExpandButton.Size = new System.Drawing.Size(12, 38);
+            this.shapesExpandButton.TabIndex = 6;
+            this.shapesExpandButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.shapesExpandButton.UseVisualStyleBackColor = true;
+            this.shapesExpandButton.MouseDown += new System.Windows.Forms.MouseEventHandler(this.shapesExpandButton_MouseDown);
+            // 
             // HorizontalToolboxForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(506, 50);
+            this.ClientSize = new System.Drawing.Size(471, 50);
             this.ControlBox = false;
+            this.Controls.Add(this.shapesExpandButton);
+            this.Controls.Add(this.shapesButton);
+            this.Controls.Add(this.markerButton);
             this.Controls.Add(this.sep1Label);
             this.Controls.Add(this.selectButton);
-            this.Controls.Add(this.ellipseRadioButton);
-            this.Controls.Add(this.lineRadioButton);
             this.Controls.Add(this.counterButton);
             this.Controls.Add(this.blurButton);
             this.Controls.Add(this.textButton);
-            this.Controls.Add(this.rectangleButton);
             this.Controls.Add(this.pencilButton);
             this.Controls.Add(this.arrowButton);
             this.Controls.Add(this.sep2Label);
@@ -283,14 +295,15 @@
         private System.Windows.Forms.ToolTip toolTip;
         private System.Windows.Forms.RadioButton arrowButton;
         private System.Windows.Forms.RadioButton pencilButton;
-        private System.Windows.Forms.RadioButton rectangleButton;
         private System.Windows.Forms.RadioButton textButton;
         private System.Windows.Forms.RadioButton blurButton;
         private System.Windows.Forms.RadioButton counterButton;
-        private System.Windows.Forms.RadioButton lineRadioButton;
-        private System.Windows.Forms.RadioButton ellipseRadioButton;
-        private System.Windows.Forms.ImageList expandImageList;
+        private System.Windows.Forms.ImageList expandMarkImageList;
         private System.Windows.Forms.RadioButton selectButton;
         private System.Windows.Forms.Label sep1Label;
+        private System.Windows.Forms.RadioButton markerButton;
+        private System.Windows.Forms.RadioButton shapesButton;
+        private System.Windows.Forms.ImageList shapesImageList;
+        private System.Windows.Forms.Button shapesExpandButton;
     }
 }

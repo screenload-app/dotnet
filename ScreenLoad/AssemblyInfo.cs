@@ -27,10 +27,14 @@ using System.Runtime.InteropServices;
 // associated with an assembly.
 [assembly: AssemblyTitle("ScreenLoad")]
 [assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("ScreenLoad")]
+#if DEBUG
+[assembly: AssemblyConfiguration("Debug")]
+#else
+[assembly: AssemblyConfiguration("Release")]
+#endif
+[assembly: AssemblyCompany("Download.Ru")]
 [assembly: AssemblyProduct("ScreenLoad")]
-[assembly: AssemblyCopyright("")]
+[assembly: AssemblyCopyright("© Download.Ru <support@download.ru> 2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -39,6 +43,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The assembly version, replaced by build scripts
-[assembly: AssemblyVersion("1.7.0.0")]
-[assembly: AssemblyInformationalVersion("1.7.0.0")]
-[assembly: AssemblyFileVersion("1.7.0.0")]
+[assembly: AssemblyVersion("1.8.2.0")]
+[assembly: AssemblyInformationalVersion("1.8.2.0")]
+[assembly: AssemblyFileVersion("1.8.2.0")]

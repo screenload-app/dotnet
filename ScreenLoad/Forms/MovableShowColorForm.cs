@@ -28,7 +28,7 @@ namespace ScreenLoad.Forms {
 	/// This code was supplied by Hi-Coder as a patch for ScreenLoad
 	/// Needed some modifications to be stable.
 	/// </summary>
-	public partial class MovableShowColorForm : Form {
+	public partial class MovableShowColorForm : BaseForm {
 		public Color color {
 			get {
 				return preview.BackColor;

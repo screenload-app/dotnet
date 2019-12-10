@@ -161,10 +161,10 @@ namespace ScreenLoadDownloadRuPlugin
                 switch (_config.AfterUploadLinkToClipBoardMode)
                 {
                     case LinkType.Image:
-                        clipboardUrl = LinkHelper.BuildDirectLink(fileEntry);
+                        clipboardUrl = fileEntry.DirectLink;
                         break;
                     case LinkType.Page:
-                        clipboardUrl = LinkHelper.BuildPageLink(fileEntry);
+                        clipboardUrl = fileEntry.PageLink;
                         break;
                     default:
                         clipboardUrl = null;
@@ -188,10 +188,10 @@ namespace ScreenLoadDownloadRuPlugin
                 switch (_config.AfterUploadOpenInBrowserMode)
                 {
                     case LinkType.Image:
-                        browserUrl = LinkHelper.BuildDirectLink(fileEntry);
+                        browserUrl = fileEntry.DirectLink;
                         break;
                     case LinkType.Page:
-                        browserUrl = LinkHelper.BuildPageLink(fileEntry);
+                        browserUrl = fileEntry.PageLink;
                         break;
                     default:
                         browserUrl = null;
@@ -211,7 +211,7 @@ namespace ScreenLoadDownloadRuPlugin
                 }
             }
 
-            return LinkHelper.BuildDirectLink(fileEntry);
+            return fileEntry.DirectLink;
         }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="Core\ControlExtensions.cs" />
     <Compile Include="Core\DialogManager.cs" />
     <Compile Include="Core\ExplorerHelper.cs" />
+    <Compile Include="Core\QuickImageEditorTool.cs" />
     <Compile Include="Core\ScreenLoadResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

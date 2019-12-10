@@ -17,6 +17,11 @@ namespace ScreenLoad
         private const string WhiteImageKey = "White";
         private const string BlackImageKey = "Black";
 
+        private readonly QuickImageEditorTool _lastUsedTool;
+
+        private Form _parentForm;
+        private ToolboxShapesForm _shapesForm;
+        private ToolboxShape _currentShape = ToolboxShape.Rectangle;
 
         //protected override CreateParams CreateParams
         //{
@@ -30,9 +35,10 @@ namespace ScreenLoad
 
         public event EventHandler<QuickImageEditorCommandEventArgs> ServiceCommand;
 
-        public HorizontalToolboxForm()
+        public HorizontalToolboxForm(QuickImageEditorTool lastUsedTool)
         {
             InitializeComponent();
+            _lastUsedTool = lastUsedTool;
 
             //SuspendLayout();
             //SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
@@ -45,14 +51,58 @@ namespace ScreenLoad
             toolTip.SetToolTip(selectButton, Language.GetString("QuickImageEditor_Select"));
             toolTip.SetToolTip(arrowButton, Language.GetString("QuickImageEditor_Arrow"));
             toolTip.SetToolTip(pencilButton, Language.GetString("QuickImageEditor_Pencil"));
-            toolTip.SetToolTip(lineRadioButton, Language.GetString("QuickImageEditor_Line"));
-            toolTip.SetToolTip(rectangleButton, Language.GetString("QuickImageEditor_Rectangle"));
-            toolTip.SetToolTip(ellipseRadioButton, Language.GetString("QuickImageEditor_Ellipse"));
+            toolTip.SetToolTip(markerButton, Language.GetString("QuickImageEditor_Marker"));
+            toolTip.SetToolTip(shapesButton, Language.GetString("QuickImageEditor_Rectangle"));
             toolTip.SetToolTip(textButton, Language.GetString("QuickImageEditor_Text"));
             toolTip.SetToolTip(blurButton, Language.GetString("QuickImageEditor_Blur"));
             toolTip.SetToolTip(counterButton, Language.GetString("QuickImageEditor_Counter"));
             toolTip.SetToolTip(colorButton, Language.GetString("QuickImageEditor_Color"));
             toolTip.SetToolTip(undoButton, Language.GetString("QuickImageEditor_Undo"));
+
+            _parentForm = Owner;
+
+            switch (_lastUsedTool)
+            {
+                case QuickImageEditorTool.Select:
+                    selectButton.Checked = true;
+                    SelectButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Arrow:
+                    arrowButton.Checked = true;
+                    ArrowButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Pencil:
+                    pencilButton.Checked = true;
+                    PencilButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Marker:
+                    markerButton.Checked = true;
+                    markerButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Line:
+                    SetShape(ToolboxShape.Line);
+                    break;
+                case QuickImageEditorTool.Rectangle:
+                    SetShape(ToolboxShape.Rectangle);
+                    break;
+                case QuickImageEditorTool.Ellipse:
+                    SetShape(ToolboxShape.Ellipse);
+                    break;
+                case QuickImageEditorTool.Text:
+                    textButton.Checked = true;
+                    TextButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Blur:
+                    blurButton.Checked = true;
+                    BlurButton_Click(this, null);
+                    break;
+                case QuickImageEditorTool.Counter:
+                    counterButton.Checked = true;
+                    CounterButton_Click(this, null);
+                    break;
+                default:
+                    throw new InvalidOperationException("_lastUsedTool=" + _lastUsedTool);
+            }
         }
 
         public void SetColor(Color color)
@@ -94,46 +144,72 @@ namespace ScreenLoad
 
         private void SelectButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Select));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    {Argument = QuickImageEditorTool.Select});
         }
 
         private void ArrowButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Arrow));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Arrow });
         }
 
         private void PencilButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Pencil));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Pencil });
         }
 
-        private void LineRadioButton_Click(object sender, EventArgs e)
+        private void markerButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Line));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Marker });
         }
 
-        private void RectangleButton_Click(object sender, EventArgs e)
+        private void shapesButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Rectangle));
-        }
-
-        private void EllipseRadioButton_Click(object sender, EventArgs e)
-        {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Ellipse));
+            switch (_currentShape)
+            {
+                case ToolboxShape.Rectangle:
+                    ServiceCommand?.Invoke(this,
+                        new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                            { Argument = QuickImageEditorTool.Rectangle });
+                    break;
+                case ToolboxShape.Ellipse:
+                    ServiceCommand?.Invoke(this,
+                        new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                            { Argument = QuickImageEditorTool.Ellipse });
+                    break;
+                case ToolboxShape.Line:
+                    ServiceCommand?.Invoke(this,
+                        new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                            { Argument = QuickImageEditorTool.Line });
+                    break;
+            }
         }
 
         private void TextButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Text));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Text });
         }
 
         private void BlurButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Blur));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Blur });
         }
         private void CounterButton_Click(object sender, EventArgs e)
         {
-            ServiceCommand?.Invoke(this, new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Counter));
+            ServiceCommand?.Invoke(this,
+                new QuickImageEditorCommandEventArgs(QuickImageEditorCommand.Tool)
+                    { Argument = QuickImageEditorTool.Counter });
         }
 
         private void ColorButton_Click(object sender, EventArgs e)
@@ -162,6 +238,67 @@ namespace ScreenLoad
         {
             return Color.FromArgb((byte)(color.R * multiplier), (byte)(color.G * multiplier),
                 (byte)(color.B * multiplier));
+        }
+        private void shapesButton_CheckedChanged(object sender, EventArgs e)
+        {
+            var color = shapesButton.Checked ? SystemColors.ButtonHighlight : new Color();
+
+            shapesButton.FlatAppearance.BorderColor = color;
+            shapesExpandButton.BackColor = color;
+            shapesExpandButton.FlatAppearance.BorderColor = color;
+        }
+
+        private void shapesExpandButton_MouseDown(object sender, MouseEventArgs e)
+        {
+            if (null == _shapesForm)
+            {
+                _shapesForm = new ToolboxShapesForm();
+                _shapesForm.ShapeChanged += (o, args) => { SetShape(args.Shape); };
+            }
+
+            if (_shapesForm.Visible)
+            {
+                _shapesForm.Hide();
+                return;
+            }
+            
+            var top = Top + shapesButton.Top + shapesButton.Height;
+            var left = Left + shapesButton.Left;
+
+            if (top + _shapesForm.Height > _parentForm.Top + _parentForm.Height)
+                top = Top + shapesButton.Top - _shapesForm.Height;
+
+            _shapesForm.Top = top;
+            _shapesForm.Left = left;
+
+            _shapesForm.SetCurrentShape(_currentShape);
+
+            if (!_shapesForm.Visible)
+                _shapesForm.Show(this);
+        }
+
+        private void SetShape(ToolboxShape shape)
+        {
+            _currentShape = shape;
+
+            switch (_currentShape)
+            {
+                case ToolboxShape.Rectangle:
+                    shapesButton.ImageKey = @"Rectangle";
+                    toolTip.SetToolTip(shapesButton, Language.GetString("QuickImageEditor_Rectangle"));
+                    break;
+                case ToolboxShape.Ellipse:
+                    shapesButton.ImageKey = @"Ellipse";
+                    toolTip.SetToolTip(shapesButton, Language.GetString("QuickImageEditor_Ellipse"));
+                    break;
+                case ToolboxShape.Line:
+                    shapesButton.ImageKey = @"Line";
+                    toolTip.SetToolTip(shapesButton, Language.GetString("QuickImageEditor_Line"));
+                    break;
+            }
+
+            shapesButton.Checked = true;
+            shapesButton_Click(this, null);
         }
     }
 }

@@ -146,7 +146,7 @@ namespace ScreenLoad.Forms
             this.button_ok.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_ok.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.button_ok.LanguageKey = "OK";
-            this.button_ok.Location = new System.Drawing.Point(187, 340);
+            this.button_ok.Location = new System.Drawing.Point(338, 340);
             this.button_ok.Name = "button_ok";
             this.button_ok.Size = new System.Drawing.Size(75, 23);
             this.button_ok.TabIndex = 20;
@@ -174,7 +174,7 @@ namespace ScreenLoad.Forms
             this.button_cancel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.button_cancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.button_cancel.LanguageKey = "CANCEL";
-            this.button_cancel.Location = new System.Drawing.Point(268, 340);
+            this.button_cancel.Location = new System.Drawing.Point(419, 340);
             this.button_cancel.Name = "button_cancel";
             this.button_cancel.Size = new System.Drawing.Size(75, 23);
             this.button_cancel.TabIndex = 21;
@@ -237,7 +237,7 @@ namespace ScreenLoad.Forms
             this.groupBoxPrintLayout.LanguageKey = "printoptions_layout";
             this.groupBoxPrintLayout.Location = new System.Drawing.Point(12, 12);
             this.groupBoxPrintLayout.Name = "groupBoxPrintLayout";
-            this.groupBoxPrintLayout.Size = new System.Drawing.Size(331, 151);
+            this.groupBoxPrintLayout.Size = new System.Drawing.Size(482, 151);
             this.groupBoxPrintLayout.TabIndex = 31;
             this.groupBoxPrintLayout.TabStop = false;
             this.groupBoxPrintLayout.Text = "Page layout settings";
@@ -252,7 +252,7 @@ namespace ScreenLoad.Forms
             this.groupBoxColors.LanguageKey = "printoptions_colors";
             this.groupBoxColors.Location = new System.Drawing.Point(12, 169);
             this.groupBoxColors.Name = "groupBoxColors";
-            this.groupBoxColors.Size = new System.Drawing.Size(331, 127);
+            this.groupBoxColors.Size = new System.Drawing.Size(482, 127);
             this.groupBoxColors.TabIndex = 32;
             this.groupBoxColors.TabStop = false;
             this.groupBoxColors.Text = "Color settings";
@@ -277,7 +277,7 @@ namespace ScreenLoad.Forms
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.AutoSize = true;
-            this.ClientSize = new System.Drawing.Size(355, 375);
+            this.ClientSize = new System.Drawing.Size(506, 375);
             this.Controls.Add(this.groupBoxColors);
             this.Controls.Add(this.groupBoxPrintLayout);
             this.Controls.Add(this.button_cancel);
@@ -290,7 +290,6 @@ namespace ScreenLoad.Forms
             this.MinimizeBox = false;
             this.Name = "PrintOptionsDialog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "ScreenLoad print options";
             this.groupBoxPrintLayout.ResumeLayout(false);
             this.groupBoxPrintLayout.PerformLayout();
             this.groupBoxColors.ResumeLayout(false);

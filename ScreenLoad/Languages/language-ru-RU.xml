@@ -13,7 +13,18 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
     <resource name="About_HelpButton">Справка</resource>
     <resource name="About_DonateButton">Поддержать автора</resource>
     <resource name="About_UpdateButton">Проверить обновления</resource>
-		<resource name="application_title">ScreenLoad — передовая утилита для получения скриншотов</resource>
+
+    <resource name="About_FormTitle">О программе {0}</resource>
+    <resource name="About_CheckForUpdatesButton">Проверить обновления</resource>
+    <resource name="About_Version">Версия:</resource>
+    <resource name="About_CompanyName">Компания:</resource>
+    <resource name="About_Copyright">Авторские права:</resource>
+    <resource name="About_License">Лицензия:</resource>
+    <resource name="About_Details">Детальная информация о продукте:</resource>
+    <resource name="About_Warning">Внимание! Программа защищена законами и международными соглашениями об авторском праве.</resource>
+    
+
+    <resource name="application_title">ScreenLoad — передовая утилита для получения скриншотов</resource>
 		<resource name="bugreport_cancel">Закрыть</resource>
 		<resource name="bugreport_info">Извините, произошла непредвиденная ошибка.
 
@@ -32,7 +43,7 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="ClipboardFormat.HTML">HTML</resource>
 		<resource name="ClipboardFormat.HTMLDATAURL">HTML со встроенными изображениями</resource>
 		<resource name="ClipboardFormat.PNG">PNG</resource>
-		<resource name="colorpicker_alpha">Alpha</resource>
+		<resource name="colorpicker_alpha">Прозрачность</resource>
 		<resource name="colorpicker_apply">Применить</resource>
 		<resource name="colorpicker_blue">Синий</resource>
 		<resource name="colorpicker_green">Зелёный</resource>
@@ -137,9 +148,9 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="editor_load_objects">Загрузить объекты из файла</resource>
 		<resource name="editor_magnification_factor">Коэффициент увеличения</resource>
 		<resource name="editor_match_capture_size">Сохранить соотношение размера захвата</resource>
-		<resource name="editor_obfuscate">Затемнение (O)</resource>
+		<resource name="editor_obfuscate">Размытие (O)</resource>
 		<resource name="editor_obfuscate_blur">Пятно</resource>
-		<resource name="editor_obfuscate_mode">Режим затемнения</resource>
+		<resource name="editor_obfuscate_mode">Режим размытия</resource>
 		<resource name="editor_obfuscate_pixelize">Пикселизация</resource>
 		<resource name="editor_object">Объект</resource>
 		<resource name="editor_opendirinexplorer">Открыть директорию в проводнике Windows</resource>
@@ -167,11 +178,19 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="editor_storedtoclipboard">Изображения, хранящиеся в буфере обмена.</resource>
 		<resource name="editor_thickness">Толщина линии</resource>
 		<resource name="editor_title">Графический редактор ScreenLoad</resource>
+
 		<resource name="editor_torn_edge">Рваные края</resource>
 		<resource name="editor_tornedge_horizontaltoothrange">Горизонтальная частота зубцов</resource>
 		<resource name="editor_tornedge_settings">Параметры рваных краёв</resource>
 		<resource name="editor_tornedge_toothsize">Размер зубцов</resource>
 		<resource name="editor_tornedge_verticaltoothrange">Вертикальная частота зубцов</resource>
+    <resource name="editor_tornedge_shadow">Добавить тень</resource>
+    <resource name="editor_tornedge_all">Разорвать со всех сторон</resource>
+    <resource name="editor_tornedge_left">Слева</resource>
+    <resource name="editor_tornedge_right">Справа</resource>
+    <resource name="editor_tornedge_top">Вверху</resource>
+    <resource name="editor_tornedge_bottom">Внизу</resource>
+
 		<resource name="editor_undo">Отменить {0}</resource>
 		<resource name="editor_uponelevel">На один уровень вверх</resource>
 		<resource name="editor_uptotop">На самый верх</resource>
@@ -206,7 +225,7 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="help_title">ScreenLoad справка</resource>
 		<resource name="hotkeys">Горячие клавиши</resource>
 		<resource name="jpegqualitydialog_choosejpegquality">Пожалуйста, выберите качество для вашего изображения.</resource>
-		<resource name="OK">Ok</resource>
+		<resource name="OK">ОК</resource>
 		<resource name="print_error">Произошла ошибка при попытке напечатать.</resource>
 		<resource name="printoptions_allowcenter">Печать по центру страницы</resource>
 		<resource name="printoptions_allowenlarge">Растянуть на всю страницу</resource>
@@ -350,6 +369,7 @@ ${hostname} Имя ПК
     <resource name="QuickImageEditor_Select">Выделить</resource>
     <resource name="QuickImageEditor_Arrow">Стрелка</resource>
     <resource name="QuickImageEditor_Pencil">Карандаш</resource>
+    <resource name="QuickImageEditor_Marker">Маркер</resource>
     <resource name="QuickImageEditor_Line">Линия</resource>
     <resource name="QuickImageEditor_Rectangle">Прямоугольник</resource>
     <resource name="QuickImageEditor_Ellipse">Эллипс</resource>

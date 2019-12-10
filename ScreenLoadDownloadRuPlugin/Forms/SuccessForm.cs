@@ -40,8 +40,8 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             InitializeComponent();
             Icon = ScreenLoadResources.win_old;
 
-            var directLink = LinkHelper.BuildDirectLink(fileEntry);
-            var pageLink = LinkHelper.BuildPageLink(fileEntry);
+            var directLink = fileEntry.DirectLink;
+            var pageLink = fileEntry.PageLink;
 
             directLinkTextBox.Text = directLink;
             pageLinkTextBox.Text = pageLink;

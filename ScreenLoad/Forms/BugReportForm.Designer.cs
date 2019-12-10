@@ -106,7 +106,6 @@ namespace ScreenLoad.Forms {
 			this.Controls.Add(this.labelBugReportInfo);
 			this.LanguageKey = "bugreport_title";
 			this.Name = "BugReportForm";
-			this.Text = "Error";
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

@@ -408,25 +408,28 @@ namespace ScreenLoadPlugin.Core {
         [IniProperty("CaptureAreaColor", Description = "The background capture color.")]
         public Color CaptureAreaColor { get; set; }
 
+        [IniProperty("QuickImageEditorTool", DefaultValue = "Rectangle")]
+        public QuickImageEditorTool QuickImageEditorTool { get; set; }
+
         /// <summary>
         /// Specifies what THIS build is
         /// </summary>
-  //      public BuildStates BuildState {
-		//	get {
-		//		string informationalVersion = Application.ProductVersion;
-		//		if (informationalVersion != null) {
-		//			if (informationalVersion.ToLowerInvariant().Contains("-rc")) {
-		//				return BuildStates.RELEASE_CANDIDATE;
-		//			}
-		//			if (informationalVersion.ToLowerInvariant().Contains("-unstable")) {
-		//				return BuildStates.UNSTABLE;
-		//			}
-		//		}
-		//		return BuildStates.RELEASE;
-		//	}
-		//}
+        //      public BuildStates BuildState {
+        //	get {
+        //		string informationalVersion = Application.ProductVersion;
+        //		if (informationalVersion != null) {
+        //			if (informationalVersion.ToLowerInvariant().Contains("-rc")) {
+        //				return BuildStates.RELEASE_CANDIDATE;
+        //			}
+        //			if (informationalVersion.ToLowerInvariant().Contains("-unstable")) {
+        //				return BuildStates.UNSTABLE;
+        //			}
+        //		}
+        //		return BuildStates.RELEASE;
+        //	}
+        //}
 
-		public bool UseLargeIcons => IconSize.Width >= 32 || IconSize.Height >= 32;
+        public bool UseLargeIcons => IconSize.Width >= 32 || IconSize.Height >= 32;
 
 		/// <summary>
 		/// A helper method which returns true if the supplied experimental feature is enabled

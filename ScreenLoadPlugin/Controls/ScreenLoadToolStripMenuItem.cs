@@ -50,7 +50,7 @@ namespace ScreenLoadPlugin.Controls
             get
             {
                 if (null != _image && PixelFormat.DontCare != _image.PixelFormat &&
-                    _image.Size.Width == Owner.ImageScalingSize.Width)
+                    (null == Owner || _image.Size.Width == Owner.ImageScalingSize.Width))
                     return _image;
 
                 if (null == Icon)

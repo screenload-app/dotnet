@@ -143,7 +143,6 @@ namespace ScreenLoadPlugin.Controls {
             this.MinimizeBox = false;
             this.Name = "QualityDialog";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
-            this.Text = "ScreenLoad quality";
             ((System.ComponentModel.ISupportInitialize)(this.trackBarJpegQuality)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

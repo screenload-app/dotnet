@@ -1,303 +1,435 @@
-﻿/*
- * ScreenLoad - a free and open source screenshot tool
- * Copyright (C) 2007-2016 Thomas Braun, Jens Klingen, Robin Krom
- * 
- * For more information see: http://getgreenshot.org/
- * The ScreenLoad project is hosted on GitHub https://github.com/greenshot/greenshot
- * 
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 1 of the License, or
- * (at your option) any later version.
- * 
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- * 
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+namespace ScreenLoad
+{
+    sealed partial class AboutForm
+    {
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+        }
 
-using System.Reflection;
+        #region Windows Form Designer generated code
 
-namespace ScreenLoad {
-	partial class AboutForm {
-		/// <summary>
-		/// Designer variable used to keep track of non-visual components.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
-		
-		/// <summary>
-		/// Disposes resources used by the form.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing) {
-			if (disposing) {
-				if (components != null) {
-					components.Dispose();
-				}
-			}
-			base.Dispose(disposing);
-		}
-		
-		/// <summary>
-		/// This method is required for Windows Forms designer support.
-		/// Do not change the method contents inside the source code editor. The Forms designer might
-		/// not be able to load this method if it was changed manually.
-		/// </summary>
-		private void InitializeComponent() {
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AboutForm));
-            this.lblTitle = new System.Windows.Forms.Label();
-            this.lblLicense = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.lblHost = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.linkLblLicense = new System.Windows.Forms.LinkLabel();
-            this.linkLblHost = new System.Windows.Forms.LinkLabel();
-            this.linkLblBugs = new System.Windows.Forms.LinkLabel();
-            this.lblBugs = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.linkLblDonations = new System.Windows.Forms.LinkLabel();
-            this.lblDonations = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.linkLblIcons = new System.Windows.Forms.LinkLabel();
-            this.lblIcons = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.downloadRuLinkLabel = new System.Windows.Forms.LinkLabel();
+            this.mTableLayoutPanel = new System.Windows.Forms.TableLayoutPanel();
+            this.copyrightFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.copyrightLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.copyrightValueLabel = new System.Windows.Forms.Label();
             this.logoPictureBox = new System.Windows.Forms.PictureBox();
-            this.lblTranslation = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
-            this.helpButton = new ScreenLoadPlugin.Controls.ScreenLoadButton();
-            this.donateButton = new ScreenLoadPlugin.Controls.ScreenLoadButton();
-            this.updateButton = new ScreenLoadPlugin.Controls.ScreenLoadButton();
+            this.okButton = new ScreenLoadPlugin.Controls.ScreenLoadButton();
+            this.companyNameFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.companyNameLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.companyNameValueLabel = new System.Windows.Forms.Label();
+            this.warningLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.descriptionRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.titleLabel = new System.Windows.Forms.Label();
+            this.detailsLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.versionFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.versionLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.versionValueLabel = new System.Windows.Forms.Label();
+            this.updateButton = new System.Windows.Forms.Button();
+            this.licenseFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.licenseLabel = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
+            this.licenseValueLabel = new System.Windows.Forms.Label();
+            this.mPanel = new System.Windows.Forms.Panel();
+            this.toolTip = new System.Windows.Forms.ToolTip(this.components);
+            this.mTableLayoutPanel.SuspendLayout();
+            this.copyrightFlowLayoutPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).BeginInit();
+            this.companyNameFlowLayoutPanel.SuspendLayout();
+            this.versionFlowLayoutPanel.SuspendLayout();
+            this.licenseFlowLayoutPanel.SuspendLayout();
+            this.mPanel.SuspendLayout();
             this.SuspendLayout();
             // 
-            // lblTitle
+            // mTableLayoutPanel
             // 
-            this.lblTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblTitle.Location = new System.Drawing.Point(109, 12);
-            this.lblTitle.Name = "lblTitle";
-            this.lblTitle.Size = new System.Drawing.Size(263, 19);
-            this.lblTitle.TabIndex = 0;
-            this.lblTitle.Text = "ScreenLoad x.x.xxx";
+            this.mTableLayoutPanel.AutoSize = true;
+            this.mTableLayoutPanel.ColumnCount = 2;
+            this.mTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mTableLayoutPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle());
+            this.mTableLayoutPanel.Controls.Add(this.copyrightFlowLayoutPanel, 0, 3);
+            this.mTableLayoutPanel.Controls.Add(this.logoPictureBox, 1, 0);
+            this.mTableLayoutPanel.Controls.Add(this.okButton, 0, 8);
+            this.mTableLayoutPanel.Controls.Add(this.companyNameFlowLayoutPanel, 0, 2);
+            this.mTableLayoutPanel.Controls.Add(this.warningLabel, 0, 7);
+            this.mTableLayoutPanel.Controls.Add(this.descriptionRichTextBox, 0, 6);
+            this.mTableLayoutPanel.Controls.Add(this.titleLabel, 0, 0);
+            this.mTableLayoutPanel.Controls.Add(this.detailsLabel, 0, 5);
+            this.mTableLayoutPanel.Controls.Add(this.versionFlowLayoutPanel, 0, 1);
+            this.mTableLayoutPanel.Controls.Add(this.licenseFlowLayoutPanel, 0, 4);
+            this.mTableLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mTableLayoutPanel.Location = new System.Drawing.Point(8, 8);
+            this.mTableLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.mTableLayoutPanel.Name = "mTableLayoutPanel";
+            this.mTableLayoutPanel.RowCount = 9;
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.mTableLayoutPanel.Size = new System.Drawing.Size(618, 379);
+            this.mTableLayoutPanel.TabIndex = 0;
             // 
-            // lblLicense
+            // copyrightFlowLayoutPanel
             // 
-            this.lblLicense.LanguageKey = "about_license";
-            this.lblLicense.Location = new System.Drawing.Point(108, 31);
-            this.lblLicense.Name = "lblLicense";
-            this.lblLicense.Size = new System.Drawing.Size(399, 71);
-            this.lblLicense.TabIndex = 2;
-            this.lblLicense.Text = resources.GetString("lblLicense.Text");
+            this.copyrightFlowLayoutPanel.AutoSize = true;
+            this.copyrightFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.copyrightFlowLayoutPanel.Controls.Add(this.copyrightLabel);
+            this.copyrightFlowLayoutPanel.Controls.Add(this.copyrightValueLabel);
+            this.copyrightFlowLayoutPanel.Location = new System.Drawing.Point(0, 83);
+            this.copyrightFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.copyrightFlowLayoutPanel.Name = "copyrightFlowLayoutPanel";
+            this.copyrightFlowLayoutPanel.Size = new System.Drawing.Size(127, 25);
+            this.copyrightFlowLayoutPanel.TabIndex = 3;
             // 
-            // lblHost
+            // copyrightLabel
             // 
-            this.lblHost.AutoSize = true;
-            this.lblHost.LanguageKey = "about_host";
-            this.lblHost.Location = new System.Drawing.Point(15, 108);
-            this.lblHost.Name = "lblHost";
-            this.lblHost.Size = new System.Drawing.Size(197, 13);
-            this.lblHost.TabIndex = 4;
-            this.lblHost.Text = "ScreenLoad is hosted by Download.RU at";
+            this.copyrightLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.copyrightLabel.AutoSize = true;
+            this.copyrightLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.copyrightLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.copyrightLabel.LanguageKey = "About_Copyright";
+            this.copyrightLabel.Location = new System.Drawing.Point(6, 6);
+            this.copyrightLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
+            this.copyrightLabel.Name = "copyrightLabel";
+            this.copyrightLabel.Size = new System.Drawing.Size(64, 13);
+            this.copyrightLabel.TabIndex = 0;
+            this.copyrightLabel.Text = "Copyright:";
             // 
-            // linkLblLicense
+            // copyrightValueLabel
             // 
-            this.linkLblLicense.Location = new System.Drawing.Point(109, 85);
-            this.linkLblLicense.Name = "linkLblLicense";
-            this.linkLblLicense.Size = new System.Drawing.Size(369, 23);
-            this.linkLblLicense.TabIndex = 3;
-            this.linkLblLicense.TabStop = true;
-            this.linkLblLicense.Text = "http://www.gnu.org/licenses/gpl.html";
-            this.linkLblLicense.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
-            // 
-            // linkLblHost
-            // 
-            this.linkLblHost.AutoSize = true;
-            this.linkLblHost.Location = new System.Drawing.Point(15, 127);
-            this.linkLblHost.Name = "linkLblHost";
-            this.linkLblHost.Size = new System.Drawing.Size(173, 13);
-            this.linkLblHost.TabIndex = 5;
-            this.linkLblHost.TabStop = true;
-            this.linkLblHost.Text = "https://download.ru/ScreenLoad/get";
-            this.linkLblHost.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
-            // 
-            // linkLblBugs
-            // 
-            this.linkLblBugs.AutoSize = true;
-            this.linkLblBugs.Location = new System.Drawing.Point(15, 173);
-            this.linkLblBugs.Name = "linkLblBugs";
-            this.linkLblBugs.Size = new System.Drawing.Size(219, 13);
-            this.linkLblBugs.TabIndex = 7;
-            this.linkLblBugs.TabStop = true;
-            this.linkLblBugs.Text = "http://getgreenshot.org/tickets/?version={0}";
-            this.linkLblBugs.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
-            // 
-            // lblBugs
-            // 
-            this.lblBugs.AutoSize = true;
-            this.lblBugs.LanguageKey = "about_bugs";
-            this.lblBugs.Location = new System.Drawing.Point(15, 154);
-            this.lblBugs.Name = "lblBugs";
-            this.lblBugs.Size = new System.Drawing.Size(107, 13);
-            this.lblBugs.TabIndex = 6;
-            this.lblBugs.Text = "Please report bugs to";
-            // 
-            // linkLblDonations
-            // 
-            this.linkLblDonations.AutoSize = true;
-            this.linkLblDonations.Location = new System.Drawing.Point(15, 219);
-            this.linkLblDonations.Name = "linkLblDonations";
-            this.linkLblDonations.Size = new System.Drawing.Size(223, 13);
-            this.linkLblDonations.TabIndex = 9;
-            this.linkLblDonations.TabStop = true;
-            this.linkLblDonations.Text = "http://getgreenshot.org/support/?version={0}";
-            this.linkLblDonations.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
-            // 
-            // lblDonations
-            // 
-            this.lblDonations.AutoSize = true;
-            this.lblDonations.LanguageKey = "about_donations";
-            this.lblDonations.Location = new System.Drawing.Point(15, 200);
-            this.lblDonations.Name = "lblDonations";
-            this.lblDonations.Size = new System.Drawing.Size(257, 13);
-            this.lblDonations.TabIndex = 8;
-            this.lblDonations.Text = "If you like ScreenLoad, you are welcome to support us:";
-            // 
-            // linkLblIcons
-            // 
-            this.linkLblIcons.AutoSize = true;
-            this.linkLblIcons.Location = new System.Drawing.Point(15, 265);
-            this.linkLblIcons.Name = "linkLblIcons";
-            this.linkLblIcons.Size = new System.Drawing.Size(163, 13);
-            this.linkLblIcons.TabIndex = 11;
-            this.linkLblIcons.TabStop = true;
-            this.linkLblIcons.Text = "http://p.yusukekamiyamane.com";
-            this.linkLblIcons.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
-            // 
-            // lblIcons
-            // 
-            this.lblIcons.AutoSize = true;
-            this.lblIcons.LanguageKey = "about_icons";
-            this.lblIcons.Location = new System.Drawing.Point(15, 246);
-            this.lblIcons.Name = "lblIcons";
-            this.lblIcons.Size = new System.Drawing.Size(439, 13);
-            this.lblIcons.TabIndex = 10;
-            this.lblIcons.Text = "Icons from Yusuke Kamiyamane\'s Fugue icon set (Creative Commons Attribution 3.0 l" +
-    "icense)";
-            // 
-            // downloadRuLinkLabel
-            // 
-            this.downloadRuLinkLabel.Location = new System.Drawing.Point(394, 9);
-            this.downloadRuLinkLabel.Name = "downloadRuLinkLabel";
-            this.downloadRuLinkLabel.Size = new System.Drawing.Size(113, 23);
-            this.downloadRuLinkLabel.TabIndex = 1;
-            this.downloadRuLinkLabel.TabStop = true;
-            this.downloadRuLinkLabel.Text = "https://download.ru";
-            this.downloadRuLinkLabel.TextAlign = System.Drawing.ContentAlignment.TopRight;
-            this.downloadRuLinkLabel.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.LinkLabelClicked);
+            this.copyrightValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.copyrightValueLabel.AutoSize = true;
+            this.copyrightValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.copyrightValueLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.copyrightValueLabel.Location = new System.Drawing.Point(70, 6);
+            this.copyrightValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
+            this.copyrightValueLabel.Name = "copyrightValueLabel";
+            this.copyrightValueLabel.Size = new System.Drawing.Size(51, 13);
+            this.copyrightValueLabel.TabIndex = 1;
+            this.copyrightValueLabel.Text = "Copyright";
+            this.copyrightValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // logoPictureBox
             // 
+            this.logoPictureBox.Anchor = System.Windows.Forms.AnchorStyles.Right;
+            this.logoPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
-            this.logoPictureBox.Location = new System.Drawing.Point(12, 12);
+            this.logoPictureBox.Location = new System.Drawing.Point(484, 16);
+            this.logoPictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.logoPictureBox.Name = "logoPictureBox";
-            this.logoPictureBox.Size = new System.Drawing.Size(90, 90);
+            this.mTableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
+            this.logoPictureBox.Size = new System.Drawing.Size(128, 128);
             this.logoPictureBox.SizeMode = System.Windows.Forms.PictureBoxSizeMode.AutoSize;
-            this.logoPictureBox.TabIndex = 14;
+            this.logoPictureBox.TabIndex = 13;
             this.logoPictureBox.TabStop = false;
             // 
-            // lblTranslation
+            // okButton
             // 
-            this.lblTranslation.AutoSize = true;
-            this.lblTranslation.LanguageKey = "about_translation";
-            this.lblTranslation.Location = new System.Drawing.Point(15, 293);
-            this.lblTranslation.Name = "lblTranslation";
-            this.lblTranslation.Size = new System.Drawing.Size(0, 13);
-            this.lblTranslation.TabIndex = 12;
+            this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.mTableLayoutPanel.SetColumnSpan(this.okButton, 2);
+            this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.okButton.LanguageKey = "OK";
+            this.okButton.Location = new System.Drawing.Point(535, 349);
+            this.okButton.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.okButton.Name = "okButton";
+            this.okButton.Size = new System.Drawing.Size(75, 22);
+            this.okButton.TabIndex = 8;
+            this.okButton.Text = "Ok";
+            this.okButton.Click += new System.EventHandler(this.okButton_Click);
             // 
-            // helpButton
+            // companyNameFlowLayoutPanel
             // 
-            this.helpButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.helpButton.LanguageKey = "About_HelpButton";
-            this.helpButton.Location = new System.Drawing.Point(12, 322);
-            this.helpButton.Name = "helpButton";
-            this.helpButton.Size = new System.Drawing.Size(161, 23);
-            this.helpButton.TabIndex = 13;
-            this.helpButton.Text = "Help";
-            this.helpButton.UseVisualStyleBackColor = true;
-            this.helpButton.Click += new System.EventHandler(this.helpButton_Click);
+            this.companyNameFlowLayoutPanel.AutoSize = true;
+            this.companyNameFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.companyNameFlowLayoutPanel.Controls.Add(this.companyNameLabel);
+            this.companyNameFlowLayoutPanel.Controls.Add(this.companyNameValueLabel);
+            this.companyNameFlowLayoutPanel.Location = new System.Drawing.Point(0, 58);
+            this.companyNameFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.companyNameFlowLayoutPanel.Name = "companyNameFlowLayoutPanel";
+            this.companyNameFlowLayoutPanel.Size = new System.Drawing.Size(192, 25);
+            this.companyNameFlowLayoutPanel.TabIndex = 2;
             // 
-            // donateButton
+            // companyNameLabel
             // 
-            this.donateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.donateButton.LanguageKey = "About_DonateButton";
-            this.donateButton.Location = new System.Drawing.Point(179, 322);
-            this.donateButton.Name = "donateButton";
-            this.donateButton.Size = new System.Drawing.Size(161, 23);
-            this.donateButton.TabIndex = 14;
-            this.donateButton.Text = "Donate";
-            this.donateButton.UseVisualStyleBackColor = true;
-            this.donateButton.Click += new System.EventHandler(this.donateButton_Click);
+            this.companyNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.companyNameLabel.AutoSize = true;
+            this.companyNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.companyNameLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.companyNameLabel.LanguageKey = "About_CompanyName";
+            this.companyNameLabel.Location = new System.Drawing.Point(6, 6);
+            this.companyNameLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
+            this.companyNameLabel.Name = "companyNameLabel";
+            this.companyNameLabel.Size = new System.Drawing.Size(98, 13);
+            this.companyNameLabel.TabIndex = 0;
+            this.companyNameLabel.Text = "Company Name:";
+            // 
+            // companyNameValueLabel
+            // 
+            this.companyNameValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.companyNameValueLabel.AutoSize = true;
+            this.companyNameValueLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.companyNameValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline);
+            this.companyNameValueLabel.ForeColor = System.Drawing.Color.Blue;
+            this.companyNameValueLabel.Location = new System.Drawing.Point(104, 6);
+            this.companyNameValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
+            this.companyNameValueLabel.Name = "companyNameValueLabel";
+            this.companyNameValueLabel.Size = new System.Drawing.Size(82, 13);
+            this.companyNameValueLabel.TabIndex = 1;
+            this.companyNameValueLabel.Text = "Company Name";
+            this.companyNameValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // warningLabel
+            // 
+            this.warningLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.warningLabel.AutoSize = true;
+            this.mTableLayoutPanel.SetColumnSpan(this.warningLabel, 2);
+            this.warningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.warningLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.warningLabel.LanguageKey = "About_Warning";
+            this.warningLabel.Location = new System.Drawing.Point(6, 322);
+            this.warningLabel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.warningLabel.Name = "warningLabel";
+            this.warningLabel.Size = new System.Drawing.Size(419, 13);
+            this.warningLabel.TabIndex = 7;
+            this.warningLabel.Text = "Warning! This computer program is protected by copyright law and international tr" +
+    "eaties.";
+            // 
+            // descriptionRichTextBox
+            // 
+            this.mTableLayoutPanel.SetColumnSpan(this.descriptionRichTextBox, 2);
+            this.descriptionRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.descriptionRichTextBox.Location = new System.Drawing.Point(8, 168);
+            this.descriptionRichTextBox.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.descriptionRichTextBox.Name = "descriptionRichTextBox";
+            this.descriptionRichTextBox.ReadOnly = true;
+            this.descriptionRichTextBox.Size = new System.Drawing.Size(602, 140);
+            this.descriptionRichTextBox.TabIndex = 6;
+            this.descriptionRichTextBox.Text = "";
+            this.descriptionRichTextBox.LinkClicked += new System.Windows.Forms.LinkClickedEventHandler(this.descriptionRichTextBox_LinkClicked);
+            // 
+            // titleLabel
+            // 
+            this.titleLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.titleLabel.AutoSize = true;
+            this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
+            this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.titleLabel.Location = new System.Drawing.Point(5, 5);
+            this.titleLabel.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.titleLabel.Name = "titleLabel";
+            this.titleLabel.Size = new System.Drawing.Size(150, 24);
+            this.titleLabel.TabIndex = 0;
+            this.titleLabel.Text = "Program Name";
+            this.titleLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // detailsLabel
+            // 
+            this.detailsLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.detailsLabel.AutoSize = true;
+            this.detailsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.detailsLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.detailsLabel.LanguageKey = "About_Details";
+            this.detailsLabel.Location = new System.Drawing.Point(6, 147);
+            this.detailsLabel.Margin = new System.Windows.Forms.Padding(6, 14, 6, 0);
+            this.detailsLabel.Name = "detailsLabel";
+            this.detailsLabel.Size = new System.Drawing.Size(96, 13);
+            this.detailsLabel.TabIndex = 5;
+            this.detailsLabel.Text = "Product details:";
+            // 
+            // versionFlowLayoutPanel
+            // 
+            this.versionFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.versionFlowLayoutPanel.Controls.Add(this.versionLabel);
+            this.versionFlowLayoutPanel.Controls.Add(this.versionValueLabel);
+            this.versionFlowLayoutPanel.Controls.Add(this.updateButton);
+            this.versionFlowLayoutPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.versionFlowLayoutPanel.Location = new System.Drawing.Point(0, 34);
+            this.versionFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.versionFlowLayoutPanel.Name = "versionFlowLayoutPanel";
+            this.versionFlowLayoutPanel.Size = new System.Drawing.Size(478, 24);
+            this.versionFlowLayoutPanel.TabIndex = 1;
+            // 
+            // versionLabel
+            // 
+            this.versionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.versionLabel.AutoSize = true;
+            this.versionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.versionLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.versionLabel.LanguageKey = "About_Version";
+            this.versionLabel.Location = new System.Drawing.Point(6, 7);
+            this.versionLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
+            this.versionLabel.Name = "versionLabel";
+            this.versionLabel.Size = new System.Drawing.Size(53, 13);
+            this.versionLabel.TabIndex = 0;
+            this.versionLabel.Text = "Version:";
+            // 
+            // versionValueLabel
+            // 
+            this.versionValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.versionValueLabel.AutoSize = true;
+            this.versionValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
+            this.versionValueLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.versionValueLabel.Location = new System.Drawing.Point(59, 7);
+            this.versionValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
+            this.versionValueLabel.Name = "versionValueLabel";
+            this.versionValueLabel.Size = new System.Drawing.Size(42, 13);
+            this.versionValueLabel.TabIndex = 1;
+            this.versionValueLabel.Text = "Version";
+            this.versionValueLabel.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // updateButton
             // 
-            this.updateButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
-            this.updateButton.LanguageKey = "About_UpdateButton";
-            this.updateButton.Location = new System.Drawing.Point(346, 322);
+            this.updateButton.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.updateButton.AutoSize = true;
+            this.updateButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.updateButton.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.updateButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.updateButton.FlatAppearance.BorderSize = 0;
+            this.updateButton.FlatAppearance.MouseDownBackColor = System.Drawing.SystemColors.Control;
+            this.updateButton.FlatAppearance.MouseOverBackColor = System.Drawing.SystemColors.Control;
+            this.updateButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.updateButton.Image = ((System.Drawing.Image)(resources.GetObject("updateButton.Image")));
+            this.updateButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.updateButton.Location = new System.Drawing.Point(104, 3);
             this.updateButton.Name = "updateButton";
-            this.updateButton.Size = new System.Drawing.Size(161, 23);
-            this.updateButton.TabIndex = 15;
-            this.updateButton.Text = "Update";
+            this.updateButton.Size = new System.Drawing.Size(22, 22);
+            this.updateButton.TabIndex = 2;
+            this.updateButton.UseMnemonic = false;
             this.updateButton.UseVisualStyleBackColor = true;
-            this.updateButton.Click += new System.EventHandler(this.updatesButton_Click);
+            this.updateButton.Click += new System.EventHandler(this.updateButton_Click);
+            // 
+            // licenseFlowLayoutPanel
+            // 
+            this.licenseFlowLayoutPanel.AutoSize = true;
+            this.licenseFlowLayoutPanel.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.licenseFlowLayoutPanel.Controls.Add(this.licenseLabel);
+            this.licenseFlowLayoutPanel.Controls.Add(this.licenseValueLabel);
+            this.licenseFlowLayoutPanel.Location = new System.Drawing.Point(0, 108);
+            this.licenseFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.licenseFlowLayoutPanel.Name = "licenseFlowLayoutPanel";
+            this.licenseFlowLayoutPanel.Size = new System.Drawing.Size(122, 25);
+            this.licenseFlowLayoutPanel.TabIndex = 4;
+            // 
+            // licenseLabel
+            // 
+            this.licenseLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.licenseLabel.AutoSize = true;
+            this.licenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
+            this.licenseLabel.ForeColor = System.Drawing.Color.DimGray;
+            this.licenseLabel.LanguageKey = "About_License";
+            this.licenseLabel.Location = new System.Drawing.Point(6, 6);
+            this.licenseLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
+            this.licenseLabel.Name = "licenseLabel";
+            this.licenseLabel.Size = new System.Drawing.Size(55, 13);
+            this.licenseLabel.TabIndex = 0;
+            this.licenseLabel.Text = "License:";
+            // 
+            // licenseValueLabel
+            // 
+            this.licenseValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
+            this.licenseValueLabel.AutoSize = true;
+            this.licenseValueLabel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this.licenseValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Underline);
+            this.licenseValueLabel.ForeColor = System.Drawing.Color.Blue;
+            this.licenseValueLabel.Location = new System.Drawing.Point(61, 6);
+            this.licenseValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
+            this.licenseValueLabel.Name = "licenseValueLabel";
+            this.licenseValueLabel.Size = new System.Drawing.Size(55, 13);
+            this.licenseValueLabel.TabIndex = 1;
+            this.licenseValueLabel.Text = "GNU GPL";
+            // 
+            // mPanel
+            // 
+            this.mPanel.Controls.Add(this.mTableLayoutPanel);
+            this.mPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.mPanel.Location = new System.Drawing.Point(0, 0);
+            this.mPanel.Margin = new System.Windows.Forms.Padding(0);
+            this.mPanel.Name = "mPanel";
+            this.mPanel.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.mPanel.Size = new System.Drawing.Size(634, 395);
+            this.mPanel.TabIndex = 1;
+            // 
+            // toolTip
+            // 
+            this.toolTip.AutoPopDelay = 5000;
+            this.toolTip.InitialDelay = 100;
+            this.toolTip.ReshowDelay = 100;
+            this.toolTip.ShowAlways = true;
             // 
             // AboutForm
             // 
+            this.AcceptButton = this.okButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(519, 360);
-            this.Controls.Add(this.updateButton);
-            this.Controls.Add(this.donateButton);
-            this.Controls.Add(this.helpButton);
-            this.Controls.Add(this.lblTranslation);
-            this.Controls.Add(this.logoPictureBox);
-            this.Controls.Add(this.downloadRuLinkLabel);
-            this.Controls.Add(this.linkLblIcons);
-            this.Controls.Add(this.lblIcons);
-            this.Controls.Add(this.linkLblDonations);
-            this.Controls.Add(this.lblDonations);
-            this.Controls.Add(this.linkLblBugs);
-            this.Controls.Add(this.lblBugs);
-            this.Controls.Add(this.linkLblHost);
-            this.Controls.Add(this.linkLblLicense);
-            this.Controls.Add(this.lblHost);
-            this.Controls.Add(this.lblLicense);
-            this.Controls.Add(this.lblTitle);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.ClientSize = new System.Drawing.Size(634, 395);
+            this.Controls.Add(this.mPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.LanguageKey = "about_title";
+            this.LanguageKey = "About_FormTitle";
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "AboutForm";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "About ScreenLoad";
+            this.Text = "About {0}";
+            this.Load += new System.EventHandler(this.AboutBox_Load);
+            this.mTableLayoutPanel.ResumeLayout(false);
+            this.mTableLayoutPanel.PerformLayout();
+            this.copyrightFlowLayoutPanel.ResumeLayout(false);
+            this.copyrightFlowLayoutPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.logoPictureBox)).EndInit();
+            this.companyNameFlowLayoutPanel.ResumeLayout(false);
+            this.companyNameFlowLayoutPanel.PerformLayout();
+            this.versionFlowLayoutPanel.ResumeLayout(false);
+            this.versionFlowLayoutPanel.PerformLayout();
+            this.licenseFlowLayoutPanel.ResumeLayout(false);
+            this.licenseFlowLayoutPanel.PerformLayout();
+            this.mPanel.ResumeLayout(false);
+            this.mPanel.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
-		}
-		private System.Windows.Forms.LinkLabel downloadRuLinkLabel;
-		private System.Windows.Forms.LinkLabel linkLblHost;
-		private System.Windows.Forms.LinkLabel linkLblDonations;
-		private System.Windows.Forms.LinkLabel linkLblBugs;
-		private System.Windows.Forms.LinkLabel linkLblLicense;
-		private System.Windows.Forms.LinkLabel linkLblIcons;
-		private System.Windows.Forms.Label lblTitle;
-		private System.Windows.Forms.PictureBox logoPictureBox;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblTranslation;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblHost;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblDonations;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblBugs;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblIcons;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel lblLicense;
-        private ScreenLoadPlugin.Controls.ScreenLoadButton helpButton;
-        private ScreenLoadPlugin.Controls.ScreenLoadButton donateButton;
-        private ScreenLoadPlugin.Controls.ScreenLoadButton updateButton;
+        }
+
+        #endregion
+
+        private System.Windows.Forms.TableLayoutPanel mTableLayoutPanel;
+        private System.Windows.Forms.Label titleLabel;
+        private System.Windows.Forms.Label versionValueLabel;
+        private System.Windows.Forms.Label copyrightValueLabel;
+        private System.Windows.Forms.Label companyNameValueLabel;
+        private ScreenLoadPlugin.Controls.ScreenLoadButton okButton;
+        private System.Windows.Forms.Label licenseValueLabel;
+        private System.Windows.Forms.PictureBox logoPictureBox;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel warningLabel;
+        private System.Windows.Forms.RichTextBox descriptionRichTextBox;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel detailsLabel;
+        private System.Windows.Forms.FlowLayoutPanel versionFlowLayoutPanel;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel versionLabel;
+        private System.Windows.Forms.FlowLayoutPanel copyrightFlowLayoutPanel;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel copyrightLabel;
+        private System.Windows.Forms.FlowLayoutPanel companyNameFlowLayoutPanel;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel companyNameLabel;
+        private System.Windows.Forms.FlowLayoutPanel licenseFlowLayoutPanel;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel licenseLabel;
+        private System.Windows.Forms.Panel mPanel;
+        private System.Windows.Forms.Button updateButton;
+        private System.Windows.Forms.ToolTip toolTip;
+        private System.ComponentModel.IContainer components;
     }
 }

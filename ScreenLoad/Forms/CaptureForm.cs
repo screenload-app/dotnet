@@ -593,6 +593,10 @@ namespace ScreenLoad
                     if (!window.Contains(cursorPosition))
                         continue;
 
+                    // TODO $ Временное решение (разобраться!)
+                    if (window.Text.Equals("Window", StringComparison.Ordinal))
+                        continue;
+
                     // Only go over the children if we are in window mode
                     _selectedCaptureWindow = CaptureMode.Window == _captureMode
                         ? window.FindChildUnderPoint(cursorPosition)

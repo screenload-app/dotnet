@@ -1535,7 +1535,6 @@ namespace ScreenLoad {
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
-            this.Text = "Settings";
             this.groupbox_preferredfilesettings.ResumeLayout(false);
             this.groupbox_preferredfilesettings.PerformLayout();
             this.groupbox_applicationsettings.ResumeLayout(false);

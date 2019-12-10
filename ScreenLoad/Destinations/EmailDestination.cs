@@ -19,7 +19,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 using System;
-using System.Drawing;
 using System.Windows.Forms;
 
 using ScreenLoad.Configuration;
@@ -27,72 +26,88 @@ using ScreenLoad.Helpers;
 using ScreenLoad.Plugin;
 using ScreenLoadPlugin.Core;
 
-namespace ScreenLoad.Destinations {
-	/// <summary>
-	/// Description of EmailDestination.
-	/// </summary>
-	public class EmailDestination : AbstractDestination {
+namespace ScreenLoad.Destinations
+{
+    /// <summary>
+    /// Description of EmailDestination.
+    /// </summary>
+    public class EmailDestination : AbstractDestination
+    {
 
-		private static bool _isActiveFlag;
-		private static string _mapiClient;
-		public const string DESIGNATION = "EMail";
+        private static bool _isActiveFlag;
+        private static string _mapiClient;
+        public const string DESIGNATION = "EMail";
 
-		static EmailDestination() {
-			// Logic to decide what email implementation we use
-			if (EmailConfigHelper.HasMapi()) {
-				_isActiveFlag = true;
-				_mapiClient = EmailConfigHelper.GetMapiClient();
-				if (!string.IsNullOrEmpty(_mapiClient)) {
-					// Active as we have a mapi client, can be disabled later
-					_isActiveFlag = true;
-				}
-			}
-		}
+        static EmailDestination()
+        {
+            // Logic to decide what email implementation we use
+            if (EmailConfigHelper.HasMapi())
+            {
+                _isActiveFlag = true;
+                _mapiClient = EmailConfigHelper.GetMapiClient();
+                if (!string.IsNullOrEmpty(_mapiClient))
+                {
+                    // Active as we have a mapi client, can be disabled later
+                    _isActiveFlag = true;
+                }
+            }
+        }
 
-		public override string Designation => DESIGNATION;
+        public override string Designation => DESIGNATION;
 
-		public override string Description {
-			get {
-				// Make sure there is some kind of "mail" name
-				if (_mapiClient == null) {
-					_mapiClient = Language.GetString(LangKey.editor_email);
-				}
-				return _mapiClient;
-			}
-		}
+        public override string Description
+        {
+            get
+            {
+                // Make sure there is some kind of "mail" name
+                if (_mapiClient == null)
+                {
+                    _mapiClient = Language.GetString(LangKey.editor_email);
+                }
 
-		public override int Priority => 3;
+                return _mapiClient;
+            }
+        }
 
-		public override bool IsActive {
-			get {
-				if (_isActiveFlag) {
-					// Disable if the office plugin is installed and the client is outlook
-					// TODO: Change this! It always creates an exception, as the plugin has not been loaded the type is not there :(
-					Type outlookdestination = Type.GetType("ScreenLoadOfficePlugin.OutlookDestination,ScreenLoadOfficePlugin");
-					if (outlookdestination != null) {
-						if (_mapiClient.ToLower().Contains("microsoft outlook")) {
-							_isActiveFlag = false;
-						}
-					}
-				}
-				return base.IsActive && _isActiveFlag;
-			}
-		}
+        public override int Priority => 3;
 
-		public override Keys EditorShortcutKeys => Keys.Control | Keys.E;
+        public override bool IsActive
+        {
+            get
+            {
+                if (_isActiveFlag)
+                {
+                    // Disable if the office plugin is installed and the client is outlook
+                    // TODO: Change this! It always creates an exception, as the plugin has not been loaded the type is not there :(
+                    Type outlookdestination =
+                        Type.GetType("ScreenLoadOfficePlugin.OutlookDestination,ScreenLoadOfficePlugin");
+                    if (outlookdestination != null)
+                    {
+                        if (_mapiClient.ToLower().Contains("microsoft outlook"))
+                        {
+                            _isActiveFlag = false;
+                        }
+                    }
+                }
 
-		public override Icon DisplayIcon => ScreenLoadResources.Email;
+                return base.IsActive && _isActiveFlag;
+            }
+        }
 
-		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
+        public override Keys EditorShortcutKeys => Keys.Control | Keys.E;
+        
+        public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
+            ICaptureDetails captureDetails)
+        {
             var exportInformation = new ExportInformation(Designation, Description)
             {
                 SuccessMessage = Language.GetString("exported_to_EMail")
             };
 
             MapiMailMessage.SendImage(surface, captureDetails);
-			exportInformation.ExportMade = true;
-			ProcessExport(exportInformation, surface);
-			return exportInformation;
-		}
-	}
+            exportInformation.ExportMade = true;
+            ProcessExport(exportInformation, surface);
+            return exportInformation;
+        }
+    }
 }

@@ -483,7 +483,11 @@ namespace ScreenLoad
             }
 
             // Скрыть/отобразить пункты до открытия, иначе открывается не в том месте.
-            notifyIcon.MouseDown += (sender, args) => { SimplifyContextMenu(); };
+            notifyIcon.MouseDown += (sender, args) =>
+            {
+                SimplifyContextMenu();
+                Application.DoEvents();
+            };
 
             // Иконки с учетом наличия обновлений.
             OnUpdateStateChanged();

@@ -1,9 +1,9 @@
 ﻿/*
- * ScreenLoad - a free and open source screenshot tool
+ * Greenshot - a free and open source screenshot tool
  * Copyright (C) 2007-2016 Thomas Braun, Jens Klingen, Robin Krom
  * 
  * For more information see: http://getgreenshot.org/
- * The ScreenLoad project is hosted on GitHub https://github.com/greenshot/greenshot
+ * The Greenshot project is hosted on GitHub https://github.com/greenshot/greenshot
  * 
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,31 +18,36 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-namespace ScreenLoad.Forms {
-	partial class ResizeSettingsForm {
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+namespace ScreenLoad.Forms
+{
+    partial class ResizeSettingsForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing) {
-			if (disposing && (components != null)) {
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent() {
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ResizeSettingsForm));
             this.buttonOK = new ScreenLoadPlugin.Controls.ScreenLoadButton();
             this.buttonCancel = new ScreenLoadPlugin.Controls.ScreenLoadButton();
@@ -72,7 +77,7 @@ namespace ScreenLoad.Forms {
             this.buttonCancel.LanguageKey = "CANCEL";
             this.buttonCancel.Location = new System.Drawing.Point(157, 87);
             this.buttonCancel.Name = "buttonCancel";
-            this.buttonCancel.Size = new System.Drawing.Size(75, 23);
+            this.buttonCancel.Size = new System.Drawing.Size(89, 23);
             this.buttonCancel.TabIndex = 7;
             this.buttonCancel.Text = "Cancel";
             this.buttonCancel.UseVisualStyleBackColor = true;
@@ -131,7 +136,7 @@ namespace ScreenLoad.Forms {
             this.combobox_width.FormattingEnabled = true;
             this.combobox_width.Location = new System.Drawing.Point(165, 11);
             this.combobox_width.Name = "combobox_width";
-            this.combobox_width.Size = new System.Drawing.Size(65, 21);
+            this.combobox_width.Size = new System.Drawing.Size(81, 21);
             this.combobox_width.TabIndex = 2;
             // 
             // combobox_height
@@ -140,7 +145,7 @@ namespace ScreenLoad.Forms {
             this.combobox_height.ItemHeight = 13;
             this.combobox_height.Location = new System.Drawing.Point(165, 38);
             this.combobox_height.Name = "combobox_height";
-            this.combobox_height.Size = new System.Drawing.Size(65, 21);
+            this.combobox_height.Size = new System.Drawing.Size(81, 21);
             this.combobox_height.TabIndex = 4;
             // 
             // ResizeSettingsForm
@@ -149,7 +154,7 @@ namespace ScreenLoad.Forms {
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.buttonCancel;
-            this.ClientSize = new System.Drawing.Size(244, 122);
+            this.ClientSize = new System.Drawing.Size(258, 122);
             this.ControlBox = false;
             this.Controls.Add(this.combobox_height);
             this.Controls.Add(this.combobox_width);
@@ -167,22 +172,21 @@ namespace ScreenLoad.Forms {
             this.MinimizeBox = false;
             this.Name = "ResizeSettingsForm";
             this.ShowIcon = false;
-            this.Text = "Resize settings";
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private ScreenLoadPlugin.Controls.ScreenLoadButton buttonOK;
-		private ScreenLoadPlugin.Controls.ScreenLoadButton buttonCancel;
-		private ScreenLoadPlugin.Controls.ScreenLoadCheckBox checkbox_aspectratio;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel label_width;
-		private ScreenLoadPlugin.Controls.ScreenLoadLabel label_height;
-		private System.Windows.Forms.TextBox textbox_height;
-		private System.Windows.Forms.TextBox textbox_width;
-		private System.Windows.Forms.ComboBox combobox_width;
-		private System.Windows.Forms.ComboBox combobox_height;
-	}
+        private ScreenLoadPlugin.Controls.ScreenLoadButton buttonOK;
+        private ScreenLoadPlugin.Controls.ScreenLoadButton buttonCancel;
+        private ScreenLoadPlugin.Controls.ScreenLoadCheckBox checkbox_aspectratio;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel label_width;
+        private ScreenLoadPlugin.Controls.ScreenLoadLabel label_height;
+        private System.Windows.Forms.TextBox textbox_height;
+        private System.Windows.Forms.TextBox textbox_width;
+        private System.Windows.Forms.ComboBox combobox_width;
+        private System.Windows.Forms.ComboBox combobox_height;
+    }
 }
