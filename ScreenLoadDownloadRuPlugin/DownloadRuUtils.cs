@@ -132,14 +132,14 @@ namespace ScreenLoadDownloadRuPlugin
 
                 string response;
 
-                string sharedLink = (Config.SharedLink) ? "&shared=true" : "";
+                string sharedLink = Config.SharedLink ? "&shared=true" : "";
 
                 try
                 {
-                    string locale = (Language.CurrentLanguage.Length > 1)
+                    string locale = Language.CurrentLanguage.Length > 1
                         ? Language.CurrentLanguage.Substring(0, 2)
                         : "en";
-                    string addAnonymKey = (Config.AnonymousAccess)
+                    string addAnonymKey = Config.AnonymousAccess
                         ? $"&anonym_key={Constants.AnonymousKey}"
                         : "";
 

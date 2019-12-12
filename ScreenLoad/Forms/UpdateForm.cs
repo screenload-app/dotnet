@@ -209,13 +209,14 @@ namespace ScreenLoad
             progressBottomPanel.Visible = true;
             bottomFlowPanel.ResumeLayout(true);
 
-            _tempFilePath = Path.Combine(Path.GetTempPath(), _versionInfo.File);
+            _tempFilePath = Path.Combine(Path.GetTempPath(), _versionInfo.FileName);
 
             if (File.Exists(_tempFilePath))
                 File.Delete(_tempFilePath);
 
             //mProgressBar.CustomText = "0%";
-            _webClient.DownloadFileAsync(new Uri(_versionInfo.DownloadLink), _tempFilePath);
+            _webClient.DownloadFileAsync(
+                new Uri(UpdateHelper.BuildDownloadLink(coreConfiguration, _versionInfo.FileName)), _tempFilePath);
         }
 
         private void cancelButton_Click(object sender, EventArgs e)

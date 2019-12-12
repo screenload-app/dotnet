@@ -343,9 +343,9 @@ ${hostname} Имя ПК
     <!-- hotkeys -->
 
     <resource name="hotkeys_resolving_caption">Задать горячие клавиши</resource>
-	  <resource name="hotkeys_conflicts_warning">Вы не установили одну или несколько горячих клавиш. Хотите продолжить установку?
+	  <resource name="hotkeys_conflicts_warning">Некоторые горячие клавиши не заданы. Все функции ScreenLoad доступны через контекстное меню значка в трее, однако горячие клавиши ускорят работу с программой.
 
-Все функции ScreenLoad по-прежнему работают прямо из контекстного меню через значок в трее.
+      Вернуться к предыдущему диалогу и назначить горячие клавиши?
     </resource>
 	  <resource name="hotkeys_resolving_ok">ОК</resource>
 	  <resource name="hotkeys_resolving_cancel">Отмена</resource>

@@ -90,8 +90,9 @@ namespace ScreenLoad
             licenseValueLabel.Click += ValueLabelOnClick;
             logoPictureBox.Click += ValueLabelOnClick;
 
-            if (Language.CurrentLanguage.Equals("ru-RU"))
-                descriptionRichTextBox.Rtf = Resources.AboutScreenLoad_ru_RU;
+            descriptionRichTextBox.Rtf = Language.CurrentLanguage.Equals("ru-RU")
+                ? Resources.AboutScreenLoad_ru_RU
+                : Resources.AboutScreenLoad_en_US;
         }
 
         private void AboutBox_Load(object sender, EventArgs e)

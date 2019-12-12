@@ -55,7 +55,7 @@
             this.undoButton.FlatAppearance.BorderSize = 0;
             this.undoButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.undoButton.Image = ((System.Drawing.Image)(resources.GetObject("undoButton.Image")));
-            this.undoButton.Location = new System.Drawing.Point(427, 6);
+            this.undoButton.Location = new System.Drawing.Point(439, 6);
             this.undoButton.Name = "undoButton";
             this.undoButton.Size = new System.Drawing.Size(38, 38);
             this.undoButton.TabIndex = 12;
@@ -73,7 +73,7 @@
             this.colorButton.ImageAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.colorButton.ImageKey = "White";
             this.colorButton.ImageList = this.expandMarkImageList;
-            this.colorButton.Location = new System.Drawing.Point(376, 6);
+            this.colorButton.Location = new System.Drawing.Point(388, 6);
             this.colorButton.Name = "colorButton";
             this.colorButton.Size = new System.Drawing.Size(38, 38);
             this.colorButton.TabIndex = 10;
@@ -90,7 +90,7 @@
             // sep2Label
             // 
             this.sep2Label.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.sep2Label.Location = new System.Drawing.Point(419, 6);
+            this.sep2Label.Location = new System.Drawing.Point(431, 6);
             this.sep2Label.Name = "sep2Label";
             this.sep2Label.Size = new System.Drawing.Size(2, 38);
             this.sep2Label.TabIndex = 11;
@@ -137,7 +137,7 @@
             this.textButton.FlatAppearance.BorderSize = 0;
             this.textButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.textButton.Image = ((System.Drawing.Image)(resources.GetObject("textButton.Image")));
-            this.textButton.Location = new System.Drawing.Point(244, 6);
+            this.textButton.Location = new System.Drawing.Point(256, 6);
             this.textButton.Name = "textButton";
             this.textButton.Size = new System.Drawing.Size(38, 38);
             this.textButton.TabIndex = 7;
@@ -152,7 +152,7 @@
             this.blurButton.FlatAppearance.BorderSize = 0;
             this.blurButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.blurButton.Image = ((System.Drawing.Image)(resources.GetObject("blurButton.Image")));
-            this.blurButton.Location = new System.Drawing.Point(288, 6);
+            this.blurButton.Location = new System.Drawing.Point(300, 6);
             this.blurButton.Name = "blurButton";
             this.blurButton.Size = new System.Drawing.Size(38, 38);
             this.blurButton.TabIndex = 8;
@@ -167,7 +167,7 @@
             this.counterButton.FlatAppearance.BorderSize = 0;
             this.counterButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.counterButton.Image = ((System.Drawing.Image)(resources.GetObject("counterButton.Image")));
-            this.counterButton.Location = new System.Drawing.Point(332, 6);
+            this.counterButton.Location = new System.Drawing.Point(344, 6);
             this.counterButton.Name = "counterButton";
             this.counterButton.Size = new System.Drawing.Size(38, 38);
             this.counterButton.TabIndex = 9;
@@ -247,7 +247,7 @@
             this.shapesExpandButton.ImageKey = "(none)";
             this.shapesExpandButton.Location = new System.Drawing.Point(229, 6);
             this.shapesExpandButton.Name = "shapesExpandButton";
-            this.shapesExpandButton.Size = new System.Drawing.Size(12, 38);
+            this.shapesExpandButton.Size = new System.Drawing.Size(21, 38);
             this.shapesExpandButton.TabIndex = 6;
             this.shapesExpandButton.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             this.shapesExpandButton.UseVisualStyleBackColor = true;
@@ -257,7 +257,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(471, 50);
+            this.ClientSize = new System.Drawing.Size(482, 50);
             this.ControlBox = false;
             this.Controls.Add(this.shapesExpandButton);
             this.Controls.Add(this.shapesButton);

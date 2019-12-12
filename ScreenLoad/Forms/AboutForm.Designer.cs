@@ -101,7 +101,6 @@ namespace ScreenLoad
             this.copyrightLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.copyrightLabel.AutoSize = true;
             this.copyrightLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.copyrightLabel.ForeColor = System.Drawing.Color.DimGray;
             this.copyrightLabel.LanguageKey = "About_Copyright";
             this.copyrightLabel.Location = new System.Drawing.Point(6, 6);
             this.copyrightLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
@@ -115,7 +114,6 @@ namespace ScreenLoad
             this.copyrightValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.copyrightValueLabel.AutoSize = true;
             this.copyrightValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.copyrightValueLabel.ForeColor = System.Drawing.Color.DimGray;
             this.copyrightValueLabel.Location = new System.Drawing.Point(70, 6);
             this.copyrightValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 6, 6);
             this.copyrightValueLabel.Name = "copyrightValueLabel";
@@ -130,7 +128,7 @@ namespace ScreenLoad
             this.logoPictureBox.Cursor = System.Windows.Forms.Cursors.Hand;
             this.logoPictureBox.Image = ((System.Drawing.Image)(resources.GetObject("logoPictureBox.Image")));
             this.logoPictureBox.Location = new System.Drawing.Point(484, 16);
-            this.logoPictureBox.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.logoPictureBox.Margin = new System.Windows.Forms.Padding(6);
             this.logoPictureBox.Name = "logoPictureBox";
             this.mTableLayoutPanel.SetRowSpan(this.logoPictureBox, 6);
             this.logoPictureBox.Size = new System.Drawing.Size(128, 128);
@@ -143,10 +141,9 @@ namespace ScreenLoad
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mTableLayoutPanel.SetColumnSpan(this.okButton, 2);
             this.okButton.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.okButton.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.okButton.LanguageKey = "OK";
             this.okButton.Location = new System.Drawing.Point(535, 349);
-            this.okButton.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.okButton.Margin = new System.Windows.Forms.Padding(8);
             this.okButton.Name = "okButton";
             this.okButton.Size = new System.Drawing.Size(75, 22);
             this.okButton.TabIndex = 8;
@@ -170,7 +167,6 @@ namespace ScreenLoad
             this.companyNameLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.companyNameLabel.AutoSize = true;
             this.companyNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.companyNameLabel.ForeColor = System.Drawing.Color.DimGray;
             this.companyNameLabel.LanguageKey = "About_CompanyName";
             this.companyNameLabel.Location = new System.Drawing.Point(6, 6);
             this.companyNameLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
@@ -200,10 +196,9 @@ namespace ScreenLoad
             this.warningLabel.AutoSize = true;
             this.mTableLayoutPanel.SetColumnSpan(this.warningLabel, 2);
             this.warningLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.warningLabel.ForeColor = System.Drawing.Color.DimGray;
             this.warningLabel.LanguageKey = "About_Warning";
             this.warningLabel.Location = new System.Drawing.Point(6, 322);
-            this.warningLabel.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.warningLabel.Margin = new System.Windows.Forms.Padding(6);
             this.warningLabel.Name = "warningLabel";
             this.warningLabel.Size = new System.Drawing.Size(419, 13);
             this.warningLabel.TabIndex = 7;
@@ -215,7 +210,7 @@ namespace ScreenLoad
             this.mTableLayoutPanel.SetColumnSpan(this.descriptionRichTextBox, 2);
             this.descriptionRichTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
             this.descriptionRichTextBox.Location = new System.Drawing.Point(8, 168);
-            this.descriptionRichTextBox.Margin = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.descriptionRichTextBox.Margin = new System.Windows.Forms.Padding(8);
             this.descriptionRichTextBox.Name = "descriptionRichTextBox";
             this.descriptionRichTextBox.ReadOnly = true;
             this.descriptionRichTextBox.Size = new System.Drawing.Size(602, 140);
@@ -228,9 +223,8 @@ namespace ScreenLoad
             this.titleLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.titleLabel.AutoSize = true;
             this.titleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 14F, System.Drawing.FontStyle.Bold);
-            this.titleLabel.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.titleLabel.Location = new System.Drawing.Point(5, 5);
-            this.titleLabel.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.titleLabel.Margin = new System.Windows.Forms.Padding(5);
             this.titleLabel.Name = "titleLabel";
             this.titleLabel.Size = new System.Drawing.Size(150, 24);
             this.titleLabel.TabIndex = 0;
@@ -242,7 +236,6 @@ namespace ScreenLoad
             this.detailsLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.detailsLabel.AutoSize = true;
             this.detailsLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.detailsLabel.ForeColor = System.Drawing.Color.DimGray;
             this.detailsLabel.LanguageKey = "About_Details";
             this.detailsLabel.Location = new System.Drawing.Point(6, 147);
             this.detailsLabel.Margin = new System.Windows.Forms.Padding(6, 14, 6, 0);
@@ -269,7 +262,6 @@ namespace ScreenLoad
             this.versionLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.versionLabel.AutoSize = true;
             this.versionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.versionLabel.ForeColor = System.Drawing.Color.DimGray;
             this.versionLabel.LanguageKey = "About_Version";
             this.versionLabel.Location = new System.Drawing.Point(6, 7);
             this.versionLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
@@ -283,7 +275,6 @@ namespace ScreenLoad
             this.versionValueLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.versionValueLabel.AutoSize = true;
             this.versionValueLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F);
-            this.versionValueLabel.ForeColor = System.Drawing.Color.DimGray;
             this.versionValueLabel.Location = new System.Drawing.Point(59, 7);
             this.versionValueLabel.Margin = new System.Windows.Forms.Padding(0, 6, 0, 6);
             this.versionValueLabel.Name = "versionValueLabel";
@@ -330,7 +321,6 @@ namespace ScreenLoad
             this.licenseLabel.Anchor = System.Windows.Forms.AnchorStyles.Left;
             this.licenseLabel.AutoSize = true;
             this.licenseLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold);
-            this.licenseLabel.ForeColor = System.Drawing.Color.DimGray;
             this.licenseLabel.LanguageKey = "About_License";
             this.licenseLabel.Location = new System.Drawing.Point(6, 6);
             this.licenseLabel.Margin = new System.Windows.Forms.Padding(6, 6, 0, 6);
@@ -360,7 +350,7 @@ namespace ScreenLoad
             this.mPanel.Location = new System.Drawing.Point(0, 0);
             this.mPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mPanel.Name = "mPanel";
-            this.mPanel.Padding = new System.Windows.Forms.Padding(8, 8, 8, 8);
+            this.mPanel.Padding = new System.Windows.Forms.Padding(8);
             this.mPanel.Size = new System.Drawing.Size(634, 395);
             this.mPanel.TabIndex = 1;
             // 

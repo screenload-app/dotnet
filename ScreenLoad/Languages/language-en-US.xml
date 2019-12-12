@@ -332,9 +332,9 @@ time, e.g. 11_58_32 (plus extension defined in the settings)</resource>
     <!-- Hotkeys -->
 
 	  <resource name="hotkey_resolving_retry">Default {0}</resource>
-    <resource name="hotkeys_conflicts_warning">You have not set one or more hotkeys. Do you want to continue to set up?
-
-All ScreenLoad functions still work directly from the context menu via the tray icon.
+    <resource name="hotkeys_conflicts_warning">One or more hotkeys has not been installed. All ScreenLoad functions are accessible from the context menu via the tray icon, but assigning hotkeys will speed up the process of working with the program.
+     
+      Do you want to go back to the previous dialog and assign hot keys?
     </resource>
     <resource name="hotkey_external_conflict_message">It is not possible to use a combination, as it is already in use by another program! Enter a different combination or disable software that uses hotkeys.</resource>
     <resource name="hotkey_internal_conflict_message">It is not possible to use a combination, as it is already for &quot;{0}&quot;!</resource>

@@ -227,8 +227,9 @@ namespace ScreenLoad {
 					if (cb == null || !cb.Visible) {
 						continue;
 					}
-					// Calculate the rectangle
-					if (cb.ComboBox != null)
+
+                    // Calculate the rectangle
+                    if (cb.ComboBox != null)
 					{
 						Rectangle r = new Rectangle(cb.ComboBox.Location.X - 1, cb.ComboBox.Location.Y - 1, cb.ComboBox.Size.Width + 1, cb.ComboBox.Size.Height + 1);
 

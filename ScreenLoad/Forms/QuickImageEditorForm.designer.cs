@@ -89,6 +89,7 @@
             this.Cursor = System.Windows.Forms.Cursors.NoMove2D;
             this.DoubleBuffered = true;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
+            this.KeyPreview = true;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "QuickImageEditorForm";

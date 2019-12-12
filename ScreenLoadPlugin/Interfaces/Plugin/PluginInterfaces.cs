@@ -22,57 +22,66 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-
 using ScreenLoadPlugin.Core;
 using ScreenLoad.IniFile;
 using ScreenLoadPlugin.Effects;
 
 namespace ScreenLoad.Plugin {
-	[Serializable]
-	[AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
-	public sealed class PluginAttribute : Attribute, IComparable {
-		public string Name {
-			get;
-			set;
-		}
-		public string CreatedBy {
-			get;
-			set;
-		}
-		public string Version {
-			get;
-			set;
-		}
-		public string EntryType {
-			get;
-			private set;
-		}
-		public bool Configurable {
-			get;
-			private set;
-		}
-		
-		public string DllFile {
-			get;
-			set;
-		}
+    [Serializable]
+    [AttributeUsage(AttributeTargets.Assembly, Inherited = false, AllowMultiple = false)]
+    public sealed class PluginAttribute : Attribute, IComparable
+    {
+        public string Name
+        {
+            get;
+            set;
+        }
+        public string CreatedBy
+        {
+            get;
+            set;
+        }
+        public string Version
+        {
+            get;
+            set;
+        }
+        public string EntryType
+        {
+            get;
+            private set;
+        }
+        public bool Configurable
+        {
+            get;
+            private set;
+        }
 
-		public PluginAttribute(string entryType, bool configurable) {
-			EntryType = entryType;
-			Configurable = configurable;
-		}
-		
-		public int CompareTo(object obj) {
-			PluginAttribute other = obj as PluginAttribute;
-			if (other != null) {
-				return Name.CompareTo(other.Name);
-			}
-			throw new ArgumentException("object is not a PluginAttribute");
-		}
-	}
+        public string DllFile
+        {
+            get;
+            set;
+        }
 
-	// Delegates for hooking up events.
-	public delegate void HotKeyHandler();
+        public PluginAttribute(string entryType, bool configurable)
+        {
+            EntryType = entryType;
+            Configurable = configurable;
+        }
+
+        public int CompareTo(object obj)
+        {
+            PluginAttribute other = obj as PluginAttribute;
+            if (other != null)
+            {
+                return Name.CompareTo(other.Name);
+            }
+            throw new ArgumentException("object is not a PluginAttribute");
+        }
+    }
+
+    // Delegates for hooking up events.
+    public delegate void HotKeyHandler();
 
 	public class SurfaceOutputSettings {
 		private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();

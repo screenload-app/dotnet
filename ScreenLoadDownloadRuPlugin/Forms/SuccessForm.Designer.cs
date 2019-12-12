@@ -94,15 +94,15 @@
             this.directLinkTextBox.Multiline = true;
             this.directLinkTextBox.Name = "directLinkTextBox";
             this.directLinkTextBox.ReadOnly = true;
-            this.directLinkTextBox.Size = new System.Drawing.Size(294, 65);
+            this.directLinkTextBox.Size = new System.Drawing.Size(284, 65);
             this.directLinkTextBox.TabIndex = 5;
             // 
             // directLinkButton
             // 
             this.directLinkButton.LanguageKey = "downloadru.success_copy";
-            this.directLinkButton.Location = new System.Drawing.Point(465, 181);
+            this.directLinkButton.Location = new System.Drawing.Point(453, 181);
             this.directLinkButton.Name = "directLinkButton";
-            this.directLinkButton.Size = new System.Drawing.Size(75, 23);
+            this.directLinkButton.Size = new System.Drawing.Size(87, 23);
             this.directLinkButton.TabIndex = 6;
             this.directLinkButton.Text = "Copy";
             this.directLinkButton.UseVisualStyleBackColor = true;
@@ -111,9 +111,9 @@
             // pageLinkButton
             // 
             this.pageLinkButton.LanguageKey = "downloadru.success_copy";
-            this.pageLinkButton.Location = new System.Drawing.Point(464, 98);
+            this.pageLinkButton.Location = new System.Drawing.Point(453, 98);
             this.pageLinkButton.Name = "pageLinkButton";
-            this.pageLinkButton.Size = new System.Drawing.Size(75, 23);
+            this.pageLinkButton.Size = new System.Drawing.Size(86, 23);
             this.pageLinkButton.TabIndex = 3;
             this.pageLinkButton.Text = "Copy";
             this.pageLinkButton.UseVisualStyleBackColor = true;
@@ -125,16 +125,16 @@
             this.pageLinkTextBox.Location = new System.Drawing.Point(164, 100);
             this.pageLinkTextBox.Name = "pageLinkTextBox";
             this.pageLinkTextBox.ReadOnly = true;
-            this.pageLinkTextBox.Size = new System.Drawing.Size(294, 20);
+            this.pageLinkTextBox.Size = new System.Drawing.Size(283, 20);
             this.pageLinkTextBox.TabIndex = 2;
             // 
             // okButton
             // 
             this.okButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.okButton.LanguageKey = "downloadru.success_done";
-            this.okButton.Location = new System.Drawing.Point(465, 313);
+            this.okButton.Location = new System.Drawing.Point(453, 313);
             this.okButton.Name = "okButton";
-            this.okButton.Size = new System.Drawing.Size(75, 23);
+            this.okButton.Size = new System.Drawing.Size(87, 23);
             this.okButton.TabIndex = 10;
             this.okButton.Text = "Done";
             this.okButton.UseVisualStyleBackColor = true;

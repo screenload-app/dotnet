@@ -34,14 +34,12 @@ namespace ScreenLoad.Helpers
 
     public sealed class VersionInfo
     {
-        private const string DownloadLinkTemplate = "https://d2n4w7xg423fnr.cloudfront.net/temp/Nov2019/update/{0}";
-
         private const string DefaultLanguageKey = "en-US";
 
         private readonly Dictionary<string, string> _infoDictionary = new Dictionary<string, string>();
 
         public Version Version { get; private set; }
-        public string File { get; private set; }
+        public string FileName { get; private set; }
 
         public string Info
         {
@@ -56,8 +54,6 @@ namespace ScreenLoad.Helpers
                 return null;
             }
         }
-
-        public string DownloadLink => string.Format(DownloadLinkTemplate, File);
 
         private VersionInfo()
         {
@@ -75,8 +71,8 @@ namespace ScreenLoad.Helpers
 
             Version = new Version(numberValue);
 
-            var file = xmlNode.Attributes?["file"].Value;
-            File = file ?? throw new InvalidOperationException("null == file");
+            var fileName = xmlNode.Attributes?["file"].Value;
+            FileName = fileName ?? throw new InvalidOperationException("null == file");
 
             var infoNodes = xmlNode.SelectNodes("info");
             
@@ -105,30 +101,30 @@ namespace ScreenLoad.Helpers
             MainForm.Instance.InvokeAction(() =>
             {
                 string version;
-                string file;
+                string fileName;
                 Dictionary<string, string> descriptions;
 
                 if (stable)
                 {
                     version = configuration.LatestDetectedStableUpdateVersion;
-                    file = configuration.LatestDetectedStableUpdateFile;
+                    fileName = configuration.LatestDetectedStableUpdateFile;
                     descriptions = configuration.LatestDetectedStableUpdateDescriptions;
                 }
                 else
                 {
                     version = configuration.LatestDetectedUpdateVersion;
-                    file = configuration.LatestDetectedUpdateFile;
+                    fileName = configuration.LatestDetectedUpdateFile;
                     descriptions = configuration.LatestDetectedUpdateDescriptions;
                 }
 
                 if (string.IsNullOrEmpty(version) ||
-                    string.IsNullOrEmpty(file))
+                    string.IsNullOrEmpty(fileName))
                     return;
 
                 versionInfo = new VersionInfo
                 {
                     Version = new Version(version),
-                    File = file
+                    FileName = fileName
                 };
 
                 if (null != descriptions)
@@ -164,14 +160,14 @@ namespace ScreenLoad.Helpers
                 {
 
                     configuration.LatestDetectedStableUpdateVersion = Version.ToString();
-                    configuration.LatestDetectedStableUpdateFile = File;
+                    configuration.LatestDetectedStableUpdateFile = FileName;
                     configuration.LatestDetectedStableUpdateDescriptions = escapedDescriptions;
 
                     return;
                 }
 
                 configuration.LatestDetectedUpdateVersion = Version.ToString();
-                configuration.LatestDetectedUpdateFile = File;
+                configuration.LatestDetectedUpdateFile = FileName;
                 configuration.LatestDetectedUpdateDescriptions = escapedDescriptions;
             });
         }
@@ -199,7 +195,9 @@ namespace ScreenLoad.Helpers
         private static readonly ILog Log = LogManager.GetLogger(typeof(UpdateHelper));
         private static readonly CoreConfiguration CoreConfig = IniConfig.GetIniSection<CoreConfiguration>();
 
-        private const string VersionHistoryLink = "https://d2n4w7xg423fnr.cloudfront.net/temp/Nov2019/update/VersionHistory.xml";
+        private const string UpdateUrlTemplate = "https://download.ru/screenload/{0}";
+        private const string UnstableUpdateUrlTemplate = "https://download.wmsigner.com/screenload/{0}";
+        private const string VersionHistoryFile = "VersionHistory.xml";
 
         private static readonly object LockObject = new object();
 
@@ -223,6 +221,31 @@ namespace ScreenLoad.Helpers
 
         private static VersionInfo _latestVersion;
         private static VersionInfo _latestStableVersion;
+
+        public static string BuildDownloadLink(CoreConfiguration configuration, string fileName)
+        {
+            if (null == configuration)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (null == fileName)
+                throw new ArgumentNullException(nameof(fileName));
+
+            if (configuration.CheckForUnstable)
+                return string.Format(CultureInfo.InvariantCulture, UnstableUpdateUrlTemplate, fileName);
+
+            return string.Format(CultureInfo.InvariantCulture, UpdateUrlTemplate, fileName);
+        }
+
+        private static string BuildVersionHistoryUrl(CoreConfiguration configuration)
+        {
+            if (null == configuration)
+                throw new ArgumentNullException(nameof(configuration));
+
+            if (configuration.CheckForUnstable)
+                return string.Format(CultureInfo.InvariantCulture, UnstableUpdateUrlTemplate, VersionHistoryFile);
+
+            return string.Format(CultureInfo.InvariantCulture, UpdateUrlTemplate, VersionHistoryFile);
+        }
 
         public static bool IsUpdateDetected(CoreConfiguration configuration)
         {
@@ -327,7 +350,7 @@ namespace ScreenLoad.Helpers
                 }
                 catch (Exception exception)
                 {
-                    MessageBox.Show(exception.Message, "ScreenLoad", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(exception.Message, @"ScreenLoad", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             })
             {
@@ -410,9 +433,11 @@ namespace ScreenLoad.Helpers
 
                 string versionHistoryText;
 
+                var versionHistoryUrl = BuildVersionHistoryUrl(configuration);
+
                 try
                 {
-                    versionHistoryText = webClient.DownloadString(new Uri(VersionHistoryLink));
+                    versionHistoryText = webClient.DownloadString(versionHistoryUrl);
                 }
                 catch (WebException exception)
                 {

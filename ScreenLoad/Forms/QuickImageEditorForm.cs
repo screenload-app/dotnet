@@ -176,9 +176,6 @@ namespace ScreenLoad
         {
             switch (e.KeyCode)
             {
-                case Keys.Delete:
-                    _surface.RemoveSelectedElements();
-                    break;
                 case Keys.Escape:
                     Cancel();
                     break;
@@ -189,23 +186,22 @@ namespace ScreenLoad
                         {
                             case Keys.D:
                                 UploadCapture();
-                                break;
+                                return;
                             case Keys.C:
                                 CopyCapture();
-                                break;
+                                return;
                             case Keys.S:
                                 SaveCapture();
-                                break;
+                                return;
                             case Keys.E:
                                 SendToExtendedEditor();
-                                break;
+                                return;
                             case Keys.Z:
                                 if (_surface.CanUndo)
                                     _surface.Undo();
-                                break;
+                                return;
                         }
                     }
-
                     break;
             }
         }
@@ -891,33 +887,35 @@ namespace ScreenLoad
                             break;
                         case QuickImageEditorTool.Arrow:
                             _surface.DrawingMode = DrawingModes.Arrow;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value);
                             break;
                         case QuickImageEditorTool.Pencil:
                             _surface.DrawingMode = DrawingModes.Path;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Marker:
                             _surface.DrawingMode = DrawingModes.Highlight;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
+                            _surface.FieldAggregator.GetField(FieldType.PREPARED_FILTER_HIGHLIGHT).Value =
+                                FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Line:
                             _surface.DrawingMode = DrawingModes.Line;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Rectangle:
                             _surface.DrawingMode = DrawingModes.Rect;
                             _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Ellipse:
                             _surface.DrawingMode = DrawingModes.Ellipse;
                             _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = Color.Transparent;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Text:
@@ -926,7 +924,7 @@ namespace ScreenLoad
                             _surface.FieldAggregator.GetField(FieldType.TEXT_HORIZONTAL_ALIGNMENT).Value = StringAlignment.Near;
                             _surface.FieldAggregator.GetField(FieldType.TEXT_VERTICAL_ALIGNMENT).Value = StringAlignment.Near;
                             _surface.FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = 0;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.LINE_COLOR)
                                 .Value);
                             break;
                         case QuickImageEditorTool.Blur:
@@ -934,7 +932,7 @@ namespace ScreenLoad
                             break;
                         case QuickImageEditorTool.Counter:
                             _surface.DrawingMode = DrawingModes.StepLabel;
-                            _horizontalToolboxForm.SetColor((Color)_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
+                            _horizontalToolboxForm.SetColor(_surface.FieldAggregator.GetField(FieldType.FILL_COLOR)
                                 .Value);
                             break;
                         default:
@@ -951,9 +949,9 @@ namespace ScreenLoad
                         _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = color;
                     }
                     else if (DrawingModes.Highlight == _surface.DrawingMode)
-                        _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = e.Argument;
+                        _surface.FieldAggregator.GetField(FieldType.FILL_COLOR).Value = (Color) e.Argument;
                     else
-                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = e.Argument;
+                        _surface.FieldAggregator.GetField(FieldType.LINE_COLOR).Value = (Color) e.Argument;
                     break;
                 case QuickImageEditorCommand.Undo:
                     if (_surface.CanUndo)

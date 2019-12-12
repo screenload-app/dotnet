@@ -45,7 +45,7 @@
             this.lineRadioButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.lineRadioButton.Image = ((System.Drawing.Image)(resources.GetObject("lineRadioButton.Image")));
             this.lineRadioButton.Location = new System.Drawing.Point(0, 91);
-            this.lineRadioButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.lineRadioButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.lineRadioButton.Name = "lineRadioButton";
             this.lineRadioButton.Size = new System.Drawing.Size(38, 38);
             this.lineRadioButton.TabIndex = 1;
@@ -59,7 +59,7 @@
             this.rectangleButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.rectangleButton.Image = ((System.Drawing.Image)(resources.GetObject("rectangleButton.Image")));
             this.rectangleButton.Location = new System.Drawing.Point(0, 3);
-            this.rectangleButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.rectangleButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.rectangleButton.Name = "rectangleButton";
             this.rectangleButton.Size = new System.Drawing.Size(38, 38);
             this.rectangleButton.TabIndex = 0;
@@ -72,8 +72,8 @@
             this.ellipseButton.FlatAppearance.BorderSize = 0;
             this.ellipseButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.ellipseButton.Image = ((System.Drawing.Image)(resources.GetObject("ellipseButton.Image")));
-            this.ellipseButton.Location = new System.Drawing.Point(0, 47);
-            this.ellipseButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 3);
+            this.ellipseButton.Location = new System.Drawing.Point(0, 44);
+            this.ellipseButton.Margin = new System.Windows.Forms.Padding(0, 3, 0, 0);
             this.ellipseButton.Name = "ellipseButton";
             this.ellipseButton.Size = new System.Drawing.Size(38, 38);
             this.ellipseButton.TabIndex = 1;
@@ -90,7 +90,7 @@
             this.mFlowLayoutPanel.Location = new System.Drawing.Point(0, 0);
             this.mFlowLayoutPanel.Margin = new System.Windows.Forms.Padding(0);
             this.mFlowLayoutPanel.Name = "mFlowLayoutPanel";
-            this.mFlowLayoutPanel.Size = new System.Drawing.Size(38, 88);
+            this.mFlowLayoutPanel.Size = new System.Drawing.Size(38, 82);
             this.mFlowLayoutPanel.TabIndex = 0;
             this.mFlowLayoutPanel.WrapContents = false;
             // 
@@ -102,7 +102,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(38, 88);
+            this.ClientSize = new System.Drawing.Size(38, 82);
             this.ControlBox = false;
             this.Controls.Add(this.mFlowLayoutPanel);
             this.Controls.Add(this.lineRadioButton);

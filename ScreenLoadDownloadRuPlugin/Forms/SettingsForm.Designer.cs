@@ -47,7 +47,6 @@ namespace ScreenLoadDownloadRuPlugin.Forms
 		/// </summary>
 		private void InitializeComponent()
 		{
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SettingsForm));
             this.buttonOK = new ScreenLoadPlugin.Controls.ScreenLoadButton();
             this.buttonCancel = new ScreenLoadPlugin.Controls.ScreenLoadButton();
             this.combobox_uploadimageformat = new ScreenLoadPlugin.Controls.ScreenLoadComboBox();
@@ -55,12 +54,12 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             this.checkboxAfterUploadLinkToClipBoard = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.checkboxAfterUploadSharedLink = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.afterUploadGroupBox = new ScreenLoadPlugin.Controls.ScreenLoadGroupBox();
+            this.showNotificationCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.openInBrowserComboBox = new ScreenLoadPlugin.Controls.ScreenLoadComboBox();
             this.toClipBoardComboBox = new ScreenLoadPlugin.Controls.ScreenLoadComboBox();
             this.showDetailsCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.openInBrowserCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.anonymousAccessCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
-            this.showNotificationCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.afterUploadGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,6 +155,19 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             this.afterUploadGroupBox.TabStop = false;
             this.afterUploadGroupBox.Text = "After upload";
             // 
+            // showNotificationCheckBox
+            // 
+            this.showNotificationCheckBox.AutoSize = true;
+            this.showNotificationCheckBox.LanguageKey = "downloadru.label_AfterUploadShowNotification";
+            this.showNotificationCheckBox.Location = new System.Drawing.Point(6, 111);
+            this.showNotificationCheckBox.Name = "showNotificationCheckBox";
+            this.showNotificationCheckBox.PropertyName = "AfterUploadShowNotification";
+            this.showNotificationCheckBox.SectionName = "DownloadRu";
+            this.showNotificationCheckBox.Size = new System.Drawing.Size(107, 17);
+            this.showNotificationCheckBox.TabIndex = 6;
+            this.showNotificationCheckBox.Text = "Show notification";
+            this.showNotificationCheckBox.UseVisualStyleBackColor = true;
+            // 
             // openInBrowserComboBox
             // 
             this.openInBrowserComboBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -207,9 +219,9 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             this.openInBrowserCheckBox.Name = "openInBrowserCheckBox";
             this.openInBrowserCheckBox.PropertyName = "AfterUploadOpenInBrowser";
             this.openInBrowserCheckBox.SectionName = "DownloadRu";
-            this.openInBrowserCheckBox.Size = new System.Drawing.Size(106, 17);
+            this.openInBrowserCheckBox.Size = new System.Drawing.Size(103, 17);
             this.openInBrowserCheckBox.TabIndex = 3;
-            this.openInBrowserCheckBox.Text = "Open in browser:";
+            this.openInBrowserCheckBox.Text = "Open in browser";
             this.openInBrowserCheckBox.UseVisualStyleBackColor = true;
             this.openInBrowserCheckBox.CheckedChanged += new System.EventHandler(this.openInBrowserCheckBox_CheckedChanged);
             // 
@@ -227,19 +239,6 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             this.anonymousAccessCheckBox.Text = "Use anonym access";
             this.anonymousAccessCheckBox.UseVisualStyleBackColor = true;
             // 
-            // showNotificationCheckBox
-            // 
-            this.showNotificationCheckBox.AutoSize = true;
-            this.showNotificationCheckBox.LanguageKey = "downloadru.label_AfterUploadShowNotification";
-            this.showNotificationCheckBox.Location = new System.Drawing.Point(6, 111);
-            this.showNotificationCheckBox.Name = "showNotificationCheckBox";
-            this.showNotificationCheckBox.PropertyName = "AfterUploadShowNotification";
-            this.showNotificationCheckBox.SectionName = "DownloadRu";
-            this.showNotificationCheckBox.Size = new System.Drawing.Size(107, 17);
-            this.showNotificationCheckBox.TabIndex = 6;
-            this.showNotificationCheckBox.Text = "Show notification";
-            this.showNotificationCheckBox.UseVisualStyleBackColor = true;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -253,7 +252,6 @@ namespace ScreenLoadDownloadRuPlugin.Forms
             this.Controls.Add(this.buttonCancel);
             this.Controls.Add(this.buttonOK);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
-            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.LanguageKey = "downloadru.settings_title";
             this.MaximizeBox = false;
             this.MinimizeBox = false;

@@ -40,6 +40,13 @@ namespace ScreenLoad
             InitializeComponent();
             _lastUsedTool = lastUsedTool;
 
+            //shapesButton.Paint += (sender, args) =>
+            //    {
+            //        args.Graphics.DrawLine(Pens.Gray, args.ClipRectangle.X + args.ClipRectangle.Width - 1,
+            //            args.ClipRectangle.Y + 6, args.ClipRectangle.X + args.ClipRectangle.Width - 1,
+            //            args.ClipRectangle.Y + args.ClipRectangle.Height - 6);
+            //    };
+
             //SuspendLayout();
             //SetStyle(ControlStyles.AllPaintingInWmPaint | ControlStyles.UserPaint | ControlStyles.DoubleBuffer |
             //         ControlStyles.OptimizedDoubleBuffer, true);
@@ -105,8 +112,13 @@ namespace ScreenLoad
             }
         }
 
-        public void SetColor(Color color)
+        public void SetColor(object colorObject)
         {
+            if (null == colorObject)
+                colorObject = Color.Transparent;
+
+            var color = (Color)colorObject;
+
             if (color == Color.Transparent)
                 color = BackColor;
 
@@ -241,11 +253,18 @@ namespace ScreenLoad
         }
         private void shapesButton_CheckedChanged(object sender, EventArgs e)
         {
-            var color = shapesButton.Checked ? SystemColors.ButtonHighlight : new Color();
-
-            shapesButton.FlatAppearance.BorderColor = color;
-            shapesExpandButton.BackColor = color;
-            shapesExpandButton.FlatAppearance.BorderColor = color;
+            if (shapesButton.Checked)
+            {
+                shapesButton.FlatAppearance.BorderColor = SystemColors.ButtonHighlight;
+                shapesExpandButton.BackColor = SystemColors.ButtonHighlight;
+                shapesExpandButton.FlatAppearance.BorderColor = SystemColors.ButtonHighlight;
+            }
+            else
+            {
+                shapesButton.FlatAppearance.BorderColor = SystemColors.Control;
+                shapesExpandButton.BackColor = new Color();
+                shapesExpandButton.FlatAppearance.BorderColor = SystemColors.Control;
+            }
         }
 
         private void shapesExpandButton_MouseDown(object sender, MouseEventArgs e)

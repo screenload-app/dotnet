@@ -415,6 +415,7 @@
       <SubType>Form</SubType>
     </Compile>
     <None Include="packages.config" />
+    <None Include="Resources\AboutScreenLoad.en-US.rtf" />
     <None Include="Resources\AboutScreenLoad.ru-RU.rtf" />
   </ItemGroup>
   <ItemGroup>

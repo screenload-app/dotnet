@@ -2028,7 +2028,42 @@ namespace ScreenLoad.Drawing
 
 				switch (k)
 				{
-					case Keys.Left:
+                    case Keys.Add | Keys.Control:
+                    case Keys.Subtract | Keys.Control:
+
+                        var step = (k & Keys.Add) == Keys.Add ? 1 : -1;
+
+                        switch (DrawingMode)
+                        {
+                            case DrawingModes.Rect:
+                            case DrawingModes.Ellipse:
+                            case DrawingModes.Line:
+                            case DrawingModes.Arrow:
+                            case DrawingModes.Path:
+                            case DrawingModes.Highlight:
+                                int thickness = (int) FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value;
+                                thickness += step;
+
+                                if (thickness < 0)
+                                    thickness = 0;
+
+                                FieldAggregator.GetField(FieldType.LINE_THICKNESS).Value = thickness;
+                                break;
+                            case DrawingModes.Text:
+                            {
+                                float textSize = (float) FieldAggregator.GetField(FieldType.FONT_SIZE).Value;
+                                textSize += step;
+
+                                if (textSize <= 0)
+                                    textSize = 1;
+
+                                FieldAggregator.GetField(FieldType.FONT_SIZE).Value = textSize;
+                            }
+                                break;
+                        }
+
+                        break;
+                    case Keys.Left:
 					case Keys.Left | Keys.Shift:
 						moveBy = new Point(-px, 0);
 						break;
@@ -2062,10 +2097,10 @@ namespace ScreenLoad.Drawing
 					case Keys.Escape:
 						ConfirmSelectedConfirmableElements(false);
 						break;
-					/*case Keys.Delete:
-						RemoveSelectedElements();
-						break;*/
-					default:
+                    case Keys.Delete:
+                        RemoveSelectedElements();
+                        break;
+                    default:
 						return false;
 				}
 				if (!Point.Empty.Equals(moveBy))
