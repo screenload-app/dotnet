@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
-  <version type="release" number="2.0.1.0" file="ScreenLoad-2.0.1.0.exe">
+  <version type="release" number="2.0.2.0" file="ScreenLoad-2.0.2.0.exe">
     <info locale="ru-RU">
-      <![CDATA[Версия 2.0.1
+      <![CDATA[Версия 2.0.2
 1. Добавлен режим быстрого редактирования. Теперь после захвата части или всего экрана можно изменить область захвата: переместить или изменить размер области, произвести первичное редактирование. В режиме быстрого редактирования доступны инструменты: стрелка, карандаш, маркер, линия, прямоугольник, эллипс, текст, размытие и счетчик. Сохранить изображение или отправить его в облако download.ru можно прямо из быстрого редактора.
 2. Улучшен захват экрана — теперь область захвата не блекнет не зависимо от фона. Цвет области захвата можно задать в настройках.
 3. Интеграция с бесплатным сервисом для хранения файлов — Download.Ru. Сразу после загрузки скриншота вы можете получить ссылку на изображение для использования в сторонних ресурсах или поделиться ей в соц. сетях.
@@ -13,7 +13,7 @@
 7. Переведено на русский язык то, что оставалось не переведённым. Системные сообщения дополнены расширенной информацией.]]>
     </info>
     <info locale="en-US">
-      <![CDATA[Version 2.0.1
+      <![CDATA[Version 2.0.2
 1. Quick edit mode has been added. Now, after capturing part or all of the screen, you can change the capture area: move or resize the area, and perform initial editing. The following tools are available in the quick edit mode: arrow, pencil, marker, line, rectangle, ellipse, text, blur and counter. You can save the image or send it to the download.ru cloud directly from the quick editor.
 2. Screen capture feature has been improved - now the capture area does not fade regardless of the background. The color of the capture area can be configured in the settings.
 3. Integration with a free service for storing files - Download.Ru. Immediately after loading the screenshot, you can get a link to the image for use in third-party resources or sharing it in the social networks.

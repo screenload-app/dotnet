@@ -21,10 +21,15 @@ namespace ScreenLoad
             var captureCopy = new Capture((Image) capture.Image.Clone())
             {
                 CaptureDetails = capture.CaptureDetails,
-                CursorVisible = capture.CursorVisible,
-                CursorLocation = capture.CursorLocation,
-                Cursor = (Icon) capture.Cursor.Clone()
+                
             };
+
+            if (null != capture.Cursor)
+            {
+                captureCopy.CursorVisible = capture.CursorVisible;
+                captureCopy.CursorLocation = capture.CursorLocation;
+                captureCopy.Cursor = (Icon) capture.Cursor.Clone();
+            }
 
             var surface = new Surface(captureCopy)
             {
