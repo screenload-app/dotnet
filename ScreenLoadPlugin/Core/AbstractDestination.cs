@@ -130,6 +130,15 @@ namespace ScreenLoadPlugin.Core
             }
         }
 
+        public virtual Image GetImage(ImageSize imageSize)
+        {
+            if (null != DisplayIcon)
+                return new Icon(DisplayIcon, imageSize == ImageSize.Default ? new Size(16, 16) : new Size(32, 32))
+                    .ToBitmap();
+
+            return DisplayImage;
+        }
+
         public abstract ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface,
             ICaptureDetails captureDetails);
 

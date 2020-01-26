@@ -26,6 +26,7 @@ using ScreenLoad.Plugin;
 using ScreenLoadDownloadRuPlugin.Properties;
 using ScreenLoadPlugin.Core;
 using log4net;
+using System.Net;
 
 namespace ScreenLoadDownloadRuPlugin
 {
@@ -75,7 +76,7 @@ namespace ScreenLoadDownloadRuPlugin
             try
             {
                 uploadUrl = _plugin.Upload(captureDetails, surface);
-                exportMade = true;
+                exportMade = null != uploadUrl;
             }
             catch (Exception exception)
             {
@@ -83,7 +84,25 @@ namespace ScreenLoadDownloadRuPlugin
 
                 uploadUrl = null;
                 exportMade = false;
-                MessageBox.Show(Language.GetString(Constants.LanguagePrefix, LangKey.upload_failure) + @" " + exception.Message);
+
+                string message = exception.Message;
+
+                if (exception is WebException webException)
+                {
+                    switch (webException.Status)
+                    {
+                        case WebExceptionStatus.ConnectFailure:
+                        case WebExceptionStatus.NameResolutionFailure:
+                        case WebExceptionStatus.ConnectionClosed:
+                        case WebExceptionStatus.ReceiveFailure:
+                        case WebExceptionStatus.SendFailure:
+                        case WebExceptionStatus.Timeout:
+                            message = Language.GetString(Constants.LanguagePrefix, LangKey.internet_connection_failure);
+                            break;
+                    }
+                }
+
+                MessageBox.Show(Language.GetString(Constants.LanguagePrefix, LangKey.upload_failure) + @" " + message);
             }
 
             exportInformation.ExportMade = exportMade;

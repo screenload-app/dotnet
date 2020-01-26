@@ -26,8 +26,11 @@ using System.Windows.Forms;
 using ScreenLoadPlugin.Controls;
 
 namespace ScreenLoad.Controls {
-	public class ToolStripColorButton : ToolStripButton, INotifyPropertyChanged, IScreenLoadLanguageBindable {
-		public event PropertyChangedEventHandler PropertyChanged;
+	public class ToolStripColorButton : ToolStripButton, INotifyPropertyChanged, IScreenLoadLanguageBindable
+    {
+        private Image _imageCopy;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
 		[Category("ScreenLoad"), DefaultValue(null), Description("Specifies key of the language file to use when displaying the text.")]
 		public string LanguageKey {
@@ -35,9 +38,23 @@ namespace ScreenLoad.Controls {
 			set;
 		}
 
+        public bool Modification2 { get; set; }
+
 		private Color _selectedColor = Color.Transparent;
-		
-		public ToolStripColorButton() {
+
+        public override Image Image
+        {
+            get => base.Image;
+            set
+            {
+                if (null != value)
+                    _imageCopy = (Image) value.Clone();
+
+                base.Image = value;
+            }
+        }
+
+        public ToolStripColorButton() {
 			Click+= ColorButtonClick;
 		}
 
@@ -47,19 +64,34 @@ namespace ScreenLoad.Controls {
 				_selectedColor = value;
 
 				Brush brush;
-				if(value != Color.Transparent) {
-					brush = new SolidBrush(value);
-				} else {
-					brush = new HatchBrush(HatchStyle.Percent50, Color.White, Color.Gray);
-				}
+                if (value != Color.Transparent)
+                {
+                    brush = new SolidBrush(value);
+                }
+                else
+                {
+                    brush = Modification2
+                        ? Brushes.Transparent
+                        : new HatchBrush(HatchStyle.Percent50, Color.White, Color.Gray);
+                }
 
-				if (Image != null) {
-					using (Graphics graphics = Graphics.FromImage(Image)) {
-						graphics.FillRectangle(brush, new Rectangle(0,13,16,3));
-					}
-				}
+                if (Image != null)
+                {
+                    using (Graphics graphics = Graphics.FromImage(Image))
+                    {
+                        if (Modification2)
+                        {
+                            if (Brushes.Transparent == brush)
+                                Image = _imageCopy;
+                            else
+                                graphics.FillRectangle(brush, new Rectangle(0, 24, 32, 8));
+                        }
+                        else
+                            graphics.FillRectangle(brush, new Rectangle(0, 13, 16, 3));
+                    }
+                }
 
-				// cleanup GDI Object
+                // cleanup GDI Object
 				brush.Dispose();
 				Invalidate();
 			}

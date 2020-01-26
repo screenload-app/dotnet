@@ -12,6 +12,7 @@
     <AssemblyName>ScreenLoadDownloadRuPlugin</AssemblyName>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -105,9 +106,6 @@
   <ItemGroup>
     <Content Include="Languages\language_DownloadRuplugin-ru-RU.xml" />
     <Content Include="Languages\language_DownloadRuplugin-en-US.xml" />
-    <None Include="Resources\icon.ico" />
-    <None Include="Resources\16.png" />
-    <None Include="Resources\pluso.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ScreenLoadPlugin\ScreenLoadPlugin.csproj">

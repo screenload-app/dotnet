@@ -154,7 +154,7 @@ namespace ScreenLoadDownloadRuPlugin
             if (null == fileEntry)
                 return null;
 
-            if (fileEntry != null && _config.AfterUploadLinkToClipBoard)
+            if (_config.AfterUploadLinkToClipBoard)
             {
                 string clipboardUrl;
 

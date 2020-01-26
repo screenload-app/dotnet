@@ -73,6 +73,7 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="contextmenu_exit">Выход</resource>
 		<resource name="contextmenu_help">Справка</resource>
 		<resource name="contextmenu_openfile">Открыть изображение из файла</resource>
+    <resource name="contextmenu_openeditor">Открыть редактор изображений</resource>
 		<resource name="contextmenu_openrecentcapture">Открыть последнее место захвата</resource>
     <resource name="copyRecentUrlToolStripMenuItem">Копировать ссылку на последнее изображение</resource>
     <resource name="checkUpdatesToolStripMenuItem">Проверить обновления</resource>

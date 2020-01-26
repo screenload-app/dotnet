@@ -44,11 +44,10 @@ namespace ScreenLoad.Controls
                     CoreConfig.IconSize.Height, null);
             }
 
-            ToolStripItemImageRenderEventArgs clone = new ToolStripItemImageRenderEventArgs(e.Graphics, e.Item,
+            var clone = new ToolStripItemImageRenderEventArgs(e.Graphics, e.Item,
                 _scaledCheckbox, e.ImageRectangle);
 
             base.OnRenderItemCheck(clone);
         }
-
     }
 }

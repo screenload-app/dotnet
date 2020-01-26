@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
+  <version type="development" number="2.0.3.0" file="ScreenLoad-2.0.3.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.0.3
+1. Заменены иконки основного редактора (пока не все).
+2. Более понятный текст при отсутствии подключения к интернету.
+3. Не теряется скрин, если закрыта форма авторизации (или не произведен вход).
+4. Выделение не запоминаем как инструмент.
+5. Удаление по backspace.
+6. Устанавка размера надписи кнопками Ctrl + и Ctrl -.
+7. Короткая ссылка.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.0.3]]>
+    </info>
+  </version>
+  
   <version type="release" number="2.0.2.0" file="ScreenLoad-2.0.2.0.exe">
     <info locale="ru-RU">
       <![CDATA[Версия 2.0.2

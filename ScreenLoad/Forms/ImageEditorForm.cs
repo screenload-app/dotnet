@@ -90,13 +90,39 @@ namespace ScreenLoad {
 			ManualLanguageApply = true;
 			InitializeComponent();
 
-			Load += delegate {
-				var thread = new Thread(AddDestinations)
-				{
-					Name = "add destinations"
-				};
-				thread.Start();
-			};
+            menuStrip1.SuspendLayout();
+            menuStrip1.ImageScalingSize = coreConfiguration.IconSize;
+            menuStrip1.ResumeLayout(true);
+
+            toolsToolStrip.SuspendLayout();
+            foreach (ToolStripItem item in toolsToolStrip.Items)
+            {
+                item.Padding = new Padding(3, 3, 3, 3);
+            }
+            toolsToolStrip.ResumeLayout(true);
+
+            destinationsToolStrip.SuspendLayout();
+            foreach (ToolStripItem item in destinationsToolStrip.Items)
+            {
+                item.Margin = new Padding(3, 3, 3, 3);
+            }
+            destinationsToolStrip.ResumeLayout(true);
+
+            propertiesToolStrip.SuspendLayout();
+            foreach (ToolStripItem item in propertiesToolStrip.Items)
+            {
+                item.Margin = new Padding(3, 3, 3, 3);
+            }
+            propertiesToolStrip.ResumeLayout(true);
+
+            Load += delegate
+            {
+                var thread = new Thread(AddDestinations)
+                {
+                    Name = "add destinations"
+                };
+                thread.Start();
+            };
 
 			// Make sure the editor is placed on the same location as the last editor was on close
 			// But only if this still exists, else it will be reset (BUG-1812)
@@ -120,7 +146,7 @@ namespace ScreenLoad {
 			UpdateUi();
 
 			// Workaround: As the cursor is (mostly) selected on the surface a funny artifact is visible, this fixes it.
-			HideToolstripItems();
+			HideToolStripItems();
 		}
 
 		/// <summary>
@@ -159,9 +185,11 @@ namespace ScreenLoad {
 			{
 				_surface.TransparencyBackgroundBrush = new TextureBrush(backgroundForTransparency, WrapMode.Tile);
 
-				_surface.MovingElementChanged += delegate {
-					RefreshEditorControls();
-				};
+                _surface.MovingElementChanged += delegate
+                {
+                    RefreshEditorControls(); // TODO: $$$ ¬ этой точке скрываетс€ панель (решить как делать)...
+                };
+
 				_surface.DrawingModeChanged += surface_DrawingModeChanged;
 				_surface.SurfaceSizeChanged += SurfaceSizeChanged;
 				_surface.SurfaceMessage += SurfaceMessageReceived;
@@ -266,74 +294,90 @@ namespace ScreenLoad {
 			});
 		}
 
-		private void AddDestinationButton(IDestination toolstripDestination) {
-			if (toolstripDestination.IsDynamic) {
-				ToolStripSplitButton destinationButton = new ScreenLoadToolStripSplitButton
+        private void AddDestinationButton(IDestination destination)
+        {
+            if (destination.IsDynamic)
+            {
+                var destinationButton = new ScreenLoadToolStripSplitButton
                 {
-					DisplayStyle = ToolStripItemDisplayStyle.Image,
-					Size = new Size(23, 22),
-					Text = toolstripDestination.Description,
-					Image = toolstripDestination.DisplayImage
-				};
-				//ToolStripDropDownButton destinationButton = new ToolStripDropDownButton();
-
-				ToolStripMenuItem defaultItem = new ScreenLoadToolStripMenuItem
-				{
-					Tag = toolstripDestination,
-                    Image = toolstripDestination.DisplayImage,
-                    Text = toolstripDestination.Description
+                    DisplayStyle = ToolStripItemDisplayStyle.Image,
+                    Text = destination.Description,
+                    Margin = new Padding(3, 3, 3, 3)
                 };
-				defaultItem.Click += delegate {
-					toolstripDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
-				};
-				
-				// The ButtonClick, this is for the icon, gets the current default item
-				destinationButton.ButtonClick += delegate {
-					toolstripDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
-				};
-				
-				// Generate the entries for the drop down
-				destinationButton.DropDownOpening += delegate
-				{
-					ClearItems(destinationButton.DropDownItems);
-					destinationButton.DropDownItems.Add(defaultItem);
 
-					List<IDestination> subDestinations = new List<IDestination>();
-					subDestinations.AddRange(toolstripDestination.DynamicDestinations());
-					if (subDestinations.Count > 0) {
-						subDestinations.Sort();
-						foreach(IDestination subDestination in subDestinations) {
-							IDestination closureFixedDestination = subDestination;
-							ToolStripMenuItem destinationMenuItem = new ScreenLoadToolStripMenuItem
-							{
-								Tag = closureFixedDestination,
-								Image = closureFixedDestination.DisplayImage,
+                destinationButton.Image = destination.GetImage(ImageSize.Large);
+
+                //ToolStripDropDownButton destinationButton = new ToolStripDropDownButton();
+
+                ToolStripMenuItem defaultItem = new ScreenLoadToolStripMenuItem
+                {
+                    Tag = destination,
+                    Image = destination.DisplayImage,
+                    Text = destination.Description
+                };
+
+                defaultItem.Click += delegate { destination.ExportCapture(true, _surface, _surface.CaptureDetails); };
+
+                // The ButtonClick, this is for the icon, gets the current default item
+                destinationButton.ButtonClick += delegate
+                {
+                    destination.ExportCapture(true, _surface, _surface.CaptureDetails);
+                };
+
+                // Generate the entries for the drop down
+                destinationButton.DropDownOpening += delegate
+                {
+                    ClearItems(destinationButton.DropDownItems);
+                    destinationButton.DropDownItems.Add(defaultItem);
+
+                    List<IDestination> subDestinations = new List<IDestination>();
+                    subDestinations.AddRange(destination.DynamicDestinations());
+                    if (subDestinations.Count > 0)
+                    {
+                        subDestinations.Sort();
+                        foreach (IDestination subDestination in subDestinations)
+                        {
+                            IDestination closureFixedDestination = subDestination;
+                            ToolStripMenuItem destinationMenuItem = new ScreenLoadToolStripMenuItem
+                            {
+                                Tag = closureFixedDestination,
+                                Image = closureFixedDestination.DisplayImage,
                                 Text = closureFixedDestination.Description
                             };
-							destinationMenuItem.Click += delegate {
-								closureFixedDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
-							};
-							destinationButton.DropDownItems.Add(destinationMenuItem);
-						}
-					}
-				};
+                            destinationMenuItem.Click += delegate
+                            {
+                                closureFixedDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
+                            };
+                            destinationButton.DropDownItems.Add(destinationMenuItem);
+                        }
+                    }
+                };
 
-				destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16), destinationButton);
-				
-			} else {
-                ScreenLoadToolStripButton destinationButton = new ScreenLoadToolStripButton();
-				destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16), destinationButton);
-				destinationButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
-				destinationButton.Size = new Size(23, 22);
-				destinationButton.Text = toolstripDestination.Description;
-				destinationButton.Image = toolstripDestination.DisplayImage;
-				destinationButton.Click += delegate {
-					toolstripDestination.ExportCapture(true, _surface, _surface.CaptureDetails);
-				};
-			}
-		}
-		
-		/// <summary>
+                destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16),
+                    destinationButton);
+
+            }
+            else
+            {
+                var destinationButton = new ScreenLoadToolStripButton
+                {
+                    Margin = new Padding(3, 3, 3, 3)
+                };
+
+                destinationsToolStrip.Items.Insert(destinationsToolStrip.Items.IndexOf(toolStripSeparator16),
+                    destinationButton);
+                destinationButton.DisplayStyle = ToolStripItemDisplayStyle.Image;
+                destinationButton.Text = destination.Description;
+                destinationButton.Image = destination.GetImage(ImageSize.Large);
+
+                destinationButton.Click += delegate
+                {
+                    destination.ExportCapture(true, _surface, _surface.CaptureDetails);
+                };
+            }
+        }
+
+        /// <summary>
 		/// According to some information I found, the clear doesn't work correctly when the shortcutkeys are set?
 		/// This helper method takes care of this.
 		/// </summary>
@@ -1031,108 +1075,139 @@ namespace ScreenLoad {
             new BidirectionalBinding(counterUpDown, "Value", _surface, "CounterStart", DecimalIntConverter.GetInstance(), NotNullValidator.GetInstance());
         }
 
-		/// <summary>
-		/// shows/hides field controls (2nd toolbar on top) depending on fields of selected elements
-		/// </summary>
-		private void RefreshFieldControls() {
-			propertiesToolStrip.SuspendLayout();
-			if(_surface.HasSelectedElements || _surface.DrawingMode != DrawingModes.None) {
-				FieldAggregator props = _surface.FieldAggregator;
-				btnFillColor.Visible = props.HasFieldValue(FieldType.FILL_COLOR);
-				btnLineColor.Visible = props.HasFieldValue(FieldType.LINE_COLOR);
-				lineThicknessLabel.Visible = lineThicknessUpDown.Visible = props.HasFieldValue(FieldType.LINE_THICKNESS);
-				blurRadiusLabel.Visible = blurRadiusUpDown.Visible = props.HasFieldValue(FieldType.BLUR_RADIUS);
-				previewQualityLabel.Visible = previewQualityUpDown.Visible = props.HasFieldValue(FieldType.PREVIEW_QUALITY);
-				magnificationFactorLabel.Visible = magnificationFactorUpDown.Visible = props.HasFieldValue(FieldType.MAGNIFICATION_FACTOR);
-				pixelSizeLabel.Visible = pixelSizeUpDown.Visible = props.HasFieldValue(FieldType.PIXEL_SIZE);
-				brightnessLabel.Visible = brightnessUpDown.Visible = props.HasFieldValue(FieldType.BRIGHTNESS);
-				arrowHeadsLabel.Visible = arrowHeadsDropDownButton.Visible = props.HasFieldValue(FieldType.ARROWHEADS);
-				fontFamilyComboBox.Visible = props.HasFieldValue(FieldType.FONT_FAMILY);
-				fontSizeLabel.Visible = fontSizeUpDown.Visible = props.HasFieldValue(FieldType.FONT_SIZE);
-				fontBoldButton.Visible = props.HasFieldValue(FieldType.FONT_BOLD);
-				fontItalicButton.Visible = props.HasFieldValue(FieldType.FONT_ITALIC);
-				textHorizontalAlignmentButton.Visible = props.HasFieldValue(FieldType.TEXT_HORIZONTAL_ALIGNMENT);
-				textVerticalAlignmentButton.Visible = props.HasFieldValue(FieldType.TEXT_VERTICAL_ALIGNMENT);
-				shadowButton.Visible = props.HasFieldValue(FieldType.SHADOW);
-				counterLabel.Visible = counterUpDown.Visible = props.HasFieldValue(FieldType.FLAGS)
-					&& ((FieldFlag)props.GetFieldValue(FieldType.FLAGS) & FieldFlag.COUNTER) == FieldFlag.COUNTER;
-				btnConfirm.Visible = btnCancel.Visible = props.HasFieldValue(FieldType.FLAGS)
-					&& ((FieldFlag)props.GetFieldValue(FieldType.FLAGS) & FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE;
+        /// <summary>
+        /// shows/hides field controls (2nd toolbar on top) depending on fields of selected elements
+        /// </summary>
+        private void RefreshFieldControls()
+        {
+            panel2.SuspendLayout();
+            propertiesToolStrip.SuspendLayout();
 
-				obfuscateModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_OBFUSCATE);
-				highlightModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_HIGHLIGHT);
-			} else {
-				HideToolstripItems();
-			}
-			propertiesToolStrip.ResumeLayout();
-		}
-		
-		private void HideToolstripItems() {
-			foreach(ToolStripItem toolStripItem in propertiesToolStrip.Items) {
-				toolStripItem.Visible = false;
-			}
-		}
-		
-		/// <summary>
-		/// refreshes all editor controls depending on selected elements and their fields
-		/// </summary>
-		private void RefreshEditorControls() {
-			int stepLabels = _surface.CountStepLabels(null);
-			Image icon;
-			if (stepLabels <= 20) {
-				icon = (Image)resources.GetObject($"btnStepLabel{stepLabels:00}.Image");
-			} else {
-				icon = (Image)resources.GetObject("btnStepLabel20+.Image");
-			}
-			btnStepLabel.Image = icon;
-			addCounterToolStripMenuItem.Image = icon;
+            panel2.Visible = true;
 
-			FieldAggregator props = _surface.FieldAggregator;
-			// if a confirmable element is selected, we must disable most of the controls
-			// since we demand confirmation or cancel for confirmable element
-			if (props.HasFieldValue(FieldType.FLAGS) && ((FieldFlag)props.GetFieldValue(FieldType.FLAGS) & FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE)
-			{
-				// disable most controls
-				if (!_controlsDisabledDueToConfirmable) {
-					ToolStripItemEndisabler.Disable(menuStrip1);
-					ToolStripItemEndisabler.Disable(destinationsToolStrip);
-					ToolStripItemEndisabler.Disable(toolsToolStrip);
-					ToolStripItemEndisabler.Enable(closeToolStripMenuItem);
-					ToolStripItemEndisabler.Enable(helpToolStripMenuItem);
-					ToolStripItemEndisabler.Enable(aboutToolStripMenuItem);
-					ToolStripItemEndisabler.Enable(preferencesToolStripMenuItem);
-					_controlsDisabledDueToConfirmable = true;
-				}
-			} else if(_controlsDisabledDueToConfirmable) {
-				// re-enable disabled controls, confirmable element has either been confirmed or cancelled
-				ToolStripItemEndisabler.Enable(menuStrip1);
-				ToolStripItemEndisabler.Enable(destinationsToolStrip);
-				ToolStripItemEndisabler.Enable(toolsToolStrip);
-				_controlsDisabledDueToConfirmable = false;
-			}
-			
-			// en/disable controls depending on whether an element is selected at all
-			UpdateClipboardSurfaceDependencies();
-			UpdateUndoRedoSurfaceDependencies();
-			
-			// en/disablearrage controls depending on hierarchy of selected elements
-			bool actionAllowedForSelection = _surface.HasSelectedElements && !_controlsDisabledDueToConfirmable;
-			bool push = actionAllowedForSelection && _surface.CanPushSelectionDown();
-			bool pull = actionAllowedForSelection && _surface.CanPullSelectionUp();
-			arrangeToolStripMenuItem.Enabled = push || pull;
-			if (arrangeToolStripMenuItem.Enabled) {
-				upToTopToolStripMenuItem.Enabled = pull;
-				upOneLevelToolStripMenuItem.Enabled = pull;
-				downToBottomToolStripMenuItem.Enabled = push;
-				downOneLevelToolStripMenuItem.Enabled = push;
-			}
-			
-			// finally show/hide field controls depending on the fields of selected elements
-			RefreshFieldControls();
-		}
+            if (_surface.HasSelectedElements || _surface.DrawingMode != DrawingModes.None)
+            {
+                FieldAggregator props = _surface.FieldAggregator;
+                btnFillColor.Visible = props.HasFieldValue(FieldType.FILL_COLOR);
+                btnLineColor.Visible = props.HasFieldValue(FieldType.LINE_COLOR);
+                lineThicknessLabel.Visible =
+                    lineThicknessUpDown.Visible = props.HasFieldValue(FieldType.LINE_THICKNESS);
+                blurRadiusLabel.Visible = blurRadiusUpDown.Visible = props.HasFieldValue(FieldType.BLUR_RADIUS);
+                previewQualityLabel.Visible =
+                    previewQualityUpDown.Visible = props.HasFieldValue(FieldType.PREVIEW_QUALITY);
+                magnificationFactorLabel.Visible = magnificationFactorUpDown.Visible =
+                    props.HasFieldValue(FieldType.MAGNIFICATION_FACTOR);
+                pixelSizeLabel.Visible = pixelSizeUpDown.Visible = props.HasFieldValue(FieldType.PIXEL_SIZE);
+                brightnessLabel.Visible = brightnessUpDown.Visible = props.HasFieldValue(FieldType.BRIGHTNESS);
+                arrowHeadsLabel.Visible = arrowHeadsDropDownButton.Visible = props.HasFieldValue(FieldType.ARROWHEADS);
+                fontFamilyComboBox.Visible = props.HasFieldValue(FieldType.FONT_FAMILY);
+                fontSizeLabel.Visible = fontSizeUpDown.Visible = props.HasFieldValue(FieldType.FONT_SIZE);
+                fontBoldButton.Visible = props.HasFieldValue(FieldType.FONT_BOLD);
+                fontItalicButton.Visible = props.HasFieldValue(FieldType.FONT_ITALIC);
+                textHorizontalAlignmentButton.Visible = props.HasFieldValue(FieldType.TEXT_HORIZONTAL_ALIGNMENT);
+                textVerticalAlignmentButton.Visible = props.HasFieldValue(FieldType.TEXT_VERTICAL_ALIGNMENT);
+                shadowButton.Visible = props.HasFieldValue(FieldType.SHADOW);
+                counterLabel.Visible = counterUpDown.Visible = props.HasFieldValue(FieldType.FLAGS)
+                                                               && ((FieldFlag) props.GetFieldValue(FieldType.FLAGS) &
+                                                                   FieldFlag.COUNTER) == FieldFlag.COUNTER;
+                btnConfirm.Visible = btnCancel.Visible = props.HasFieldValue(FieldType.FLAGS)
+                                                         && ((FieldFlag) props.GetFieldValue(FieldType.FLAGS) &
+                                                             FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE;
 
+                obfuscateModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_OBFUSCATE);
+                highlightModeButton.Visible = props.HasFieldValue(FieldType.PREPARED_FILTER_HIGHLIGHT);
+            }
+            else
+                HideToolStripItems();
 
-		private void ArrowHeadsToolStripMenuItemClick(object sender, EventArgs e) {
+            bool hasItems = false;
+
+            foreach (ToolStripItem toolStripItem in propertiesToolStrip.Items)
+            {
+                if (toolStripItem.Visible)
+                    hasItems = true;
+            }
+
+            panel2.Visible = hasItems;
+            
+            propertiesToolStrip.ResumeLayout();
+            panel2.ResumeLayout();
+        }
+
+        private void HideToolStripItems()
+        {
+            foreach (ToolStripItem toolStripItem in propertiesToolStrip.Items)
+            {
+                toolStripItem.Visible = false;
+            }
+        }
+
+        /// <summary>
+        /// refreshes all editor controls depending on selected elements and their fields
+        /// </summary>
+        private void RefreshEditorControls()
+        {
+            //int stepLabels = _surface.CountStepLabels(null);
+
+            //Image icon;
+            //if (stepLabels <= 20) {
+            //	icon = (Image)resources.GetObject($"btnStepLabel{stepLabels:00}.Image");
+            //} else {
+            //	icon = (Image)resources.GetObject("btnStepLabel20+.Image");
+            //}
+            //btnStepLabel.Image = icon;
+            //addCounterToolStripMenuItem.Image = icon;
+
+            FieldAggregator props = _surface.FieldAggregator;
+            // if a confirmable element is selected, we must disable most of the controls
+            // since we demand confirmation or cancel for confirmable element
+            if (props.HasFieldValue(FieldType.FLAGS) &&
+                ((FieldFlag) props.GetFieldValue(FieldType.FLAGS) & FieldFlag.CONFIRMABLE) == FieldFlag.CONFIRMABLE)
+            {
+                // disable most controls
+                if (!_controlsDisabledDueToConfirmable)
+                {
+                    ToolStripItemEndisabler.Disable(menuStrip1);
+                    ToolStripItemEndisabler.Disable(destinationsToolStrip);
+                    ToolStripItemEndisabler.Disable(toolsToolStrip);
+                    ToolStripItemEndisabler.Enable(closeToolStripMenuItem);
+                    ToolStripItemEndisabler.Enable(helpToolStripMenuItem);
+                    ToolStripItemEndisabler.Enable(aboutToolStripMenuItem);
+                    ToolStripItemEndisabler.Enable(preferencesToolStripMenuItem);
+                    _controlsDisabledDueToConfirmable = true;
+                }
+            }
+            else if (_controlsDisabledDueToConfirmable)
+            {
+                // re-enable disabled controls, confirmable element has either been confirmed or cancelled
+                ToolStripItemEndisabler.Enable(menuStrip1);
+                ToolStripItemEndisabler.Enable(destinationsToolStrip);
+                ToolStripItemEndisabler.Enable(toolsToolStrip);
+                _controlsDisabledDueToConfirmable = false;
+            }
+
+            // en/disable controls depending on whether an element is selected at all
+            UpdateClipboardSurfaceDependencies();
+            UpdateUndoRedoSurfaceDependencies();
+
+            // en/disablearrage controls depending on hierarchy of selected elements
+            bool actionAllowedForSelection = _surface.HasSelectedElements && !_controlsDisabledDueToConfirmable;
+            bool push = actionAllowedForSelection && _surface.CanPushSelectionDown();
+            bool pull = actionAllowedForSelection && _surface.CanPullSelectionUp();
+            arrangeToolStripMenuItem.Enabled = push || pull;
+            if (arrangeToolStripMenuItem.Enabled)
+            {
+                upToTopToolStripMenuItem.Enabled = pull;
+                upOneLevelToolStripMenuItem.Enabled = pull;
+                downToBottomToolStripMenuItem.Enabled = push;
+                downOneLevelToolStripMenuItem.Enabled = push;
+            }
+
+            // finally show/hide field controls depending on the fields of selected elements
+            RefreshFieldControls();
+        }
+
+        private void ArrowHeadsToolStripMenuItemClick(object sender, EventArgs e) {
 			_surface.FieldAggregator.GetField(FieldType.ARROWHEADS).Value = (ArrowContainer.ArrowHeadCombination)((ToolStripMenuItem)sender).Tag;
 		}
 

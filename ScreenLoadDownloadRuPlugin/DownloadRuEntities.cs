@@ -72,35 +72,36 @@ namespace ScreenLoadDownloadRuPlugin
                 if (null == _directLink)
                 {
                     var secureUrl = $"https://download.ru{SecureUrl}";
+                    _directLink = secureUrl;
 
-                    var uri = new Uri(secureUrl);
+                    //var uri = new Uri(secureUrl);
 
-                    var queryParameters = HttpUtility.ParseQueryString(uri.Query);
-                    queryParameters["inline"] = "true";
+                    //var queryParameters = HttpUtility.ParseQueryString(uri.Query);
+                    //queryParameters["inline"] = "true";
 
-                    var queryString = new StringBuilder();
+                    //var queryString = new StringBuilder();
 
-                    bool first = true;
+                    //bool first = true;
 
-                    foreach (string queryParameter in queryParameters)
-                    {
-                        var value = queryParameters[queryParameter];
+                    //foreach (string queryParameter in queryParameters)
+                    //{
+                    //    var value = queryParameters[queryParameter];
 
-                        value = HttpUtility.UrlEncode(value, Encoding.UTF8);
+                    //    value = HttpUtility.UrlEncode(value, Encoding.UTF8);
 
-                        if (first)
-                            first = false;
-                        else
-                            queryString.Append("&");
+                    //    if (first)
+                    //        first = false;
+                    //    else
+                    //        queryString.Append("&");
 
-                        queryString.Append(queryParameter);
-                        queryString.Append("=");
-                        queryString.Append(value);
-                    }
+                    //    queryString.Append(queryParameter);
+                    //    queryString.Append("=");
+                    //    queryString.Append(value);
+                    //}
 
-                    var uriBuilder = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath);
+                    //var uriBuilder = new UriBuilder(uri.Scheme, uri.Host, uri.Port, uri.AbsolutePath);
 
-                    _directLink = $"{uriBuilder.Uri.AbsoluteUri}?{queryString}";
+                    //_directLink = $"{uriBuilder.Uri.AbsoluteUri}?{queryString}";
                 }
 
                 return _directLink;

@@ -71,9 +71,6 @@ namespace ScreenLoad
             switch (_lastUsedTool)
             {
                 case QuickImageEditorTool.Select:
-                    selectButton.Checked = true;
-                    SelectButton_Click(this, null);
-                    break;
                 case QuickImageEditorTool.Arrow:
                     arrowButton.Checked = true;
                     ArrowButton_Click(this, null);

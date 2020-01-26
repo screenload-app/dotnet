@@ -61,7 +61,8 @@ namespace ScreenLoad {
 			this.toolStripOtherSourcesSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_captureclipboard = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
 			this.contextmenu_openfile = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
-			this.toolStripOpenFolderSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.contextmenu_openeditor = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.toolStripOpenFolderSeparator = new System.Windows.Forms.ToolStripSeparator();
 			this.contextmenu_openrecentcapture = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.copyRecentUrlToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.toolStripSettingsSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -92,7 +93,8 @@ namespace ScreenLoad {
 									this.toolStripOtherSourcesSeparator,
 									this.contextmenu_captureclipboard,
 									this.contextmenu_openfile,
-									this.toolStripOpenFolderSeparator,
+                                    this.contextmenu_openeditor,
+                                    this.toolStripOpenFolderSeparator,
 									this.contextmenu_openrecentcapture,
                                     this.copyRecentUrlToolStripMenuItem,
 									this.toolStripSettingsSeparator,
@@ -168,11 +170,17 @@ namespace ScreenLoad {
 			// 
 			this.contextmenu_openfile.Icon = ((System.Drawing.Icon)(resources.GetObject("contextmenu_openfile.Icon")));
 			this.contextmenu_openfile.Name = "contextmenu_openfile";
-			this.contextmenu_openfile.Click += new System.EventHandler(this.OpenFileToolStripMenuItemClick);
-			// 
-			// toolStripOpenFolderSeparator
-			// 
-			this.toolStripOpenFolderSeparator.Name = "toolStripOpenFolderSeparator";
+            this.contextmenu_openfile.Click += new System.EventHandler(this.OpenFileToolStripMenuItemClick);
+            // 
+            // contextmenu_openeditor
+            // 
+            this.contextmenu_openeditor.Icon = ((System.Drawing.Icon)(resources.GetObject("contextmenu_editor.Icon")));
+            this.contextmenu_openeditor.Name = "contextmenu_openeditor";
+            this.contextmenu_openeditor.Click += new System.EventHandler(this.OpenEditorToolStripMenuItemClick);
+            // 
+            // toolStripOpenFolderSeparator
+            // 
+            this.toolStripOpenFolderSeparator.Name = "toolStripOpenFolderSeparator";
 			// 
 			// contextmenu_openrecentcapture
 			// 
@@ -233,7 +241,7 @@ namespace ScreenLoad {
 			// backgroundWorkerTimer
 			// 
 			this.backgroundWorkerTimer.Enabled = true;
-            this.backgroundWorkerTimer.Interval = 5 * 1000;
+            this.backgroundWorkerTimer.Interval = 5000;
 			this.backgroundWorkerTimer.Tick += new System.EventHandler(this.BackgroundWorkerTimerTick);
 			// 
 			// MainForm
@@ -262,6 +270,7 @@ namespace ScreenLoad {
         private System.Windows.Forms.Timer backgroundWorkerTimer;
 		private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem contextmenu_captureie;
 		private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem contextmenu_openfile;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem contextmenu_openeditor;
         private System.Windows.Forms.ToolStripSeparator toolStripSettingsSeparator;
 		private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem contextmenu_captureclipboard;
 		private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem contextmenu_quicksettings;

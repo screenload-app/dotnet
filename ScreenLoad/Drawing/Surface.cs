@@ -168,6 +168,7 @@ namespace ScreenLoad.Drawing
         /// </summary>
         [NonSerialized]
         private readonly Stack<IMemento> _undoStack = new Stack<IMemento>();
+
         [NonSerialized]
 		private readonly Stack<IMemento> _redoStack = new Stack<IMemento>();
 
@@ -683,17 +684,18 @@ namespace ScreenLoad.Drawing
             }
 
             if (_inUndoRedo)
-			{
 				throw new InvalidOperationException("Invoking do within an undo/redo action.");
-			}
+
 			if (memento != null)
 			{
 				bool allowPush = true;
+
 				if (_undoStack.Count > 0 && allowMerge)
 				{
 					// Check if merge is possible
 					allowPush = !_undoStack.Peek().Merge(memento);
 				}
+
 				if (allowPush)
 				{
 					// Clear the redo-stack and dispose
@@ -701,6 +703,7 @@ namespace ScreenLoad.Drawing
 					{
 						_redoStack.Pop().Dispose();
 					}
+
 					_undoStack.Push(memento);
 
                     if (1 == _undoStack.Count)
@@ -708,6 +711,11 @@ namespace ScreenLoad.Drawing
                 }
 			}
 		}
+
+        public void ResetUndoStack()
+        {
+            _undoStack.Clear();
+        }
 
 		/// <summary>
 		/// This saves the elements of this surface to a stream.
@@ -2098,6 +2106,7 @@ namespace ScreenLoad.Drawing
 						ConfirmSelectedConfirmableElements(false);
 						break;
                     case Keys.Delete:
+                    case Keys.Back:
                         RemoveSelectedElements();
                         break;
                     default:

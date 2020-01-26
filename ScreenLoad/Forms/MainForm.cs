@@ -962,6 +962,26 @@ namespace ScreenLoad
             BeginInvoke((MethodInvoker)CaptureHelper.CaptureFile);
         }
 
+        private void OpenEditorToolStripMenuItemClick(object sender, EventArgs e)
+        {
+            var image = new Bitmap(800, 600);
+
+            using (var graphics = Graphics.FromImage(image))
+            using (var brush = new SolidBrush(Color.White))
+            {
+                graphics.FillRectangle(brush, 0, 0, image.Width, image.Height);
+            }
+
+            var surface = new Surface(image)
+            {
+                CaptureDetails = new CaptureDetails()
+            };
+
+            var imageEditorForm = new ImageEditorForm(surface, false);
+            imageEditorForm.Show();
+            imageEditorForm.Activate();
+        }
+
         private void CaptureFullScreenToolStripMenuItemClick(object sender, EventArgs e)
         {
             BeginInvoke((MethodInvoker) delegate { CaptureHelper.CaptureFullscreen(false, _conf.ScreenCaptureMode); });

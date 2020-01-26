@@ -25,23 +25,42 @@ using System.IO;
 using ScreenLoad.IniFile;
 using ScreenLoadPlugin.Core;
 
-namespace ExternalCommand {
-	public static class IconCache {
-		private static readonly ExternalCommandConfiguration config = IniConfig.GetIniSection<ExternalCommandConfiguration>();
-		private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(IconCache));
+namespace ExternalCommand
+{
+    public static class IconCache
+    {
+        private static readonly ExternalCommandConfiguration config =
+            IniConfig.GetIniSection<ExternalCommandConfiguration>();
 
-		public static Image IconForCommand(string commandName) {
-			Image icon = null;
-			if (commandName != null) {
-				if (config.Commandline.ContainsKey(commandName) && File.Exists(config.Commandline[commandName])) {
-					try {
-						icon = PluginUtils.GetCachedExeIcon(config.Commandline[commandName], 0);
-					} catch (Exception ex) {
-						LOG.Warn("Problem loading icon for " + config.Commandline[commandName], ex);
-					}
-				}
-			}
-			return icon;
-		}
-	}
+        private static readonly log4net.ILog LOG = log4net.LogManager.GetLogger(typeof(IconCache));
+
+        public static Image IconForCommand(string commandName, ImageSize? iconSize = null)
+        {
+            Image icon = null;
+
+            if (commandName != null)
+            {
+                if (config.Commandline.ContainsKey(commandName) && File.Exists(config.Commandline[commandName]))
+                {
+                    try
+                    {
+                        string iconPath = config.Commandline[commandName];
+                        const int iconIndex = 0;
+
+                        if (null != iconSize)
+                            icon = PluginUtils.GetExeIcon(iconPath, iconIndex,
+                                ImageSize.Default != iconSize);
+                        else
+                            icon = PluginUtils.GetCachedExeIcon(iconPath, iconIndex);
+                    }
+                    catch (Exception ex)
+                    {
+                        LOG.Warn("Problem loading icon for " + config.Commandline[commandName], ex);
+                    }
+                }
+            }
+
+            return icon;
+        }
+    }
 }

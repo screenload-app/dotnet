@@ -38,6 +38,7 @@
     <resource name="upload_failure">
       В процессе загрузки на сайт Download.Ru произошла ошибка:
     </resource>
+    <resource name="internet_connection_failure">проблема с доступом к ресурсу, проверьте интернет-подключение!</resource>
     <resource name="label_upload_format">
       Формат изображения
     </resource>

@@ -1,6 +1,6 @@
 ﻿#define ExeName "ScreenLoad"
-#define Version "2.0.2.0"
-#define FileVersion "2.0.2.0-local"
+#define Version "2.0.3.0"
+#define FileVersion "2.0.3.0-local"
 
 ; Include the scripts to install .NET Framework
 ; See http://www.codeproject.com/KB/install/dotnetfx_innosetup_instal.aspx

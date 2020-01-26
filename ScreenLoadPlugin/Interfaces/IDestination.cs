@@ -22,6 +22,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
+using ScreenLoadPlugin.Core;
 
 namespace ScreenLoad.Plugin {
 	public class ExportInformation {
@@ -92,6 +93,8 @@ namespace ScreenLoad.Plugin {
 		bool IsActive {
 			get;
 		}
+
+        Image GetImage(ImageSize imageSize);
 
 		/// <summary>
 		/// Return a menu item

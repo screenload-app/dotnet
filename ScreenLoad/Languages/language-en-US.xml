@@ -59,6 +59,7 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="contextmenu_exit">Exit</resource>
 		<resource name="contextmenu_help">Help</resource>
 		<resource name="contextmenu_openfile">Open image from file</resource>
+    <resource name="contextmenu_openeditor">Open image editor</resource>
 		<resource name="contextmenu_openrecentcapture">Open last capture location</resource>
     <resource name="copyRecentUrlToolStripMenuItem">Copy last saved url to clipboard</resource>
     <resource name="checkUpdatesToolStripMenuItem">Check for Updates Now</resource>

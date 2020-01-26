@@ -100,64 +100,83 @@ namespace ScreenLoadPlugin.Core {
 			return null;
 		}
 
-		/// <summary>
-		/// Get icon from resource files, from the cache.
-		/// Examples can be found here: https://diymediahome.org/windows-icons-reference-list-with-details-locations-images/
-		/// </summary>
-		/// <param name="path">path to the exe or dll</param>
-		/// <param name="index">index of the icon</param>
-		/// <returns>Bitmap with the icon or null if something happended</returns>
-		public static Image GetCachedExeIcon(string path, int index) {
-			string cacheKey = $"{path}:{index}";
-			Image returnValue;
-			lock (ExeIconCache)
-			{
-				if (ExeIconCache.TryGetValue(cacheKey, out returnValue))
-				{
-					return returnValue;
-				}
-				lock (ExeIconCache) {
-					if (ExeIconCache.TryGetValue(cacheKey, out returnValue))
-					{
-						return returnValue;
-					}
-					returnValue = GetExeIcon(path, index);
-					if (returnValue != null) {
-						ExeIconCache.Add(cacheKey, returnValue);
-					}
-				}
-			}
-			return returnValue;
-		}
+        /// <summary>
+        /// Get icon from resource files, from the cache.
+        /// Examples can be found here: https://diymediahome.org/windows-icons-reference-list-with-details-locations-images/
+        /// </summary>
+        /// <param name="path">path to the exe or dll</param>
+        /// <param name="index">index of the icon</param>
+        /// <returns>Bitmap with the icon or null if something happended</returns>
+        public static Image GetCachedExeIcon(string path, int index)
+        {
+            string cacheKey = $"{path}:{index}";
+            Image returnValue;
+            lock (ExeIconCache)
+            {
+                if (ExeIconCache.TryGetValue(cacheKey, out returnValue))
+                {
+                    return returnValue;
+                }
 
-		/// <summary>
-		/// Get icon for executable
-		/// </summary>
-		/// <param name="path">path to the exe or dll</param>
-		/// <param name="index">index of the icon</param>
-		/// <returns>Bitmap with the icon or null if something happended</returns>
-		private static Bitmap GetExeIcon(string path, int index) {
-			if (!File.Exists(path)) {
-				return null;
-			}
-			try {
-				using (Icon appIcon = ImageHelper.ExtractAssociatedIcon(path, index, CoreConfig.UseLargeIcons)) {
-					if (appIcon != null) {
-						return appIcon.ToBitmap();
-					}
-				}
-				using (Icon appIcon = Shell32.GetFileIcon(path, CoreConfig.UseLargeIcons ? Shell32.IconSize.Large : Shell32.IconSize.Small, false)) {
-					if (appIcon != null) {
-						return appIcon.ToBitmap();
-					}
-				}
-			} catch (Exception exIcon) {
-				Log.Error("error retrieving icon: ", exIcon);
-			}
-			return null;
-		}
+                lock (ExeIconCache)
+                {
+                    if (ExeIconCache.TryGetValue(cacheKey, out returnValue))
+                    {
+                        return returnValue;
+                    }
 
-		/// <summary>
+                    returnValue = GetExeIcon(path, index, CoreConfig.UseLargeIcons);
+                    if (returnValue != null)
+                    {
+                        ExeIconCache.Add(cacheKey, returnValue);
+                    }
+                }
+            }
+
+            return returnValue;
+        }
+
+        /// <summary>
+        /// Get icon for executable
+        /// </summary>
+        /// <param name="path">path to the exe or dll</param>
+        /// <param name="index">index of the icon</param>
+        /// <returns>Bitmap with the icon or null if something happended</returns>
+        public static Bitmap GetExeIcon(string path, int index, bool useLargeIcon)
+        {
+            if (!File.Exists(path))
+            {
+                return null;
+            }
+
+            try
+            {
+                using (Icon appIcon = ImageHelper.ExtractAssociatedIcon(path, index, useLargeIcon))
+                {
+                    if (appIcon != null)
+                    {
+                        return appIcon.ToBitmap();
+                    }
+                }
+
+                using (Icon appIcon = Shell32.GetFileIcon(path,
+                    useLargeIcon ? Shell32.IconSize.Large : Shell32.IconSize.Small, false))
+                {
+                    if (appIcon != null)
+                    {
+                        return appIcon.ToBitmap();
+                    }
+                }
+            }
+            catch (Exception exIcon)
+            {
+                Log.Error("error retrieving icon: ", exIcon);
+            }
+
+            return null;
+        }
+
+        /// <summary>
 		/// Helper method to add a MenuItem to the File MenuItem of an ImageEditor
 		/// </summary>
 		/// <param name="imageEditor"></param>

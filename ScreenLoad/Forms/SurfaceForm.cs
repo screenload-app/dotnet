@@ -37,6 +37,8 @@ namespace ScreenLoad
                 Modified = false
             };
 
+            surface.ResetUndoStack();
+
             Surface = surface;
 
             Surface.MouseWheel += (sender, args) =>
@@ -58,15 +60,30 @@ namespace ScreenLoad
 
         protected override bool ProcessKeyPreview(ref Message msg)
         {
-            if (Surface.KeysLocked)
-                return false;
+            //if (Surface.KeysLocked)
+            //    return false;
 
             return base.ProcessKeyPreview(ref msg);
         }
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (!Surface.KeysLocked && !Surface.ProcessCmdKey(keyData))
+            bool keysLocked;
+
+            switch (keyData)
+            {
+                // Не учитываем блокировку для клавиш изменения размера текста
+                // TODO $ Перенести в Surface?
+                case Keys.Add | Keys.Control:
+                case Keys.Subtract | Keys.Control:
+                    keysLocked = false;
+                    break;
+                default:
+                    keysLocked = Surface.KeysLocked;
+                    break;
+            }
+
+            if (!keysLocked && !Surface.ProcessCmdKey(keyData))
                 return base.ProcessCmdKey(ref msg, keyData);
 
             return false;

@@ -6,7 +6,7 @@
     <OutputType>Library</OutputType>
     <RootNamespace>ScreenLoadExternalCommandPlugin</RootNamespace>
     <AssemblyName>ScreenLoadExternalCommandPlugin</AssemblyName>
-    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <AllowUnsafeBlocks>False</AllowUnsafeBlocks>
     <NoStdLib>False</NoStdLib>

@@ -37,6 +37,7 @@
     <resource name="upload_failure">
       An error occured while uploading to Download.Ru:
     </resource>
+    <resource name="internet_connection_failure">problem accessing the resource, check your internet connection!</resource>
     <resource name="label_upload_format">
       Image format
     </resource>

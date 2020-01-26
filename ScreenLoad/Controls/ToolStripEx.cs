@@ -52,11 +52,13 @@ namespace ScreenLoad.Controls {
 			}
 		}
 
-		protected override void WndProc(ref Message m) {
-			base.WndProc(ref m);
-			if (_clickThrough && m.Msg == WM_MOUSEACTIVATE && m.Result == (IntPtr)NativeConstants.MA_ACTIVATEANDEAT) {
-				m.Result = (IntPtr)NativeConstants.MA_ACTIVATE;
-			}
-		}
-	}
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (_clickThrough && m.Msg == WM_MOUSEACTIVATE && m.Result == (IntPtr)NativeConstants.MA_ACTIVATEANDEAT)
+            {
+                m.Result = (IntPtr)NativeConstants.MA_ACTIVATE;
+            }
+        }
+    }
 }

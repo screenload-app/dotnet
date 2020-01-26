@@ -9,6 +9,7 @@ namespace ScreenLoadDownloadRuPlugin
         upload_success_and_copy_imagelink,
         upload_success_and_copy_pagelink,
         upload_failure,
+        internet_connection_failure,
         communication_wait,
         Configure,
         label_AfterUpload,

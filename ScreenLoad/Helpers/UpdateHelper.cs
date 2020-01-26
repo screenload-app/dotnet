@@ -424,14 +424,11 @@ namespace ScreenLoad.Helpers
             if (0 != millisecondsTimeout)
                 Thread.Sleep(millisecondsTimeout);
 
-            VersionInfo latestVersion;
-            VersionInfo latestStableVersion;
+            string versionHistoryText;
 
             using (var webClient = new WebClient())
             {
                 webClient.Encoding = Encoding.UTF8;
-
-                string versionHistoryText;
 
                 var versionHistoryUrl = BuildVersionHistoryUrl(configuration);
 
@@ -459,27 +456,27 @@ namespace ScreenLoad.Helpers
 
                     return UpdateCheckingResult.Error;
                 }
-
-                var xmlDocument = new XmlDocument();
-                xmlDocument.LoadXml(versionHistoryText);
-
-                VersionInfo SelectVersionInfo(bool stable)
-                {
-                    var xPath = stable ? "version[@type='release']" : "version";
-
-                    var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
-
-                    if (null == versionNodes)
-                        throw new InvalidOperationException("null == versionNodes");
-
-                    var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
-
-                    return versionInfoList.OrderByDescending(vi => vi.Version).First();
-                }
-
-                latestVersion = SelectVersionInfo(false);
-                latestStableVersion = SelectVersionInfo(true);
             }
+
+            var xmlDocument = new XmlDocument();
+            xmlDocument.LoadXml(versionHistoryText);
+
+            VersionInfo SelectVersionInfo(bool stable)
+            {
+                var xPath = stable ? "version[@type='release']" : "version";
+
+                var versionNodes = xmlDocument.DocumentElement?.SelectNodes(xPath);
+
+                if (null == versionNodes)
+                    throw new InvalidOperationException("null == versionNodes");
+
+                var versionInfoList = versionNodes.Cast<XmlNode>().Select(vn => new VersionInfo(vn));
+
+                return versionInfoList.OrderByDescending(vi => vi.Version).First();
+            }
+
+            var latestVersion = SelectVersionInfo(false);
+            var latestStableVersion = SelectVersionInfo(true);
 
             lock (LockObject)
             {

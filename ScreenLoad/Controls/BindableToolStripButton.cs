@@ -20,6 +20,7 @@
  */
 using System;
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 using ScreenLoadPlugin.Controls;
 
@@ -36,7 +37,12 @@ namespace ScreenLoad.Controls {
 			set;
 		}
 
-		public BindableToolStripButton()
+        public Icon Icon
+        {
+            set => Image = new Icon(value, Owner.ImageScalingSize).ToBitmap();
+        }
+
+        public BindableToolStripButton()
 		{
 			CheckedChanged += BindableToolStripButton_CheckedChanged;
 		}

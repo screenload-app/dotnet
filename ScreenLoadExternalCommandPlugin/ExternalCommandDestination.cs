@@ -53,7 +53,12 @@ namespace ExternalCommand {
 
         public override Image DisplayImage => IconCache.IconForCommand(_presetCommand);
 
-		public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
+        public override Image GetImage(ImageSize imageSize)
+        {
+            return IconCache.IconForCommand(_presetCommand, imageSize);
+        }
+
+        public override ExportInformation ExportCapture(bool manuallyInitiated, ISurface surface, ICaptureDetails captureDetails) {
 			ExportInformation exportInformation = new ExportInformation(Designation, Description);
 			SurfaceOutputSettings outputSettings = new SurfaceOutputSettings();
 			outputSettings.PreventScreenLoadFormat();

@@ -20,14 +20,21 @@
  */
 
 using System.ComponentModel;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace ScreenLoadPlugin.Controls {
-	public class ScreenLoadToolStripDropDownButton : ToolStripDropDownButton, IScreenLoadLanguageBindable {
-		[Category("ScreenLoad"), DefaultValue(null), Description("Specifies key of the language file to use when displaying the text.")]
-		public string LanguageKey {
-			get;
-			set;
-		}
-	}
+    public class ScreenLoadToolStripDropDownButton : ToolStripDropDownButton, IScreenLoadLanguageBindable
+    {
+        [Category("ScreenLoad"), DefaultValue(null),
+         Description("Specifies key of the language file to use when displaying the text.")]
+        public string LanguageKey { get; set; }
+
+        [Category("ScreenLoad"), DefaultValue(null),
+         Description("Icon.")]
+        public Icon Icon
+        {
+            set => Image = new Icon(value, Owner.ImageScalingSize).ToBitmap();
+        }
+    }
 }

@@ -1,6 +1,6 @@
 ﻿#define ExeName "ScreenLoad"
-#define Version "2.0.2.0"
-#define FileVersion "2.0.2.0-local"
+#define Version "2.0.3.0"
+#define FileVersion "2.0.3.0-local"
 
 ; Include the scripts to install .NET Framework
 ; See http://www.codeproject.com/KB/install/dotnetfx_innosetup_instal.aspx
@@ -18,7 +18,6 @@ Source: ..\..\bin\Release\ScreenLoad.exe; DestDir: {app}; Components: screenload
 Source: ..\..\bin\Release\ScreenLoadPlugin.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\..\bin\Release\ScreenLoad.exe.config; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\..\bin\Release\log4net.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
-Source: ..\..\bin\Release\LinqBridge.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion 
 Source: ..\..\log4net.xml; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion 
 Source: ..\..\bin\Release\checksum.MD5; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\additional_files\installer.txt; DestDir: {app}; Components: screenload; Flags: overwritereadonly recursesubdirs ignoreversion replacesameversion
