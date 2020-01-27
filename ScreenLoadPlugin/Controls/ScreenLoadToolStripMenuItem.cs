@@ -49,6 +49,9 @@ namespace ScreenLoadPlugin.Controls
         {
             get
             {
+                if (DesignMode)
+                    return null;
+
                 if (null != _image && PixelFormat.DontCare != _image.PixelFormat &&
                     (null == Owner || _image.Size.Width == Owner.ImageScalingSize.Width))
                     return _image;
