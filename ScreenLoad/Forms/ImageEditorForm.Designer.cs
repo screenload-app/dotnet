@@ -64,6 +64,55 @@ namespace ScreenLoad
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
             this.panel2 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
+            this.propertiesToolStrip = new ScreenLoad.Controls.ToolStripEx();
+            this.obfuscateModeButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
+            this.pixelizeToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.blurToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.highlightModeButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
+            this.textHighlightMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.areaHighlightMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.grayscaleHighlightMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.magnifyMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.btnFillColor = new ScreenLoad.Controls.ToolStripColorButton();
+            this.btnLineColor = new ScreenLoad.Controls.ToolStripColorButton();
+            this.lineThicknessLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.lineThicknessUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.fontFamilyComboBox = new ScreenLoad.Controls.FontFamilyComboBox();
+            this.fontSizeLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.fontSizeUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.fontBoldButton = new ScreenLoad.Controls.BindableToolStripButton();
+            this.fontItalicButton = new ScreenLoad.Controls.BindableToolStripButton();
+            this.textHorizontalAlignmentButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
+            this.alignLeftToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.alignCenterToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.alignRightToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.textVerticalAlignmentButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
+            this.alignTopToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.alignMiddleToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.alignBottomToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.blurRadiusLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.blurRadiusUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.brightnessLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.brightnessUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.previewQualityLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.previewQualityUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.magnificationFactorLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.magnificationFactorUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.pixelSizeLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.pixelSizeUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.arrowHeadsLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.arrowHeadsDropDownButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
+            this.arrowHeadStartMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.arrowHeadEndMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.arrowHeadBothMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.arrowHeadNoneMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.shadowButton = new ScreenLoad.Controls.BindableToolStripButton();
+            this.toolStripSeparator = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnConfirm = new ScreenLoad.Controls.BindableToolStripButton();
+            this.btnCancel = new ScreenLoad.Controls.BindableToolStripButton();
+            this.counterLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
+            this.counterUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
             this.toolsToolStrip = new ScreenLoad.Controls.ToolStripEx();
             this.btnCursor = new ScreenLoadPlugin.Controls.ScreenLoadToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -152,7 +201,6 @@ namespace ScreenLoad
             this.fileSavedStatusContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyPathMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.openDirectoryMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
-            this.propertiesToolStrip = new ScreenLoad.Controls.ToolStripEx();
             this.topToolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.topToolStripContainer.ContentPanel.SuspendLayout();
             this.topToolStripContainer.LeftToolStripPanel.SuspendLayout();
@@ -161,6 +209,7 @@ namespace ScreenLoad
             this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.panel2.SuspendLayout();
+            this.propertiesToolStrip.SuspendLayout();
             this.toolsToolStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.destinationsToolStrip.SuspendLayout();
@@ -249,11 +298,10 @@ namespace ScreenLoad
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(739, 340);
+            this.panel1.Size = new System.Drawing.Size(739, 360);
             this.panel1.TabIndex = 2;
             // 
             // panel2
@@ -262,12 +310,713 @@ namespace ScreenLoad
             this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel2.Controls.Add(this.propertiesToolStrip);
             this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 346);
+            this.panel2.Location = new System.Drawing.Point(3, 366);
             this.panel2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.panel2.MinimumSize = new System.Drawing.Size(4, 52);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(739, 52);
+            this.panel2.Size = new System.Drawing.Size(739, 32);
             this.panel2.TabIndex = 3;
+            // 
+            // propertiesToolStrip
+            // 
+            this.propertiesToolStrip.AutoSize = false;
+            this.propertiesToolStrip.BackColor = System.Drawing.SystemColors.Control;
+            this.propertiesToolStrip.ClickThrough = true;
+            this.propertiesToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertiesToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
+            this.propertiesToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
+            this.propertiesToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.obfuscateModeButton,
+            this.highlightModeButton,
+            this.btnFillColor,
+            this.btnLineColor,
+            this.lineThicknessLabel,
+            this.lineThicknessUpDown,
+            this.fontFamilyComboBox,
+            this.fontSizeLabel,
+            this.fontSizeUpDown,
+            this.fontBoldButton,
+            this.fontItalicButton,
+            this.textHorizontalAlignmentButton,
+            this.textVerticalAlignmentButton,
+            this.blurRadiusLabel,
+            this.blurRadiusUpDown,
+            this.brightnessLabel,
+            this.brightnessUpDown,
+            this.previewQualityLabel,
+            this.previewQualityUpDown,
+            this.magnificationFactorLabel,
+            this.magnificationFactorUpDown,
+            this.pixelSizeLabel,
+            this.pixelSizeUpDown,
+            this.arrowHeadsLabel,
+            this.arrowHeadsDropDownButton,
+            this.shadowButton,
+            this.toolStripSeparator,
+            this.toolStripSeparator10,
+            this.btnConfirm,
+            this.btnCancel,
+            this.counterLabel,
+            this.counterUpDown});
+            this.propertiesToolStrip.Location = new System.Drawing.Point(0, 0);
+            this.propertiesToolStrip.MinimumSize = new System.Drawing.Size(150, 32);
+            this.propertiesToolStrip.Name = "propertiesToolStrip";
+            this.propertiesToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
+            this.propertiesToolStrip.Size = new System.Drawing.Size(735, 32);
+            this.propertiesToolStrip.Stretch = true;
+            this.propertiesToolStrip.TabIndex = 2;
+            // 
+            // obfuscateModeButton
+            // 
+            this.obfuscateModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.obfuscateModeButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.pixelizeToolStripMenuItem,
+            this.blurToolStripMenuItem});
+            this.obfuscateModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.obfuscateModeButton.LanguageKey = "editor_obfuscate_mode";
+            this.obfuscateModeButton.Name = "obfuscateModeButton";
+            this.obfuscateModeButton.SelectedTag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
+            this.obfuscateModeButton.Size = new System.Drawing.Size(13, 29);
+            this.obfuscateModeButton.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
+            this.obfuscateModeButton.Text = "Obfuscation mode";
+            // 
+            // pixelizeToolStripMenuItem
+            // 
+            this.pixelizeToolStripMenuItem.Icon = null;
+            this.pixelizeToolStripMenuItem.Image = null;
+            this.pixelizeToolStripMenuItem.LanguageKey = "editor_obfuscate_pixelize";
+            this.pixelizeToolStripMenuItem.Name = "pixelizeToolStripMenuItem";
+            this.pixelizeToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.pixelizeToolStripMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.PIXELIZE;
+            this.pixelizeToolStripMenuItem.Text = "Pixelize";
+            // 
+            // blurToolStripMenuItem
+            // 
+            this.blurToolStripMenuItem.Icon = null;
+            this.blurToolStripMenuItem.Image = null;
+            this.blurToolStripMenuItem.LanguageKey = "editor_obfuscate_blur";
+            this.blurToolStripMenuItem.Name = "blurToolStripMenuItem";
+            this.blurToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
+            this.blurToolStripMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
+            this.blurToolStripMenuItem.Text = "Blur";
+            // 
+            // highlightModeButton
+            // 
+            this.highlightModeButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.highlightModeButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.textHighlightMenuItem,
+            this.areaHighlightMenuItem,
+            this.grayscaleHighlightMenuItem,
+            this.magnifyMenuItem});
+            this.highlightModeButton.Image = ((System.Drawing.Image)(resources.GetObject("highlightModeButton.Image")));
+            this.highlightModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.highlightModeButton.LanguageKey = "editor_highlight_mode";
+            this.highlightModeButton.Name = "highlightModeButton";
+            this.highlightModeButton.SelectedTag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
+            this.highlightModeButton.Size = new System.Drawing.Size(45, 29);
+            this.highlightModeButton.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
+            this.highlightModeButton.Text = "Highlight mode";
+            // 
+            // textHighlightMenuItem
+            // 
+            this.textHighlightMenuItem.Icon = null;
+            this.textHighlightMenuItem.Image = null;
+            this.textHighlightMenuItem.LanguageKey = "editor_highlight_text";
+            this.textHighlightMenuItem.Name = "textHighlightMenuItem";
+            this.textHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.textHighlightMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
+            this.textHighlightMenuItem.Text = "Highlight text";
+            // 
+            // areaHighlightMenuItem
+            // 
+            this.areaHighlightMenuItem.Icon = null;
+            this.areaHighlightMenuItem.Image = null;
+            this.areaHighlightMenuItem.LanguageKey = "editor_highlight_area";
+            this.areaHighlightMenuItem.Name = "areaHighlightMenuItem";
+            this.areaHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.areaHighlightMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.AREA_HIGHLIGHT;
+            this.areaHighlightMenuItem.Text = "Highlight area";
+            // 
+            // grayscaleHighlightMenuItem
+            // 
+            this.grayscaleHighlightMenuItem.Icon = null;
+            this.grayscaleHighlightMenuItem.Image = null;
+            this.grayscaleHighlightMenuItem.LanguageKey = "editor_highlight_grayscale";
+            this.grayscaleHighlightMenuItem.Name = "grayscaleHighlightMenuItem";
+            this.grayscaleHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.grayscaleHighlightMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.GRAYSCALE;
+            this.grayscaleHighlightMenuItem.Text = "Grayscale";
+            // 
+            // magnifyMenuItem
+            // 
+            this.magnifyMenuItem.Icon = null;
+            this.magnifyMenuItem.Image = null;
+            this.magnifyMenuItem.LanguageKey = "editor_highlight_magnify";
+            this.magnifyMenuItem.Name = "magnifyMenuItem";
+            this.magnifyMenuItem.Size = new System.Drawing.Size(149, 22);
+            this.magnifyMenuItem.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.MAGNIFICATION;
+            this.magnifyMenuItem.Text = "Magnify";
+            // 
+            // btnFillColor
+            // 
+            this.btnFillColor.BackColor = System.Drawing.Color.Transparent;
+            this.btnFillColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnFillColor.Image = ((System.Drawing.Image)(resources.GetObject("btnFillColor.Image")));
+            this.btnFillColor.LanguageKey = "editor_backcolor";
+            this.btnFillColor.Modification2 = true;
+            this.btnFillColor.Name = "btnFillColor";
+            this.btnFillColor.SelectedColor = System.Drawing.Color.Transparent;
+            this.btnFillColor.Size = new System.Drawing.Size(36, 29);
+            this.btnFillColor.Text = "Fill color";
+            // 
+            // btnLineColor
+            // 
+            this.btnLineColor.BackColor = System.Drawing.Color.Transparent;
+            this.btnLineColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnLineColor.Image = ((System.Drawing.Image)(resources.GetObject("btnLineColor.Image")));
+            this.btnLineColor.LanguageKey = "editor_forecolor";
+            this.btnLineColor.Modification2 = true;
+            this.btnLineColor.Name = "btnLineColor";
+            this.btnLineColor.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(222)))), ((int)(((byte)(250)))));
+            this.btnLineColor.Size = new System.Drawing.Size(36, 29);
+            this.btnLineColor.Text = "Line color";
+            // 
+            // lineThicknessLabel
+            // 
+            this.lineThicknessLabel.LanguageKey = "editor_thickness";
+            this.lineThicknessLabel.Name = "lineThicknessLabel";
+            this.lineThicknessLabel.Size = new System.Drawing.Size(81, 29);
+            this.lineThicknessLabel.Text = "Line thickness";
+            // 
+            // lineThicknessUpDown
+            // 
+            this.lineThicknessUpDown.DecimalPlaces = 0;
+            this.lineThicknessUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.lineThicknessUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.lineThicknessUpDown.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.lineThicknessUpDown.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.lineThicknessUpDown.Name = "lineThicknessUpDown";
+            this.lineThicknessUpDown.Size = new System.Drawing.Size(64, 29);
+            this.lineThicknessUpDown.Text = "0";
+            this.lineThicknessUpDown.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.lineThicknessUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.lineThicknessUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // fontFamilyComboBox
+            // 
+            this.fontFamilyComboBox.AutoSize = false;
+            this.fontFamilyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.fontFamilyComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.fontFamilyComboBox.MaxDropDownItems = 20;
+            this.fontFamilyComboBox.Name = "fontFamilyComboBox";
+            this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(240, 33);
+            this.fontFamilyComboBox.Text = "Agency FB";
+            this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // fontSizeLabel
+            // 
+            this.fontSizeLabel.LanguageKey = "editor_fontsize";
+            this.fontSizeLabel.Name = "fontSizeLabel";
+            this.fontSizeLabel.Size = new System.Drawing.Size(27, 29);
+            this.fontSizeLabel.Text = "Size";
+            // 
+            // fontSizeUpDown
+            // 
+            this.fontSizeUpDown.DecimalPlaces = 0;
+            this.fontSizeUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.fontSizeUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.fontSizeUpDown.Maximum = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this.fontSizeUpDown.Minimum = new decimal(new int[] {
+            7,
+            0,
+            0,
+            0});
+            this.fontSizeUpDown.Name = "fontSizeUpDown";
+            this.fontSizeUpDown.Size = new System.Drawing.Size(64, 29);
+            this.fontSizeUpDown.Text = "12";
+            this.fontSizeUpDown.Value = new decimal(new int[] {
+            12,
+            0,
+            0,
+            0});
+            this.fontSizeUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.fontSizeUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // fontBoldButton
+            // 
+            this.fontBoldButton.CheckOnClick = true;
+            this.fontBoldButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.fontBoldButton.Image = ((System.Drawing.Image)(resources.GetObject("fontBoldButton.Image")));
+            this.fontBoldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.fontBoldButton.LanguageKey = "editor_bold";
+            this.fontBoldButton.Name = "fontBoldButton";
+            this.fontBoldButton.Size = new System.Drawing.Size(36, 29);
+            this.fontBoldButton.Text = "Bold";
+            this.fontBoldButton.Click += new System.EventHandler(this.FontBoldButtonClick);
+            // 
+            // fontItalicButton
+            // 
+            this.fontItalicButton.CheckOnClick = true;
+            this.fontItalicButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.fontItalicButton.Image = ((System.Drawing.Image)(resources.GetObject("fontItalicButton.Image")));
+            this.fontItalicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.fontItalicButton.LanguageKey = "editor_italic";
+            this.fontItalicButton.Name = "fontItalicButton";
+            this.fontItalicButton.Size = new System.Drawing.Size(36, 29);
+            this.fontItalicButton.Text = "Italic";
+            this.fontItalicButton.Click += new System.EventHandler(this.FontItalicButtonClick);
+            // 
+            // textHorizontalAlignmentButton
+            // 
+            this.textHorizontalAlignmentButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.textHorizontalAlignmentButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.alignLeftToolStripMenuItem,
+            this.alignCenterToolStripMenuItem,
+            this.alignRightToolStripMenuItem});
+            this.textHorizontalAlignmentButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.textHorizontalAlignmentButton.LanguageKey = "editor_align_horizontal";
+            this.textHorizontalAlignmentButton.Name = "textHorizontalAlignmentButton";
+            this.textHorizontalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
+            this.textHorizontalAlignmentButton.Size = new System.Drawing.Size(13, 29);
+            this.textHorizontalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
+            this.textHorizontalAlignmentButton.Text = "Horizontal alignment";
+            // 
+            // alignLeftToolStripMenuItem
+            // 
+            this.alignLeftToolStripMenuItem.Icon = null;
+            this.alignLeftToolStripMenuItem.Image = null;
+            this.alignLeftToolStripMenuItem.LanguageKey = "editor_align_left";
+            this.alignLeftToolStripMenuItem.Name = "alignLeftToolStripMenuItem";
+            this.alignLeftToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.alignLeftToolStripMenuItem.Tag = System.Drawing.StringAlignment.Near;
+            this.alignLeftToolStripMenuItem.Text = "Left";
+            // 
+            // alignCenterToolStripMenuItem
+            // 
+            this.alignCenterToolStripMenuItem.Icon = null;
+            this.alignCenterToolStripMenuItem.Image = null;
+            this.alignCenterToolStripMenuItem.LanguageKey = "editor_align_center";
+            this.alignCenterToolStripMenuItem.Name = "alignCenterToolStripMenuItem";
+            this.alignCenterToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.alignCenterToolStripMenuItem.Tag = System.Drawing.StringAlignment.Center;
+            this.alignCenterToolStripMenuItem.Text = "Center";
+            // 
+            // alignRightToolStripMenuItem
+            // 
+            this.alignRightToolStripMenuItem.Icon = null;
+            this.alignRightToolStripMenuItem.Image = null;
+            this.alignRightToolStripMenuItem.LanguageKey = "editor_align_right";
+            this.alignRightToolStripMenuItem.Name = "alignRightToolStripMenuItem";
+            this.alignRightToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
+            this.alignRightToolStripMenuItem.Tag = System.Drawing.StringAlignment.Far;
+            this.alignRightToolStripMenuItem.Text = "Right";
+            // 
+            // textVerticalAlignmentButton
+            // 
+            this.textVerticalAlignmentButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.textVerticalAlignmentButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.alignTopToolStripMenuItem,
+            this.alignMiddleToolStripMenuItem,
+            this.alignBottomToolStripMenuItem});
+            this.textVerticalAlignmentButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.textVerticalAlignmentButton.LanguageKey = "editor_align_vertical";
+            this.textVerticalAlignmentButton.Name = "textVerticalAlignmentButton";
+            this.textVerticalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
+            this.textVerticalAlignmentButton.Size = new System.Drawing.Size(13, 29);
+            this.textVerticalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
+            this.textVerticalAlignmentButton.Text = "Vertical alignment";
+            // 
+            // alignTopToolStripMenuItem
+            // 
+            this.alignTopToolStripMenuItem.Icon = null;
+            this.alignTopToolStripMenuItem.Image = null;
+            this.alignTopToolStripMenuItem.LanguageKey = "editor_align_top";
+            this.alignTopToolStripMenuItem.Name = "alignTopToolStripMenuItem";
+            this.alignTopToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.alignTopToolStripMenuItem.Tag = System.Drawing.StringAlignment.Near;
+            this.alignTopToolStripMenuItem.Text = "Top";
+            // 
+            // alignMiddleToolStripMenuItem
+            // 
+            this.alignMiddleToolStripMenuItem.Icon = null;
+            this.alignMiddleToolStripMenuItem.Image = null;
+            this.alignMiddleToolStripMenuItem.LanguageKey = "editor_align_middle";
+            this.alignMiddleToolStripMenuItem.Name = "alignMiddleToolStripMenuItem";
+            this.alignMiddleToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.alignMiddleToolStripMenuItem.Tag = System.Drawing.StringAlignment.Center;
+            this.alignMiddleToolStripMenuItem.Text = "Middle";
+            // 
+            // alignBottomToolStripMenuItem
+            // 
+            this.alignBottomToolStripMenuItem.Icon = null;
+            this.alignBottomToolStripMenuItem.Image = null;
+            this.alignBottomToolStripMenuItem.LanguageKey = "editor_align_bottom";
+            this.alignBottomToolStripMenuItem.Name = "alignBottomToolStripMenuItem";
+            this.alignBottomToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
+            this.alignBottomToolStripMenuItem.Tag = System.Drawing.StringAlignment.Far;
+            this.alignBottomToolStripMenuItem.Text = "Bottom";
+            // 
+            // blurRadiusLabel
+            // 
+            this.blurRadiusLabel.LanguageKey = "editor_blur_radius";
+            this.blurRadiusLabel.Name = "blurRadiusLabel";
+            this.blurRadiusLabel.Size = new System.Drawing.Size(63, 15);
+            this.blurRadiusLabel.Text = "Blur radius";
+            // 
+            // blurRadiusUpDown
+            // 
+            this.blurRadiusUpDown.DecimalPlaces = 0;
+            this.blurRadiusUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.blurRadiusUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.blurRadiusUpDown.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.blurRadiusUpDown.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.blurRadiusUpDown.Name = "blurRadiusUpDown";
+            this.blurRadiusUpDown.Size = new System.Drawing.Size(64, 32);
+            this.blurRadiusUpDown.Text = "1";
+            this.blurRadiusUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.blurRadiusUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.blurRadiusUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // brightnessLabel
+            // 
+            this.brightnessLabel.LanguageKey = "editor_brightness";
+            this.brightnessLabel.Name = "brightnessLabel";
+            this.brightnessLabel.Size = new System.Drawing.Size(62, 15);
+            this.brightnessLabel.Text = "Brightness";
+            // 
+            // brightnessUpDown
+            // 
+            this.brightnessUpDown.DecimalPlaces = 0;
+            this.brightnessUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.brightnessUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.brightnessUpDown.Maximum = new decimal(new int[] {
+            200,
+            0,
+            0,
+            0});
+            this.brightnessUpDown.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.brightnessUpDown.Name = "brightnessUpDown";
+            this.brightnessUpDown.Size = new System.Drawing.Size(64, 32);
+            this.brightnessUpDown.Text = "100";
+            this.brightnessUpDown.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.brightnessUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.brightnessUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // previewQualityLabel
+            // 
+            this.previewQualityLabel.LanguageKey = "editor_preview_quality";
+            this.previewQualityLabel.Name = "previewQualityLabel";
+            this.previewQualityLabel.Size = new System.Drawing.Size(87, 15);
+            this.previewQualityLabel.Text = "Preview quality";
+            // 
+            // previewQualityUpDown
+            // 
+            this.previewQualityUpDown.DecimalPlaces = 0;
+            this.previewQualityUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.previewQualityUpDown.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.previewQualityUpDown.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.previewQualityUpDown.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.previewQualityUpDown.Name = "previewQualityUpDown";
+            this.previewQualityUpDown.Size = new System.Drawing.Size(64, 32);
+            this.previewQualityUpDown.Text = "50";
+            this.previewQualityUpDown.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.previewQualityUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.previewQualityUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // magnificationFactorLabel
+            // 
+            this.magnificationFactorLabel.LanguageKey = "editor_magnification_factor";
+            this.magnificationFactorLabel.Name = "magnificationFactorLabel";
+            this.magnificationFactorLabel.Size = new System.Drawing.Size(115, 15);
+            this.magnificationFactorLabel.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.MAGNIFICATION;
+            this.magnificationFactorLabel.Text = "Magnification factor";
+            // 
+            // magnificationFactorUpDown
+            // 
+            this.magnificationFactorUpDown.DecimalPlaces = 0;
+            this.magnificationFactorUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.magnificationFactorUpDown.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.magnificationFactorUpDown.Maximum = new decimal(new int[] {
+            8,
+            0,
+            0,
+            0});
+            this.magnificationFactorUpDown.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.magnificationFactorUpDown.Name = "magnificationFactorUpDown";
+            this.magnificationFactorUpDown.Size = new System.Drawing.Size(40, 32);
+            this.magnificationFactorUpDown.Text = "2";
+            this.magnificationFactorUpDown.Value = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.magnificationFactorUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.magnificationFactorUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // pixelSizeLabel
+            // 
+            this.pixelSizeLabel.LanguageKey = "editor_pixel_size";
+            this.pixelSizeLabel.Name = "pixelSizeLabel";
+            this.pixelSizeLabel.Size = new System.Drawing.Size(54, 15);
+            this.pixelSizeLabel.Text = "Pixel size";
+            // 
+            // pixelSizeUpDown
+            // 
+            this.pixelSizeUpDown.DecimalPlaces = 0;
+            this.pixelSizeUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.pixelSizeUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.pixelSizeUpDown.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.pixelSizeUpDown.Minimum = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this.pixelSizeUpDown.Name = "pixelSizeUpDown";
+            this.pixelSizeUpDown.Size = new System.Drawing.Size(64, 32);
+            this.pixelSizeUpDown.Text = "5";
+            this.pixelSizeUpDown.Value = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.pixelSizeUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.pixelSizeUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
+            // 
+            // arrowHeadsLabel
+            // 
+            this.arrowHeadsLabel.LanguageKey = "editor_pixel_size";
+            this.arrowHeadsLabel.Name = "arrowHeadsLabel";
+            this.arrowHeadsLabel.Size = new System.Drawing.Size(54, 15);
+            this.arrowHeadsLabel.Text = "Pixel size";
+            // 
+            // arrowHeadsDropDownButton
+            // 
+            this.arrowHeadsDropDownButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.arrowHeadsDropDownButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.arrowHeadStartMenuItem,
+            this.arrowHeadEndMenuItem,
+            this.arrowHeadBothMenuItem,
+            this.arrowHeadNoneMenuItem});
+            this.arrowHeadsDropDownButton.Image = ((System.Drawing.Image)(resources.GetObject("arrowHeadsDropDownButton.Image")));
+            this.arrowHeadsDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.arrowHeadsDropDownButton.LanguageKey = "editor_arrowheads";
+            this.arrowHeadsDropDownButton.Name = "arrowHeadsDropDownButton";
+            this.arrowHeadsDropDownButton.SelectedTag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.START_POINT;
+            this.arrowHeadsDropDownButton.Size = new System.Drawing.Size(45, 36);
+            this.arrowHeadsDropDownButton.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.START_POINT;
+            this.arrowHeadsDropDownButton.Text = "Arrow heads";
+            // 
+            // arrowHeadStartMenuItem
+            // 
+            this.arrowHeadStartMenuItem.Icon = null;
+            this.arrowHeadStartMenuItem.Image = null;
+            this.arrowHeadStartMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.arrowHeadStartMenuItem.LanguageKey = "editor_arrowheads_start";
+            this.arrowHeadStartMenuItem.Name = "arrowHeadStartMenuItem";
+            this.arrowHeadStartMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.arrowHeadStartMenuItem.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.START_POINT;
+            this.arrowHeadStartMenuItem.Text = "Start point";
+            this.arrowHeadStartMenuItem.Click += new System.EventHandler(this.ArrowHeadsToolStripMenuItemClick);
+            // 
+            // arrowHeadEndMenuItem
+            // 
+            this.arrowHeadEndMenuItem.Icon = null;
+            this.arrowHeadEndMenuItem.Image = null;
+            this.arrowHeadEndMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.arrowHeadEndMenuItem.LanguageKey = "editor_arrowheads_end";
+            this.arrowHeadEndMenuItem.Name = "arrowHeadEndMenuItem";
+            this.arrowHeadEndMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.arrowHeadEndMenuItem.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.END_POINT;
+            this.arrowHeadEndMenuItem.Text = "End point";
+            this.arrowHeadEndMenuItem.Click += new System.EventHandler(this.ArrowHeadsToolStripMenuItemClick);
+            // 
+            // arrowHeadBothMenuItem
+            // 
+            this.arrowHeadBothMenuItem.Icon = null;
+            this.arrowHeadBothMenuItem.Image = null;
+            this.arrowHeadBothMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.arrowHeadBothMenuItem.LanguageKey = "editor_arrowheads_both";
+            this.arrowHeadBothMenuItem.Name = "arrowHeadBothMenuItem";
+            this.arrowHeadBothMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.arrowHeadBothMenuItem.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.BOTH;
+            this.arrowHeadBothMenuItem.Text = "Both";
+            this.arrowHeadBothMenuItem.Click += new System.EventHandler(this.ArrowHeadsToolStripMenuItemClick);
+            // 
+            // arrowHeadNoneMenuItem
+            // 
+            this.arrowHeadNoneMenuItem.Icon = null;
+            this.arrowHeadNoneMenuItem.Image = null;
+            this.arrowHeadNoneMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.arrowHeadNoneMenuItem.LanguageKey = "editor_arrowheads_none";
+            this.arrowHeadNoneMenuItem.Name = "arrowHeadNoneMenuItem";
+            this.arrowHeadNoneMenuItem.Size = new System.Drawing.Size(129, 22);
+            this.arrowHeadNoneMenuItem.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.NONE;
+            this.arrowHeadNoneMenuItem.Text = "None";
+            this.arrowHeadNoneMenuItem.Click += new System.EventHandler(this.ArrowHeadsToolStripMenuItemClick);
+            // 
+            // shadowButton
+            // 
+            this.shadowButton.CheckOnClick = true;
+            this.shadowButton.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.shadowButton.Image = ((System.Drawing.Image)(resources.GetObject("shadowButton.Image")));
+            this.shadowButton.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.shadowButton.LanguageKey = "editor_shadow";
+            this.shadowButton.Name = "shadowButton";
+            this.shadowButton.Size = new System.Drawing.Size(36, 36);
+            this.shadowButton.Text = "Drop shadow";
+            // 
+            // toolStripSeparator
+            // 
+            this.toolStripSeparator.Name = "toolStripSeparator";
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 6);
+            // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 6);
+            // 
+            // btnConfirm
+            // 
+            this.btnConfirm.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnConfirm.Image = ((System.Drawing.Image)(resources.GetObject("btnConfirm.Image")));
+            this.btnConfirm.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnConfirm.LanguageKey = "editor_confirm";
+            this.btnConfirm.Name = "btnConfirm";
+            this.btnConfirm.Size = new System.Drawing.Size(36, 36);
+            this.btnConfirm.Text = "Confirm";
+            this.btnConfirm.Click += new System.EventHandler(this.BtnConfirmClick);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnCancel.Image = ((System.Drawing.Image)(resources.GetObject("btnCancel.Image")));
+            this.btnCancel.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnCancel.LanguageKey = "editor_cancel";
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(36, 36);
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.Click += new System.EventHandler(this.BtnCancelClick);
+            // 
+            // counterLabel
+            // 
+            this.counterLabel.LanguageKey = "editor_counter_startvalue";
+            this.counterLabel.Name = "counterLabel";
+            this.counterLabel.Size = new System.Drawing.Size(0, 0);
+            // 
+            // counterUpDown
+            // 
+            this.counterUpDown.DecimalPlaces = 0;
+            this.counterUpDown.Font = new System.Drawing.Font("Microsoft Sans Serif", 16.5F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.counterUpDown.Increment = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.counterUpDown.Maximum = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            this.counterUpDown.Minimum = new decimal(new int[] {
+            0,
+            0,
+            0,
+            0});
+            this.counterUpDown.Name = "counterUpDown";
+            this.counterUpDown.Size = new System.Drawing.Size(64, 32);
+            this.counterUpDown.Text = "1";
+            this.counterUpDown.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.counterUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
+            this.counterUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
             // 
             // toolsToolStrip
             // 
@@ -440,7 +1189,7 @@ namespace ScreenLoad
             this.btnObfuscate.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.btnObfuscate.LanguageKey = "editor_obfuscate";
             this.btnObfuscate.Name = "btnObfuscate";
-            this.btnObfuscate.Size = new System.Drawing.Size(36, 36);
+            this.btnObfuscate.Size = new System.Drawing.Size(35, 36);
             this.btnObfuscate.Text = "Obfuscate (O)";
             this.btnObfuscate.Click += new System.EventHandler(this.BtnObfuscateClick);
             // 
@@ -589,7 +1338,7 @@ namespace ScreenLoad
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(57, 6);
             // 
             // editToolStripMenuItem
             // 
@@ -1223,20 +1972,6 @@ namespace ScreenLoad
             this.openDirectoryMenuItem.Text = "Open directory in Windows Explorer";
             this.openDirectoryMenuItem.Click += new System.EventHandler(this.OpenDirectoryMenuItemClick);
             // 
-            // propertiesToolStrip
-            // 
-            this.propertiesToolStrip.BackColor = System.Drawing.SystemColors.Control;
-            this.propertiesToolStrip.ClickThrough = true;
-            this.propertiesToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.propertiesToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
-            this.propertiesToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
-            this.propertiesToolStrip.Location = new System.Drawing.Point(0, 0);
-            this.propertiesToolStrip.Name = "propertiesToolStrip";
-            this.propertiesToolStrip.Padding = new System.Windows.Forms.Padding(0);
-            this.propertiesToolStrip.Size = new System.Drawing.Size(735, 48);
-            this.propertiesToolStrip.Stretch = true;
-            this.propertiesToolStrip.TabIndex = 2;
-            // 
             // ImageEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1265,7 +2000,8 @@ namespace ScreenLoad
             this.statusStrip1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
+            this.propertiesToolStrip.ResumeLayout(false);
+            this.propertiesToolStrip.PerformLayout();
             this.toolsToolStrip.ResumeLayout(false);
             this.toolsToolStrip.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -1276,6 +2012,15 @@ namespace ScreenLoad
             this.ResumeLayout(false);
 
         }
+
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignRightToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignCenterToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignLeftToolStripMenuItem;
+        private ScreenLoad.Controls.BindableToolStripDropDownButton textHorizontalAlignmentButton;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignMiddleToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignBottomToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem alignTopToolStripMenuItem;
+        private ScreenLoad.Controls.BindableToolStripDropDownButton textVerticalAlignmentButton;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem invertToolStripMenuItem;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripButton btnResize;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem grayscaleToolStripMenuItem;
@@ -1288,11 +2033,50 @@ namespace ScreenLoad
         private System.Windows.Forms.ToolStripStatusLabel dimensionsLabel;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem insert_window_toolstripmenuitem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem grayscaleHighlightMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem areaHighlightMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem textHighlightMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem magnifyMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem arrowHeadStartMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem arrowHeadEndMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem arrowHeadBothMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem arrowHeadNoneMenuItem;
+        private ScreenLoad.Controls.BindableToolStripButton btnCancel;
+        private ScreenLoad.Controls.BindableToolStripButton btnConfirm;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem selectAllToolStripMenuItem;
+        private ScreenLoad.Controls.BindableToolStripDropDownButton highlightModeButton;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem pixelizeToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem blurToolStripMenuItem;
+        private ScreenLoad.Controls.BindableToolStripDropDownButton obfuscateModeButton;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripButton btnHighlight;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem loadElementsToolStripMenuItem;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem saveElementsToolStripMenuItem;
+        private ScreenLoad.Controls.FontFamilyComboBox fontFamilyComboBox;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator;
+        private ScreenLoad.Controls.BindableToolStripButton shadowButton;
+        private ScreenLoad.Controls.BindableToolStripButton fontItalicButton;
+        private ScreenLoad.Controls.BindableToolStripButton fontBoldButton;
+        private ScreenLoad.Controls.ToolStripNumericUpDown fontSizeUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel fontSizeLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown brightnessUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel brightnessLabel;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem pluginToolStripMenuItem;
+        private ScreenLoad.Controls.BindableToolStripDropDownButton arrowHeadsDropDownButton;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel arrowHeadsLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown pixelSizeUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel pixelSizeLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown magnificationFactorUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel magnificationFactorLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown previewQualityUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel previewQualityLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown blurRadiusUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel blurRadiusLabel;
+        private ScreenLoad.Controls.ToolStripEx propertiesToolStrip;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel lineThicknessLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown lineThicknessUpDown;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel counterLabel;
+        private ScreenLoad.Controls.ToolStripNumericUpDown counterUpDown;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator16;
@@ -1369,8 +2153,9 @@ namespace ScreenLoad
         private ScreenLoad.Controls.ToolStripEx destinationsToolStrip;
         private ScreenLoadPlugin.Controls.NonJumpingPanel panel1;
         private ScreenLoadPlugin.Controls.NonJumpingPanel panel2;
+        private ScreenLoad.Controls.ToolStripColorButton btnFillColor;
+        private ScreenLoad.Controls.ToolStripColorButton btnLineColor;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem autoCropToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
-        private ToolStripEx propertiesToolStrip;
     }
 }
