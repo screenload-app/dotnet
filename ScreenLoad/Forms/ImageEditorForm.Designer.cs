@@ -61,9 +61,6 @@ namespace ScreenLoad
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.dimensionsLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
-            this.panel1 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
-            this.panel2 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
             this.propertiesToolStrip = new ScreenLoad.Controls.ToolStripEx();
             this.obfuscateModeButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
             this.pixelizeToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
@@ -113,6 +110,8 @@ namespace ScreenLoad
             this.btnCancel = new ScreenLoad.Controls.BindableToolStripButton();
             this.counterLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
             this.counterUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
+            this.panel1 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
             this.toolsToolStrip = new ScreenLoad.Controls.ToolStripEx();
             this.btnCursor = new ScreenLoadPlugin.Controls.ScreenLoadToolStripButton();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -201,15 +200,15 @@ namespace ScreenLoad
             this.fileSavedStatusContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyPathMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.openDirectoryMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.topSeparatorLabel = new System.Windows.Forms.Label();
             this.topToolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.topToolStripContainer.ContentPanel.SuspendLayout();
             this.topToolStripContainer.LeftToolStripPanel.SuspendLayout();
             this.topToolStripContainer.TopToolStripPanel.SuspendLayout();
             this.topToolStripContainer.SuspendLayout();
             this.statusStrip1.SuspendLayout();
-            this.tableLayoutPanel1.SuspendLayout();
-            this.panel2.SuspendLayout();
             this.propertiesToolStrip.SuspendLayout();
+            this.tableLayoutPanel1.SuspendLayout();
             this.toolsToolStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.destinationsToolStrip.SuspendLayout();
@@ -221,13 +220,14 @@ namespace ScreenLoad
             // 
             // topToolStripContainer.BottomToolStripPanel
             // 
+            this.topToolStripContainer.BottomToolStripPanel.Controls.Add(this.propertiesToolStrip);
             this.topToolStripContainer.BottomToolStripPanel.Controls.Add(this.statusStrip1);
             // 
             // topToolStripContainer.ContentPanel
             // 
             this.topToolStripContainer.ContentPanel.AutoScroll = true;
             this.topToolStripContainer.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-            this.topToolStripContainer.ContentPanel.Size = new System.Drawing.Size(745, 398);
+            this.topToolStripContainer.ContentPanel.Size = new System.Drawing.Size(745, 359);
             this.topToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // topToolStripContainer.LeftToolStripPanel
@@ -250,7 +250,7 @@ namespace ScreenLoad
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dimensionsLabel,
             this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 0);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 39);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(785, 24);
             this.statusStrip1.TabIndex = 3;
@@ -278,50 +278,11 @@ namespace ScreenLoad
             this.statusLabel.Size = new System.Drawing.Size(4, 19);
             this.statusLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StatusLabelClicked);
             // 
-            // tableLayoutPanel1
-            // 
-            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Control;
-            this.tableLayoutPanel1.ColumnCount = 1;
-            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
-            this.tableLayoutPanel1.Controls.Add(this.panel2, 0, 1);
-            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
-            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-            this.tableLayoutPanel1.RowCount = 2;
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(745, 398);
-            this.tableLayoutPanel1.TabIndex = 3;
-            // 
-            // panel1
-            // 
-            this.panel1.AutoScroll = true;
-            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel1.Location = new System.Drawing.Point(3, 3);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(739, 360);
-            this.panel1.TabIndex = 2;
-            // 
-            // panel2
-            // 
-            this.panel2.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.panel2.Controls.Add(this.propertiesToolStrip);
-            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.panel2.Location = new System.Drawing.Point(3, 366);
-            this.panel2.Margin = new System.Windows.Forms.Padding(3, 0, 3, 0);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(739, 32);
-            this.panel2.TabIndex = 3;
-            // 
             // propertiesToolStrip
             // 
-            this.propertiesToolStrip.AutoSize = false;
             this.propertiesToolStrip.BackColor = System.Drawing.SystemColors.Control;
             this.propertiesToolStrip.ClickThrough = true;
-            this.propertiesToolStrip.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.propertiesToolStrip.Dock = System.Windows.Forms.DockStyle.None;
             this.propertiesToolStrip.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
             this.propertiesToolStrip.ImageScalingSize = new System.Drawing.Size(32, 32);
             this.propertiesToolStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -361,7 +322,7 @@ namespace ScreenLoad
             this.propertiesToolStrip.MinimumSize = new System.Drawing.Size(150, 32);
             this.propertiesToolStrip.Name = "propertiesToolStrip";
             this.propertiesToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.propertiesToolStrip.Size = new System.Drawing.Size(735, 32);
+            this.propertiesToolStrip.Size = new System.Drawing.Size(785, 39);
             this.propertiesToolStrip.Stretch = true;
             this.propertiesToolStrip.TabIndex = 2;
             // 
@@ -375,7 +336,7 @@ namespace ScreenLoad
             this.obfuscateModeButton.LanguageKey = "editor_obfuscate_mode";
             this.obfuscateModeButton.Name = "obfuscateModeButton";
             this.obfuscateModeButton.SelectedTag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
-            this.obfuscateModeButton.Size = new System.Drawing.Size(13, 29);
+            this.obfuscateModeButton.Size = new System.Drawing.Size(13, 36);
             this.obfuscateModeButton.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
             this.obfuscateModeButton.Text = "Obfuscation mode";
             // 
@@ -412,7 +373,7 @@ namespace ScreenLoad
             this.highlightModeButton.LanguageKey = "editor_highlight_mode";
             this.highlightModeButton.Name = "highlightModeButton";
             this.highlightModeButton.SelectedTag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
-            this.highlightModeButton.Size = new System.Drawing.Size(45, 29);
+            this.highlightModeButton.Size = new System.Drawing.Size(45, 36);
             this.highlightModeButton.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.TEXT_HIGHTLIGHT;
             this.highlightModeButton.Text = "Highlight mode";
             // 
@@ -465,7 +426,7 @@ namespace ScreenLoad
             this.btnFillColor.Modification2 = true;
             this.btnFillColor.Name = "btnFillColor";
             this.btnFillColor.SelectedColor = System.Drawing.Color.Transparent;
-            this.btnFillColor.Size = new System.Drawing.Size(36, 29);
+            this.btnFillColor.Size = new System.Drawing.Size(36, 36);
             this.btnFillColor.Text = "Fill color";
             // 
             // btnLineColor
@@ -477,14 +438,14 @@ namespace ScreenLoad
             this.btnLineColor.Modification2 = true;
             this.btnLineColor.Name = "btnLineColor";
             this.btnLineColor.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(222)))), ((int)(((byte)(250)))));
-            this.btnLineColor.Size = new System.Drawing.Size(36, 29);
+            this.btnLineColor.Size = new System.Drawing.Size(36, 36);
             this.btnLineColor.Text = "Line color";
             // 
             // lineThicknessLabel
             // 
             this.lineThicknessLabel.LanguageKey = "editor_thickness";
             this.lineThicknessLabel.Name = "lineThicknessLabel";
-            this.lineThicknessLabel.Size = new System.Drawing.Size(81, 29);
+            this.lineThicknessLabel.Size = new System.Drawing.Size(81, 36);
             this.lineThicknessLabel.Text = "Line thickness";
             // 
             // lineThicknessUpDown
@@ -507,7 +468,7 @@ namespace ScreenLoad
             0,
             0});
             this.lineThicknessUpDown.Name = "lineThicknessUpDown";
-            this.lineThicknessUpDown.Size = new System.Drawing.Size(64, 29);
+            this.lineThicknessUpDown.Size = new System.Drawing.Size(64, 36);
             this.lineThicknessUpDown.Text = "0";
             this.lineThicknessUpDown.Value = new decimal(new int[] {
             0,
@@ -525,7 +486,7 @@ namespace ScreenLoad
             this.fontFamilyComboBox.MaxDropDownItems = 20;
             this.fontFamilyComboBox.Name = "fontFamilyComboBox";
             this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
-            this.fontFamilyComboBox.Size = new System.Drawing.Size(240, 33);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(236, 33);
             this.fontFamilyComboBox.Text = "Agency FB";
             this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
@@ -534,7 +495,7 @@ namespace ScreenLoad
             // 
             this.fontSizeLabel.LanguageKey = "editor_fontsize";
             this.fontSizeLabel.Name = "fontSizeLabel";
-            this.fontSizeLabel.Size = new System.Drawing.Size(27, 29);
+            this.fontSizeLabel.Size = new System.Drawing.Size(27, 36);
             this.fontSizeLabel.Text = "Size";
             // 
             // fontSizeUpDown
@@ -557,7 +518,7 @@ namespace ScreenLoad
             0,
             0});
             this.fontSizeUpDown.Name = "fontSizeUpDown";
-            this.fontSizeUpDown.Size = new System.Drawing.Size(64, 29);
+            this.fontSizeUpDown.Size = new System.Drawing.Size(64, 36);
             this.fontSizeUpDown.Text = "12";
             this.fontSizeUpDown.Value = new decimal(new int[] {
             12,
@@ -575,7 +536,7 @@ namespace ScreenLoad
             this.fontBoldButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fontBoldButton.LanguageKey = "editor_bold";
             this.fontBoldButton.Name = "fontBoldButton";
-            this.fontBoldButton.Size = new System.Drawing.Size(36, 29);
+            this.fontBoldButton.Size = new System.Drawing.Size(36, 36);
             this.fontBoldButton.Text = "Bold";
             this.fontBoldButton.Click += new System.EventHandler(this.FontBoldButtonClick);
             // 
@@ -587,7 +548,7 @@ namespace ScreenLoad
             this.fontItalicButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.fontItalicButton.LanguageKey = "editor_italic";
             this.fontItalicButton.Name = "fontItalicButton";
-            this.fontItalicButton.Size = new System.Drawing.Size(36, 29);
+            this.fontItalicButton.Size = new System.Drawing.Size(36, 36);
             this.fontItalicButton.Text = "Italic";
             this.fontItalicButton.Click += new System.EventHandler(this.FontItalicButtonClick);
             // 
@@ -602,7 +563,7 @@ namespace ScreenLoad
             this.textHorizontalAlignmentButton.LanguageKey = "editor_align_horizontal";
             this.textHorizontalAlignmentButton.Name = "textHorizontalAlignmentButton";
             this.textHorizontalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
-            this.textHorizontalAlignmentButton.Size = new System.Drawing.Size(13, 29);
+            this.textHorizontalAlignmentButton.Size = new System.Drawing.Size(13, 36);
             this.textHorizontalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
             this.textHorizontalAlignmentButton.Text = "Horizontal alignment";
             // 
@@ -647,7 +608,7 @@ namespace ScreenLoad
             this.textVerticalAlignmentButton.LanguageKey = "editor_align_vertical";
             this.textVerticalAlignmentButton.Name = "textVerticalAlignmentButton";
             this.textVerticalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
-            this.textVerticalAlignmentButton.Size = new System.Drawing.Size(13, 29);
+            this.textVerticalAlignmentButton.Size = new System.Drawing.Size(13, 36);
             this.textVerticalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
             this.textVerticalAlignmentButton.Text = "Vertical alignment";
             // 
@@ -953,12 +914,12 @@ namespace ScreenLoad
             // toolStripSeparator
             // 
             this.toolStripSeparator.Name = "toolStripSeparator";
-            this.toolStripSeparator.Size = new System.Drawing.Size(6, 6);
+            this.toolStripSeparator.Size = new System.Drawing.Size(6, 39);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 39);
             // 
             // btnConfirm
             // 
@@ -1018,6 +979,30 @@ namespace ScreenLoad
             this.counterUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.counterUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
             // 
+            // tableLayoutPanel1
+            // 
+            this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Control;
+            this.tableLayoutPanel1.ColumnCount = 1;
+            this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Controls.Add(this.panel1, 0, 0);
+            this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tableLayoutPanel1.Location = new System.Drawing.Point(0, 0);
+            this.tableLayoutPanel1.Name = "tableLayoutPanel1";
+            this.tableLayoutPanel1.RowCount = 1;
+            this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(745, 359);
+            this.tableLayoutPanel1.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            this.panel1.AutoScroll = true;
+            this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel1.Location = new System.Drawing.Point(3, 3);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(739, 353);
+            this.panel1.TabIndex = 2;
+            // 
             // toolsToolStrip
             // 
             this.toolsToolStrip.BackColor = System.Drawing.SystemColors.Control;
@@ -1048,7 +1033,7 @@ namespace ScreenLoad
             this.toolsToolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolsToolStrip.Name = "toolsToolStrip";
             this.toolsToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.toolsToolStrip.Size = new System.Drawing.Size(40, 398);
+            this.toolsToolStrip.Size = new System.Drawing.Size(40, 359);
             this.toolsToolStrip.Stretch = true;
             this.toolsToolStrip.TabIndex = 0;
             // 
@@ -1972,6 +1957,15 @@ namespace ScreenLoad
             this.openDirectoryMenuItem.Text = "Open directory in Windows Explorer";
             this.openDirectoryMenuItem.Click += new System.EventHandler(this.OpenDirectoryMenuItemClick);
             // 
+            // topSeparatorLabel
+            // 
+            this.topSeparatorLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.topSeparatorLabel.Dock = System.Windows.Forms.DockStyle.Top;
+            this.topSeparatorLabel.Location = new System.Drawing.Point(0, 0);
+            this.topSeparatorLabel.Name = "topSeparatorLabel";
+            this.topSeparatorLabel.Size = new System.Drawing.Size(800, 2);
+            this.topSeparatorLabel.TabIndex = 0;
+            // 
             // ImageEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1998,10 +1992,9 @@ namespace ScreenLoad
             this.topToolStripContainer.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
-            this.tableLayoutPanel1.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
             this.propertiesToolStrip.ResumeLayout(false);
             this.propertiesToolStrip.PerformLayout();
+            this.tableLayoutPanel1.ResumeLayout(false);
             this.toolsToolStrip.ResumeLayout(false);
             this.toolsToolStrip.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
@@ -2152,10 +2145,10 @@ namespace ScreenLoad
         private System.Windows.Forms.ToolStripContainer topToolStripContainer;
         private ScreenLoad.Controls.ToolStripEx destinationsToolStrip;
         private ScreenLoadPlugin.Controls.NonJumpingPanel panel1;
-        private ScreenLoadPlugin.Controls.NonJumpingPanel panel2;
         private ScreenLoad.Controls.ToolStripColorButton btnFillColor;
         private ScreenLoad.Controls.ToolStripColorButton btnLineColor;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem autoCropToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
+        private System.Windows.Forms.Label topSeparatorLabel;
     }
 }

@@ -1080,10 +1080,8 @@ namespace ScreenLoad {
         /// </summary>
         private void RefreshFieldControls()
         {
-            panel2.SuspendLayout();
             propertiesToolStrip.SuspendLayout();
-
-            panel2.Visible = true;
+            propertiesToolStrip.Visible = true;
 
             if (_surface.HasSelectedElements || _surface.DrawingMode != DrawingModes.None)
             {
@@ -1128,10 +1126,8 @@ namespace ScreenLoad {
                     hasItems = true;
             }
 
-            panel2.Visible = hasItems;
-            
-            propertiesToolStrip.ResumeLayout();
-            panel2.ResumeLayout();
+            propertiesToolStrip.Visible = hasItems;
+            propertiesToolStrip.ResumeLayout(true);
         }
 
         private void HideToolStripItems()
