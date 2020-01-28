@@ -78,7 +78,8 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="editor_align_vertical">Vertical alignment</resource>
 		<resource name="editor_arrange">Arrange</resource>
 		<resource name="editor_arrowheads">Arrow heads</resource>
-		<resource name="editor_arrowheads_both">Both</resource>
+    <resource name="editor_counter_startvalue">Start value</resource>
+    <resource name="editor_arrowheads_both">Both</resource>
 		<resource name="editor_arrowheads_end">End point</resource>
 		<resource name="editor_arrowheads_none">None</resource>
 		<resource name="editor_arrowheads_start">Start point</resource>
@@ -140,7 +141,8 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="editor_opendirinexplorer">Open directory in Windows Explorer</resource>
 		<resource name="editor_pastefromclipboard">Paste</resource>
 		<resource name="editor_pixel_size">Pixel size</resource>
-		<resource name="editor_preview_quality">Preview quality</resource>
+    <resource name="editor_arrow_heads">Arrow heads</resource>
+    <resource name="editor_preview_quality">Preview quality</resource>
 		<resource name="editor_print">Print</resource>
 		<resource name="editor_redo">Redo {0}</resource>
 		<resource name="editor_resetsize">Reset size</resource>

@@ -298,18 +298,19 @@ namespace ScreenLoad
             this.obfuscateModeButton.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.pixelizeToolStripMenuItem,
             this.blurToolStripMenuItem});
+            this.obfuscateModeButton.Image = ((System.Drawing.Image)(resources.GetObject("obfuscateModeButton.Image")));
             this.obfuscateModeButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.obfuscateModeButton.LanguageKey = "editor_obfuscate_mode";
             this.obfuscateModeButton.Name = "obfuscateModeButton";
             this.obfuscateModeButton.SelectedTag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
-            this.obfuscateModeButton.Size = new System.Drawing.Size(13, 36);
+            this.obfuscateModeButton.Size = new System.Drawing.Size(45, 36);
             this.obfuscateModeButton.Tag = ScreenLoad.Drawing.FilterContainer.PreparedFilter.BLUR;
             this.obfuscateModeButton.Text = "Obfuscation mode";
             // 
             // pixelizeToolStripMenuItem
             // 
             this.pixelizeToolStripMenuItem.Icon = null;
-            this.pixelizeToolStripMenuItem.Image = null;
+            this.pixelizeToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pixelizeToolStripMenuItem.Image")));
             this.pixelizeToolStripMenuItem.LanguageKey = "editor_obfuscate_pixelize";
             this.pixelizeToolStripMenuItem.Name = "pixelizeToolStripMenuItem";
             this.pixelizeToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
@@ -319,7 +320,7 @@ namespace ScreenLoad
             // blurToolStripMenuItem
             // 
             this.blurToolStripMenuItem.Icon = null;
-            this.blurToolStripMenuItem.Image = null;
+            this.blurToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("blurToolStripMenuItem.Image")));
             this.blurToolStripMenuItem.LanguageKey = "editor_obfuscate_blur";
             this.blurToolStripMenuItem.Name = "blurToolStripMenuItem";
             this.blurToolStripMenuItem.Size = new System.Drawing.Size(113, 22);
@@ -346,7 +347,7 @@ namespace ScreenLoad
             // textHighlightMenuItem
             // 
             this.textHighlightMenuItem.Icon = null;
-            this.textHighlightMenuItem.Image = null;
+            this.textHighlightMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("textHighlightMenuItem.Image")));
             this.textHighlightMenuItem.LanguageKey = "editor_highlight_text";
             this.textHighlightMenuItem.Name = "textHighlightMenuItem";
             this.textHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
@@ -356,7 +357,7 @@ namespace ScreenLoad
             // areaHighlightMenuItem
             // 
             this.areaHighlightMenuItem.Icon = null;
-            this.areaHighlightMenuItem.Image = null;
+            this.areaHighlightMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("areaHighlightMenuItem.Image")));
             this.areaHighlightMenuItem.LanguageKey = "editor_highlight_area";
             this.areaHighlightMenuItem.Name = "areaHighlightMenuItem";
             this.areaHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
@@ -366,7 +367,7 @@ namespace ScreenLoad
             // grayscaleHighlightMenuItem
             // 
             this.grayscaleHighlightMenuItem.Icon = null;
-            this.grayscaleHighlightMenuItem.Image = null;
+            this.grayscaleHighlightMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("grayscaleHighlightMenuItem.Image")));
             this.grayscaleHighlightMenuItem.LanguageKey = "editor_highlight_grayscale";
             this.grayscaleHighlightMenuItem.Name = "grayscaleHighlightMenuItem";
             this.grayscaleHighlightMenuItem.Size = new System.Drawing.Size(149, 22);
@@ -376,7 +377,7 @@ namespace ScreenLoad
             // magnifyMenuItem
             // 
             this.magnifyMenuItem.Icon = null;
-            this.magnifyMenuItem.Image = null;
+            this.magnifyMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("magnifyMenuItem.Image")));
             this.magnifyMenuItem.LanguageKey = "editor_highlight_magnify";
             this.magnifyMenuItem.Name = "magnifyMenuItem";
             this.magnifyMenuItem.Size = new System.Drawing.Size(149, 22);
@@ -403,7 +404,7 @@ namespace ScreenLoad
             this.btnLineColor.LanguageKey = "editor_forecolor";
             this.btnLineColor.Modification2 = true;
             this.btnLineColor.Name = "btnLineColor";
-            this.btnLineColor.SelectedColor = System.Drawing.Color.FromArgb(((int)(((byte)(203)))), ((int)(((byte)(222)))), ((int)(((byte)(250)))));
+            this.btnLineColor.SelectedColor = System.Drawing.Color.Transparent;
             this.btnLineColor.Size = new System.Drawing.Size(36, 36);
             this.btnLineColor.Text = "Line color";
             // 
@@ -452,7 +453,7 @@ namespace ScreenLoad
             this.fontFamilyComboBox.MaxDropDownItems = 20;
             this.fontFamilyComboBox.Name = "fontFamilyComboBox";
             this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
-            this.fontFamilyComboBox.Size = new System.Drawing.Size(226, 33);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(210, 33);
             this.fontFamilyComboBox.Text = "Agency FB";
             this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
@@ -525,18 +526,19 @@ namespace ScreenLoad
             this.alignLeftToolStripMenuItem,
             this.alignCenterToolStripMenuItem,
             this.alignRightToolStripMenuItem});
+            this.textHorizontalAlignmentButton.Image = ((System.Drawing.Image)(resources.GetObject("textHorizontalAlignmentButton.Image")));
             this.textHorizontalAlignmentButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.textHorizontalAlignmentButton.LanguageKey = "editor_align_horizontal";
             this.textHorizontalAlignmentButton.Name = "textHorizontalAlignmentButton";
             this.textHorizontalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
-            this.textHorizontalAlignmentButton.Size = new System.Drawing.Size(13, 36);
+            this.textHorizontalAlignmentButton.Size = new System.Drawing.Size(45, 36);
             this.textHorizontalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
             this.textHorizontalAlignmentButton.Text = "Horizontal alignment";
             // 
             // alignLeftToolStripMenuItem
             // 
             this.alignLeftToolStripMenuItem.Icon = null;
-            this.alignLeftToolStripMenuItem.Image = null;
+            this.alignLeftToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignLeftToolStripMenuItem.Image")));
             this.alignLeftToolStripMenuItem.LanguageKey = "editor_align_left";
             this.alignLeftToolStripMenuItem.Name = "alignLeftToolStripMenuItem";
             this.alignLeftToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
@@ -546,7 +548,7 @@ namespace ScreenLoad
             // alignCenterToolStripMenuItem
             // 
             this.alignCenterToolStripMenuItem.Icon = null;
-            this.alignCenterToolStripMenuItem.Image = null;
+            this.alignCenterToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignCenterToolStripMenuItem.Image")));
             this.alignCenterToolStripMenuItem.LanguageKey = "editor_align_center";
             this.alignCenterToolStripMenuItem.Name = "alignCenterToolStripMenuItem";
             this.alignCenterToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
@@ -556,7 +558,7 @@ namespace ScreenLoad
             // alignRightToolStripMenuItem
             // 
             this.alignRightToolStripMenuItem.Icon = null;
-            this.alignRightToolStripMenuItem.Image = null;
+            this.alignRightToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignRightToolStripMenuItem.Image")));
             this.alignRightToolStripMenuItem.LanguageKey = "editor_align_right";
             this.alignRightToolStripMenuItem.Name = "alignRightToolStripMenuItem";
             this.alignRightToolStripMenuItem.Size = new System.Drawing.Size(109, 22);
@@ -570,18 +572,19 @@ namespace ScreenLoad
             this.alignTopToolStripMenuItem,
             this.alignMiddleToolStripMenuItem,
             this.alignBottomToolStripMenuItem});
+            this.textVerticalAlignmentButton.Image = ((System.Drawing.Image)(resources.GetObject("textVerticalAlignmentButton.Image")));
             this.textVerticalAlignmentButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.textVerticalAlignmentButton.LanguageKey = "editor_align_vertical";
             this.textVerticalAlignmentButton.Name = "textVerticalAlignmentButton";
             this.textVerticalAlignmentButton.SelectedTag = System.Drawing.StringAlignment.Center;
-            this.textVerticalAlignmentButton.Size = new System.Drawing.Size(13, 36);
+            this.textVerticalAlignmentButton.Size = new System.Drawing.Size(45, 36);
             this.textVerticalAlignmentButton.Tag = System.Drawing.StringAlignment.Center;
             this.textVerticalAlignmentButton.Text = "Vertical alignment";
             // 
             // alignTopToolStripMenuItem
             // 
             this.alignTopToolStripMenuItem.Icon = null;
-            this.alignTopToolStripMenuItem.Image = null;
+            this.alignTopToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignTopToolStripMenuItem.Image")));
             this.alignTopToolStripMenuItem.LanguageKey = "editor_align_top";
             this.alignTopToolStripMenuItem.Name = "alignTopToolStripMenuItem";
             this.alignTopToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
@@ -591,7 +594,7 @@ namespace ScreenLoad
             // alignMiddleToolStripMenuItem
             // 
             this.alignMiddleToolStripMenuItem.Icon = null;
-            this.alignMiddleToolStripMenuItem.Image = null;
+            this.alignMiddleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignMiddleToolStripMenuItem.Image")));
             this.alignMiddleToolStripMenuItem.LanguageKey = "editor_align_middle";
             this.alignMiddleToolStripMenuItem.Name = "alignMiddleToolStripMenuItem";
             this.alignMiddleToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
@@ -601,7 +604,7 @@ namespace ScreenLoad
             // alignBottomToolStripMenuItem
             // 
             this.alignBottomToolStripMenuItem.Icon = null;
-            this.alignBottomToolStripMenuItem.Image = null;
+            this.alignBottomToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("alignBottomToolStripMenuItem.Image")));
             this.alignBottomToolStripMenuItem.LanguageKey = "editor_align_bottom";
             this.alignBottomToolStripMenuItem.Name = "alignBottomToolStripMenuItem";
             this.alignBottomToolStripMenuItem.Size = new System.Drawing.Size(114, 22);
@@ -612,7 +615,7 @@ namespace ScreenLoad
             // 
             this.blurRadiusLabel.LanguageKey = "editor_blur_radius";
             this.blurRadiusLabel.Name = "blurRadiusLabel";
-            this.blurRadiusLabel.Size = new System.Drawing.Size(63, 36);
+            this.blurRadiusLabel.Size = new System.Drawing.Size(63, 15);
             this.blurRadiusLabel.Text = "Blur radius";
             // 
             // blurRadiusUpDown
@@ -796,7 +799,7 @@ namespace ScreenLoad
             // 
             // arrowHeadsLabel
             // 
-            this.arrowHeadsLabel.LanguageKey = "editor_pixel_size";
+            this.arrowHeadsLabel.LanguageKey = "editor_arrow_heads";
             this.arrowHeadsLabel.Name = "arrowHeadsLabel";
             this.arrowHeadsLabel.Size = new System.Drawing.Size(54, 15);
             this.arrowHeadsLabel.Text = "Pixel size";
@@ -813,15 +816,15 @@ namespace ScreenLoad
             this.arrowHeadsDropDownButton.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.arrowHeadsDropDownButton.LanguageKey = "editor_arrowheads";
             this.arrowHeadsDropDownButton.Name = "arrowHeadsDropDownButton";
-            this.arrowHeadsDropDownButton.SelectedTag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.START_POINT;
+            this.arrowHeadsDropDownButton.SelectedTag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.NONE;
             this.arrowHeadsDropDownButton.Size = new System.Drawing.Size(45, 36);
-            this.arrowHeadsDropDownButton.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.START_POINT;
+            this.arrowHeadsDropDownButton.Tag = ScreenLoad.Drawing.ArrowContainer.ArrowHeadCombination.NONE;
             this.arrowHeadsDropDownButton.Text = "Arrow heads";
             // 
             // arrowHeadStartMenuItem
             // 
             this.arrowHeadStartMenuItem.Icon = null;
-            this.arrowHeadStartMenuItem.Image = null;
+            this.arrowHeadStartMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("arrowHeadStartMenuItem.Image")));
             this.arrowHeadStartMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.arrowHeadStartMenuItem.LanguageKey = "editor_arrowheads_start";
             this.arrowHeadStartMenuItem.Name = "arrowHeadStartMenuItem";
@@ -833,7 +836,7 @@ namespace ScreenLoad
             // arrowHeadEndMenuItem
             // 
             this.arrowHeadEndMenuItem.Icon = null;
-            this.arrowHeadEndMenuItem.Image = null;
+            this.arrowHeadEndMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("arrowHeadEndMenuItem.Image")));
             this.arrowHeadEndMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.arrowHeadEndMenuItem.LanguageKey = "editor_arrowheads_end";
             this.arrowHeadEndMenuItem.Name = "arrowHeadEndMenuItem";
@@ -845,7 +848,7 @@ namespace ScreenLoad
             // arrowHeadBothMenuItem
             // 
             this.arrowHeadBothMenuItem.Icon = null;
-            this.arrowHeadBothMenuItem.Image = null;
+            this.arrowHeadBothMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("arrowHeadBothMenuItem.Image")));
             this.arrowHeadBothMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.arrowHeadBothMenuItem.LanguageKey = "editor_arrowheads_both";
             this.arrowHeadBothMenuItem.Name = "arrowHeadBothMenuItem";
@@ -857,7 +860,7 @@ namespace ScreenLoad
             // arrowHeadNoneMenuItem
             // 
             this.arrowHeadNoneMenuItem.Icon = null;
-            this.arrowHeadNoneMenuItem.Image = null;
+            this.arrowHeadNoneMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("arrowHeadNoneMenuItem.Image")));
             this.arrowHeadNoneMenuItem.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.arrowHeadNoneMenuItem.LanguageKey = "editor_arrowheads_none";
             this.arrowHeadNoneMenuItem.Name = "arrowHeadNoneMenuItem";
@@ -997,7 +1000,6 @@ namespace ScreenLoad
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -1295,7 +1297,6 @@ namespace ScreenLoad
             // 
             // menuStrip1
             // 
-            this.menuStrip1.BackColor = System.Drawing.SystemColors.Control;
             this.menuStrip1.ClickThrough = true;
             this.menuStrip1.Dock = System.Windows.Forms.DockStyle.None;
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1356,7 +1357,7 @@ namespace ScreenLoad
             // 
             this.undoToolStripMenuItem.Enabled = false;
             this.undoToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("undoToolStripMenuItem.Icon")));
-            this.undoToolStripMenuItem.Image = null;
+            this.undoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("undoToolStripMenuItem.Image")));
             this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
             this.undoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
             this.undoToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
@@ -1367,7 +1368,7 @@ namespace ScreenLoad
             // 
             this.redoToolStripMenuItem.Enabled = false;
             this.redoToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("redoToolStripMenuItem.Icon")));
-            this.redoToolStripMenuItem.Image = null;
+            this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
             this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
             this.redoToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
             this.redoToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
@@ -1383,7 +1384,7 @@ namespace ScreenLoad
             // 
             this.cutToolStripMenuItem.Enabled = false;
             this.cutToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("cutToolStripMenuItem.Icon")));
-            this.cutToolStripMenuItem.Image = null;
+            this.cutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripMenuItem.Image")));
             this.cutToolStripMenuItem.LanguageKey = "editor_cuttoclipboard";
             this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
             this.cutToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
@@ -1395,7 +1396,7 @@ namespace ScreenLoad
             // 
             this.copyToolStripMenuItem.Enabled = false;
             this.copyToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("copyToolStripMenuItem.Icon")));
-            this.copyToolStripMenuItem.Image = null;
+            this.copyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem.Image")));
             this.copyToolStripMenuItem.LanguageKey = "editor_copytoclipboard";
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
@@ -1407,7 +1408,7 @@ namespace ScreenLoad
             // 
             this.pasteToolStripMenuItem.Enabled = false;
             this.pasteToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("pasteToolStripMenuItem.Icon")));
-            this.pasteToolStripMenuItem.Image = null;
+            this.pasteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripMenuItem.Image")));
             this.pasteToolStripMenuItem.LanguageKey = "editor_pastefromclipboard";
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
@@ -1440,7 +1441,7 @@ namespace ScreenLoad
             // preferencesToolStripMenuItem
             // 
             this.preferencesToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("preferencesToolStripMenuItem.Icon")));
-            this.preferencesToolStripMenuItem.Image = null;
+            this.preferencesToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("preferencesToolStripMenuItem.Image")));
             this.preferencesToolStripMenuItem.LanguageKey = "contextmenu_settings";
             this.preferencesToolStripMenuItem.Name = "preferencesToolStripMenuItem";
             this.preferencesToolStripMenuItem.Size = new System.Drawing.Size(258, 22);
@@ -1505,7 +1506,7 @@ namespace ScreenLoad
             // addRectangleToolStripMenuItem
             // 
             this.addRectangleToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("addRectangleToolStripMenuItem.Icon")));
-            this.addRectangleToolStripMenuItem.Image = null;
+            this.addRectangleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addRectangleToolStripMenuItem.Image")));
             this.addRectangleToolStripMenuItem.LanguageKey = "editor_drawrectangle";
             this.addRectangleToolStripMenuItem.Name = "addRectangleToolStripMenuItem";
             this.addRectangleToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1515,7 +1516,7 @@ namespace ScreenLoad
             // addEllipseToolStripMenuItem
             // 
             this.addEllipseToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("addEllipseToolStripMenuItem.Icon")));
-            this.addEllipseToolStripMenuItem.Image = null;
+            this.addEllipseToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addEllipseToolStripMenuItem.Image")));
             this.addEllipseToolStripMenuItem.LanguageKey = "editor_drawellipse";
             this.addEllipseToolStripMenuItem.Name = "addEllipseToolStripMenuItem";
             this.addEllipseToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1525,7 +1526,7 @@ namespace ScreenLoad
             // drawLineToolStripMenuItem
             // 
             this.drawLineToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("drawLineToolStripMenuItem.Icon")));
-            this.drawLineToolStripMenuItem.Image = null;
+            this.drawLineToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("drawLineToolStripMenuItem.Image")));
             this.drawLineToolStripMenuItem.LanguageKey = "editor_drawline";
             this.drawLineToolStripMenuItem.Name = "drawLineToolStripMenuItem";
             this.drawLineToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1535,7 +1536,7 @@ namespace ScreenLoad
             // drawArrowToolStripMenuItem
             // 
             this.drawArrowToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("drawArrowToolStripMenuItem.Icon")));
-            this.drawArrowToolStripMenuItem.Image = null;
+            this.drawArrowToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("drawArrowToolStripMenuItem.Image")));
             this.drawArrowToolStripMenuItem.LanguageKey = "editor_drawarrow";
             this.drawArrowToolStripMenuItem.Name = "drawArrowToolStripMenuItem";
             this.drawArrowToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1545,7 +1546,7 @@ namespace ScreenLoad
             // drawFreehandToolStripMenuItem
             // 
             this.drawFreehandToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("drawFreehandToolStripMenuItem.Icon")));
-            this.drawFreehandToolStripMenuItem.Image = null;
+            this.drawFreehandToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("drawFreehandToolStripMenuItem.Image")));
             this.drawFreehandToolStripMenuItem.LanguageKey = "editor_drawfreehand";
             this.drawFreehandToolStripMenuItem.Name = "drawFreehandToolStripMenuItem";
             this.drawFreehandToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1555,7 +1556,7 @@ namespace ScreenLoad
             // addTextBoxToolStripMenuItem
             // 
             this.addTextBoxToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("addTextBoxToolStripMenuItem.Icon")));
-            this.addTextBoxToolStripMenuItem.Image = null;
+            this.addTextBoxToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addTextBoxToolStripMenuItem.Image")));
             this.addTextBoxToolStripMenuItem.LanguageKey = "editor_drawtextbox";
             this.addTextBoxToolStripMenuItem.Name = "addTextBoxToolStripMenuItem";
             this.addTextBoxToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1565,7 +1566,7 @@ namespace ScreenLoad
             // addSpeechBubbleToolStripMenuItem
             // 
             this.addSpeechBubbleToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("addSpeechBubbleToolStripMenuItem.Icon")));
-            this.addSpeechBubbleToolStripMenuItem.Image = null;
+            this.addSpeechBubbleToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addSpeechBubbleToolStripMenuItem.Image")));
             this.addSpeechBubbleToolStripMenuItem.LanguageKey = "editor_speechbubble";
             this.addSpeechBubbleToolStripMenuItem.Name = "addSpeechBubbleToolStripMenuItem";
             this.addSpeechBubbleToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1575,7 +1576,7 @@ namespace ScreenLoad
             // addCounterToolStripMenuItem
             // 
             this.addCounterToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("addCounterToolStripMenuItem.Icon")));
-            this.addCounterToolStripMenuItem.Image = null;
+            this.addCounterToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("addCounterToolStripMenuItem.Image")));
             this.addCounterToolStripMenuItem.LanguageKey = "editor_counter";
             this.addCounterToolStripMenuItem.Name = "addCounterToolStripMenuItem";
             this.addCounterToolStripMenuItem.Size = new System.Drawing.Size(190, 22);
@@ -1602,7 +1603,7 @@ namespace ScreenLoad
             // 
             this.removeObjectToolStripMenuItem.Enabled = false;
             this.removeObjectToolStripMenuItem.Icon = ((System.Drawing.Icon)(resources.GetObject("removeObjectToolStripMenuItem.Icon")));
-            this.removeObjectToolStripMenuItem.Image = null;
+            this.removeObjectToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("removeObjectToolStripMenuItem.Image")));
             this.removeObjectToolStripMenuItem.LanguageKey = "editor_deleteelement";
             this.removeObjectToolStripMenuItem.Name = "removeObjectToolStripMenuItem";
             this.removeObjectToolStripMenuItem.ShortcutKeys = System.Windows.Forms.Keys.Delete;
@@ -1723,7 +1724,7 @@ namespace ScreenLoad
             // helpToolStripMenuItem1
             // 
             this.helpToolStripMenuItem1.Icon = ((System.Drawing.Icon)(resources.GetObject("helpToolStripMenuItem1.Icon")));
-            this.helpToolStripMenuItem1.Image = null;
+            this.helpToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("helpToolStripMenuItem1.Image")));
             this.helpToolStripMenuItem1.LanguageKey = "contextmenu_help";
             this.helpToolStripMenuItem1.Name = "helpToolStripMenuItem1";
             this.helpToolStripMenuItem1.ShortcutKeys = System.Windows.Forms.Keys.F1;

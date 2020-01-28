@@ -157,6 +157,8 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="editor_opendirinexplorer">Открыть директорию в проводнике Windows</resource>
 		<resource name="editor_pastefromclipboard">Вставить</resource>
 		<resource name="editor_pixel_size">Размер пикселя</resource>
+    <resource name="editor_arrow_heads">Отображение стрелки</resource>
+    <resource name="editor_counter_startvalue">Начальное значение</resource>
 		<resource name="editor_preview_quality">Качество предосмотра</resource>
 		<resource name="editor_print">Печать</resource>
 		<resource name="editor_redo">Повторить {0}</resource>

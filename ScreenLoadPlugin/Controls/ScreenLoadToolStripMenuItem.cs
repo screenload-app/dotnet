@@ -19,6 +19,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -49,14 +50,11 @@ namespace ScreenLoadPlugin.Controls
         {
             get
             {
-                if (DesignMode)
-                    return null;
-
                 if (null != _image && PixelFormat.DontCare != _image.PixelFormat &&
                     (null == Owner || _image.Size.Width == Owner.ImageScalingSize.Width))
                     return _image;
 
-                if (null == Icon)
+                if (null == Icon || null == Owner)
                     return _image;
 
                 _image = new Icon(Icon, Owner.ImageScalingSize).ToBitmap();
