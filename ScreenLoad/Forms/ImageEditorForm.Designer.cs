@@ -58,9 +58,6 @@ namespace ScreenLoad
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ImageEditorForm));
             this.topToolStripContainer = new System.Windows.Forms.ToolStripContainer();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.dimensionsLabel = new System.Windows.Forms.ToolStripStatusLabel();
-            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.propertiesToolStrip = new ScreenLoad.Controls.ToolStripEx();
             this.obfuscateModeButton = new ScreenLoad.Controls.BindableToolStripDropDownButton();
             this.pixelizeToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
@@ -110,6 +107,9 @@ namespace ScreenLoad
             this.btnCancel = new ScreenLoad.Controls.BindableToolStripButton();
             this.counterLabel = new ScreenLoadPlugin.Controls.ScreenLoadToolStripLabel();
             this.counterUpDown = new ScreenLoad.Controls.ToolStripNumericUpDown();
+            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.dimensionsLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.statusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.tableLayoutPanel1 = new System.Windows.Forms.TableLayoutPanel();
             this.panel1 = new ScreenLoadPlugin.Controls.NonJumpingPanel();
             this.toolsToolStrip = new ScreenLoad.Controls.ToolStripEx();
@@ -200,14 +200,13 @@ namespace ScreenLoad
             this.fileSavedStatusContextMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.copyPathMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.openDirectoryMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
-            this.topSeparatorLabel = new System.Windows.Forms.Label();
             this.topToolStripContainer.BottomToolStripPanel.SuspendLayout();
             this.topToolStripContainer.ContentPanel.SuspendLayout();
             this.topToolStripContainer.LeftToolStripPanel.SuspendLayout();
             this.topToolStripContainer.TopToolStripPanel.SuspendLayout();
             this.topToolStripContainer.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.propertiesToolStrip.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.tableLayoutPanel1.SuspendLayout();
             this.toolsToolStrip.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -235,6 +234,7 @@ namespace ScreenLoad
             this.topToolStripContainer.LeftToolStripPanel.Controls.Add(this.toolsToolStrip);
             this.topToolStripContainer.Location = new System.Drawing.Point(0, 0);
             this.topToolStripContainer.Name = "topToolStripContainer";
+            this.topToolStripContainer.RightToolStripPanelVisible = false;
             this.topToolStripContainer.Size = new System.Drawing.Size(785, 485);
             this.topToolStripContainer.TabIndex = 2;
             this.topToolStripContainer.Text = "toolStripContainer1";
@@ -243,40 +243,6 @@ namespace ScreenLoad
             // 
             this.topToolStripContainer.TopToolStripPanel.Controls.Add(this.menuStrip1);
             this.topToolStripContainer.TopToolStripPanel.Controls.Add(this.destinationsToolStrip);
-            // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.dimensionsLabel,
-            this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 39);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(785, 24);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // dimensionsLabel
-            // 
-            this.dimensionsLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.dimensionsLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
-            this.dimensionsLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.dimensionsLabel.Name = "dimensionsLabel";
-            this.dimensionsLabel.Size = new System.Drawing.Size(53, 19);
-            this.dimensionsLabel.Text = "123x321";
-            // 
-            // statusLabel
-            // 
-            this.statusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.statusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
-            this.statusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.statusLabel.Name = "statusLabel";
-            this.statusLabel.Size = new System.Drawing.Size(4, 19);
-            this.statusLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StatusLabelClicked);
             // 
             // propertiesToolStrip
             // 
@@ -486,7 +452,7 @@ namespace ScreenLoad
             this.fontFamilyComboBox.MaxDropDownItems = 20;
             this.fontFamilyComboBox.Name = "fontFamilyComboBox";
             this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
-            this.fontFamilyComboBox.Size = new System.Drawing.Size(236, 33);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(226, 33);
             this.fontFamilyComboBox.Text = "Agency FB";
             this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
@@ -646,7 +612,7 @@ namespace ScreenLoad
             // 
             this.blurRadiusLabel.LanguageKey = "editor_blur_radius";
             this.blurRadiusLabel.Name = "blurRadiusLabel";
-            this.blurRadiusLabel.Size = new System.Drawing.Size(63, 15);
+            this.blurRadiusLabel.Size = new System.Drawing.Size(63, 36);
             this.blurRadiusLabel.Text = "Blur radius";
             // 
             // blurRadiusUpDown
@@ -979,6 +945,40 @@ namespace ScreenLoad
             this.counterUpDown.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.counterUpDown.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
             // 
+            // statusStrip1
+            // 
+            this.statusStrip1.Dock = System.Windows.Forms.DockStyle.None;
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dimensionsLabel,
+            this.statusLabel});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 39);
+            this.statusStrip1.Name = "statusStrip1";
+            this.statusStrip1.Size = new System.Drawing.Size(785, 24);
+            this.statusStrip1.TabIndex = 3;
+            this.statusStrip1.Text = "statusStrip1";
+            // 
+            // dimensionsLabel
+            // 
+            this.dimensionsLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.dimensionsLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
+            this.dimensionsLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.dimensionsLabel.Name = "dimensionsLabel";
+            this.dimensionsLabel.Size = new System.Drawing.Size(53, 19);
+            this.dimensionsLabel.Text = "123x321";
+            // 
+            // statusLabel
+            // 
+            this.statusLabel.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.statusLabel.BorderStyle = System.Windows.Forms.Border3DStyle.Sunken;
+            this.statusLabel.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.statusLabel.Name = "statusLabel";
+            this.statusLabel.Size = new System.Drawing.Size(4, 19);
+            this.statusLabel.MouseDown += new System.Windows.Forms.MouseEventHandler(this.StatusLabelClicked);
+            // 
             // tableLayoutPanel1
             // 
             this.tableLayoutPanel1.BackColor = System.Drawing.SystemColors.Control;
@@ -997,6 +997,7 @@ namespace ScreenLoad
             // 
             this.panel1.AutoScroll = true;
             this.panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.panel1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
@@ -1305,6 +1306,7 @@ namespace ScreenLoad
             this.helpToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.menuStrip1.Size = new System.Drawing.Size(785, 24);
             this.menuStrip1.TabIndex = 1;
             // 
@@ -1957,15 +1959,6 @@ namespace ScreenLoad
             this.openDirectoryMenuItem.Text = "Open directory in Windows Explorer";
             this.openDirectoryMenuItem.Click += new System.EventHandler(this.OpenDirectoryMenuItemClick);
             // 
-            // topSeparatorLabel
-            // 
-            this.topSeparatorLabel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.topSeparatorLabel.Dock = System.Windows.Forms.DockStyle.Top;
-            this.topSeparatorLabel.Location = new System.Drawing.Point(0, 0);
-            this.topSeparatorLabel.Name = "topSeparatorLabel";
-            this.topSeparatorLabel.Size = new System.Drawing.Size(800, 2);
-            this.topSeparatorLabel.TabIndex = 0;
-            // 
             // ImageEditorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1990,10 +1983,10 @@ namespace ScreenLoad
             this.topToolStripContainer.TopToolStripPanel.PerformLayout();
             this.topToolStripContainer.ResumeLayout(false);
             this.topToolStripContainer.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.propertiesToolStrip.ResumeLayout(false);
             this.propertiesToolStrip.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.tableLayoutPanel1.ResumeLayout(false);
             this.toolsToolStrip.ResumeLayout(false);
             this.toolsToolStrip.PerformLayout();
@@ -2149,6 +2142,5 @@ namespace ScreenLoad
         private ScreenLoad.Controls.ToolStripColorButton btnLineColor;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem autoCropToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
-        private System.Windows.Forms.Label topSeparatorLabel;
     }
 }

@@ -964,22 +964,24 @@ namespace ScreenLoad
 
         private void OpenEditorToolStripMenuItemClick(object sender, EventArgs e)
         {
-            var image = new Bitmap(800, 600);
+            (new TestForm()).Show();
 
-            using (var graphics = Graphics.FromImage(image))
-            using (var brush = new SolidBrush(Color.White))
-            {
-                graphics.FillRectangle(brush, 0, 0, image.Width, image.Height);
-            }
+            //var image = new Bitmap(800, 600);
 
-            var surface = new Surface(image)
-            {
-                CaptureDetails = new CaptureDetails()
-            };
+            //using (var graphics = Graphics.FromImage(image))
+            //using (var brush = new SolidBrush(Color.White))
+            //{
+            //    graphics.FillRectangle(brush, 0, 0, image.Width, image.Height);
+            //}
 
-            var imageEditorForm = new ImageEditorForm(surface, false);
-            imageEditorForm.Show();
-            imageEditorForm.Activate();
+            //var surface = new Surface(image)
+            //{
+            //    CaptureDetails = new CaptureDetails()
+            //};
+
+            //var imageEditorForm = new ImageEditorForm(surface, false);
+            //imageEditorForm.Show();
+            //imageEditorForm.Activate();
         }
 
         private void CaptureFullScreenToolStripMenuItemClick(object sender, EventArgs e)

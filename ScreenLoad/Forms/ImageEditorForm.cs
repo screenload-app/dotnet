@@ -89,7 +89,7 @@ namespace ScreenLoad {
 			//
 			ManualLanguageApply = true;
 			InitializeComponent();
-
+            
             menuStrip1.SuspendLayout();
             menuStrip1.ImageScalingSize = coreConfiguration.IconSize;
             menuStrip1.ResumeLayout(true);
