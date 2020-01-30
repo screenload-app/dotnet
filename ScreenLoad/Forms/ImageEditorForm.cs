@@ -43,6 +43,7 @@ using ScreenLoadPlugin.Effects;
 using ScreenLoadPlugin.Interfaces.Drawing;
 using ScreenLoadPlugin.UnmanagedHelpers;
 using log4net;
+using ScreenLoad.Controls;
 
 namespace ScreenLoad
 {
@@ -97,6 +98,10 @@ namespace ScreenLoad
             //
             ManualLanguageApply = true;
             InitializeComponent();
+
+            destinationsToolStrip.Renderer = new ToolStripBorderedRenderer();
+            toolsToolStrip.Renderer = new ToolStripBorderedRenderer();
+            propertiesToolStrip.Renderer = new ToolStripBorderedRenderer();
 
             menuStrip1.SuspendLayout();
             menuStrip1.ImageScalingSize = coreConfiguration.IconSize;

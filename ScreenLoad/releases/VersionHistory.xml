@@ -1,6 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
+  <version type="development" number="2.1.1.0" file="ScreenLoad-2.1.1.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.1.1]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.1.1]]>
+    </info>
+  </version>
+
+  <version type="development" number="2.1.0.0" file="ScreenLoad-2.1.0.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.1.0]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.1.0]]>
+    </info>
+  </version>
+  
   <version type="development" number="2.0.3.0" file="ScreenLoad-2.0.3.0.exe">
     <info locale="ru-RU">
       <![CDATA[Версия 2.0.3

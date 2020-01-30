@@ -226,7 +226,7 @@ namespace ScreenLoad
             // 
             this.topToolStripContainer.ContentPanel.AutoScroll = true;
             this.topToolStripContainer.ContentPanel.Controls.Add(this.tableLayoutPanel1);
-            this.topToolStripContainer.ContentPanel.Size = new System.Drawing.Size(745, 359);
+            this.topToolStripContainer.ContentPanel.Size = new System.Drawing.Size(742, 353);
             this.topToolStripContainer.Dock = System.Windows.Forms.DockStyle.Fill;
             // 
             // topToolStripContainer.LeftToolStripPanel
@@ -287,8 +287,8 @@ namespace ScreenLoad
             this.propertiesToolStrip.Location = new System.Drawing.Point(0, 0);
             this.propertiesToolStrip.MinimumSize = new System.Drawing.Size(150, 32);
             this.propertiesToolStrip.Name = "propertiesToolStrip";
-            this.propertiesToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.propertiesToolStrip.Size = new System.Drawing.Size(785, 39);
+            this.propertiesToolStrip.Padding = new System.Windows.Forms.Padding(0, 3, 0, 0);
+            this.propertiesToolStrip.Size = new System.Drawing.Size(785, 42);
             this.propertiesToolStrip.Stretch = true;
             this.propertiesToolStrip.TabIndex = 2;
             // 
@@ -453,7 +453,7 @@ namespace ScreenLoad
             this.fontFamilyComboBox.MaxDropDownItems = 20;
             this.fontFamilyComboBox.Name = "fontFamilyComboBox";
             this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
-            this.fontFamilyComboBox.Size = new System.Drawing.Size(210, 33);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(196, 33);
             this.fontFamilyComboBox.Text = "Agency FB";
             this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
@@ -801,8 +801,8 @@ namespace ScreenLoad
             // 
             this.arrowHeadsLabel.LanguageKey = "editor_arrow_heads";
             this.arrowHeadsLabel.Name = "arrowHeadsLabel";
-            this.arrowHeadsLabel.Size = new System.Drawing.Size(54, 15);
-            this.arrowHeadsLabel.Text = "Pixel size";
+            this.arrowHeadsLabel.Size = new System.Drawing.Size(73, 15);
+            this.arrowHeadsLabel.Text = "Arrow heads";
             // 
             // arrowHeadsDropDownButton
             // 
@@ -916,7 +916,8 @@ namespace ScreenLoad
             // 
             this.counterLabel.LanguageKey = "editor_counter_startvalue";
             this.counterLabel.Name = "counterLabel";
-            this.counterLabel.Size = new System.Drawing.Size(0, 0);
+            this.counterLabel.Size = new System.Drawing.Size(62, 15);
+            this.counterLabel.Text = "Start value";
             // 
             // counterUpDown
             // 
@@ -954,7 +955,7 @@ namespace ScreenLoad
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.dimensionsLabel,
             this.statusLabel});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 39);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 42);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(785, 24);
             this.statusStrip1.TabIndex = 3;
@@ -993,7 +994,7 @@ namespace ScreenLoad
             this.tableLayoutPanel1.Name = "tableLayoutPanel1";
             this.tableLayoutPanel1.RowCount = 1;
             this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.tableLayoutPanel1.Size = new System.Drawing.Size(745, 359);
+            this.tableLayoutPanel1.Size = new System.Drawing.Size(742, 353);
             this.tableLayoutPanel1.TabIndex = 3;
             // 
             // panel1
@@ -1003,7 +1004,7 @@ namespace ScreenLoad
             this.panel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel1.Location = new System.Drawing.Point(3, 3);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(739, 353);
+            this.panel1.Size = new System.Drawing.Size(736, 347);
             this.panel1.TabIndex = 2;
             // 
             // toolsToolStrip
@@ -1035,8 +1036,8 @@ namespace ScreenLoad
             this.btnResize});
             this.toolsToolStrip.Location = new System.Drawing.Point(0, 0);
             this.toolsToolStrip.Name = "toolsToolStrip";
-            this.toolsToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.toolsToolStrip.Size = new System.Drawing.Size(40, 359);
+            this.toolsToolStrip.Padding = new System.Windows.Forms.Padding(4, 2, 3, 0);
+            this.toolsToolStrip.Size = new System.Drawing.Size(43, 353);
             this.toolsToolStrip.Stretch = true;
             this.toolsToolStrip.TabIndex = 0;
             // 
@@ -1768,8 +1769,8 @@ namespace ScreenLoad
             this.btnHelp});
             this.destinationsToolStrip.Location = new System.Drawing.Point(0, 24);
             this.destinationsToolStrip.Name = "destinationsToolStrip";
-            this.destinationsToolStrip.Padding = new System.Windows.Forms.Padding(4, 0, 0, 0);
-            this.destinationsToolStrip.Size = new System.Drawing.Size(785, 39);
+            this.destinationsToolStrip.Padding = new System.Windows.Forms.Padding(0, 0, 0, 3);
+            this.destinationsToolStrip.Size = new System.Drawing.Size(785, 42);
             this.destinationsToolStrip.Stretch = true;
             this.destinationsToolStrip.TabIndex = 0;
             // 
