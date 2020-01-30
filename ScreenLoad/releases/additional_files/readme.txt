@@ -7,7 +7,7 @@ CHANGE LOG:
 
 All details to our tickets can be found here: https://greenshot.atlassian.net
 
-2.1.1.0-abcdefg local
+2.1.2.0-abcdefg local
 
 Bugs fixed:
 * [BUG-2235] - Imgur authentication issues due to imgur api change

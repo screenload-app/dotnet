@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 #endif
 [assembly: AssemblyCompany("Download.Ru")]
 [assembly: AssemblyProduct("ScreenLoad")]
-[assembly: AssemblyCopyright("© Download.Ru <support@download.ru> 2019")]
+[assembly: AssemblyCopyright("© Download.Ru <support@download.ru> 2019-2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -43,6 +43,6 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The assembly version, replaced by build scripts
-[assembly: AssemblyVersion("2.1.1.0")]
-[assembly: AssemblyInformationalVersion("2.1.1.0")]
-[assembly: AssemblyFileVersion("2.1.1.0")]
+[assembly: AssemblyVersion("2.1.2.0")]
+[assembly: AssemblyInformationalVersion("2.1.2.0")]
+[assembly: AssemblyFileVersion("2.1.2.0")]
