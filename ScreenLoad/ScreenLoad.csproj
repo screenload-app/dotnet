@@ -67,6 +67,7 @@
     <Compile Include="Controls\SimpleColorButton.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="Controls\StatusStripBorderedRenderer.cs" />
     <Compile Include="Controls\ToolStripColorButton.cs">
       <SubType>Component</SubType>
     </Compile>

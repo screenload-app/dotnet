@@ -262,6 +262,7 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		
     <resource name="settings_configureplugin">Сконфигурировать</resource>
 		<resource name="settings_copypathtoclipboard">Копировать путь файла каждый раз при сохранении изображения</resource>
+    <resource name="settings_openfolderafterimagesaved">Открыть папку с файлом после сохранения изображения</resource>
 		<resource name="settings_destination">Пункт назначения</resource>
 		<resource name="settings_destination_clipboard">Копировать в буфер</resource>
 		<resource name="settings_destination_editor">Открыть в редакторе изображений</resource>

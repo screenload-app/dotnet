@@ -103,6 +103,8 @@ namespace ScreenLoad
             toolsToolStrip.Renderer = new ToolStripBorderedRenderer();
             propertiesToolStrip.Renderer = new ToolStripBorderedRenderer();
 
+            statusStrip1.Renderer = new StatusStripBorderedRenderer();
+
             menuStrip1.SuspendLayout();
             menuStrip1.ImageScalingSize = coreConfiguration.IconSize;
             menuStrip1.ResumeLayout(true);

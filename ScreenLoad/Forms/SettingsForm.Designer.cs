@@ -155,6 +155,7 @@ namespace ScreenLoad {
             this.checkbox_enableexpert = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.listview_clipboardformats = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
+            this.screenLoadCheckBox1 = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.groupbox_preferredfilesettings.SuspendLayout();
             this.groupbox_applicationsettings.SuspendLayout();
             this.groupbox_qualitysettings.SuspendLayout();
@@ -295,6 +296,7 @@ namespace ScreenLoad {
             // groupbox_preferredfilesettings
             // 
             this.groupbox_preferredfilesettings.AutoSize = true;
+            this.groupbox_preferredfilesettings.Controls.Add(this.screenLoadCheckBox1);
             this.groupbox_preferredfilesettings.Controls.Add(this.btnPatternHelp);
             this.groupbox_preferredfilesettings.Controls.Add(this.checkbox_copypathtoclipboard);
             this.groupbox_preferredfilesettings.Controls.Add(this.combobox_primaryimageformat);
@@ -307,7 +309,7 @@ namespace ScreenLoad {
             this.groupbox_preferredfilesettings.LanguageKey = "settings_preferredfilesettings";
             this.groupbox_preferredfilesettings.Location = new System.Drawing.Point(6, 6);
             this.groupbox_preferredfilesettings.Name = "groupbox_preferredfilesettings";
-            this.groupbox_preferredfilesettings.Size = new System.Drawing.Size(472, 133);
+            this.groupbox_preferredfilesettings.Size = new System.Drawing.Size(472, 156);
             this.groupbox_preferredfilesettings.TabIndex = 0;
             this.groupbox_preferredfilesettings.TabStop = false;
             this.groupbox_preferredfilesettings.Text = "Preferred Output File Settings";
@@ -427,7 +429,7 @@ namespace ScreenLoad {
             this.groupbox_qualitysettings.Controls.Add(this.textBoxJpegQuality);
             this.groupbox_qualitysettings.Controls.Add(this.trackBarJpegQuality);
             this.groupbox_qualitysettings.LanguageKey = "settings_qualitysettings";
-            this.groupbox_qualitysettings.Location = new System.Drawing.Point(6, 145);
+            this.groupbox_qualitysettings.Location = new System.Drawing.Point(6, 164);
             this.groupbox_qualitysettings.Name = "groupbox_qualitysettings";
             this.groupbox_qualitysettings.Size = new System.Drawing.Size(472, 129);
             this.groupbox_qualitysettings.TabIndex = 1;
@@ -1520,6 +1522,18 @@ namespace ScreenLoad {
             this.columnHeader1.Text = "Destination";
             this.columnHeader1.Width = 225;
             // 
+            // screenLoadCheckBox1
+            // 
+            this.screenLoadCheckBox1.AutoSize = true;
+            this.screenLoadCheckBox1.LanguageKey = "settings_openfolderafterimagesaved";
+            this.screenLoadCheckBox1.Location = new System.Drawing.Point(6, 120);
+            this.screenLoadCheckBox1.Name = "screenLoadCheckBox1";
+            this.screenLoadCheckBox1.PropertyName = "OpenFolderAfterImageSaved";
+            this.screenLoadCheckBox1.Size = new System.Drawing.Size(234, 17);
+            this.screenLoadCheckBox1.TabIndex = 9;
+            this.screenLoadCheckBox1.Text = "Open folder with the file after image is saved";
+            this.screenLoadCheckBox1.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1535,6 +1549,7 @@ namespace ScreenLoad {
             this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "SettingsForm";
+            this.Text = "Settings";
             this.groupbox_preferredfilesettings.ResumeLayout(false);
             this.groupbox_preferredfilesettings.PerformLayout();
             this.groupbox_applicationsettings.ResumeLayout(false);
@@ -1691,5 +1706,6 @@ namespace ScreenLoad {
         private ScreenLoadPlugin.Controls.ScreenLoadRadioButton checkUpdatesAutoRadioButton;
         private ScreenLoadPlugin.Controls.ScreenLoadCheckBox quickSettingsCheckBox;
         private System.Windows.Forms.ComboBox IconSizeComboBox;
+        private ScreenLoadPlugin.Controls.ScreenLoadCheckBox screenLoadCheckBox1;
     }
 }

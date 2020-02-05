@@ -168,6 +168,9 @@ namespace ScreenLoadPlugin.Core
                     {
                         surface.LastSaveFullPath = exportInformation.Filepath;
                         surface.SendMessageEvent(this, SurfaceMessageTyp.FileSaved, message);
+
+                        if (CoreConfig.OpenFolderAfterImageSaved)
+                            ExplorerHelper.OpenInExplorer(exportInformation.Filepath);
                     }
                     else
                         surface.SendMessageEvent(this, SurfaceMessageTyp.Info, message);
