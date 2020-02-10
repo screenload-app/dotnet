@@ -60,6 +60,7 @@ namespace ScreenLoad {
             this.combobox_primaryimageformat = new ScreenLoadPlugin.Controls.ScreenLoadComboBox();
             this.label_primaryimageformat = new ScreenLoadPlugin.Controls.ScreenLoadLabel();
             this.groupbox_preferredfilesettings = new ScreenLoadPlugin.Controls.ScreenLoadGroupBox();
+            this.screenLoadCheckBox1 = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.btnPatternHelp = new System.Windows.Forms.Button();
             this.checkbox_copypathtoclipboard = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.checkbox_zoomer = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
@@ -102,6 +103,7 @@ namespace ScreenLoad {
             this.fullscreen_hotkeyControl = new ScreenLoadPlugin.Controls.HotkeyControl();
             this.tab_capture = new ScreenLoadPlugin.Controls.ScreenLoadTabPage();
             this.groupbox_editor = new ScreenLoadPlugin.Controls.ScreenLoadGroupBox();
+            this.askSavingPathCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.editorConfirmationCheckBox = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.checkbox_editor_match_capture_size = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.groupbox_iecapture = new ScreenLoadPlugin.Controls.ScreenLoadGroupBox();
@@ -155,7 +157,6 @@ namespace ScreenLoad {
             this.checkbox_enableexpert = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.listview_clipboardformats = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.screenLoadCheckBox1 = new ScreenLoadPlugin.Controls.ScreenLoadCheckBox();
             this.groupbox_preferredfilesettings.SuspendLayout();
             this.groupbox_applicationsettings.SuspendLayout();
             this.groupbox_qualitysettings.SuspendLayout();
@@ -313,6 +314,18 @@ namespace ScreenLoad {
             this.groupbox_preferredfilesettings.TabIndex = 0;
             this.groupbox_preferredfilesettings.TabStop = false;
             this.groupbox_preferredfilesettings.Text = "Preferred Output File Settings";
+            // 
+            // screenLoadCheckBox1
+            // 
+            this.screenLoadCheckBox1.AutoSize = true;
+            this.screenLoadCheckBox1.LanguageKey = "settings_openfolderafterimagesaved";
+            this.screenLoadCheckBox1.Location = new System.Drawing.Point(6, 120);
+            this.screenLoadCheckBox1.Name = "screenLoadCheckBox1";
+            this.screenLoadCheckBox1.PropertyName = "OpenFolderAfterImageSaved";
+            this.screenLoadCheckBox1.Size = new System.Drawing.Size(234, 17);
+            this.screenLoadCheckBox1.TabIndex = 9;
+            this.screenLoadCheckBox1.Text = "Open folder with the file after image is saved";
+            this.screenLoadCheckBox1.UseVisualStyleBackColor = true;
             // 
             // btnPatternHelp
             // 
@@ -817,26 +830,39 @@ namespace ScreenLoad {
             // groupbox_editor
             // 
             this.groupbox_editor.AutoSize = true;
+            this.groupbox_editor.Controls.Add(this.askSavingPathCheckBox);
             this.groupbox_editor.Controls.Add(this.editorConfirmationCheckBox);
             this.groupbox_editor.Controls.Add(this.checkbox_editor_match_capture_size);
             this.groupbox_editor.LanguageKey = "settings_editor";
             this.groupbox_editor.Location = new System.Drawing.Point(6, 338);
             this.groupbox_editor.Name = "groupbox_editor";
-            this.groupbox_editor.Size = new System.Drawing.Size(472, 75);
+            this.groupbox_editor.Size = new System.Drawing.Size(472, 100);
             this.groupbox_editor.TabIndex = 3;
             this.groupbox_editor.TabStop = false;
             this.groupbox_editor.Text = "Editor";
+            // 
+            // askSavingPathCheckBox
+            // 
+            this.askSavingPathCheckBox.AutoSize = true;
+            this.askSavingPathCheckBox.LanguageKey = "settings_quickeditorasksavingpath";
+            this.askSavingPathCheckBox.Location = new System.Drawing.Point(6, 41);
+            this.askSavingPathCheckBox.Name = "askSavingPathCheckBox";
+            this.askSavingPathCheckBox.PropertyName = "QuickEditorAskSavingPath";
+            this.askSavingPathCheckBox.Size = new System.Drawing.Size(206, 17);
+            this.askSavingPathCheckBox.TabIndex = 1;
+            this.askSavingPathCheckBox.Text = "Ask for saving path in quick edit mode";
+            this.askSavingPathCheckBox.UseVisualStyleBackColor = true;
             // 
             // editorConfirmationCheckBox
             // 
             this.editorConfirmationCheckBox.AutoSize = true;
             this.editorConfirmationCheckBox.LanguageKey = "settings_editorconfirmation";
-            this.editorConfirmationCheckBox.Location = new System.Drawing.Point(6, 39);
+            this.editorConfirmationCheckBox.Location = new System.Drawing.Point(6, 64);
             this.editorConfirmationCheckBox.Name = "editorConfirmationCheckBox";
             this.editorConfirmationCheckBox.PropertyName = "";
             this.editorConfirmationCheckBox.SectionName = "";
             this.editorConfirmationCheckBox.Size = new System.Drawing.Size(263, 17);
-            this.editorConfirmationCheckBox.TabIndex = 1;
+            this.editorConfirmationCheckBox.TabIndex = 2;
             this.editorConfirmationCheckBox.Text = "Ask for confirmation when leaving quick edit mode";
             this.editorConfirmationCheckBox.UseVisualStyleBackColor = true;
             // 
@@ -1522,18 +1548,6 @@ namespace ScreenLoad {
             this.columnHeader1.Text = "Destination";
             this.columnHeader1.Width = 225;
             // 
-            // screenLoadCheckBox1
-            // 
-            this.screenLoadCheckBox1.AutoSize = true;
-            this.screenLoadCheckBox1.LanguageKey = "settings_openfolderafterimagesaved";
-            this.screenLoadCheckBox1.Location = new System.Drawing.Point(6, 120);
-            this.screenLoadCheckBox1.Name = "screenLoadCheckBox1";
-            this.screenLoadCheckBox1.PropertyName = "OpenFolderAfterImageSaved";
-            this.screenLoadCheckBox1.Size = new System.Drawing.Size(234, 17);
-            this.screenLoadCheckBox1.TabIndex = 9;
-            this.screenLoadCheckBox1.Text = "Open folder with the file after image is saved";
-            this.screenLoadCheckBox1.UseVisualStyleBackColor = true;
-            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -1707,5 +1721,6 @@ namespace ScreenLoad {
         private ScreenLoadPlugin.Controls.ScreenLoadCheckBox quickSettingsCheckBox;
         private System.Windows.Forms.ComboBox IconSizeComboBox;
         private ScreenLoadPlugin.Controls.ScreenLoadCheckBox screenLoadCheckBox1;
+        private ScreenLoadPlugin.Controls.ScreenLoadCheckBox askSavingPathCheckBox;
     }
 }

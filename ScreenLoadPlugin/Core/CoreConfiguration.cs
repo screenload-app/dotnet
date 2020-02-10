@@ -213,6 +213,9 @@ namespace ScreenLoadPlugin.Core {
         [IniProperty("IECapture", Description="Enable/disable IE capture", DefaultValue="True")]
 		public bool IECapture { get; set; }
 
+        [IniProperty("QuickEditorAskSavingPath", DefaultValue = "False")]
+        public bool QuickEditorAskSavingPath { get; set; }
+
         [IniProperty("IEFieldCapture", Description="Enable/disable IE field capture, very slow but will make it possible to annotate the fields of a capture in the editor.", DefaultValue="False")]
 		public bool IEFieldCapture { get; set; }
 

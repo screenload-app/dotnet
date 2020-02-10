@@ -132,6 +132,7 @@ Also, we would highly appreciate if you checked whether a tracker item already e
 		<resource name="editor_load_objects">Load objects from file</resource>
 		<resource name="editor_magnification_factor">Magnification factor</resource>
 		<resource name="editor_match_capture_size">Match capture size</resource>
+    <resource name="settings_quickeditorasksavingpath">Ask for saving path in quick edit mode</resource>
     <resource name="settings_editorconfirmation">Ask for confirmation when leaving quick edit mode</resource>
 		<resource name="editor_obfuscate">Obfuscate (O)</resource>
 		<resource name="editor_obfuscate_blur">Blur</resource>

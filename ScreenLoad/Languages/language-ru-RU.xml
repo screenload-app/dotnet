@@ -145,10 +145,14 @@ ScreenLoad поставляется БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ.
 		<resource name="editor_imagesaved">Изображения сохраняются в {0}.</resource>
 		<resource name="editor_insertwindow">Вставить окно</resource>
 		<resource name="editor_invert">Инвертировать</resource>
-		<resource name="editor_italic">Курсив</resource>
+    <resource name="editor_customizeEffects">Настроить эффекты</resource>
+    <resource name="editor_dropShadowPreferences">Тень...</resource>
+    <resource name="editor_tornEdgePreferences">Рваные края...</resource>
+    <resource name="editor_italic">Курсив</resource>
 		<resource name="editor_load_objects">Загрузить объекты из файла</resource>
 		<resource name="editor_magnification_factor">Коэффициент увеличения</resource>
 		<resource name="editor_match_capture_size">Сохранить соотношение размера захвата</resource>
+    <resource name="settings_quickeditorasksavingpath">Указывать путь при сохранении в режиме быстрого редактирования</resource>
 		<resource name="editor_obfuscate">Размытие (O)</resource>
 		<resource name="editor_obfuscate_blur">Пятно</resource>
 		<resource name="editor_obfuscate_mode">Режим размытия</resource>

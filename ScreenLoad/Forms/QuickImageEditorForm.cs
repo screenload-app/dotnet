@@ -1002,7 +1002,9 @@ namespace ScreenLoad
             if (_coreConfiguration.ShowTrayNotification && !_coreConfiguration.HideTrayicon)
                 surfaceForExport.SurfaceMessage += CaptureHelper.SurfaceMessageReceived;
 
-            var destination = DestinationHelper.GetDestination(FileWithDialogDestination.DESIGNATION);
+            var destination = _coreConfiguration.QuickEditorAskSavingPath
+                ? DestinationHelper.GetDestination(FileWithDialogDestination.DESIGNATION)
+                : DestinationHelper.GetDestination(FileDestination.DESIGNATION);
             var exportInformation = destination?.ExportCapture(false, surfaceForExport, _surface.CaptureDetails);
 
             if (null != exportInformation && !exportInformation.ExportMade)

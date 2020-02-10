@@ -129,6 +129,10 @@ namespace ScreenLoad
             this.tornEdgesToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.grayscaleToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.invertToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.toolStripSeparator18 = new System.Windows.Forms.ToolStripSeparator();
+            this.customizeEffectsToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.dropShadowPreferencesToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
+            this.tornEdgePreferencesToolStripMenuItem = new ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem();
             this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
             this.btnCrop = new ScreenLoadPlugin.Controls.ScreenLoadToolStripButton();
             this.rotateCwToolstripButton = new ScreenLoadPlugin.Controls.ScreenLoadToolStripButton();
@@ -452,7 +456,7 @@ namespace ScreenLoad
             this.fontFamilyComboBox.MaxDropDownItems = 20;
             this.fontFamilyComboBox.Name = "fontFamilyComboBox";
             this.fontFamilyComboBox.Padding = new System.Windows.Forms.Padding(2, 0, 0, 2);
-            this.fontFamilyComboBox.Size = new System.Drawing.Size(168, 33);
+            this.fontFamilyComboBox.Size = new System.Drawing.Size(158, 33);
             this.fontFamilyComboBox.Text = "Agency FB";
             this.fontFamilyComboBox.GotFocus += new System.EventHandler(this.ToolBarFocusableElementGotFocus);
             this.fontFamilyComboBox.LostFocus += new System.EventHandler(this.ToolBarFocusableElementLostFocus);
@@ -1158,7 +1162,9 @@ namespace ScreenLoad
             this.addDropshadowToolStripMenuItem,
             this.tornEdgesToolStripMenuItem,
             this.grayscaleToolStripMenuItem,
-            this.invertToolStripMenuItem});
+            this.invertToolStripMenuItem,
+            this.toolStripSeparator18,
+            this.customizeEffectsToolStripMenuItem});
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.LanguageKey = "editor_effects";
@@ -1216,6 +1222,43 @@ namespace ScreenLoad
             this.invertToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.invertToolStripMenuItem.Text = "Invert";
             this.invertToolStripMenuItem.Click += new System.EventHandler(this.InvertToolStripMenuItemClick);
+            // 
+            // toolStripSeparator18
+            // 
+            this.toolStripSeparator18.Name = "toolStripSeparator18";
+            this.toolStripSeparator18.Size = new System.Drawing.Size(177, 6);
+            // 
+            // customizeEffectsToolStripMenuItem
+            // 
+            this.customizeEffectsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.dropShadowPreferencesToolStripMenuItem,
+            this.tornEdgePreferencesToolStripMenuItem});
+            this.customizeEffectsToolStripMenuItem.Icon = null;
+            this.customizeEffectsToolStripMenuItem.Image = null;
+            this.customizeEffectsToolStripMenuItem.LanguageKey = "editor_customizeEffects";
+            this.customizeEffectsToolStripMenuItem.Name = "customizeEffectsToolStripMenuItem";
+            this.customizeEffectsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.customizeEffectsToolStripMenuItem.Text = "Customize effects";
+            // 
+            // dropShadowPreferencesToolStripMenuItem
+            // 
+            this.dropShadowPreferencesToolStripMenuItem.Icon = null;
+            this.dropShadowPreferencesToolStripMenuItem.Image = null;
+            this.dropShadowPreferencesToolStripMenuItem.LanguageKey = "editor_dropShadowPreferences";
+            this.dropShadowPreferencesToolStripMenuItem.Name = "dropShadowPreferencesToolStripMenuItem";
+            this.dropShadowPreferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.dropShadowPreferencesToolStripMenuItem.Text = "Shadow...";
+            this.dropShadowPreferencesToolStripMenuItem.Click += new System.EventHandler(this.dropShadowPreferencesToolStripMenuItem_Click);
+            // 
+            // tornEdgePreferencesToolStripMenuItem
+            // 
+            this.tornEdgePreferencesToolStripMenuItem.Icon = null;
+            this.tornEdgePreferencesToolStripMenuItem.Image = null;
+            this.tornEdgePreferencesToolStripMenuItem.LanguageKey = "editor_tornEdgePreferences";
+            this.tornEdgePreferencesToolStripMenuItem.Name = "tornEdgePreferencesToolStripMenuItem";
+            this.tornEdgePreferencesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.tornEdgePreferencesToolStripMenuItem.Text = "Torn edge...";
+            this.tornEdgePreferencesToolStripMenuItem.Click += new System.EventHandler(this.tornEdgePreferencesToolStripMenuItem_Click);
             // 
             // toolStripSeparator13
             // 
@@ -2144,5 +2187,9 @@ namespace ScreenLoad
         private ScreenLoad.Controls.ToolStripColorButton btnLineColor;
         private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem autoCropToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator17;
+        private ToolStripSeparator toolStripSeparator18;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem customizeEffectsToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem dropShadowPreferencesToolStripMenuItem;
+        private ScreenLoadPlugin.Controls.ScreenLoadToolStripMenuItem tornEdgePreferencesToolStripMenuItem;
     }
 }

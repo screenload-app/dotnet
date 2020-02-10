@@ -1700,6 +1700,18 @@ namespace ScreenLoad
             UpdateUndoRedoSurfaceDependencies();
         }
 
+        private void dropShadowPreferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dropShadowEffect = EditorConfiguration.DropShadowEffectSettings;
+            new DropShadowSettingsForm(dropShadowEffect).ShowDialog(this);
+        }
+
+        private void tornEdgePreferencesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var tornEdgeEffect = EditorConfiguration.TornEdgeEffectSettings;
+            new TornEdgeSettingsForm(tornEdgeEffect).ShowDialog(this);
+        }
+
         private void ClearToolStripMenuItemClick(object sender, EventArgs e)
         {
             _surface.Clear(Color.Transparent);
