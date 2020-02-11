@@ -1,6 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
+  <version type="release" number="2.2.2.0" file="ScreenLoad-2.2.2.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.2.2
+1. Обновлены иконки основного редактора.
+2. Основной редактор адаптирован для экранов с высоким разрешением, улучшен внешний вид.
+3. Настройки тени и рваных краёв вынесены в отдельные пункты меню (кнопка «эффекты» основного редактора).
+4. Возможность использовать папку по умолчанию при сохранении в режиме быстрого редактирования (задается в настройках).]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.2.2
+1. Main editor icons updated.
+2. Main editor is adapted to high-resolution screens.
+3. Shadow settings and torn edges settings added to menu items.
+4. Now you can use the default folder when saving image in quick edit mode.]]>
+    </info>
+  </version>
+  
   <version type="development" number="2.2.1.0" file="ScreenLoad-2.2.1.0.exe">
     <info locale="ru-RU">
       <![CDATA[Версия 2.2.1]]>
