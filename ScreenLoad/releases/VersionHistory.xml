@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
-  <version type="development" number="2.2.3.0" file="ScreenLoad-2.2.3.0.exe">
+  <version type="release" number="2.3.0.0" file="ScreenLoad-2.3.0.0.exe">
     <info locale="ru-RU">
-      <![CDATA[Версия 2.2.3
+      <![CDATA[Версия 2.3.0
 1. Авторизация в браузере по умолчанию.
 2. Прозрачный фон для ввода текста в редакторе.]]>
     </info>
     <info locale="en-US">
-      <![CDATA[Version 2.2.3
+      <![CDATA[Version 2.3.0
 1. Authorization in the default browser.
 2. Transparent background for text in the editor.]]>
     </info>
