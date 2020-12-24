@@ -18,8 +18,8 @@ Source: ..\..\bin\Release\ScreenLoad.exe; DestDir: {app}; Components: screenload
 Source: ..\..\bin\Release\ScreenLoadPlugin.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\..\bin\Release\ScreenLoad.exe.config; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\..\bin\Release\log4net.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
-Source: ..\..\bin\Release\LinqBridge.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion 
 Source: ..\..\log4net.xml; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion 
+Source: ..\..\bin\Release\System.Reactive.dll; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\..\bin\Release\checksum.MD5; DestDir: {app}; Components: screenload; Flags: overwritereadonly ignoreversion replacesameversion
 Source: ..\additional_files\installer.txt; DestDir: {app}; Components: screenload; Flags: overwritereadonly recursesubdirs ignoreversion replacesameversion
 Source: ..\additional_files\license.txt; DestDir: {app}; Components: screenload; Flags: overwritereadonly recursesubdirs ignoreversion replacesameversion
@@ -62,11 +62,6 @@ OutputBaseFilename={#ExeName}-INSTALLER-{#FileVersion}
 OutputDir=..\
 PrivilegesRequired=none
 SetupIconFile=..\..\icons\applicationIcon\icon.ico
-; Create a SHA1 signature
-SignTool=SignTool sign /sha1 @CERTTHUMBPRINT@ /fd sha1 /t @TIMESTAMPINGSERVER@ $f
-; Append a SHA256 to the previous SHA1 signature (this is what as does)
-SignTool=SignTool sign /sha1 @CERTTHUMBPRINT@ /as /fd sha256 /tr @TIMESTAMPINGSERVER@ /td sha256 $f
-SignedUninstaller=yes
 UninstallDisplayIcon={app}\{#ExeName}.exe
 Uninstallable=true
 VersionInfoCompany={#ExeName}
@@ -393,7 +388,6 @@ end;
 Filename: "{code:getNGENPath}\ngen.exe"; Parameters: "install ""{app}\{#ExeName}.exe"""; StatusMsg: "{cm:optimize}"; Flags: runhidden runasoriginaluser
 Filename: "{code:getNGENPath}\ngen.exe"; Parameters: "install ""{app}\ScreenLoadPlugin.dll"""; StatusMsg: "{cm:optimize}"; Flags: runhidden runasoriginaluser
 Filename: "{app}\{#ExeName}.exe"; Description: "{cm:startscreenload}"; Parameters: "{code:GetParamsForGS}"; WorkingDir: "{app}"; Flags: nowait postinstall runasoriginaluser
-// Filename: "https://analytics.webmoney.ru/statistics/187871ba896764a04fede6ff1a9e8c09"; Flags: shellexec runasoriginaluser
 
 [InstallDelete]
 Name: {app}; Type: dirifempty;

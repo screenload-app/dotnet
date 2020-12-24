@@ -20,14 +20,19 @@
  */
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+using System.Diagnostics;
+using System.Globalization;
 using System.Net;
+using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using System.Text;
+using System.Threading;
+using System.Web;
 using ScreenLoad.IniFile;
-using ScreenLoadDownloadRuPlugin.Forms;
 using ScreenLoadPlugin.Core;
 using ScreenLoadDownloadRuPlugin.Utils;
 using log4net;
+using ScreenLoadDownloadRuPlugin.Properties;
 
 namespace ScreenLoadDownloadRuPlugin
 {
@@ -37,42 +42,127 @@ namespace ScreenLoadDownloadRuPlugin
     /// </summary>
     public static class DownloadRuUtils
     {
+	    class HttpResponseBrief
+	    {
+		    public string Content { get; }
+
+		    public string ContentType { get; }
+
+		    public bool Finish { get; set; }
+
+            public string AuthenticationCode { get; set; }
+
+            public HttpResponseBrief(string content, string contentType)
+            {
+	            Content = content ?? throw new ArgumentNullException(nameof(content));
+	            ContentType = contentType ?? throw new ArgumentNullException(nameof(contentType));
+            }
+        }
+
+	    private static readonly object Anchor = new object();
+
         private static readonly ILog Log = LogManager.GetLogger(typeof(DownloadRuUtils));
         private static readonly DownloadRuConfiguration Config = IniConfig.GetIniSection<DownloadRuConfiguration>();
 
-        private const string RedirectUri = "https://download.ru/u/?";
-        private const string UploadFileUri = "https://download.ru/f?locale=";
         private const string AuthorizeUri = "https://download.ru/oauth/authorize";
+        //private const string RedirectUri = "https://download.ru/u/?";
+        private const string RedirectUri = "http://localhost:8087/";
+
+        private const string UploadFileUri = "https://download.ru/f?locale=";
         private const string TokenUri = "https://download.ru/oauth/token";
 
         private const string UserAgent = "ScreenLoad";
 
+        private static HttpServer _httpServer;
+
+        //private static bool Authorize()
+        //{
+        //    string authorizeUrl =
+        //        $"{AuthorizeUri}?client_id={Constants.ClientId}&response_type=code&state=downloadru&redirect_uri={RedirectUri}";
+
+        //    var loginForm = new LoginForm(Language.GetString(Constants.LanguagePrefix, LangKey.Authorize),
+        //        new Size(1060, 600),
+        //        authorizeUrl, RedirectUri);
+
+        //    loginForm.ShowDialog();
+
+        //    if (!loginForm.IsOk)
+        //        return false;
+
+        //    var callbackParameters = loginForm.CallbackParameters;
+
+        //    if (callbackParameters == null || !callbackParameters.ContainsKey("code"))
+        //        return false;
+
+        //    string authorizationResponse = PostAndReturn(new Uri(TokenUri),
+        //        $"grant_type=authorization_code&code={callbackParameters["code"]}&client_id={Constants.ClientId}&client_secret={Constants.ClientSecret}&redirect_uri={RedirectUri}");
+        //    var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
+
+        //    Config.DownloadRuToken = authorization.AccessToken;
+        //    IniConfig.Save();
+        //    return true;
+        //}
+
         private static bool Authorize()
         {
-            string authorizeUrl =
-                $"{AuthorizeUri}?client_id={Constants.ClientId}&response_type=code&state=downloadru&redirect_uri={RedirectUri}";
+	        lock (Anchor)
+	        {
+		        _httpServer?.Dispose();
+		        _httpServer = new HttpServer(RedirectUri);
+	        }
 
-            var loginForm = new LoginForm(Language.GetString(Constants.LanguagePrefix, LangKey.Authorize),
-                new Size(1060, 600),
-                authorizeUrl, RedirectUri);
+	        var waitHandle = new AutoResetEvent(false);
 
-            loginForm.ShowDialog();
+	        string authenticationCode = null;
 
-            if (!loginForm.IsOk)
-                return false;
+	        _httpServer.Listen().Subscribe(context =>
+	        {
+		        var httpResponseBrief = BuildHttpResponse(context.Request.Url);
 
-            var callbackParameters = loginForm.CallbackParameters;
+		        if (null != httpResponseBrief.AuthenticationCode)
+			        authenticationCode = httpResponseBrief.AuthenticationCode;
 
-            if (callbackParameters == null || !callbackParameters.ContainsKey("code"))
-                return false;
+		        try
+		        {
+			        WriteResponse(context, httpResponseBrief);
 
-            string authorizationResponse = PostAndReturn(new Uri(TokenUri),
-                $"grant_type=authorization_code&code={callbackParameters["code"]}&client_id={Constants.ClientId}&client_secret={Constants.ClientSecret}&redirect_uri={RedirectUri}");
-            var authorization = JSONSerializer.Deserialize<Authorization>(authorizationResponse);
+			        if (httpResponseBrief.Finish)
+				        waitHandle.Set();
+		        }
+		        catch (HttpListenerException)
+		        {
+			        waitHandle.Set();
+		        }
+	        });
 
-            Config.DownloadRuToken = authorization.AccessToken;
-            IniConfig.Save();
-            return true;
+	        string authorizeUrl =
+		        $"{AuthorizeUri}?client_id={Constants.ClientId}&response_type=code&state=downloadru&redirect_uri={HttpUtility.UrlEncode(RedirectUri, Encoding.UTF8)}";
+
+	        var p = Process.Start(authorizeUrl);
+
+	        if (null != p)
+		        p.Exited += (sender, args) => { waitHandle.Set(); };
+
+	        waitHandle.WaitOne();
+
+	        if (null != authenticationCode)
+	        {
+		        string authorizationResponse = PostAndReturn(new Uri(TokenUri),
+			        $"grant_type=authorization_code&code={authenticationCode}&client_id={Constants.ClientId}&client_secret={Constants.ClientSecret}&redirect_uri={RedirectUri}");
+		        var authorization =
+			        JSONSerializer.Deserialize<Authorization>(authorizationResponse);
+
+		        Config.DownloadRuToken = authorization.AccessToken;
+		        IniConfig.Save();
+	        }
+
+	        new Thread(() =>
+	        {
+		        Thread.Sleep(10 * 1000);
+		        _httpServer.Dispose(); // Ждем, пока прогрузятся стили и т.д. и останавливаем сервер.
+	        }) {IsBackground = true}.Start();
+
+	        return null != authenticationCode;
         }
 
         public static string PostAndReturn(Uri url, string postMessage)
@@ -178,6 +268,109 @@ namespace ScreenLoadDownloadRuPlugin
 
                 return upload.File;
             }
+        }
+
+        private static HttpResponseBrief BuildHttpResponse(Uri uri)
+        {
+	        HttpResponseBrief httpResponseBrief;
+
+	        var currentLanguage = Language.CurrentLanguage;
+
+	        switch (uri.LocalPath)
+	        {
+		        case "/":
+		        {
+			        var query = uri.Query;
+
+			        if (!string.IsNullOrEmpty(query))
+			        {
+				        var parameters = HttpUtility.ParseQueryString(query);
+
+				        var authenticationCode = parameters["code"];
+
+				        if (null != authenticationCode)
+				        {
+					        var content = Resources.SuccessResponseHtml;
+
+					        if ("ru-RU".Equals(currentLanguage, StringComparison.OrdinalIgnoreCase))
+						        content = Resources.SuccessResponseHtmlRu;
+
+					        var contentType = "text/html";
+
+					        httpResponseBrief = new HttpResponseBrief(content, contentType)
+					        {
+						        Finish = true,
+						        AuthenticationCode = authenticationCode
+					        };
+
+					        break;
+				        }
+
+				        var error = parameters["error"];
+
+				        if (null != error)
+				        {
+					        string content;
+					        string contentType;
+
+					        switch (error)
+					        {
+						        case "access_denied":
+							        var errorDescription = parameters["error_description"];
+
+							        if (string.IsNullOrEmpty(errorDescription))
+								        errorDescription =
+									        "The resource owner or authorization server denied the request!";
+
+							        var htmlTemplate = Resources.ErrorResponseHtmlTemplate;
+
+							        if ("ru-RU".Equals(currentLanguage, StringComparison.OrdinalIgnoreCase))
+								        htmlTemplate = Resources.ErrorResponseHtmlTemplateRu;
+
+							        content = string.Format(CultureInfo.InvariantCulture, htmlTemplate,
+								        errorDescription);
+							        contentType = "text/html";
+							        break;
+						        default:
+							        content = error;
+							        contentType = "text/plain";
+							        break;
+					        }
+
+					        httpResponseBrief = new HttpResponseBrief(content, contentType)
+					        {
+						        Finish = true
+					        };
+					        break;
+				        }
+			        }
+		        }
+			        goto default;
+		        case "/main.css":
+			        httpResponseBrief = new HttpResponseBrief(Resources.MainCss, "text/css");
+			        break;
+		        default:
+			        httpResponseBrief = new HttpResponseBrief($"Path {uri.LocalPath} not found!", "text/plain");
+			        break;
+	        }
+
+	        return httpResponseBrief;
+        }
+
+        private static void WriteResponse(HttpListenerContext context, HttpResponseBrief httpResponseBrief)
+        {
+	        var response = context.Response;
+
+            byte[] buffer = Encoding.UTF8.GetBytes(httpResponseBrief.Content);
+
+	        response.ContentType = httpResponseBrief.ContentType;
+	        response.ContentLength64 = buffer.Length;
+
+	        using (var output = response.OutputStream)
+	        {
+		        output.Write(buffer, 0, buffer.Length);
+		        output.Close();
+	        }
         }
     }
 }

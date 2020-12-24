@@ -54,7 +54,7 @@ namespace ScreenLoadDownloadRuPlugin
 
             if (_plugin.Configuration.AfterUploadLinkToClipBoard)
             {
-                switch (_plugin.Configuration.AfterUploadLinkToClipBoardMode)
+	            switch (_plugin.Configuration.AfterUploadLinkToClipBoardMode)
                 {
                     case LinkType.Image:
                         successMessage = Language.GetString(Constants.LanguagePrefix, LangKey.upload_success_and_copy_imagelink);

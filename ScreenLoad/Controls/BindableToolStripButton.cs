@@ -37,11 +37,6 @@ namespace ScreenLoad.Controls {
 			set;
 		}
 
-        public Icon Icon
-        {
-            set => Image = new Icon(value, Owner.ImageScalingSize).ToBitmap();
-        }
-
         public BindableToolStripButton()
 		{
 			CheckedChanged += BindableToolStripButton_CheckedChanged;

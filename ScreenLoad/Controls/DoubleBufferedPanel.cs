@@ -2,7 +2,7 @@
 
 namespace ScreenLoad.Controls
 {
-    public  sealed class DoubleBufferedPanel : Panel
+    public sealed class DoubleBufferedPanel : Panel
     {
         public DoubleBufferedPanel()
         {

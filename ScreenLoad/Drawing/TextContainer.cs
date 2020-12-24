@@ -32,6 +32,8 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
+using ScreenLoad.Controls;
+using ScreenLoad.Controls.AlphaUtils;
 
 namespace ScreenLoad.Drawing
 {
@@ -249,9 +251,20 @@ namespace ScreenLoad.Drawing
 
         private void CreateTextBox()
         {
-            _textBox = new TextBox
+            //_textBox = new TextBox
+            //{
+            //    ImeMode = ImeMode.On,
+            //    Multiline = true,
+            //    AcceptsTab = true,
+            //    AcceptsReturn = true,
+            //    BorderStyle = BorderStyle.None,
+            //    Visible = false
+            //};
+
+            _textBox = new AlphaBlendTextBox
             {
                 ImeMode = ImeMode.On,
+                BackAlpha = 0,
                 Multiline = true,
                 AcceptsTab = true,
                 AcceptsReturn = true,
@@ -271,7 +284,9 @@ namespace ScreenLoad.Drawing
                 _parent.KeysLocked = true;
                 _parent.Controls.Add(_textBox);
             }
+
             EnsureTextBoxContrast();
+
             if (_textBox != null)
             {
                 _textBox.Show();
@@ -553,7 +568,8 @@ namespace ScreenLoad.Drawing
             Color lineColor = GetFieldValueAsColor(FieldType.LINE_COLOR);
             bool drawShadow = shadow && (fillColor == Color.Transparent || fillColor == Color.Empty);
 
-            DrawText(graphics, rect, lineThickness, lineColor, drawShadow, _stringFormat, text, _font);
+            if (null == _textBox || !_textBox.Visible)
+	            DrawText(graphics, rect, lineThickness, lineColor, drawShadow, _stringFormat, text, _font);
         }
 
         /// <summary>
