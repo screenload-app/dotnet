@@ -22,6 +22,9 @@
     </UpgradeBackupLocation>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FastColoredTextBox, Version=2.16.24.0, Culture=neutral, PublicKeyToken=fb8aa12b994ef61b, processorArchitecture=MSIL">
+      <HintPath>..\packages\FCTB.2.16.24\lib\FastColoredTextBox.dll</HintPath>
+    </Reference>
     <Reference Include="log4net">
       <HintPath>Lib\log4net.dll</HintPath>
     </Reference>
@@ -38,12 +41,8 @@
     <Compile Include="AssemblyInfo.cs" />
     <Compile Include="Configuration\EditorConfiguration.cs" />
     <Compile Include="Configuration\LanguageKeys.cs" />
-    <Compile Include="Controls\AlphaBlendTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
-    <Compile Include="Controls\AlphaTextBox.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="Controls\AlphaBlendTextBox.cs" />
+    <Compile Include="Controls\AlphaTextBox.cs" />
     <Compile Include="Controls\BindableToolStripComboBox.cs">
       <SubType>Component</SubType>
     </Compile>

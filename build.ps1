@@ -24,7 +24,7 @@
 
 $version=$env:APPVEYOR_BUILD_VERSION
 if ( !$version ) {
-	$version = "2.3.0.0"
+	$version = "2.3.1.0"
 }
 
 $buildType=$env:build_type

@@ -33,7 +33,7 @@ using System.Drawing.Text;
 using System.Runtime.Serialization;
 using System.Windows.Forms;
 using ScreenLoad.Controls;
-using ScreenLoad.Controls.AlphaUtils;
+using FastColoredTextBoxNS;
 
 namespace ScreenLoad.Drawing
 {
@@ -53,7 +53,7 @@ namespace ScreenLoad.Drawing
         public Font Font => _font;
 
         [NonSerialized]
-        private TextBox _textBox;
+        private FastColoredTextBox _textBox;
 
         /// <summary>
         /// The StringFormat object is not serializable!!
@@ -261,15 +261,18 @@ namespace ScreenLoad.Drawing
             //    Visible = false
             //};
 
-            _textBox = new AlphaBlendTextBox
+            _textBox = new FastColoredTextBox
             {
                 ImeMode = ImeMode.On,
-                BackAlpha = 0,
+                BackColor = Color.Transparent,
                 Multiline = true,
+                ShowScrollBars = false,
+                WordWrap = true,
                 AcceptsTab = true,
                 AcceptsReturn = true,
                 BorderStyle = BorderStyle.None,
-                Visible = false
+                Visible = false,
+                ShowLineNumbers = false
             };
 
             _textBox.DataBindings.Add("Text", this, "Text", false, DataSourceUpdateMode.OnPropertyChanged);
@@ -303,15 +306,15 @@ namespace ScreenLoad.Drawing
             {
                 return;
             }
-            Color lc = GetFieldValueAsColor(FieldType.LINE_COLOR);
-            if (lc.R > 203 && lc.G > 203 && lc.B > 203)
-            {
-                _textBox.BackColor = Color.FromArgb(51, 51, 51);
-            }
-            else
-            {
-                _textBox.BackColor = Color.White;
-            }
+            //Color lc = GetFieldValueAsColor(FieldType.LINE_COLOR);
+            //if (lc.R > 203 && lc.G > 203 && lc.B > 203)
+            //{
+            //    _textBox.BackColor = Color.FromArgb(51, 51, 51);
+            //}
+            //else
+            //{
+            //    _textBox.BackColor = Color.White;
+            //}
         }
 
         private void HideTextBox()
@@ -484,18 +487,19 @@ namespace ScreenLoad.Drawing
                 return;
             }
             var alignment = (StringAlignment)GetFieldValue(FieldType.TEXT_HORIZONTAL_ALIGNMENT);
-            switch (alignment)
-            {
-                case StringAlignment.Near:
-                    _textBox.TextAlign = HorizontalAlignment.Left;
-                    break;
-                case StringAlignment.Far:
-                    _textBox.TextAlign = HorizontalAlignment.Right;
-                    break;
-                case StringAlignment.Center:
-                    _textBox.TextAlign = HorizontalAlignment.Center;
-                    break;
-            }
+
+            //switch (alignment)
+            //{
+            //    case StringAlignment.Near:
+            //        _textBox.TextAlign = HorizontalAlignment.Left;
+            //        break;
+            //    case StringAlignment.Far:
+            //        _textBox.TextAlign = HorizontalAlignment.Right;
+            //        break;
+            //    case StringAlignment.Center:
+            //        _textBox.TextAlign = HorizontalAlignment.Center;
+            //        break;
+            //}
 
             var lineColor = GetFieldValueAsColor(FieldType.LINE_COLOR);
             _textBox.ForeColor = lineColor;
@@ -515,22 +519,22 @@ namespace ScreenLoad.Drawing
                 _textBox.SelectAll();
             }
             // Added for FEATURE-1064
-            if (e.KeyCode == Keys.Back && e.Control)
-            {
-                e.SuppressKeyPress = true;
-                int selStart = _textBox.SelectionStart;
-                while (selStart > 0 && _textBox.Text.Substring(selStart - 1, 1) == " ")
-                {
-                    selStart--;
-                }
-                int prevSpacePos = -1;
-                if (selStart != 0)
-                {
-                    prevSpacePos = _textBox.Text.LastIndexOf(' ', selStart - 1);
-                }
-                _textBox.Select(prevSpacePos + 1, _textBox.SelectionStart - prevSpacePos - 1);
-                _textBox.SelectedText = "";
-            }
+            //if (e.KeyCode == Keys.Back && e.Control)
+            //{
+            //    e.SuppressKeyPress = true;
+            //    int selStart = _textBox.SelectionStart;
+            //    while (selStart > 0 && _textBox.Text.Substring(selStart - 1, 1) == " ")
+            //    {
+            //        selStart--;
+            //    }
+            //    int prevSpacePos = -1;
+            //    if (selStart != 0)
+            //    {
+            //        prevSpacePos = _textBox.Text.LastIndexOf(' ', selStart - 1);
+            //    }
+            //    _textBox.Select(prevSpacePos + 1, _textBox.SelectionStart - prevSpacePos - 1);
+            //    _textBox.SelectedText = "";
+            //}
         }
 
         private void textBox_LostFocus(object sender, EventArgs e)
@@ -569,7 +573,7 @@ namespace ScreenLoad.Drawing
             bool drawShadow = shadow && (fillColor == Color.Transparent || fillColor == Color.Empty);
 
             if (null == _textBox || !_textBox.Visible)
-	            DrawText(graphics, rect, lineThickness, lineColor, drawShadow, _stringFormat, text, _font);
+                DrawText(graphics, rect, lineThickness, lineColor, drawShadow, _stringFormat, text, _font);
         }
 
         /// <summary>
