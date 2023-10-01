@@ -304,8 +304,9 @@ namespace ScreenLoad.Drawing
 			tail.Dispose();
 
 			// Draw the text
-			DrawText(graphics, rect, lineThickness, lineColor, shadow, StringFormat, Text, Font);
-		}
+            if (TextBoxVisible)
+                DrawText(graphics, rect, lineThickness, lineColor, shadow, StringFormat, Text, Font);
+        }
 
 		public override bool Contains(int x, int y) {
 			if (base.Contains(x, y)) {

@@ -188,7 +188,8 @@ namespace ScreenLoad
                                 UploadCapture();
                                 return;
                             case Keys.C:
-                                CopyCapture();
+                                if (!_surface.KeysLocked)
+                                    CopyCapture();
                                 return;
                             case Keys.S:
                                 SaveCapture();

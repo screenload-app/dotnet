@@ -1,6 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <versionHistory>
 
+  <version type="release" number="2.3.3.0" file="ScreenLoad-2.3.3.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.3.3
+1. Прозрачный фон для ввода текста в редакторе в Windows Server.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.3.3
+1. Transparent background for text in the editor on Windows Server.]]>
+    </info>
+  </version>
+  
+  <version type="development" number="2.3.2.0" file="ScreenLoad-2.3.2.0.exe">
+    <info locale="ru-RU">
+      <![CDATA[Версия 2.3.2
+1. Прозрачный фон для ввода текста в редакторе в Windows Server.]]>
+    </info>
+    <info locale="en-US">
+      <![CDATA[Version 2.3.2
+1. Transparent background for text in the editor on Windows Server.]]>
+    </info>
+  </version>
+
   <version type="release" number="2.3.1.0" file="ScreenLoad-2.3.1.0.exe">
     <info locale="ru-RU">
       <![CDATA[Версия 2.3.1

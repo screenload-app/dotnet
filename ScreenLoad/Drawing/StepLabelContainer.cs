@@ -213,6 +213,7 @@ namespace ScreenLoad.Drawing {
 			} else {
 				EllipseContainer.DrawEllipse(rect, graphics, rm, 0, Color.Transparent, fillColor, false);
 			}
+
 			using (FontFamily fam = new FontFamily(FontFamily.GenericSansSerif.Name)) {
 				using (Font font = new Font(fam, fontSize, FontStyle.Bold, GraphicsUnit.Pixel)) {
 					TextContainer.DrawText(graphics, rect, 0, lineColor, false, _stringFormat, text, font);

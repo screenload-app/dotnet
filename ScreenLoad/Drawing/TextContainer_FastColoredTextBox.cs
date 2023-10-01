@@ -76,6 +76,8 @@ namespace ScreenLoad.Drawing
             }
         }
 
+        protected bool TextBoxVisible => null == _textBox || !_textBox.Visible;
+
         internal void ChangeText(string newText, bool allowUndoable)
         {
             if ((text == null && newText != null) || !string.Equals(text, newText))
@@ -278,6 +280,11 @@ namespace ScreenLoad.Drawing
             _textBox.DataBindings.Add("Text", this, "Text", false, DataSourceUpdateMode.OnPropertyChanged);
             _textBox.LostFocus += textBox_LostFocus;
             _textBox.KeyDown += textBox_KeyDown;
+
+            _textBox.TextChanged += (sender, args) =>
+            {
+                SetStyle();
+            };
         }
 
         private void ShowTextBox()
@@ -288,33 +295,11 @@ namespace ScreenLoad.Drawing
                 _parent.Controls.Add(_textBox);
             }
 
-            EnsureTextBoxContrast();
-
             if (_textBox != null)
             {
                 _textBox.Show();
                 _textBox.Focus();
             }
-        }
-
-        /// <summary>
-        /// Makes textbox background dark if text color is very bright
-        /// </summary>
-        private void EnsureTextBoxContrast()
-        {
-            if (_textBox == null)
-            {
-                return;
-            }
-            //Color lc = GetFieldValueAsColor(FieldType.LINE_COLOR);
-            //if (lc.R > 203 && lc.G > 203 && lc.B > 203)
-            //{
-            //    _textBox.BackColor = Color.FromArgb(51, 51, 51);
-            //}
-            //else
-            //{
-            //    _textBox.BackColor = Color.White;
-            //}
         }
 
         private void HideTextBox()
@@ -353,9 +338,11 @@ namespace ScreenLoad.Drawing
             FontStyle fontStyle = FontStyle.Regular;
 
             bool hasStyle = false;
+
             using (var fontFamily = new FontFamily(fontFamilyName))
             {
                 bool boldAvailable = fontFamily.IsStyleAvailable(FontStyle.Bold);
+
                 if (fontBold && boldAvailable)
                 {
                     fontStyle |= FontStyle.Bold;
@@ -398,19 +385,21 @@ namespace ScreenLoad.Drawing
         protected void UpdateFormat()
         {
             if (_textBox == null)
-            {
                 return;
-            }
+
             string fontFamily = GetFieldValueAsString(FieldType.FONT_FAMILY);
             bool fontBold = GetFieldValueAsBool(FieldType.FONT_BOLD);
             bool fontItalic = GetFieldValueAsBool(FieldType.FONT_ITALIC);
             float fontSize = GetFieldValueAsFloat(FieldType.FONT_SIZE);
+
             try
             {
                 var newFont = CreateFont(fontFamily, fontBold, fontItalic, fontSize);
                 _font?.Dispose();
                 _font = newFont;
+
                 _textBox.Font = _font;
+                SetStyle();
             }
             catch (Exception ex)
             {
@@ -422,7 +411,9 @@ namespace ScreenLoad.Drawing
                     var newFont = CreateFont(fontFamily, fontBold, fontItalic, fontSize);
                     _font?.Dispose();
                     _font = newFont;
+
                     _textBox.Font = _font;
+                    SetStyle();
                 }
                 catch (Exception)
                 {
@@ -436,6 +427,19 @@ namespace ScreenLoad.Drawing
             }
 
             UpdateAlignment();
+        }
+
+        private TextStyle _style;
+
+        private void SetStyle()
+        {
+            if (null != _style)
+                _textBox.Range.ClearStyle(_style);
+            else
+                _style = new TextStyle(null, null, _font.Style);
+
+            _style.FontStyle = _font.Style;
+            _textBox.Range.SetStyle(_style);
         }
 
         private void UpdateAlignment()
@@ -483,23 +487,7 @@ namespace ScreenLoad.Drawing
         private void UpdateTextBoxFormat()
         {
             if (_textBox == null)
-            {
                 return;
-            }
-            var alignment = (StringAlignment)GetFieldValue(FieldType.TEXT_HORIZONTAL_ALIGNMENT);
-
-            //switch (alignment)
-            //{
-            //    case StringAlignment.Near:
-            //        _textBox.TextAlign = HorizontalAlignment.Left;
-            //        break;
-            //    case StringAlignment.Far:
-            //        _textBox.TextAlign = HorizontalAlignment.Right;
-            //        break;
-            //    case StringAlignment.Center:
-            //        _textBox.TextAlign = HorizontalAlignment.Center;
-            //        break;
-            //}
 
             var lineColor = GetFieldValueAsColor(FieldType.LINE_COLOR);
             _textBox.ForeColor = lineColor;
@@ -572,7 +560,7 @@ namespace ScreenLoad.Drawing
             Color lineColor = GetFieldValueAsColor(FieldType.LINE_COLOR);
             bool drawShadow = shadow && (fillColor == Color.Transparent || fillColor == Color.Empty);
 
-            if (null == _textBox || !_textBox.Visible)
+            if (TextBoxVisible)
                 DrawText(graphics, rect, lineThickness, lineColor, drawShadow, _stringFormat, text, _font);
         }
 
