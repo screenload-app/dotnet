@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<language description="Russian" ietf="ru-RU" version="1.0.0">
+  <resources>
+    <resource name="label_AfterUploadLinkToClipBoard">Добавить в буфер обмена</resource>
+    <resource name="label_AfterUploadOpenInBrowser">Открыть в браузере</resource>
+    <resource name="label_AfterUploadShowDetails">Открыть окно с детальной информацией</resource>
+    <resource name="label_AfterUploadShowNotification">Показать системное оповещение</resource>
+    <resource name="anonymous_access">
+      Использовать анонимный доступ
+    </resource>
+    <resource name="label_AfterUploadSharedLink">
+      Расшарить изображение
+    </resource>
+    <resource name="label_AfterUpload">
+      После загрузки
+    </resource>
+    <resource name="Configure">
+      Настройка Download.Ru
+    </resource>
+    <resource name="Authorize">
+      Авторизация Download.Ru
+    </resource>
+    <resource name="upload_menu_item">
+      Загрузить на Download.Ru
+    </resource>
+    <resource name="settings_title">
+      Download.Ru настройки
+    </resource>
+    <resource name="upload_success">
+      Изображение успешно добавлено на сайт Download.Ru!
+    </resource>
+    <resource name="upload_success_and_copy_imagelink">
+      Изображение успешно добавлено на сайт Download.Ru и ссылка на него скопирована в буфер обмена!
+    </resource>
+    <resource name="upload_success_and_copy_pagelink">
+      Изображение успешно добавлено на сайт Download.Ru. Ссылка на страницу скопирована в буфер обмена!
+    </resource>
+    <resource name="upload_failure">
+      В процессе загрузки на сайт Download.Ru произошла ошибка:
+    </resource>
+    <resource name="internet_connection_failure">проблема с доступом к ресурсу, проверьте интернет-подключение!</resource>
+    <resource name="label_upload_format">
+      Формат изображения
+    </resource>
+    <resource name="communication_wait">
+      Устанавливается связь с Download.Ru. Пожалуйста, подождите...
+    </resource>
+
+    <resource name="LinkType.Image">ссылку на изображение</resource>
+    <resource name="LinkType.Page">ссылку на страницу</resource>
+
+    <resource name="progressform_caption">Загрузка изображения...</resource>
+
+    <resource name="success_info">Изображение было успешно сохранено на Download.Ru! Вы можете получить к нему доступ по этим ссылкам:</resource>
+    <resource name="success_pagelink">Ссылка на страницу:</resource>
+    <resource name="success_directlink">Прямая ссылка:</resource>
+    <resource name="success_copy">Копировать</resource>
+    <resource name="success_donotshow">Не отображать это окно</resource>
+    <resource name="success_automaticallyclose">Автоматически закрывать окно</resource>
+    <resource name="success_done">ОК</resource>
+  </resources>
+</language>
